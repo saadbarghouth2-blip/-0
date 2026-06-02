@@ -1,14 +1,21 @@
 import type { Language } from '../hooks/useLanguage';
 import {
+  getLocalizedPath,
+  getPathLanguage,
+  normalizeAppPath,
+  stripLanguagePrefix,
+} from './localizedPath';
+import {
   DEFAULT_ROBOTS_POLICY,
+  DEFAULT_BRAND_IMAGE,
   DEFAULT_SEO_IMAGE,
   DEFAULT_SEO_IMAGE_ALT,
   ORGANIZATION_INFO,
+  SITE_ALTERNATE_NAME,
   SITE_DESCRIPTION_AR,
   SITE_DESCRIPTION_EN,
   SITE_NAME,
   SITE_NAME_AR,
-  SITE_NAME_EN,
   SITE_TITLE_SUFFIX,
   SITE_URL,
 } from './siteConfig';
@@ -55,7 +62,6 @@ export interface PageSeoState extends PageSeoInput {
   structuredDataList: JsonLdObject[];
 }
 
-const trailingSlashPattern = /\/+$/;
 const protocolPattern = /^https?:\/\//i;
 
 const localeMap: Record<Language, string> = {
@@ -63,23 +69,11 @@ const localeMap: Record<Language, string> = {
   en: 'en_US',
 };
 
-export const normalizePath = (path = '/') => {
-  const pathname = path.trim() || '/';
+export const normalizePath = (path = '/') => normalizeAppPath(path);
 
-  if (pathname === '/') {
-    return pathname;
-  }
-
-  const withLeadingSlash = pathname.startsWith('/') ? pathname : `/${pathname}`;
-  return withLeadingSlash.replace(trailingSlashPattern, '');
-};
-
-const appendLanguageSearchParam = (path: string, lang: Language) => {
-  if (lang !== 'en') {
-    return path;
-  }
-
-  return `${path}${path.includes('?') ? '&' : '?'}lang=en`;
+const joinSiteUrl = (baseUrl: string, routePath: string) => {
+  const normalizedPath = routePath.startsWith('/') ? routePath : `/${routePath}`;
+  return `${baseUrl}${normalizedPath}`;
 };
 
 export const toAbsoluteUrl = (value: string) => {
@@ -87,18 +81,24 @@ export const toAbsoluteUrl = (value: string) => {
     return value;
   }
 
-  const normalizedValue = value.startsWith('/') ? value : `/${value}`;
-  return new URL(normalizedValue, `${SITE_URL}/`).toString();
+  return joinSiteUrl(SITE_URL, value);
+};
+
+const toAbsolutePageUrl = (path: string) => {
+  const normalizedPath = normalizePath(path);
+  const pathname = normalizedPath === '/' ? '/' : `${normalizedPath}/`;
+
+  return joinSiteUrl(SITE_URL, pathname);
 };
 
 export const getLocalizedAbsoluteUrl = (path: string, lang: Language) =>
-  toAbsoluteUrl(appendLanguageSearchParam(normalizePath(path), lang));
+  toAbsolutePageUrl(getLocalizedPath(normalizePath(path), lang));
 
 export const getSiteDescription = (lang: Language) =>
   lang === 'ar' ? SITE_DESCRIPTION_AR : SITE_DESCRIPTION_EN;
 
 const withTitleSuffix = (title: string) => {
-  if (title.includes(SITE_NAME_AR) || title.includes(SITE_NAME_EN)) {
+  if (title.includes(SITE_NAME_AR) || title.includes(SITE_ALTERNATE_NAME)) {
     return title;
   }
 
@@ -118,11 +118,18 @@ export const toStructuredDataArray = (
 export const buildPageSeoState = (input: PageSeoInput): PageSeoState => {
   const lang =
     input.lang ??
-    (typeof document !== 'undefined' && document.documentElement.lang.startsWith('en')
-      ? 'en'
-      : 'ar');
-  const normalizedPath = normalizePath(
-    input.path ?? (typeof window !== 'undefined' ? window.location.pathname : '/'),
+    (typeof window !== 'undefined'
+      ? getPathLanguage(`${window.location.pathname}${window.location.search}`)
+      : typeof document !== 'undefined' && document.documentElement.lang.startsWith('en')
+        ? 'en'
+        : 'ar');
+  const normalizedPath = stripLanguagePrefix(
+    normalizePath(
+      input.path ??
+        (typeof window !== 'undefined'
+          ? `${window.location.pathname}${window.location.search}`
+          : '/'),
+    ),
   );
 
   return {
@@ -178,6 +185,9 @@ export const renderSeoBlock = (input: PageSeoInput) => {
     renderMetaTag('property', 'og:description', state.description),
     renderMetaTag('property', 'og:type', state.type ?? 'website'),
     renderMetaTag('property', 'og:image', state.imageUrl),
+    renderMetaTag('property', 'og:image:type', 'image/jpeg'),
+    renderMetaTag('property', 'og:image:width', '1200'),
+    renderMetaTag('property', 'og:image:height', '630'),
     renderMetaTag('property', 'og:image:alt', state.imageAlt),
     renderMetaTag('name', 'twitter:card', 'summary_large_image'),
     renderMetaTag('name', 'twitter:title', state.title),
@@ -223,15 +233,15 @@ export const renderSeoBlock = (input: PageSeoInput) => {
 
 export const buildOrganizationSchema = (lang: Language): JsonLdObject => ({
   '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
+  '@type': 'LocalBusiness',
   '@id': `${SITE_URL}#organization`,
-  name: lang === 'ar' ? SITE_NAME_AR : SITE_NAME_EN,
-  alternateName: lang === 'ar' ? SITE_NAME_EN : SITE_NAME_AR,
+  name: SITE_NAME_AR,
+  alternateName: SITE_ALTERNATE_NAME,
   url: SITE_URL,
   description: getSiteDescription(lang),
   email: ORGANIZATION_INFO.email,
   telephone: ORGANIZATION_INFO.phone,
-  logo: toAbsoluteUrl(DEFAULT_SEO_IMAGE),
+  logo: toAbsoluteUrl(DEFAULT_BRAND_IMAGE),
   image: toAbsoluteUrl(DEFAULT_SEO_IMAGE),
   founder: {
     '@type': 'Person',
@@ -258,8 +268,8 @@ export const buildWebsiteSchema = (lang: Language): JsonLdObject => ({
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   '@id': `${SITE_URL}#website`,
-  name: lang === 'ar' ? SITE_NAME_AR : SITE_NAME_EN,
-  alternateName: SITE_NAME,
+  name: SITE_NAME,
+  alternateName: SITE_ALTERNATE_NAME,
   url: SITE_URL,
   inLanguage: lang,
   publisher: {
@@ -267,13 +277,56 @@ export const buildWebsiteSchema = (lang: Language): JsonLdObject => ({
   },
 });
 
-export const buildBreadcrumbSchema = (items: BreadcrumbItem[]): JsonLdObject => ({
+export const buildPersonSchema = (lang: Language): JsonLdObject => ({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE_URL}#founder`,
+  name: ORGANIZATION_INFO.founder,
+  jobTitle: lang === 'ar' ? 'مؤسس نُطق' : 'Founder of Notaq',
+  url: SITE_URL,
+  image: toAbsoluteUrl(DEFAULT_BRAND_IMAGE),
+  description:
+    lang === 'ar'
+      ? 'المؤسس والمسؤول عن توجيه تصميم وتطوير التجارب الرقمية في نُطق.'
+      : 'Founder leading digital design and development direction at Notaq.',
+  worksFor: {
+    '@id': `${SITE_URL}#organization`,
+  },
+  sameAs: [...ORGANIZATION_INFO.sameAs],
+  knowsAbout: [
+    'Web design',
+    'Web development',
+    'SEO-ready websites',
+    'Service pages',
+    'E-commerce',
+  ],
+});
+
+export const buildFaqSchema = (
+  items: Array<{ question: string; answer: string }>,
+): JsonLdObject => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+});
+
+export const buildBreadcrumbSchema = (
+  items: BreadcrumbItem[],
+  lang: Language = 'ar',
+): JsonLdObject => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: items.map((item, index) => ({
     '@type': 'ListItem',
     position: index + 1,
     name: item.name,
-    item: toAbsoluteUrl(normalizePath(item.path)),
+    item: getLocalizedAbsoluteUrl(item.path, lang),
   })),
 });

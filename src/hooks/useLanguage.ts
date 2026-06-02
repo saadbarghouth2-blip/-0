@@ -5,9 +5,14 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
   type ReactNode,
 } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import {
+  buildLocalizedUrlPath,
+  getLocalizedPath,
+  getPathLanguage,
+} from '../lib/localizedPath';
 
 export type Language = 'ar' | 'en';
 
@@ -32,7 +37,7 @@ const translations: TranslationDictionary = {
   },
   buttons: {
     contact: { ar: 'تواصل معنا', en: 'Contact' },
-    startProject: { ar: 'ابدأ مشروعك', en: 'Start your project' },
+    startProject: { ar: 'ناقش احتياج شركتك', en: 'Discuss your company need' },
     viewProjects: { ar: 'مشاريعنا', en: 'Our projects' },
     viewAllProjects: { ar: 'كل المشاريع', en: 'All projects' },
     sendMessage: { ar: 'إرسال الرسالة', en: 'Send message' },
@@ -66,10 +71,10 @@ const translations: TranslationDictionary = {
     },
     contact: {
       title: { ar: 'تواصل معنا', en: 'Contact us' },
-      subtitle: { ar: 'لنبدأ مشروعك', en: "Let's start your project" },
-      description: { ar: 'نحن هنا لمساعدتك في تحويل أفكارك إلى واقع رقمي. تواصل معنا اليوم', en: 'We are here to help turn your ideas into a digital reality. Contact us today.' },
+      subtitle: { ar: 'لنرتب احتياج شركتك', en: "Let's organize your company need" },
+      description: { ar: 'نساعدك على تحويل الاحتياج الرقمي إلى مسار واضح قابل للتنفيذ. تواصل معنا اليوم', en: 'We help turn the digital need into a clear, executable path. Contact us today.' },
       detailsTitle: { ar: 'معلومات التواصل', en: 'Contact details' },
-      detailsDescription: { ar: 'لا تتردد في التواصل معنا لأي استفسار أو لمناقشة مشروعك القادم', en: 'Feel free to reach out for any inquiry or to discuss your next project.' },
+      detailsDescription: { ar: 'تواصل معنا لأي استفسار أو لمناقشة احتياج شركتك القادم', en: 'Reach out for any inquiry or to discuss your company’s next need.' },
       formTitle: { ar: 'أرسل لنا رسالة', en: 'Send us a message' },
       formName: { ar: 'الاسم', en: 'Name' },
       formEmail: { ar: 'البريد الإلكتروني', en: 'Email' },
@@ -87,45 +92,31 @@ const translations: TranslationDictionary = {
 interface LanguageContextValue {
   lang: Language;
   toggleLanguage: () => void;
+  localizePath: (path: string, targetLang?: Language) => string;
   t: (key: string, fallback?: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
 const resolveTranslation = (key: string): TranslationEntry | undefined => {
-  return key.split('.').reduce((current: any, part) => {
-    if (!current) return undefined;
-    return current[part];
-  }, translations) as TranslationEntry | undefined;
-};
+  let current: TranslationEntry | TranslationDictionary | undefined = translations;
 
-const getLanguageFromSearchParams = (): Language | null => {
-  if (typeof window === 'undefined') return null;
+  for (const part of key.split('.')) {
+    if (!current || !Object.prototype.hasOwnProperty.call(current, part)) {
+      return undefined;
+    }
 
-  const searchParams = new URLSearchParams(window.location.search);
-  const langParam = searchParams.get('lang');
-
-  if (langParam === 'en') {
-    return 'en';
+    current = (current as TranslationDictionary)[part] as
+      | TranslationEntry
+      | TranslationDictionary
+      | undefined;
   }
 
-  if (langParam === 'ar') {
-    return 'ar';
+  if (!current || typeof current !== 'object' || !('ar' in current) || !('en' in current)) {
+    return undefined;
   }
 
-  return null;
-};
-
-const getLanguageFromStorage = (): Language => {
-  if (typeof window === 'undefined') return 'ar';
-  const fromSearchParams = getLanguageFromSearchParams();
-
-  if (fromSearchParams) {
-    return fromSearchParams;
-  }
-
-  const stored = window.localStorage.getItem('app-language');
-  return stored === 'en' ? 'en' : 'ar';
+  return current as TranslationEntry;
 };
 
 export const LanguageProvider = ({
@@ -135,31 +126,66 @@ export const LanguageProvider = ({
   children: ReactNode;
   initialLang?: Language;
 }) => {
-  const [lang, setLang] = useState<Language>(initialLang ?? getLanguageFromStorage);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const routeSnapshot = `${location.pathname}${location.search}${location.hash}`;
+  const lang = useMemo<Language>(() => {
+    if (typeof window === 'undefined') {
+      return initialLang ?? getPathLanguage(routeSnapshot);
+    }
+
+    return getPathLanguage(routeSnapshot);
+  }, [initialLang, routeSnapshot]);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.lang = lang === 'ar' ? 'ar' : 'en';
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     }
+
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('app-language', lang);
-
-      const url = new URL(window.location.href);
-
-      if (lang === 'en') {
-        url.searchParams.set('lang', 'en');
-      } else {
-        url.searchParams.delete('lang');
-      }
-
-      window.history.replaceState(window.history.state, '', url);
     }
   }, [lang]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const searchParams = new URLSearchParams(location.search);
+    const legacyLang = searchParams.get('lang');
+
+    if (legacyLang !== 'ar' && legacyLang !== 'en') {
+      return;
+    }
+
+    const nextPath = buildLocalizedUrlPath(routeSnapshot, legacyLang);
+
+    if (nextPath !== routeSnapshot) {
+      navigate(nextPath, { replace: true });
+    }
+  }, [location.search, navigate, routeSnapshot]);
+
   const toggleLanguage = useCallback(() => {
-    setLang((current) => (current === 'ar' ? 'en' : 'ar'));
-  }, []);
+    const nextLang = lang === 'ar' ? 'en' : 'ar';
+    navigate(buildLocalizedUrlPath(routeSnapshot, nextLang));
+  }, [lang, navigate, routeSnapshot]);
+
+  const localizePath = useCallback(
+    (path: string, targetLang = lang) => {
+      if (!path.startsWith('/') && !path.startsWith('?') && !path.startsWith('#')) {
+        return path;
+      }
+
+      if (path.startsWith('?') || path.startsWith('#')) {
+        return buildLocalizedUrlPath(`${location.pathname}${path}`, targetLang);
+      }
+
+      return getLocalizedPath(path, targetLang);
+    },
+    [lang, location.pathname],
+  );
 
   const t = useCallback(
     (key: string, fallback = '') => {
@@ -171,8 +197,8 @@ export const LanguageProvider = ({
   );
 
   const value = useMemo(
-    () => ({ lang, toggleLanguage, t }),
-    [lang, toggleLanguage, t],
+    () => ({ lang, toggleLanguage, localizePath, t }),
+    [lang, localizePath, toggleLanguage, t],
   );
 
   return createElement(LanguageContext.Provider, { value }, children);

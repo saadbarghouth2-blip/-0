@@ -92,7 +92,7 @@ const Navigation = () => {
                 }}
                 className="btn-primary text-sm"
               >
-                ابدأ مشروعك
+                ناقش احتياجك
               </a>
             </div>
 
@@ -154,7 +154,7 @@ const Navigation = () => {
                   }}
                   className="block w-full text-center btn-primary mt-4"
                 >
-                  ابدأ مشروعك
+                  ناقش احتياجك
                 </motion.a>
               </div>
             </div>

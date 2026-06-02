@@ -1,0 +1,39 @@
+[build]
+command = "npm run build"
+publish = "dist"
+
+[[redirects]]
+from = "http://xn--2gbwk.site/*"
+to = "https://www.xn--2gbwk.site/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "https://xn--2gbwk.site/*"
+to = "https://www.xn--2gbwk.site/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+
+[[headers]]
+for = "/*"
+[headers.values]
+X-Content-Type-Options = "nosniff"
+X-Frame-Options = "SAMEORIGIN"
+Referrer-Policy = "strict-origin-when-cross-origin"
+X-XSS-Protection = "1; mode=block"
+Content-Security-Policy = "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval';"
+
+[[headers]]
+for = "/assets/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/images/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"

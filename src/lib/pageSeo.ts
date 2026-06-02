@@ -1,5 +1,18 @@
 import { blogPosts, getBlogPostBySlug, type BlogPost } from '../data/blog';
 import {
+  aboutDetailPages,
+  allDetailRoutes,
+  blogCategoryPages,
+  contactDetailPages,
+  contactBriefContent,
+  homeDetailPages,
+  serviceDetailPages,
+  testimonialStoryPages,
+  type BlogCategoryPageContent,
+  type DetailPageContent,
+} from '../data/company';
+import { contactFaqs } from '../data/contactPageContent';
+import {
   findProjectBySlug,
   portfolioProfile,
   projects,
@@ -7,10 +20,13 @@ import {
   type PortfolioProject,
 } from '../data/portfolio';
 import type { Language } from '../hooks/useLanguage';
+import { getLocalizedPath, getPathLanguage, stripLanguagePrefix } from './localizedPath';
 import { SITE_URL } from './siteConfig';
 import {
   buildBreadcrumbSchema,
+  buildFaqSchema,
   buildOrganizationSchema,
+  buildPersonSchema,
   buildWebsiteSchema,
   getLocalizedAbsoluteUrl,
   normalizePath,
@@ -21,6 +37,7 @@ import {
 
 export interface PrerenderRoute {
   path: string;
+  lang: Language;
   priority: number;
   changeFrequency: 'daily' | 'weekly' | 'monthly';
   lastModified?: string;
@@ -68,11 +85,11 @@ const createListSchema = (
 const createHomeSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
   const title = isArabic
-    ? 'تصميم مواقع شركات ومتاجر إلكترونية في مصر'
-    : 'Web Design and Development Agency in Cairo';
+    ? 'نُطق | مواقع شركات وصفحات خدمات ومتاجر إلكترونية في مصر والخليج'
+    : 'Notaq | Websites, service pages, and e-commerce for Egypt and the Gulf';
   const description = isArabic
-    ? 'نُطق تبني مواقع شركات ومتاجر إلكترونية وصفحات خدمات سريعة وواضحة ومهيأة لمحركات البحث لمساعدة العلامات التجارية على الظهور وكسب العملاء.'
-    : 'Notaq builds fast, clear, SEO-ready company websites, e-commerce experiences, and service pages that help brands show up and win customers.';
+    ? 'نُطق وكالة رقمية في القاهرة تبني مواقع شركات وصفحات خدمات ومتاجر إلكترونية سريعة وواضحة ومهيأة للظهور وخدمة شركات في مصر والخليج.'
+    : 'Notaq builds fast, clear, SEO-ready company websites, service pages, and e-commerce experiences for businesses across Egypt and the Gulf.';
 
   return {
     title,
@@ -81,24 +98,29 @@ const createHomeSeo = (lang: Language): PageSeoInput => {
     lang,
     keywords: isArabic
       ? [
+          'نُطق',
+          'نطق',
           'تصميم مواقع',
           'تطوير مواقع شركات',
+          'صفحات خدمات',
           'متاجر إلكترونية',
+          'مصر',
+          'الخليج',
           'SEO',
-          'وكالة رقمية',
-          'نطق',
         ]
       : [
+          'Notaq',
           'web design agency',
           'website development',
+          'service page design',
           'e-commerce development',
           'SEO-ready websites',
-          'digital agency Cairo',
-          'Notaq',
+          'Egypt and Gulf web agency',
         ],
     structuredData: [
       buildOrganizationSchema(lang),
       buildWebsiteSchema(lang),
+      buildPersonSchema(lang),
       createWebPageSchema('/', lang, title, description, 'WebPage'),
       createListSchema(
         isArabic ? 'خدمات نُطق' : 'Notaq services',
@@ -116,10 +138,10 @@ const createHomeSeo = (lang: Language): PageSeoInput => {
 
 const createAboutSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
-  const title = isArabic ? 'من نحن | وكالة نُطق' : 'About Notaq';
+  const title = isArabic ? 'من نحن | نُطق' : 'About Notaq';
   const description = isArabic
-    ? 'تعرف على نُطق، وكالة رقمية من القاهرة متخصصة في تصميم مواقع الشركات والمتاجر الإلكترونية والواجهات التي تبني الثقة وتزيد التحويل.'
-    : 'Meet Notaq, a Cairo-based digital agency focused on company websites, e-commerce experiences, and interfaces built for trust and conversion.';
+    ? 'تعرّف على نُطق، وكالة رقمية من القاهرة تبني مواقع الشركات وصفحات الخدمات والتجارب الرقمية التي تجمع بين الوضوح، الثقة، والأداء.'
+    : 'Meet Notaq, a Cairo-based digital agency focused on company websites, service pages, and digital experiences built for clarity and trust.';
 
   return {
     title,
@@ -127,24 +149,30 @@ const createAboutSeo = (lang: Language): PageSeoInput => {
     path: '/about',
     lang,
     keywords: isArabic
-      ? ['من نحن', 'وكالة تصميم مواقع', 'نُطق', 'تطوير مواقع', 'وكالة رقمية القاهرة']
-      : ['about Notaq', 'web agency Cairo', 'digital studio', 'website design team'],
+      ? ['من نحن', 'نُطق', 'وكالة رقمية', 'تصميم مواقع', 'القاهرة']
+      : ['about Notaq', 'digital agency Cairo', 'website design team', 'service page studio'],
     structuredData: [
       createWebPageSchema('/about', lang, title, description, 'AboutPage'),
-      buildBreadcrumbSchema([
-        { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
-        { name: isArabic ? 'من نحن' : 'About', path: '/about' },
-      ]),
+      buildPersonSchema(lang),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'من نحن' : 'About', path: '/about' },
+        ],
+        lang,
+      ),
     ],
   };
 };
 
 const createServicesSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
-  const title = isArabic ? 'خدمات تصميم المواقع وتطوير الواجهات' : 'Web Design and Development Services';
+  const title = isArabic
+    ? 'خدمات نُطق | مواقع شركات وصفحات خدمات وتجارب رقمية'
+    : 'Notaq Services | Company websites, service pages, and digital experiences';
   const description = isArabic
-    ? 'اكتشف خدمات نُطق في تصميم مواقع الشركات، المتاجر الإلكترونية، الواجهات التفاعلية، والأنظمة الرقمية السريعة والمهيأة لمحركات البحث.'
-    : 'Explore Notaq services in company websites, e-commerce, interactive interfaces, and fast SEO-ready digital systems.';
+    ? 'اكتشف خدمات نُطق في مواقع الشركات، صفحات الخدمات، المتاجر الإلكترونية، والواجهات السريعة المهيأة للظهور والمناسبة لشركات في مصر والخليج.'
+    : 'Explore Notaq services for company websites, service pages, e-commerce, and fast SEO-ready interfaces built for Egypt and Gulf markets.';
 
   return {
     title,
@@ -152,14 +180,8 @@ const createServicesSeo = (lang: Language): PageSeoInput => {
     path: '/services',
     lang,
     keywords: isArabic
-      ? [
-          'خدمات تصميم مواقع',
-          'تطوير واجهات',
-          'متاجر إلكترونية',
-          'صفحات هبوط',
-          'SEO',
-        ]
-      : ['web design services', 'landing pages', 'e-commerce services', 'SEO-ready development'],
+      ? ['خدمات تصميم مواقع', 'صفحات خدمات', 'متاجر إلكترونية', 'واجهات رقمية', 'SEO']
+      : ['web design services', 'service pages', 'e-commerce services', 'SEO-ready development'],
     structuredData: [
       createWebPageSchema('/services', lang, title, description, 'CollectionPage'),
       createListSchema(
@@ -172,19 +194,22 @@ const createServicesSeo = (lang: Language): PageSeoInput => {
             : service.englishDescription ?? service.description,
         })),
       ),
-      buildBreadcrumbSchema([
-        { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
-        { name: isArabic ? 'الخدمات' : 'Services', path: '/services' },
-      ]),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'الخدمات' : 'Services', path: '/services' },
+        ],
+        lang,
+      ),
     ],
   };
 };
 
 const createProjectsSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
-  const title = isArabic ? 'أعمال نُطق | مشاريع مواقع ومتاجر إلكترونية' : 'Notaq Work and Case Studies';
+  const title = isArabic ? 'أعمال نُطق | مشاريع ومواقع ودراسات حالة' : 'Notaq Work and Case Studies';
   const description = isArabic
-    ? 'تصفح أعمال نُطق ودراسات الحالة لمواقع الشركات والمتاجر الإلكترونية والمنتجات الرقمية المنفذة لعملاء من قطاعات مختلفة.'
+    ? 'تصفّح أعمال نُطق ودراسات الحالة لمواقع الشركات، المتاجر الإلكترونية، والمنتجات الرقمية المنفذة لقطاعات مختلفة.'
     : 'Browse Notaq work and case studies across company websites, e-commerce, and digital products delivered for different industries.';
 
   return {
@@ -193,7 +218,7 @@ const createProjectsSeo = (lang: Language): PageSeoInput => {
     path: '/projects',
     lang,
     keywords: isArabic
-      ? ['أعمال نطق', 'دراسة حالة', 'مشاريع مواقع', 'متاجر إلكترونية', 'نماذج أعمال']
+      ? ['أعمال نُطق', 'دراسة حالة', 'مشاريع مواقع', 'متاجر إلكترونية', 'نماذج أعمال']
       : ['case studies', 'portfolio', 'web projects', 'e-commerce projects', 'Notaq work'],
     structuredData: [
       createWebPageSchema('/projects', lang, title, description, 'CollectionPage'),
@@ -207,10 +232,13 @@ const createProjectsSeo = (lang: Language): PageSeoInput => {
             : project.englishExcerpt ?? project.excerpt,
         })),
       ),
-      buildBreadcrumbSchema([
-        { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
-        { name: isArabic ? 'الأعمال' : 'Projects', path: '/projects' },
-      ]),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'الأعمال' : 'Projects', path: '/projects' },
+        ],
+        lang,
+      ),
     ],
   };
 };
@@ -219,7 +247,7 @@ const createBlogSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
   const title = isArabic ? 'مدونة نُطق | مقالات تصميم المواقع وSEO' : 'Notaq Blog on Web Design and SEO';
   const description = isArabic
-    ? 'مدونة نُطق تقدم مقالات عملية عن تصميم المواقع، تجربة المستخدم، التجارة الإلكترونية، وتحسين الظهور في محركات البحث.'
+    ? 'مدونة نُطق تقدّم مقالات عملية عن تصميم المواقع، تجربة المستخدم، التجارة الإلكترونية، وتحسين الظهور في محركات البحث.'
     : 'The Notaq blog publishes practical articles on web design, user experience, e-commerce, and search visibility.';
 
   return {
@@ -228,7 +256,7 @@ const createBlogSeo = (lang: Language): PageSeoInput => {
     path: '/blog',
     lang,
     keywords: isArabic
-      ? ['مدونة تصميم مواقع', 'مقالات SEO', 'تجربة المستخدم', 'التجارة الإلكترونية', 'نطق']
+      ? ['مدونة تصميم مواقع', 'مقالات SEO', 'تجربة المستخدم', 'التجارة الإلكترونية', 'نُطق']
       : ['web design blog', 'SEO articles', 'UX blog', 'e-commerce content', 'Notaq blog'],
     structuredData: [
       {
@@ -250,19 +278,22 @@ const createBlogSeo = (lang: Language): PageSeoInput => {
           description: isArabic ? post.excerptAr : post.excerptEn,
         })),
       ),
-      buildBreadcrumbSchema([
-        { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
-        { name: isArabic ? 'المدونة' : 'Blog', path: '/blog' },
-      ]),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'المدونة' : 'Blog', path: '/blog' },
+        ],
+        lang,
+      ),
     ],
   };
 };
 
 const createTestimonialsSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
-  const title = isArabic ? 'آراء العملاء وتجارب العمل مع نُطق' : 'Client Testimonials and Results';
+  const title = isArabic ? 'آراء العملاء | نُطق' : 'Client Testimonials and Results';
   const description = isArabic
-    ? 'اقرأ آراء العملاء عن تجربة العمل مع نُطق وكيف ساعدت المواقع والواجهات الجديدة على رفع الثقة وتحسين عرض الخدمات.'
+    ? 'اقرأ آراء العملاء عن العمل مع نُطق وكيف ساعدت المواقع والواجهات الجديدة على رفع الثقة وتحسين عرض الخدمات.'
     : 'Read how clients describe their work with Notaq and how the new websites and interfaces improved trust and presentation.';
 
   return {
@@ -271,24 +302,29 @@ const createTestimonialsSeo = (lang: Language): PageSeoInput => {
     path: '/testimonials',
     lang,
     keywords: isArabic
-      ? ['آراء العملاء', 'تقييمات العملاء', 'نتائج المشاريع', 'نطق']
+      ? ['آراء العملاء', 'تقييمات العملاء', 'نتائج المشاريع', 'نُطق']
       : ['client testimonials', 'customer reviews', 'project results', 'Notaq feedback'],
     structuredData: [
       createWebPageSchema('/testimonials', lang, title, description, 'CollectionPage'),
-      buildBreadcrumbSchema([
-        { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
-        { name: isArabic ? 'آراء العملاء' : 'Testimonials', path: '/testimonials' },
-      ]),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'آراء العملاء' : 'Testimonials', path: '/testimonials' },
+        ],
+        lang,
+      ),
     ],
   };
 };
 
 const createContactSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
-  const title = isArabic ? 'تواصل مع نُطق وابدأ مشروع موقعك' : 'Contact Notaq and Start Your Project';
+  const title = isArabic
+    ? 'تواصل مع نُطق ورتّب احتياج شركتك الرقمي'
+    : 'Contact Notaq and organize your company’s digital need';
   const description = isArabic
-    ? 'تواصل مع نُطق لبدء تصميم موقع شركتك أو متجرك الإلكتروني أو صفحة الخدمة الخاصة بك، واحصل على استشارة أولية واضحة.'
-    : 'Contact Notaq to start your company website, e-commerce, or service page project and get a clear first consultation.';
+    ? 'تواصل مع نُطق لبدء موقع شركة، صفحة خدمة، أو تجربة رقمية تستهدف مصر والخليج، واحصل على خطوة أولى واضحة وسريعة.'
+    : 'Contact Notaq to start a company website, service page, or digital experience for Egypt and Gulf audiences and get a clear next step.';
 
   return {
     title,
@@ -296,10 +332,17 @@ const createContactSeo = (lang: Language): PageSeoInput => {
     path: '/contact',
     lang,
     keywords: isArabic
-      ? ['تواصل معنا', 'ابدأ مشروعك', 'تصميم موقع شركة', 'نطق']
-      : ['contact Notaq', 'start your project', 'website consultation', 'digital agency contact'],
+      ? ['تواصل معنا', 'مناقشة مشروع', 'صفحة خدمة', 'موقع شركة', 'نُطق']
+      : ['contact Notaq', 'project discussion', 'service page consultation', 'website consultation'],
     structuredData: [
       createWebPageSchema('/contact', lang, title, description, 'ContactPage'),
+      buildPersonSchema(lang),
+      buildFaqSchema(
+        contactFaqs.map((item) => ({
+          question: isArabic ? item.qAr : item.qEn,
+          answer: isArabic ? item.aAr : item.aEn,
+        })),
+      ),
       {
         '@context': 'https://schema.org',
         '@type': 'ContactPage',
@@ -316,12 +359,176 @@ const createContactSeo = (lang: Language): PageSeoInput => {
           email: portfolioProfile.email,
           telephone: portfolioProfile.phone,
           availableLanguage: ['Arabic', 'English'],
+          areaServed: ['Egypt', 'Saudi Arabia', 'United Arab Emirates', 'Middle East'],
         },
       },
-      buildBreadcrumbSchema([
-        { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
-        { name: isArabic ? 'تواصل معنا' : 'Contact', path: '/contact' },
-      ]),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'تواصل معنا' : 'Contact', path: '/contact' },
+        ],
+        lang,
+      ),
+    ],
+  };
+};
+
+const createSimpleStaticSeo = (
+  path: string,
+  lang: Language,
+  arTitle: string,
+  enTitle: string,
+  arDescription: string,
+  enDescription: string,
+  pageType = 'CollectionPage',
+): PageSeoInput => {
+  const isArabic = lang === 'ar';
+  const title = isArabic ? arTitle : enTitle;
+  const description = isArabic ? arDescription : enDescription;
+
+  return {
+    title,
+    description,
+    path,
+    lang,
+    structuredData: [
+      createWebPageSchema(path, lang, title, description, pageType),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: title, path },
+        ],
+        lang,
+      ),
+    ],
+  };
+};
+
+const createCaseStudiesSeo = (lang: Language) =>
+  createSimpleStaticSeo(
+    '/case-studies',
+    lang,
+    'دراسات الحالة | نُطق',
+    'Notaq Case Studies',
+    'نماذج تفصيلية لطريقة تفكير نُطق في التحديات وتحويلها إلى تجارب رقمية أوضح.',
+    'Detailed examples of how Notaq thinks through challenges and turns them into clearer digital experiences.',
+  );
+
+const createStatsSeo = (lang: Language) =>
+  createSimpleStaticSeo(
+    '/stats',
+    lang,
+    'لوحة الإحصائيات | نُطق',
+    'Notaq Statistics Dashboard',
+    'أرقام وملخصات منظمة عن حضور نُطق ومشاريعها وطريقة عرض النتائج.',
+    'Organized numbers and summaries about Notaq presence, projects, and presentation results.',
+  );
+
+const createGallerySeo = (lang: Language) =>
+  createSimpleStaticSeo(
+    '/gallery',
+    lang,
+    'معرض الأعمال | نُطق',
+    'Notaq Portfolio Gallery',
+    'معرض بصري يضم لقطات وصورًا من مشاريع وتجارب نُطق الرقمية.',
+    'A visual gallery with snapshots from Notaq digital projects and experiences.',
+  );
+
+const detailCollections = [
+  ...homeDetailPages,
+  ...aboutDetailPages,
+  ...serviceDetailPages,
+  ...contactDetailPages,
+  ...testimonialStoryPages,
+];
+
+const findDetailPageByPath = (path: string) => {
+  const normalizedPath = stripLanguagePrefix(normalizePath(stripSearchAndHash(path)));
+
+  return detailCollections.find((page) => `${page.parentPath}/${page.slug}` === normalizedPath);
+};
+
+const createDetailSeo = (page: DetailPageContent, lang: Language): PageSeoInput => {
+  const isArabic = lang === 'ar';
+  const title = isArabic ? page.title.ar : page.title.en;
+  const description = isArabic ? page.summary.ar : page.summary.en;
+  const path = `${page.parentPath}/${page.slug}`;
+
+  return {
+    title,
+    description,
+    path,
+    lang,
+    keywords: [
+      isArabic ? page.eyebrow.ar : page.eyebrow.en,
+      isArabic ? page.parentLabel.ar : page.parentLabel.en,
+      ...page.useCases.map((item) => (isArabic ? item.ar : item.en)),
+    ],
+    structuredData: [
+      createWebPageSchema(path, lang, title, description, 'WebPage'),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? page.parentLabel.ar : page.parentLabel.en, path: page.parentPath },
+          { name: title, path },
+        ],
+        lang,
+      ),
+    ],
+  };
+};
+
+const createContactBriefSeo = (lang: Language): PageSeoInput => {
+  const isArabic = lang === 'ar';
+  const title = isArabic ? contactBriefContent.title.ar : contactBriefContent.title.en;
+  const description = isArabic ? contactBriefContent.summary.ar : contactBriefContent.summary.en;
+
+  return {
+    title,
+    description,
+    path: '/contact/brief',
+    lang,
+    structuredData: [
+      createWebPageSchema('/contact/brief', lang, title, description, 'ContactPage'),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'تواصل معنا' : 'Contact', path: '/contact' },
+          { name: title, path: '/contact/brief' },
+        ],
+        lang,
+      ),
+    ],
+  };
+};
+
+const findBlogCategoryByPath = (path: string) => {
+  const slug = stripLanguagePrefix(normalizePath(stripSearchAndHash(path))).replace('/blog/category/', '');
+  return blogCategoryPages.find((category) => category.slug === slug);
+};
+
+const createBlogCategorySeo = (category: BlogCategoryPageContent, lang: Language): PageSeoInput => {
+  const isArabic = lang === 'ar';
+  const title = isArabic ? `${category.label.ar} | مدونة نُطق` : `${category.label.en} | Notaq Blog`;
+  const description = isArabic ? category.description.ar : category.description.en;
+  const path = `/blog/category/${category.slug}`;
+
+  return {
+    title,
+    description,
+    path,
+    lang,
+    keywords: category.categoryMatchers,
+    structuredData: [
+      createWebPageSchema(path, lang, title, description, 'CollectionPage'),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'المدونة' : 'Blog', path: '/blog' },
+          { name: isArabic ? category.label.ar : category.label.en, path },
+        ],
+        lang,
+      ),
     ],
   };
 };
@@ -330,9 +537,9 @@ const createNotFoundSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
 
   return {
-    title: isArabic ? '404 الصفحة غير موجودة' : '404 Page not found',
+    title: isArabic ? '404 | الصفحة غير موجودة' : '404 | Page not found',
     description: isArabic
-      ? 'الصفحة التي تحاول الوصول إليها غير متاحة حالياً. يمكنك العودة إلى الرئيسية أو تصفح الأعمال والمدونة.'
+      ? 'الصفحة التي تحاول الوصول إليها غير متاحة حاليًا. يمكنك العودة إلى الرئيسية أو تصفح الأعمال والمدونة.'
       : 'The page you are trying to reach is not available. You can return home or browse the work and blog pages.',
     path: '/404',
     lang,
@@ -340,10 +547,8 @@ const createNotFoundSeo = (lang: Language): PageSeoInput => {
     structuredData: createWebPageSchema(
       '/404',
       lang,
-      isArabic ? 'صفحة غير موجودة' : 'Page not found',
-      isArabic
-        ? 'الصفحة غير متاحة حالياً.'
-        : 'This page is currently unavailable.',
+      isArabic ? 'الصفحة غير موجودة' : 'Page not found',
+      isArabic ? 'هذه الصفحة غير متاحة حاليًا.' : 'This page is currently unavailable.',
       'WebPage',
     ),
   };
@@ -356,6 +561,15 @@ export const getBlogPostPageSeo = (post: BlogPost, lang: Language): PageSeoInput
   const section = isArabic ? post.categoryAr : post.categoryEn;
   const keywords = isArabic ? post.tagsAr : post.tagsEn;
   const path = `/blog/${post.slug}`;
+
+  const wordCount = (
+    isArabic
+      ? post.bodySections.flatMap((sectionItem) => sectionItem.paragraphsAr)
+      : post.bodySections.flatMap((sectionItem) => sectionItem.paragraphsEn)
+  )
+    .join(' ')
+    .split(/\s+/)
+    .filter(Boolean).length;
 
   const articleSchema: JsonLdObject = {
     '@context': 'https://schema.org',
@@ -370,10 +584,7 @@ export const getBlogPostPageSeo = (post: BlogPost, lang: Language): PageSeoInput
     inLanguage: lang,
     articleSection: section,
     keywords,
-    wordCount: (isArabic ? post.bodySections.flatMap((sectionItem) => sectionItem.paragraphsAr) : post.bodySections.flatMap((sectionItem) => sectionItem.paragraphsEn))
-      .join(' ')
-      .split(/\s+/)
-      .filter(Boolean).length,
+    wordCount,
     author: {
       '@type': 'Organization',
       name: isArabic ? post.authorAr : post.authorEn,
@@ -403,11 +614,14 @@ export const getBlogPostPageSeo = (post: BlogPost, lang: Language): PageSeoInput
     keywords,
     structuredData: [
       articleSchema,
-      buildBreadcrumbSchema([
-        { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
-        { name: isArabic ? 'المدونة' : 'Blog', path: '/blog' },
-        { name: title, path },
-      ]),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'المدونة' : 'Blog', path: '/blog' },
+          { name: title, path },
+        ],
+        lang,
+      ),
     ],
   };
 };
@@ -423,11 +637,7 @@ export const getProjectPageSeo = (
     : project.englishSummary ?? project.englishExcerpt ?? project.summary ?? project.excerpt;
   const category = isArabic ? project.category : project.englishCategory ?? project.category;
   const path = `/projects/${project.slug}`;
-  const keywords = [
-    category,
-    ...(project.focus ?? []),
-    ...(project.techStack ?? []),
-  ];
+  const keywords = [category, ...(project.focus ?? []), ...(project.techStack ?? [])];
 
   const projectSchema: JsonLdObject = {
     '@context': 'https://schema.org',
@@ -468,11 +678,14 @@ export const getProjectPageSeo = (
     keywords,
     structuredData: [
       projectSchema,
-      buildBreadcrumbSchema([
-        { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
-        { name: isArabic ? 'الأعمال' : 'Projects', path: '/projects' },
-        { name: title, path },
-      ]),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: isArabic ? 'الأعمال' : 'Projects', path: '/projects' },
+          { name: title, path },
+        ],
+        lang,
+      ),
     ],
   };
 };
@@ -485,17 +698,39 @@ const staticSeoFactories = {
   '/blog': createBlogSeo,
   '/testimonials': createTestimonialsSeo,
   '/contact': createContactSeo,
+  '/case-studies': createCaseStudiesSeo,
+  '/stats': createStatsSeo,
+  '/gallery': createGallerySeo,
 } satisfies Record<string, (lang: Language) => PageSeoInput>;
 
-export const getPageSeoByPath = (path: string, lang: Language = 'ar'): PageSeoInput => {
-  const normalizedPath = normalizePath(stripSearchAndHash(path));
+export const getPageSeoByPath = (path: string, lang?: Language): PageSeoInput => {
+  const resolvedLang = lang ?? getPathLanguage(path);
+  const normalizedPath = stripLanguagePrefix(normalizePath(stripSearchAndHash(path)));
+
+  if (normalizedPath.startsWith('/blog/category/')) {
+    const category = findBlogCategoryByPath(normalizedPath);
+
+    if (category) {
+      return createBlogCategorySeo(category, resolvedLang);
+    }
+  }
+
+  if (normalizedPath === '/contact/brief') {
+    return createContactBriefSeo(resolvedLang);
+  }
+
+  const detailPage = findDetailPageByPath(normalizedPath);
+
+  if (detailPage) {
+    return createDetailSeo(detailPage, resolvedLang);
+  }
 
   if (normalizedPath.startsWith('/blog/')) {
     const slug = normalizedPath.replace('/blog/', '');
     const post = getBlogPostBySlug(slug);
 
     if (post) {
-      return getBlogPostPageSeo(post, lang);
+      return getBlogPostPageSeo(post, resolvedLang);
     }
   }
 
@@ -504,27 +739,58 @@ export const getPageSeoByPath = (path: string, lang: Language = 'ar'): PageSeoIn
     const project = findProjectBySlug(slug);
 
     if (project) {
-      return getProjectPageSeo(project, lang);
+      return getProjectPageSeo(project, resolvedLang);
     }
   }
 
   const factory = staticSeoFactories[normalizedPath as keyof typeof staticSeoFactories];
 
   if (factory) {
-    return factory(lang);
+    return factory(resolvedLang);
   }
 
-  return createNotFoundSeo(lang);
+  return createNotFoundSeo(resolvedLang);
 };
 
-export const prerenderRoutes: PrerenderRoute[] = [
+const localizedPrerenderRoute = (
+  path: string,
+  lang: Language,
+  priority: number,
+  changeFrequency: PrerenderRoute['changeFrequency'],
+  lastModified?: string,
+): PrerenderRoute => ({
+  path: getLocalizedPath(path, lang),
+  lang,
+  priority,
+  changeFrequency,
+  lastModified,
+});
+
+const basePrerenderRoutes: Array<
+  Omit<PrerenderRoute, 'lang' | 'path'> & { path: string }
+> = [
   { path: '/', priority: 1, changeFrequency: 'weekly' },
   { path: '/about', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/services', priority: 0.9, changeFrequency: 'monthly' },
   { path: '/projects', priority: 0.9, changeFrequency: 'weekly' },
+  { path: '/case-studies', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/gallery', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/stats', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/blog', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/testimonials', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/contact', priority: 0.9, changeFrequency: 'monthly' },
+  { path: '/contact/brief', priority: 0.9, changeFrequency: 'monthly' },
+  { path: '/about/company', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/pricing', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/faq', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/team', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/process', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/careers', priority: 0.8, changeFrequency: 'monthly' },
+  ...allDetailRoutes.map((path) => ({
+    path,
+    priority: 0.65,
+    changeFrequency: 'monthly' as const,
+  })),
   ...projects.map((project) => ({
     path: `/projects/${project.slug}`,
     priority: 0.7,
@@ -537,3 +803,20 @@ export const prerenderRoutes: PrerenderRoute[] = [
     lastModified: post.publishedAt,
   })),
 ];
+
+export const prerenderRoutes: PrerenderRoute[] = basePrerenderRoutes.flatMap((route) => [
+  localizedPrerenderRoute(
+    route.path,
+    'ar',
+    route.priority,
+    route.changeFrequency,
+    route.lastModified,
+  ),
+  localizedPrerenderRoute(
+    route.path,
+    'en',
+    route.priority,
+    route.changeFrequency,
+    route.lastModified,
+  ),
+]);

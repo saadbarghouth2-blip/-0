@@ -21,15 +21,22 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import PageImageShowcaseSection from '../components/PageImageShowcase';
+import PageHero from '../components/PageHero';
 import { useLanguage } from '../hooks/useLanguage';
+import { useIsMobile } from '../hooks/use-mobile';
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { corporatePrinciples, trustSignals } from '../data/company';
+import { editorialImages } from '../data/editorialImages';
+import { enrichmentMediaById } from '../data/enrichmentMedia';
+import { pageImageShowcases } from '../data/pageImageShowcases';
 import { illustrationAssets } from '../lib/illustrationAssets';
 import { getPageSeoByPath } from '../lib/pageSeo';
 
 const motivations = [
   { icon: Flame, ar: 'الشغف بالصنعة', en: 'Craft passion', arDesc: 'حب حقيقي لما نبنيه.', enDesc: 'A real love for the work we build.' },
   { icon: Code2, ar: 'الدقة التقنية', en: 'Technical precision', arDesc: 'تنفيذ نظيف ومدروس.', enDesc: 'Clean, well-structured execution.' },
-  { icon: MessageSquare, ar: 'صوت العميل', en: 'Client voice', arDesc: 'نستمع قبل أن نقترح.', enDesc: 'We listen before we prescribe.' },
+  { icon: MessageSquare, ar: 'صوتك أولًا', en: 'Your voice first', arDesc: 'نستمع قبل أن نقترح.', enDesc: 'We listen before we prescribe.' },
   { icon: TrendingUp, ar: 'النمو المستمر', en: 'Continuous growth', arDesc: 'نتعلم ونحسن باستمرار.', enDesc: 'We keep learning and improving.' },
 ];
 
@@ -81,14 +88,14 @@ const timelineSteps: TimelineStep[] = [
     en: 'Discovery and diagnosis',
     arDesc: 'نحلل النشاط والهدف ودور الواجهة قبل أي تصميم.',
     enDesc: 'We analyze the business, the goal, and the role of the interface before any design begins.',
-    img: '/images/WhatsApp%20Image%202026-02-15%20at%202.31.19%20AM%20(1).jpeg',
+    img: '/images/WhatsApp%20Image%202026-02-01%20at%208.47.19%20PM.jpeg',
   },
   {
     ar: 'هندسة المحتوى',
     en: 'Content architecture',
     arDesc: 'نعيد ترتيب المعلومات بحيث تقود الزائر للفهم والقرار.',
     enDesc: 'We restructure information so it guides visitors toward understanding and action.',
-    img: '/images/Gemini_Generated_Image_qr1zi5qr1zi5qr1z.png',
+    img: '/images/Gemini_Generated_Image_8b3hvo8b3hvo8b3h.png',
   },
   {
     ar: 'تأثير الواجهة',
@@ -111,9 +118,9 @@ const timelineSteps: TimelineStep[] = [
 
 const values = [
   { icon: Target, ar: 'الدقة', en: 'Precision', arDesc: 'لا ننهي المشروع قبل أن يصبح سلسًا حقًا.', enDesc: 'We do not finish until the experience feels genuinely smooth.' },
-  { icon: Zap, ar: 'السرعة', en: 'Speed', arDesc: 'وقت العميل مهم ونحترمه.', enDesc: 'We respect the client’s time.' },
+  { icon: Zap, ar: 'السرعة', en: 'Speed', arDesc: 'وقتك مهم ونحترمه.', enDesc: 'We respect your time.' },
   { icon: Rocket, ar: 'الجرأة', en: 'Boldness', arDesc: 'نبحث عن زاوية مختلفة وهوية أوضح.', enDesc: 'We look for the sharper angle and the stronger identity.' },
-  { icon: Users, ar: 'الشراكة', en: 'Partnership', arDesc: 'نشتغل كجزء من هدف العميل لا كمورد فقط.', enDesc: 'We work like part of the client’s mission, not just a vendor.' },
+  { icon: Users, ar: 'الشراكة', en: 'Partnership', arDesc: 'نشتغل كجزء من هدفك لا كمورد فقط.', enDesc: 'We work like part of your mission, not just a vendor.' },
   { icon: Gem, ar: 'التميز', en: 'Excellence', arDesc: 'المتوسط ليس معيارنا.', enDesc: 'Average is never our bar.' },
   { icon: CheckCircle, ar: 'الصدق', en: 'Authenticity', arDesc: 'الشفافية أساس العلاقة الطويلة.', enDesc: 'Transparency is what makes the relationship durable.' },
 ];
@@ -126,38 +133,34 @@ const stats = [
   { num: '24/7', ar: 'دعم بعد الإطلاق', en: 'Post-launch support', icon: ShieldCheck },
 ];
 
-const cultureImages = [
-  'Gemini_Generated_Image_96cd0396cd0396cd.png',
-  'WhatsApp Image 2026-02-15 at 2.31.19 AM (1).jpeg',
-  'Gemini_Generated_Image_qr1zi5qr1zi5qr1z.png',
-  'Gemini_Generated_Image_nfqqnnfqqnnfqqnn.png',
-  'WhatsApp Image 2026-02-15 at 05.05.18 (2).jpeg',
-  'WhatsApp Image 2026-02-15 at 05.05.18 (3).jpeg',
-  'WhatsApp Image 2026-02-15 at 05.05.18 (4).jpeg',
-  'IMG-20251112-WA0012.jpg',
-];
-
 const AboutPage = () => {
-  const { lang } = useLanguage();
+  const { lang, localizePath } = useLanguage();
+  const isMobile = useIsMobile();
   const isArabic = lang === 'ar';
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end end'] });
   const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const heroAccentClass = isArabic
-    ? 'text-base md:text-2xl leading-8 md:leading-10 text-slate-300 font-medium pr-6 border-r-2 border-cyan-400/30 text-right'
-    : 'text-base md:text-2xl leading-8 md:leading-10 text-slate-300 font-medium pl-6 border-l-2 border-cyan-400/30 text-left';
+    ? 'border-r-2 border-cyan-400/30 pr-4 text-right text-sm font-medium leading-7 text-slate-300 md:pr-6 md:text-2xl md:leading-10'
+    : 'border-l-2 border-cyan-400/30 pl-4 text-left text-sm font-medium leading-7 text-slate-300 md:pl-6 md:text-2xl md:leading-10';
   const railClass = isArabic
-    ? 'absolute right-8 md:left-1/2 top-0 bottom-0 w-1 bg-white/5 rounded-full overflow-hidden'
-    : 'absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-white/5 rounded-full overflow-hidden';
+    ? 'absolute right-8 top-0 bottom-0 hidden w-1 overflow-hidden rounded-full bg-white/5 md:left-1/2 md:block'
+    : 'absolute left-8 top-0 bottom-0 hidden w-1 overflow-hidden rounded-full bg-white/5 md:left-1/2 md:block';
   const nodeClass = isArabic
-    ? 'absolute right-[22px] md:left-1/2 md:-translate-x-1/2 w-6 h-6 rounded-full bg-[#06090f] border-4 border-cyan-400 z-10 shadow-[0_0_20px_rgba(45,212,191,0.8)]'
-    : 'absolute left-[22px] md:left-1/2 md:-translate-x-1/2 w-6 h-6 rounded-full bg-[#06090f] border-4 border-cyan-400 z-10 shadow-[0_0_20px_rgba(45,212,191,0.8)]';
+    ? 'absolute right-[22px] hidden h-6 w-6 rounded-full border-4 border-cyan-400 bg-[#06090f] shadow-[0_0_20px_rgba(45,212,191,0.8)] md:left-1/2 md:block md:-translate-x-1/2'
+    : 'absolute left-[22px] hidden h-6 w-6 rounded-full border-4 border-cyan-400 bg-[#06090f] shadow-[0_0_20px_rgba(45,212,191,0.8)] md:left-1/2 md:block md:-translate-x-1/2';
   const textBlockClass = isArabic
-    ? 'w-full md:w-1/2 pr-12 md:px-16 text-right'
-    : 'w-full md:w-1/2 pl-12 md:px-16 text-left';
+    ? 'w-full rounded-[1.8rem] border border-white/8 bg-white/[0.02] p-5 text-right md:w-1/2 md:border-0 md:bg-transparent md:p-0 md:pr-12 md:px-16'
+    : 'w-full rounded-[1.8rem] border border-white/8 bg-white/[0.02] p-5 text-left md:w-1/2 md:border-0 md:bg-transparent md:p-0 md:pl-12 md:px-16';
   const mediaBlockClass = isArabic
-    ? 'w-full md:w-1/2 pr-12 pl-4 md:px-0 mt-6 md:mt-0'
-    : 'w-full md:w-1/2 pl-12 pr-4 md:px-0 mt-6 md:mt-0';
+    ? 'mt-4 w-full md:mt-0 md:w-1/2 md:px-0 md:pr-12 md:pl-4'
+    : 'mt-4 w-full md:mt-0 md:w-1/2 md:px-0 md:pl-12 md:pr-4';
+  const mobileMotivationsGridStyle = {
+    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  } as const;
+  const mobileValuesGridStyle = {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(11.5rem, 1fr))',
+  } as const;
   const content = {
     title: isArabic ? 'من نحن' : 'About us',
     description: isArabic ? 'تعرف على فريق نُطق ورؤيتنا' : 'Meet the Notaq team and our vision.',
@@ -165,11 +168,11 @@ const AboutPage = () => {
     heroTitle1: isArabic ? 'تشكيل ملامح' : 'Shaping the outline of',
     heroTitle2: isArabic ? 'المستقبل' : 'what comes next',
     heroBody: isArabic
-      ? 'نحن لا نطوّر مجرد واجهات جذابة، بل نبني تجارب تجعل العلامة التجارية تتحول من حضور رقمي عادي إلى منصة قيادة في سوقها.'
-      : 'We do not build attractive interfaces only. We create experiences that move a brand from an ordinary digital presence into a stronger market position.',
+      ? 'احصل على تجربة لا تكتفي بواجهة جذابة، بل تجعل علامتك تتحول من حضور رقمي عادي إلى منصة أقوى في سوقها.'
+      : 'Get an experience that goes beyond an attractive interface and moves your brand from an ordinary digital presence into a stronger market position.',
     heroCta: isArabic ? 'ابدأ رحلتك معنا الآن' : 'Start your journey with us',
     precisionTitle: isArabic ? 'الشغف بالدقة' : 'Precision-minded craft',
-    precisionBody: isArabic ? 'نجسد الابتكار من خلال إطار عمل منهجي وواضح.' : 'We turn innovation into execution through a methodical and intentional approach.',
+    precisionBody: isArabic ? 'سترى الابتكار في إطار عمل منهجي وواضح، لا في وعود عامة.' : 'You see innovation through a methodical and intentional approach, not generic promises.',
     mission: isArabic ? 'مهمتنا' : 'Our mission',
     missionBody: isArabic
       ? 'تحويل كل موقع من صفحة تعريفية إلى أداة نمو حقيقية تبني الثقة وتسرّع القرار.'
@@ -188,313 +191,598 @@ const AboutPage = () => {
     workflowKicker: isArabic ? 'منهجية العمل' : 'Working Method',
     workflowTitle: isArabic ? 'كيف نبني هذه التجارب؟' : 'How do we build experiences like this?',
     cultureKicker: isArabic ? 'حضور وثقافة نُطق' : 'Global Presence & Culture',
-    cultureTitle: isArabic ? 'بيئة عمل ملهمة ونتائج عالمية' : 'An inspiring culture with global-level results',
+    cultureTitle: isArabic ? 'شاهد حضور شركتك بصورة أوضح' : 'See your company presence more clearly',
     cultureBody: isArabic
-      ? 'نؤمن أن الإبداع يبدأ من بيئة تقدّر التفاصيل وتبحث دائمًا عن مستوى أعلى.'
-      : 'We believe creative excellence starts in a culture that respects details and keeps aiming higher.',
+      ? 'ستظهر الصور داخل القصة كدليل بصري يساعد زائر شركتك على الإحساس بالتجربة، تفاصيل الهوية، والمستوى المهني قبل أن يقرأ كل كلمة.'
+      : 'Visuals appear inside the story as proof that helps your visitors feel the experience, identity, and professional level before reading every word.',
     cultureHover: isArabic ? 'من كواليس الإبداع' : 'Behind the scenes',
     valuesKicker: isArabic ? 'مبادئنا الجوهرية' : 'Core Principles',
     valuesTitle: isArabic ? 'القيم التي تبني كل قرار نتخذه' : 'The values behind every decision',
     numbersTitle: isArabic ? 'نُطق بالأرقام' : 'Notaq by the numbers',
+    numbersSupport: isArabic
+      ? 'نظل قريبين من المشروع بعد الإطلاق للمتابعة والتحسين.'
+      : 'We stay close after launch for support, follow-up, and refinement.',
+  };
+
+  const renderMotivationCard = (item: (typeof motivations)[number], index: number) => (
+    <motion.div
+      key={item.en}
+      initial={isMobile ? false : { opacity: 0, y: 20 }}
+      {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
+      transition={{ delay: index * 0.08 }}
+      className="glass-card group flex h-full flex-col items-center rounded-[1.2rem] border border-white/8 p-3.5 text-center transition-all hover:border-cyan-400/30 md:rounded-3xl md:p-6"
+    >
+      <div className="mb-2 rounded-[1rem] bg-white/5 p-2 transition-colors group-hover:bg-cyan-400/10 group-hover:text-cyan-400 md:mb-4 md:rounded-2xl md:p-3">
+        <item.icon className="h-5 w-5 text-slate-400 transition-colors group-hover:text-cyan-400 md:h-6 md:w-6" />
+      </div>
+      <p className="mb-1.5 text-[0.88rem] font-bold leading-5 text-white transition-colors group-hover:text-cyan-300 md:mb-2 md:text-sm">
+        {isArabic ? item.ar : item.en}
+      </p>
+      <p className="text-[11px] leading-5 text-slate-500 md:text-xs md:leading-5">
+        {isArabic ? item.arDesc : item.enDesc}
+      </p>
+    </motion.div>
+  );
+
+  const renderTraitCard = (item: (typeof traits)[number], index: number) => (
+    <motion.div
+      key={item.tag}
+      initial={isMobile ? false : { opacity: 0, y: 20 }}
+      {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
+      transition={{ delay: index * 0.1 }}
+      className="glass-card group flex flex-col gap-3 rounded-[1.2rem] border border-white/8 p-4 transition-all hover:border-violet-400/30 md:flex-row md:gap-6 md:rounded-[2rem] md:p-8"
+    >
+      <div className="h-0.5 w-full shrink-0 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 md:h-auto md:w-1 md:self-stretch md:bg-gradient-to-b" />
+      <div>
+        <span className="mb-2 block text-[9px] font-mono uppercase tracking-[0.18em] text-violet-400 md:mb-3 md:text-[10px] md:tracking-widest">
+          {item.tag}
+        </span>
+        <h4 className="mb-2 font-display text-[1rem] font-bold leading-6 text-white transition-colors group-hover:text-cyan-300 md:mb-3 md:text-xl">
+          {isArabic ? item.ar : item.en}
+        </h4>
+        <p className="text-[12px] leading-5 text-slate-400 md:text-sm md:leading-7">
+          {isArabic ? item.arDesc : item.enDesc}
+        </p>
+      </div>
+    </motion.div>
+  );
+
+  const renderTimelineMobileCard = (step: TimelineStep, index: number) => (
+    <motion.div
+      key={step.en}
+      initial={false}
+      className={`glass-card flex items-start gap-3 rounded-[1.25rem] border border-white/10 p-3 ${isArabic ? 'text-right' : 'text-left'}`}
+    >
+      <div className={`min-w-0 flex-1 ${isArabic ? 'order-1' : 'order-2'}`}>
+        <span className="mb-1.5 block text-[10px] font-bold tracking-[0.2em] text-cyan-400">
+          PHASE 0{index + 1}
+        </span>
+        <h3 className="font-display text-[1rem] font-bold leading-6 text-white">
+          {isArabic ? step.ar : step.en}
+        </h3>
+        <p className="mt-1.5 text-[12px] leading-5 text-slate-400">
+          {isArabic ? step.arDesc : step.enDesc}
+        </p>
+      </div>
+      <div
+        className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-[1rem] border border-white/10 bg-[#07111d] ${isArabic ? 'order-2' : 'order-1'}`}
+      >
+        {step.mediaMode === 'contain' ? (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#07111d] via-[#05070d] to-[#0b1220]" />
+            <img
+              src={step.img}
+              alt={step.imgAlt ?? step.en}
+              className="relative z-10 h-full w-full object-contain p-2.5"
+            />
+          </>
+        ) : (
+          <img
+            src={step.imgPoster ?? step.img}
+            alt={step.imgAlt ?? step.en}
+            className="h-full w-full object-cover"
+          />
+        )}
+      </div>
+    </motion.div>
+  );
+
+  const renderMobileStatCard = (item: (typeof stats)[number], index: number) => {
+    const isSupportCard = index === stats.length - 1;
+
+    return (
+      <motion.div
+        key={`${item.en}-mobile`}
+        initial={false}
+        className={`glass-card relative overflow-hidden rounded-[1.25rem] border border-white/8 p-4 ${
+          isSupportCard ? 'col-span-2' : ''
+        }`}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent" />
+        <div className={`relative flex h-full items-start justify-between gap-3 ${isArabic ? 'text-right' : 'text-left'}`}>
+          <div className="min-w-0">
+            <p className="font-display text-[1.75rem] font-black leading-none text-white drop-shadow-lg">
+              {item.num}
+            </p>
+            <p className="mt-2 text-[11px] font-medium leading-5 text-slate-400">
+              {isArabic ? item.ar : item.en}
+            </p>
+            {isSupportCard ? (
+              <p className="mt-2 max-w-[18rem] text-[11px] leading-5 text-slate-500">
+                {content.numbersSupport}
+              </p>
+            ) : null}
+          </div>
+          <div className="rounded-xl bg-cyan-400/10 p-2.5 text-cyan-400 shadow-[0_12px_30px_rgba(45,212,191,0.16)]">
+            <item.icon className="h-5 w-5" />
+          </div>
+        </div>
+      </motion.div>
+    );
   };
 
   usePageMetadata(getPageSeoByPath('/about', lang));
 
   return (
-    <section ref={containerRef} className="relative pb-24 pt-14 md:pt-24 min-h-screen">
-      <div className="absolute inset-0 pointer-events-none z-[-1] overflow-hidden">
-        <div className="absolute top-[10%] left-[-20%] w-[80vw] h-[80vw] bg-cyan-600/10 rounded-full blur-[180px] opacity-70 animate-pulse" />
-        <div className="absolute bottom-[20%] right-[-10%] w-[60vw] h-[60vw] bg-violet-600/10 rounded-full blur-[150px] opacity-60" />
+    <section ref={containerRef} className="relative pb-16 pt-10 md:min-h-screen md:pb-24 md:pt-24">
+      <div className="pointer-events-none absolute inset-0 z-[-1] overflow-hidden">
+        <div className="mobile-ornament absolute top-[10%] left-[-20%] h-[80vw] w-[80vw] rounded-full bg-cyan-600/10 opacity-70 blur-[180px] animate-pulse" />
+        <div className="mobile-ornament absolute bottom-[20%] right-[-10%] h-[60vw] w-[60vw] rounded-full bg-violet-600/10 opacity-60 blur-[150px]" />
       </div>
 
+      <PageHero
+        description={content.heroBody}
+        kicker={content.heroKicker}
+        metrics={[
+          { value: `${corporatePrinciples.length}`, label: isArabic ? 'مبادئ عمل' : 'work principles' },
+          { value: `${trustSignals.length}+`, label: isArabic ? 'إشارات ثقة' : 'trust signals' },
+          { value: '1', label: isArabic ? 'منهجية واضحة' : 'clear method' },
+        ]}
+        primaryAction={{ label: content.heroCta, to: localizePath('/contact') }}
+        profileId="about"
+        secondaryAction={{ label: isArabic ? 'استكشف الخدمات' : 'Explore services', to: localizePath('/services') }}
+        title={`${content.heroTitle1} ${content.heroTitle2}`}
+      />
+
       <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <div className="grid gap-10 md:gap-16 lg:grid-cols-[1fr_1.2fr] items-center pt-6 pb-14 md:pt-10 md:pb-24">
-          <div className="space-y-8 relative z-10">
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-cyan-400/20 bg-cyan-400/10 text-cyan-300 font-medium tracking-wide shadow-[0_0_20px_rgba(45,212,191,0.2)]">
-              <Sparkles className="h-5 w-5" />
-              {content.heroKicker}
-            </motion.div>
+        <div className="hidden">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.16),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.12),transparent_38%)]" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[44%] md:block">
+            <img
+              src={illustrationAssets.cloudSync.src}
+              alt={illustrationAssets.cloudSync.alt}
+              className="h-full w-full object-cover object-center opacity-[0.14] saturate-[0.9]"
+            />
+          </div>
+          <div className="pointer-events-none absolute inset-0 md:hidden">
+            <img
+              src={illustrationAssets.cloudSync.src}
+              alt={illustrationAssets.cloudSync.alt}
+              className="h-full w-full object-cover object-center opacity-[0.06]"
+            />
+          </div>
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-full bg-gradient-to-b from-slate-950/14 via-slate-950/6 to-slate-950/34 md:w-[56%] md:bg-gradient-to-r md:from-slate-950/80 md:via-slate-950/18 md:to-transparent" />
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.8 }} className="font-display text-4xl sm:text-5xl md:text-[5.5rem] font-bold leading-[1.3] md:leading-[1.2] text-white tracking-tight drop-shadow-2xl mb-4">
-              {content.heroTitle1} <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-violet-300 mix-blend-screen">
-                {content.heroTitle2}
-              </span>
-            </motion.h1>
+          <div className="relative z-10 grid items-center gap-6 pt-3 pb-5 md:gap-16 md:pt-10 md:pb-24 lg:grid-cols-[1fr_1.2fr]">
+            <div className="relative z-10 max-w-[34rem] space-y-4 md:max-w-none md:space-y-8">
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="inline-flex w-fit items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs font-medium tracking-wide text-cyan-300 shadow-[0_0_20px_rgba(45,212,191,0.2)] md:px-6 md:py-3 md:text-sm">
+                <Sparkles className="h-5 w-5" />
+                {content.heroKicker}
+              </motion.div>
 
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className={heroAccentClass}>
-              {content.heroBody}
-            </motion.p>
+              <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.8 }} className="mb-2 max-w-[12ch] font-display text-[2.15rem] font-bold leading-[1.02] tracking-tight text-white drop-shadow-2xl sm:text-5xl md:mb-4 md:max-w-none md:text-[5.5rem] md:leading-[1.2]">
+                {content.heroTitle1} <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-violet-300 mix-blend-screen">
+                  {content.heroTitle2}
+                </span>
+              </motion.h1>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-              <Link to="/contact" className="btn-primary group text-lg px-8 py-4 shadow-[0_20px_50px_rgba(45,212,191,0.3)] hover:shadow-[0_20px_60px_rgba(45,212,191,0.5)]">
-                {content.heroCta}
-                <ArrowUpLeft className="h-5 w-5 group-hover:scale-125 transition-transform" />
-              </Link>
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className={heroAccentClass}>
+                {content.heroBody}
+              </motion.p>
+
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+              <Link to={localizePath('/contact')} className="btn-primary group w-full justify-center rounded-[1.2rem] px-5 py-4 text-[0.98rem] shadow-[0_20px_50px_rgba(45,212,191,0.3)] hover:shadow-[0_20px_60px_rgba(45,212,191,0.5)] sm:w-auto md:px-8 md:py-4 md:text-lg">
+                  {content.heroCta}
+                  <ArrowUpLeft className="h-5 w-5 group-hover:scale-125 transition-transform" />
+                </Link>
+              </motion.div>
+            </div>
+
+            <motion.div className="group relative mx-auto mt-1 w-full max-w-[560px] perspective-none md:mt-0 md:max-w-none md:perspective-[2000px]">
+              <motion.div
+                animate={{ rotateY: [-2, 2, -2], rotateX: [1, -1, 1] }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative h-[360px] w-full transform-style-3d shadow-2xl sm:h-[420px] md:h-[650px]"
+              >
+                <div className="mobile-ornament absolute inset-0 rounded-[4rem] bg-gradient-to-tr from-cyan-500 to-violet-500 opacity-20 blur-3xl transition-opacity duration-1000 group-hover:opacity-40" />
+                <div className="absolute inset-0 overflow-hidden rounded-[2.1rem] border-[2px] border-white/20 glass-card md:rounded-[4rem]">
+                  <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_top_left,rgba(45,212,191,0.16),transparent_36%),linear-gradient(135deg,rgba(6,9,15,0.18),rgba(15,23,42,0.72))]" />
+                  <img
+                    src="/images/Gemini_Generated_Image_96cd0396cd0396cd.png"
+                    className="absolute inset-x-3 top-5 z-10 h-[60%] w-[calc(100%-1.5rem)] rounded-[1.6rem] object-cover shadow-[0_30px_80px_rgba(0,0,0,0.46)] transition-transform duration-1000 group-hover:scale-[1.025] sm:inset-x-5 sm:top-6 sm:h-[61%] sm:w-[calc(100%-2.5rem)] md:inset-x-8 md:top-9 md:h-[56%] md:w-[calc(100%-4rem)] md:rounded-[2.4rem]"
+                    alt=""
+                  />
+                  <img
+                    src={enrichmentMediaById['about-story-notes'].src}
+                    className="absolute bottom-7 right-5 z-20 h-[34%] w-[58%] rounded-[1.35rem] border border-white/20 object-cover shadow-[0_28px_70px_rgba(0,0,0,0.55)] transition-transform duration-1000 group-hover:-translate-y-1 group-hover:scale-[1.025] sm:bottom-8 sm:right-7 sm:h-[34%] sm:w-[54%] md:bottom-12 md:right-10 md:h-[33%] md:w-[52%] md:rounded-[2rem]"
+                    alt=""
+                  />
+                  <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-t from-[#06090f]/42 via-transparent to-transparent" />
+                </div>
+                <div className="absolute inset-x-3 top-3 z-10 flex md:hidden">
+                  <span className="pill border-cyan-400/20 bg-[#07111d]/75 px-3 py-1.5 text-[10px] font-semibold text-cyan-200 shadow-[0_14px_30px_rgba(0,0,0,0.28)]">
+                    {content.precisionTitle}
+                  </span>
+                </div>
+              </motion.div>
+
+              <div className="glass-card absolute inset-x-3 bottom-3 z-20 rounded-[1.35rem] border border-white/15 bg-[#06090f]/72 p-3.5 shadow-[0_30px_60px_rgba(0,0,0,0.65)] backdrop-blur-3xl sm:p-5 md:inset-x-auto md:-bottom-10 md:-left-10 md:mt-0 md:w-80 md:translate-z-[100px] md:rounded-[2.5rem] md:border-white/20 md:bg-[rgba(10,18,32,0.8)] md:p-8">
+                <div className="mb-2 flex items-center gap-2.5 md:mb-4 md:gap-4">
+                  <div className="rounded-xl bg-cyan-400/20 p-2 md:p-3">
+                    <Flame className="w-5 h-5 text-cyan-400 md:h-6 md:w-6" />
+                  </div>
+                  <p className="text-[0.92rem] font-bold text-white sm:text-base md:text-lg">{content.precisionTitle}</p>
+                </div>
+                <p className="max-w-[20rem] text-[11px] leading-5 text-slate-300 md:text-sm md:leading-relaxed">{content.precisionBody}</p>
+              </div>
             </motion.div>
           </div>
-
-          <motion.div className="relative h-[260px] sm:h-[350px] md:h-[650px] w-full group perspective-none md:perspective-[2000px]">
-            <motion.div animate={{ rotateY: [-2, 2, -2], rotateX: [1, -1, 1] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }} className="w-full h-full relative transform-style-3d shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-violet-500 rounded-[4rem] blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000" />
-              <div className="absolute inset-0 rounded-[4rem] overflow-hidden border-[2px] border-white/20 glass-card">
-                <img src="/images/notaq_hero_branding.png" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[2s]" alt="Notaq Branding" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#06090f] via-transparent to-black/30 mix-blend-multiply" />
-              </div>
-
-              <div className="absolute -bottom-6 -left-4 md:-bottom-10 md:-left-10 p-6 md:p-8 glass-card rounded-3xl md:rounded-[2.5rem] border border-white/20 backdrop-blur-3xl shadow-[0_40px_80px_rgba(0,0,0,0.8)] z-20 w-[85%] md:w-80 md:translate-z-[100px]">
-                <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
-                  <div className="p-2 md:p-3 bg-cyan-400/20 rounded-xl">
-                    <Flame className="w-5 h-5 md:w-6 md:h-6 text-cyan-400" />
-                  </div>
-                  <p className="text-white font-bold text-base md:text-lg">{content.precisionTitle}</p>
-                </div>
-                <p className="text-slate-300 text-xs md:text-sm leading-relaxed">{content.precisionBody}</p>
-              </div>
-            </motion.div>
-          </motion.div>
         </div>
 
-        <div className="py-24 relative">
-          <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="bg-white text-[#06090f] rounded-[3rem] p-10 md:p-14 relative overflow-hidden group">
+        <div className="relative py-10 md:py-24">
+          <div className="mx-auto grid max-w-3xl grid-cols-1 gap-3 md:max-w-6xl md:grid-cols-2 md:gap-6">
+            <motion.div
+              initial={isMobile ? false : { opacity: 0, x: -40 }}
+              {...(!isMobile ? { whileInView: { opacity: 1, x: 0 }, viewport: { once: true } } : {})}
+              className="relative overflow-hidden rounded-[1.3rem] bg-white p-4 text-[#06090f] group md:rounded-[3rem] md:p-14"
+            >
               <div className="absolute inset-0 opacity-[0.1] mix-blend-multiply pointer-events-none">
-                <img src="/images/Gemini_Generated_Image_nfqqnnfqqnnfqqnn.png" className="w-full h-full object-cover grayscale" alt="Mission Context" />
+                <img src="/images/notaq_hero_branding.png" className="w-full h-full object-cover grayscale" alt="Mission Context" />
               </div>
-              <div className="absolute -right-10 -top-10 w-48 h-48 bg-cyan-400/20 rounded-full blur-3xl" />
-              <p className="text-xs font-mono uppercase tracking-widest text-slate-500 mb-6 relative z-10">Our Mission</p>
-              <h3 className="font-display text-4xl font-black text-[#06090f] mb-6 leading-tight relative z-10">{content.mission}</h3>
-              <p className="text-slate-700 text-lg leading-9 relative z-10">{content.missionBody}</p>
-              <div className="mt-10 pt-8 border-t border-slate-200 flex items-center gap-4 relative z-10">
-                <div className="p-3 bg-cyan-400 rounded-2xl text-white shadow-lg shadow-cyan-400/30">
-                  <Target className="w-7 h-7" />
+              <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-cyan-400/20 blur-3xl md:h-48 md:w-48" />
+              <p className="relative z-10 mb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-slate-500 md:mb-6 md:text-xs md:tracking-widest">Our Mission</p>
+              <h3 className="relative z-10 mb-2 font-display text-[1.15rem] font-black leading-tight text-[#06090f] md:mb-6 md:text-4xl">{content.mission}</h3>
+              <p className="relative z-10 text-sm leading-6 text-slate-700 md:text-lg md:leading-9">{content.missionBody}</p>
+              <div className="relative z-10 mt-4 flex items-start gap-2 border-t border-slate-200 pt-3 md:mt-10 md:gap-4 md:pt-8">
+                <div className="rounded-xl bg-cyan-400 p-2.5 text-white shadow-lg shadow-cyan-400/30 md:rounded-2xl md:p-3">
+                  <Target className="h-4 w-4 md:h-7 md:w-7" />
                 </div>
-                <p className="text-slate-600 text-sm font-medium">{content.missionNote}</p>
+                <p className="text-[11px] font-medium leading-5 text-slate-600 md:text-sm md:leading-6">{content.missionNote}</p>
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-cyan-950/80 to-violet-950/80 rounded-[3rem] p-10 md:p-14 border border-white/10 relative overflow-hidden group glass-card">
+            <motion.div
+              initial={isMobile ? false : { opacity: 0, x: 40 }}
+              {...(!isMobile ? { whileInView: { opacity: 1, x: 0 }, viewport: { once: true } } : {})}
+              transition={{ delay: 0.1 }}
+              className="glass-card relative overflow-hidden rounded-[1.3rem] border border-white/10 bg-gradient-to-br from-cyan-950/80 to-violet-950/80 p-4 group md:rounded-[3rem] md:p-14"
+            >
               <div className="absolute inset-0 opacity-[0.25] pointer-events-none">
-                <img src="/images/Gemini_Generated_Image_rzfhaqrzfhaqrzfh.png" className="w-full h-full object-cover mix-blend-soft-light" alt="Vision Back" />
+                <img src="/images/notaq-logo-lockup.png" className="w-full h-full object-contain p-6 mix-blend-soft-light" alt="Vision Back" />
               </div>
-              <div className="absolute -left-10 -bottom-10 w-48 h-48 bg-violet-400/20 rounded-full blur-3xl" />
-              <p className="text-xs font-mono uppercase tracking-widest text-violet-400 mb-6 relative z-10">Our Vision</p>
-              <h3 className="font-display text-4xl font-black text-white mb-6 leading-tight relative z-10">{content.vision}</h3>
-              <p className="text-slate-200 text-lg leading-9 relative z-10">{content.visionBody}</p>
-              <div className="mt-10 pt-8 border-t border-white/10 flex items-center gap-4 relative z-10">
-                <div className="p-3 bg-violet-600 rounded-2xl text-white shadow-lg shadow-violet-600/30">
-                  <Globe className="w-7 h-7" />
+              <div className="absolute -left-8 -bottom-8 h-28 w-28 rounded-full bg-violet-400/20 blur-3xl md:h-48 md:w-48" />
+              <p className="relative z-10 mb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-violet-400 md:mb-6 md:text-xs md:tracking-widest">Our Vision</p>
+              <h3 className="relative z-10 mb-2 font-display text-[1.15rem] font-black leading-tight text-white md:mb-6 md:text-4xl">{content.vision}</h3>
+              <p className="relative z-10 text-sm leading-6 text-slate-200 md:text-lg md:leading-9">{content.visionBody}</p>
+              <div className="relative z-10 mt-4 flex items-start gap-2 border-t border-white/10 pt-3 md:mt-10 md:gap-4 md:pt-8">
+                <div className="rounded-xl bg-violet-600 p-2.5 text-white shadow-lg shadow-violet-600/30 md:rounded-2xl md:p-3">
+                  <Globe className="h-4 w-4 md:h-7 md:w-7" />
                 </div>
-                <p className="text-slate-400 text-sm font-medium">{content.visionNote}</p>
+                <p className="text-[11px] font-medium leading-5 text-slate-400 md:text-sm md:leading-6">{content.visionNote}</p>
               </div>
             </motion.div>
           </div>
 
-          <div className="mt-20 max-w-6xl mx-auto">
-            <h3 className="font-display text-3xl font-bold text-white mb-10 text-center">{content.motivationsTitle}</h3>
-            <div className="grid gap-4 md:grid-cols-4">
-              {motivations.map((item, index) => (
-                <motion.div key={item.en} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} className="glass-card rounded-3xl p-6 border border-white/8 text-center group hover:border-cyan-400/30 transition-all flex flex-col items-center">
-                  <div className="p-3 bg-white/5 rounded-2xl mb-4 group-hover:bg-cyan-400/10 group-hover:text-cyan-400 transition-colors">
-                    <item.icon className="w-6 h-6 text-slate-400 group-hover:text-cyan-400 transition-colors" />
-                  </div>
-                  <p className="font-bold text-white text-sm mb-2 group-hover:text-cyan-300 transition-colors">{isArabic ? item.ar : item.en}</p>
-                  <p className="text-slate-500 text-xs leading-5">{isArabic ? item.arDesc : item.enDesc}</p>
-                </motion.div>
-              ))}
+          <div className="mx-auto mt-10 max-w-6xl md:mt-20">
+            <h3 className="mb-5 text-center font-display text-xl font-bold text-white md:mb-10 md:text-3xl">{content.motivationsTitle}</h3>
+            <div className="grid gap-3 md:hidden" style={mobileMotivationsGridStyle}>
+              {motivations.map((item, index) => renderMotivationCard(item, index))}
+            </div>
+            <div className="hidden gap-4 md:grid md:grid-cols-4">
+              {motivations.map((item, index) => renderMotivationCard(item, index))}
             </div>
           </div>
 
-          <div className="mt-20 max-w-6xl mx-auto">
-            <h3 className="font-display text-3xl font-bold text-white mb-10 text-center">{content.traitsTitle}</h3>
-            <div className="grid md:grid-cols-2 gap-5">
-              {traits.map((item, index) => (
-                <motion.div key={item.tag} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="glass-card rounded-3xl md:rounded-[2rem] p-6 md:p-8 border border-white/8 group hover:border-violet-400/30 transition-all flex flex-col md:flex-row gap-4 md:gap-6">
-                  <div className="h-1 w-full md:w-1 md:h-auto shrink-0 rounded-full bg-gradient-to-r md:bg-gradient-to-b from-cyan-400 to-violet-500 md:self-stretch" />
-                  <div>
-                    <span className="text-[10px] font-mono text-violet-400 uppercase tracking-widest block mb-3">{item.tag}</span>
-                    <h4 className="font-display text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">{isArabic ? item.ar : item.en}</h4>
-                    <p className="text-slate-400 text-sm leading-7">{isArabic ? item.arDesc : item.enDesc}</p>
+          <div className="mx-auto mt-10 max-w-6xl md:mt-20">
+            <h3 className="mb-5 text-center font-display text-xl font-bold text-white md:mb-10 md:text-3xl">{content.traitsTitle}</h3>
+            <div className="grid gap-3 md:hidden">
+              {traits.map((item, index) => renderTraitCard(item, index))}
+            </div>
+            <div className="hidden gap-4 md:grid md:grid-cols-2 md:gap-5">
+              {traits.map((item, index) => renderTraitCard(item, index))}
+            </div>
+          </div>
+        </div>
+
+        <div className="relative py-10 md:py-20">
+          <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div className="rounded-[1.7rem] border border-white/10 bg-gradient-to-br from-cyan-400/8 via-white/[0.03] to-amber-400/8 p-5 md:rounded-[2.4rem] md:p-8">
+              <p className="section-kicker mb-5">{isArabic ? 'نضج مؤسسي' : 'Operational Maturity'}</p>
+              <h2 className="font-display text-2xl font-bold text-white md:text-4xl">
+                {isArabic ? 'كيف نحافظ على الإحساس الكبير بدون ادعاء؟' : 'How do we feel bigger without making empty claims?'}
+              </h2>
+              <p className="mt-4 text-sm leading-8 text-slate-400 md:text-base">
+                {isArabic
+                  ? 'نعرض طريقة التفكير، منهجية التسليم، ودلائل الثقة بشكل واضح. هذا يجعل الشركة تبدو منظمة لأن التجربة نفسها منظمة.'
+                  : 'You see the thinking, delivery method, and trust proof clearly. The company feels organized because the experience itself is organized.'}
+              </p>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                {trustSignals.map((signal) => (
+                  <div key={signal.label.en} className="rounded-[1.15rem] border border-white/8 bg-[#06090f]/45 p-4">
+                    <p className="font-display text-lg font-bold text-cyan-200">{signal.value}</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-400">{isArabic ? signal.label.ar : signal.label.en}</p>
                   </div>
-                </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-3">
+              {corporatePrinciples.map((principle, index) => (
+                <motion.article
+                  key={principle.title.en}
+                  initial={isMobile ? false : { opacity: 0, y: 18 }}
+                  {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
+                  transition={{ delay: index * 0.08 }}
+                  className="rounded-[1.45rem] border border-white/10 bg-white/[0.035] p-5 md:rounded-[2rem] md:p-7"
+                >
+                  <div className="flex items-start gap-4">
+                    <span className="font-display text-3xl font-black text-white/10">0{index + 1}</span>
+                    <div>
+                      <h3 className="font-display text-xl font-bold text-white md:text-2xl">
+                        {isArabic ? principle.title.ar : principle.title.en}
+                      </h3>
+                      <p className="mt-2 text-sm leading-7 text-slate-400">
+                        {isArabic ? principle.description.ar : principle.description.en}
+                      </p>
+                    </div>
+                  </div>
+                </motion.article>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="py-24 md:py-32 px-4 relative flex justify-center text-center">
-          <Quote className="absolute top-10 text-white/5 w-40 h-40 md:w-64 md:h-64 -z-10 rotate-12 -ml-20 md:-ml-32" />
-          <motion.h2 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-2xl md:text-[3.5rem] leading-snug md:leading-[1.4] font-display font-medium text-white max-w-5xl mix-blend-screen drop-shadow-xl">
+        <div className="relative flex justify-center px-2 py-8 text-center md:px-4 md:py-32">
+          <Quote className="absolute top-4 -z-10 -ml-16 h-24 w-24 rotate-12 text-white/5 md:top-10 md:-ml-32 md:h-64 md:w-64" />
+          <motion.h2
+            initial={isMobile ? false : { opacity: 0, y: 50 }}
+            {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
+            className="max-w-4xl font-display text-base font-medium leading-8 text-white mix-blend-screen drop-shadow-xl sm:text-2xl md:text-[3.5rem] md:leading-[1.4]"
+          >
             {content.quote}
           </motion.h2>
         </div>
 
-        <div className="py-24 relative">
-          <div className="text-center mb-24 space-y-4">
+        <div className="relative py-10 md:py-24">
+          <div className="mb-7 space-y-2 text-center md:mb-24 md:space-y-4">
             <p className="section-kicker mx-auto">{content.workflowKicker}</p>
-            <h2 className="text-5xl font-bold font-display text-white">{content.workflowTitle}</h2>
+            <h2 className="font-display text-2xl font-bold text-white md:text-5xl">{content.workflowTitle}</h2>
           </div>
 
-          <div className="relative max-w-4xl mx-auto">
-            <div className={railClass}>
-              <motion.div style={{ scaleY, originY: 0 }} className="w-full h-full bg-gradient-to-b from-cyan-400 via-violet-500 to-cyan-400 shadow-[0_0_20px_rgba(45,212,191,0.5)]" />
-            </div>
+          <div className="mx-auto space-y-3 md:hidden">
+            {timelineSteps.map((step, index) => renderTimelineMobileCard(step, index))}
+          </div>
+          <div className="relative mx-auto hidden max-w-4xl md:block">
+                <div className={railClass}>
+                  <motion.div style={{ scaleY, originY: 0 }} className="w-full h-full bg-gradient-to-b from-cyan-400 via-violet-500 to-cyan-400 shadow-[0_0_20px_rgba(45,212,191,0.5)]" />
+                </div>
 
-            <div className="space-y-32">
-              {timelineSteps.map((step, idx) => (
-                <div key={step.en} className={`relative flex flex-col md:flex-row items-center gap-12 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                  <div className={nodeClass} />
-                  <motion.div initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-100px' }} className={textBlockClass}>
-                    <span className="text-cyan-400 font-bold tracking-widest text-base md:text-lg mb-2 block">PHASE 0{idx + 1}</span>
-                    <h3 className="text-2xl md:text-4xl font-display font-bold text-white mb-4">{isArabic ? step.ar : step.en}</h3>
-                    <p className="text-lg md:text-xl text-slate-400 md:leading-9">{isArabic ? step.arDesc : step.enDesc}</p>
-                  </motion.div>
-                  <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-100px' }} className={mediaBlockClass}>
-                    <div className="rounded-[2.5rem] overflow-hidden border-[2px] border-white/10 glass-card shadow-2xl relative h-[300px] group">
-                      {step.mediaMode === 'contain' ? (
-                        <>
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#07111d] via-[#05070d] to-[#0b1220]" />
-                          <motion.div
-                            animate={{ opacity: [0.35, 0.6, 0.35], scale: [0.96, 1.02, 0.96] }}
-                            transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
-                            className="absolute inset-5 rounded-[2rem] bg-gradient-to-br from-cyan-400/12 via-violet-500/12 to-transparent shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]"
-                          />
-                          <motion.div
-                            animate={{ opacity: [0.18, 0.35, 0.18], scale: [0.92, 1.08, 0.92] }}
-                            transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut' }}
-                            className="absolute inset-10 rounded-full bg-cyan-400/20 blur-3xl"
-                          />
-                        </>
-                      ) : null}
-                      {step.mediaMode === 'contain' ? (
-                        <div className="absolute inset-0 z-10 p-5 sm:p-6">
-                          <div className="relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#0b1220]/92 shadow-[0_30px_70px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(45,212,191,0.12),transparent_38%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.08),transparent_30%)]" />
-                            <div className="absolute inset-x-4 top-4 flex items-center justify-between rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-3 sm:inset-x-5 sm:top-5">
-                              <div className="flex gap-1.5">
-                                <span className="h-2.5 w-2.5 rounded-full bg-cyan-300/80" />
-                                <span className="h-2.5 w-2.5 rounded-full bg-violet-300/70" />
-                                <span className="h-2.5 w-2.5 rounded-full bg-white/30" />
-                              </div>
-                              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-200/90">
-                                UI Motion
-                              </span>
-                            </div>
-                            <div className="absolute inset-x-4 bottom-4 top-[4.75rem] overflow-hidden rounded-[1.6rem] border border-white/8 bg-[#07111d]/72 sm:inset-x-5 sm:bottom-5 sm:top-[5.25rem]">
-                              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_28%),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[length:auto,34px_34px,34px_34px] opacity-60" />
-                              <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(45,212,191,0.12),transparent_30%),radial-gradient(circle_at_84%_72%,rgba(139,92,246,0.1),transparent_28%)]" />
-                              <div className="relative flex h-full flex-col p-4 sm:p-5">
-                                <div className="mb-4 flex items-center justify-between rounded-[1.15rem] border border-white/8 bg-black/20 px-4 py-3">
-                                  <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-cyan-200/85 sm:text-[10px]">
-                                    Designer Flow
-                                  </span>
-                                  <span className="rounded-full border border-cyan-300/15 bg-cyan-300/8 px-3 py-1 text-[7px] font-semibold uppercase tracking-[0.22em] text-cyan-200/85 sm:text-[8px]">
-                                    Live
-                                  </span>
-                                </div>
-                                <div className="relative min-h-0 flex-1 overflow-hidden rounded-[1.45rem] border border-white/8 bg-black/18">
-                                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(45,212,191,0.14),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_36%)]" />
-                                  <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-8">
-                                    {step.imgPoster ? (
-                                      <img
-                                        src={step.imgPoster}
-                                        alt=""
-                                        aria-hidden="true"
-                                        className="absolute inset-0 h-full w-full object-contain p-6 opacity-30 sm:p-8"
-                                      />
-                                    ) : null}
-                                    <motion.img
-                                      src={step.img}
-                                      alt={step.imgAlt ?? step.en}
-                                      animate={{ y: [0, -4, 0], scale: [1, 1.015, 1] }}
-                                      transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
-                                      className="relative z-10 h-full w-full object-contain p-2 drop-shadow-[0_22px_40px_rgba(45,212,191,0.24)] sm:p-4"
-                                    />
+                <div className="space-y-8 md:space-y-32">
+                  {timelineSteps.map((step, idx) => (
+                    <div key={step.en} className={`relative flex flex-col gap-4 md:flex-row md:items-center md:gap-12 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                      <div className={nodeClass} />
+                      <motion.div initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-100px' }} className={textBlockClass}>
+                        <span className="mb-2 block text-sm font-bold tracking-widest text-cyan-400 md:text-lg">PHASE 0{idx + 1}</span>
+                        <h3 className="mb-3 font-display text-xl font-bold text-white md:mb-4 md:text-4xl">{isArabic ? step.ar : step.en}</h3>
+                        <p className="text-sm leading-7 text-slate-400 md:text-xl md:leading-9">{isArabic ? step.arDesc : step.enDesc}</p>
+                      </motion.div>
+                      <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-100px' }} className={mediaBlockClass}>
+                        <div className="relative h-[240px] overflow-hidden rounded-[1.8rem] border-[2px] border-white/10 glass-card shadow-2xl group md:h-[300px] md:rounded-[2.5rem]">
+                          {step.mediaMode === 'contain' ? (
+                            <>
+                              <div className="absolute inset-0 bg-gradient-to-br from-[#07111d] via-[#05070d] to-[#0b1220]" />
+                              <motion.div
+                                animate={{ opacity: [0.35, 0.6, 0.35], scale: [0.96, 1.02, 0.96] }}
+                                transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+                                className="absolute inset-5 rounded-[2rem] bg-gradient-to-br from-cyan-400/12 via-violet-500/12 to-transparent shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]"
+                              />
+                              <motion.div
+                                animate={{ opacity: [0.18, 0.35, 0.18], scale: [0.92, 1.08, 0.92] }}
+                                transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut' }}
+                                className="absolute inset-10 rounded-full bg-cyan-400/20 blur-3xl"
+                              />
+                            </>
+                          ) : null}
+                          {step.mediaMode === 'contain' ? (
+                            <div className="absolute inset-0 z-10 p-5 sm:p-6">
+                              <div className="relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#0b1220]/92 shadow-[0_30px_70px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
+                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(45,212,191,0.12),transparent_38%),radial-gradient(circle_at_82%_78%,rgba(139,92,246,0.08),transparent_30%)]" />
+                                <div className="absolute inset-x-4 top-4 flex items-center justify-between rounded-[1.1rem] border border-white/8 bg-black/20 px-4 py-3 sm:inset-x-5 sm:top-5">
+                                  <div className="flex gap-1.5">
+                                    <span className="h-2.5 w-2.5 rounded-full bg-cyan-300/80" />
+                                    <span className="h-2.5 w-2.5 rounded-full bg-violet-300/70" />
+                                    <span className="h-2.5 w-2.5 rounded-full bg-white/30" />
                                   </div>
-                                  <div className="absolute inset-x-8 bottom-4 h-10 rounded-full bg-cyan-400/15 blur-2xl" />
+                                  <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-200/90">
+                                    UI Motion
+                                  </span>
+                                </div>
+                                <div className="absolute inset-x-4 bottom-4 top-[4.75rem] overflow-hidden rounded-[1.6rem] border border-white/8 bg-[#07111d]/72 sm:inset-x-5 sm:bottom-5 sm:top-[5.25rem]">
+                                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_28%),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[length:auto,34px_34px,34px_34px] opacity-60" />
+                                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(45,212,191,0.12),transparent_30%),radial-gradient(circle_at_84%_72%,rgba(139,92,246,0.1),transparent_28%)]" />
+                                  <div className="relative flex h-full flex-col p-4 sm:p-5">
+                                    <div className="mb-4 flex items-center justify-between rounded-[1.15rem] border border-white/8 bg-black/20 px-4 py-3">
+                                      <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-cyan-200/85 sm:text-[10px]">
+                                        Designer Flow
+                                      </span>
+                                      <span className="rounded-full border border-cyan-300/15 bg-cyan-300/8 px-3 py-1 text-[7px] font-semibold uppercase tracking-[0.22em] text-cyan-200/85 sm:text-[8px]">
+                                        Live
+                                      </span>
+                                    </div>
+                                    <div className="relative min-h-0 flex-1 overflow-hidden rounded-[1.45rem] border border-white/8 bg-black/18">
+                                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_24%_18%,rgba(45,212,191,0.14),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_36%)]" />
+                                      <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-8">
+                                        {step.imgPoster ? (
+                                          <img
+                                            src={step.imgPoster}
+                                            alt=""
+                                            aria-hidden="true"
+                                            className="absolute inset-0 h-full w-full object-contain p-6 opacity-30 sm:p-8"
+                                          />
+                                        ) : null}
+                                        <motion.img
+                                          src={step.img}
+                                          alt={step.imgAlt ?? step.en}
+                                          animate={{ y: [0, -4, 0], scale: [1, 1.015, 1] }}
+                                          transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+                                          className="relative z-10 h-full w-full object-contain p-2 drop-shadow-[0_22px_40px_rgba(45,212,191,0.24)] sm:p-4"
+                                        />
+                                      </div>
+                                      <div className="absolute inset-x-8 bottom-4 h-10 rounded-full bg-cyan-400/15 blur-2xl" />
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          ) : (
+                            <motion.img
+                              src={step.img}
+                              alt={step.imgAlt ?? step.en}
+                                  className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            />
+                          )}
+                          <div
+                            className={`absolute inset-0 z-10 transition-colors duration-500 ${
+                              step.mediaMode === 'contain'
+                                ? 'bg-gradient-to-t from-[#06090f]/55 via-transparent to-transparent group-hover:from-[#06090f]/40'
+                                : 'bg-transparent mix-blend-overlay group-hover:bg-cyan-900/40'
+                            }`}
+                          />
                         </div>
-                      ) : (
-                        <motion.img
-                          src={step.img}
-                          alt={step.imgAlt ?? step.en}
-                          className="h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-110"
-                        />
-                      )}
-                      <div
-                        className={`absolute inset-0 transition-colors duration-500 z-10 ${
-                          step.mediaMode === 'contain'
-                            ? 'bg-gradient-to-t from-[#06090f]/55 via-transparent to-transparent group-hover:from-[#06090f]/40'
-                            : 'bg-transparent group-hover:bg-cyan-900/40 mix-blend-overlay'
-                        }`}
-                      />
+                      </motion.div>
                     </div>
-                  </motion.div>
+                  ))}
                 </div>
-              ))}
-            </div>
           </div>
         </div>
 
-        <div className="py-32 relative overflow-hidden border-t border-white/5 bg-[#050505]">
+        <div className="relative overflow-hidden border-t border-white/5 bg-[#050505] py-10 md:py-24">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.05)_0%,transparent_70%)] pointer-events-none" />
-          <div className="section-shell mx-auto px-6 relative z-10">
-            <div className="text-center mb-20 space-y-4">
+          <div className="section-shell relative z-10 mx-auto">
+            <div className="mx-auto mb-5 max-w-3xl space-y-2 text-center md:mb-8 md:space-y-4">
               <p className="section-kicker mx-auto">{content.cultureKicker}</p>
-              <h2 className="text-4xl md:text-6xl font-bold text-white font-display">{content.cultureTitle}</h2>
-              <p className="text-slate-400 max-w-2xl mx-auto text-lg">{content.cultureBody}</p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {cultureImages.map((fileName, index) => (
-                <motion.div key={fileName} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -10 }} className="group relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-white/10 glass-card">
-                  <img src={`/images/${encodeURIComponent(fileName)}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Notaq Culture" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8">
-                    <p className="text-cyan-400 font-bold tracking-widest text-sm mb-2">NOTAQ VIBES</p>
-                    <h4 className="text-white font-bold text-xl">{content.cultureHover}</h4>
-                  </div>
-                </motion.div>
-              ))}
+              <h2 className="font-display text-2xl font-bold text-white md:text-6xl">{content.cultureTitle}</h2>
+              <p className="mx-auto max-w-2xl text-sm leading-6 text-slate-400 md:text-lg md:leading-8">{content.cultureBody}</p>
             </div>
           </div>
+          <div className="section-shell relative z-10 mx-auto pb-8 md:pb-16">
+            <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-[1.08fr_0.92fr] md:items-stretch md:gap-5">
+              <motion.figure
+                initial={{ opacity: 0, y: 22 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                viewport={{ once: true, amount: 0.2 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="group relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.035] p-2 shadow-[0_28px_90px_-55px_rgba(45,212,191,0.9)] md:rounded-[2rem] md:p-3"
+              >
+                <div className="absolute -inset-20 bg-[radial-gradient(circle_at_25%_20%,rgba(45,212,191,0.16),transparent_42%),radial-gradient(circle_at_80%_75%,rgba(96,165,250,0.12),transparent_36%)] opacity-80" />
+                <img
+                  alt={editorialImages['studio-structure'].alt[lang]}
+                  className="relative h-[15rem] w-full rounded-[1.1rem] object-cover object-center transition-transform duration-700 group-hover:scale-[1.025] sm:h-[20rem] md:h-[29rem] md:rounded-[1.5rem]"
+                  loading="lazy"
+                  src={editorialImages['studio-structure'].src}
+                />
+              </motion.figure>
+
+              <motion.figure
+                initial={{ opacity: 0, y: 22 }}
+                transition={{ delay: 0.08, duration: 0.5, ease: 'easeOut' }}
+                viewport={{ once: true, amount: 0.2 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="group relative overflow-hidden rounded-[1.6rem] border border-cyan-200/15 bg-[#07141b] p-2 shadow-[0_28px_90px_-58px_rgba(0,0,0,0.95)] md:mt-12 md:rounded-[2rem] md:p-3"
+              >
+                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(20,184,166,0.16),transparent_42%,rgba(59,130,246,0.1))]" />
+                <img
+                  alt={editorialImages['office-reception'].alt[lang]}
+                  className="relative h-[14rem] w-full rounded-[1.1rem] object-cover object-center transition-transform duration-700 group-hover:scale-[1.025] sm:h-[19rem] md:h-[24rem] md:rounded-[1.5rem]"
+                  loading="lazy"
+                  src={editorialImages['office-reception'].src}
+                />
+              </motion.figure>
+            </div>
+          </div>
+          <PageImageShowcaseSection showcase={pageImageShowcases.about} />
         </div>
 
-        <div className="py-32 relative">
-          <div className="text-center mb-20">
+        <div className="relative py-10 md:py-32">
+          <div className="mb-7 text-center md:mb-20">
             <p className="section-kicker mx-auto mb-4">{content.valuesKicker}</p>
-            <h2 className="font-display text-5xl font-bold text-white">{content.valuesTitle}</h2>
+            <h2 className="font-display text-2xl font-bold text-white md:text-5xl">{content.valuesTitle}</h2>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+          <div className="mx-auto grid max-w-6xl gap-3 md:hidden" style={mobileValuesGridStyle}>
             {values.map((item, index) => (
-              <motion.div key={item.en} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -6 }} className="glass-card rounded-[2.5rem] p-8 border border-white/8 group hover:border-cyan-400/30 transition-all duration-500 relative overflow-hidden">
+              <motion.div
+                key={`${item.en}-mobile`}
+                initial={false}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -6 }}
+                className="glass-card relative overflow-hidden rounded-[1.2rem] border border-white/8 p-4 group transition-all duration-500 hover:border-cyan-400/30"
+              >
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:bg-gradient-to-br group-hover:from-cyan-400/20 group-hover:to-violet-400/20 transition-all">
-                  <item.icon className="w-7 h-7 text-slate-400 group-hover:text-cyan-300 transition-colors" />
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[1rem] bg-white/5 transition-all group-hover:bg-gradient-to-br group-hover:from-cyan-400/20 group-hover:to-violet-400/20">
+                  <item.icon className="h-5 w-5 text-slate-400 transition-colors group-hover:text-cyan-300" />
                 </div>
-                <div className="flex items-baseline gap-3 mb-4">
-                  <h3 className="font-display text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">{isArabic ? item.ar : item.en}</h3>
-                  <span className="text-slate-600 text-sm font-mono">{item.en}</span>
+                <div className="mb-2 flex items-baseline gap-2">
+                  <h3 className="font-display text-[1rem] font-bold text-white transition-colors group-hover:text-cyan-300">{isArabic ? item.ar : item.en}</h3>
                 </div>
-                <p className="text-slate-400 leading-8 text-sm">{isArabic ? item.arDesc : item.enDesc}</p>
+                <p className="text-[12px] leading-6 text-slate-400">{isArabic ? item.arDesc : item.enDesc}</p>
+              </motion.div>
+            ))}
+          </div>
+          <div className="hidden mx-auto max-w-6xl gap-6 md:grid md:grid-cols-2 lg:grid-cols-3">
+            {values.map((item, index) => (
+                <motion.div
+                  key={item.en}
+                  initial={isMobile ? false : { opacity: 0, y: 30 }}
+                  {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -6 }}
+                  className="glass-card relative overflow-hidden rounded-[2.5rem] border border-white/8 p-8 group transition-all duration-500 hover:border-cyan-400/30"
+                >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 transition-all group-hover:bg-gradient-to-br group-hover:from-cyan-400/20 group-hover:to-violet-400/20">
+                    <item.icon className="h-7 w-7 text-slate-400 transition-colors group-hover:text-cyan-300" />
+                  </div>
+                  <div className="mb-4 flex items-baseline gap-3">
+                    <h3 className="font-display text-2xl font-bold text-white transition-colors group-hover:text-cyan-300">{isArabic ? item.ar : item.en}</h3>
+                    <span className="text-sm font-mono text-slate-600">{item.en}</span>
+                  </div>
+                <p className="text-sm leading-8 text-slate-400">{isArabic ? item.arDesc : item.enDesc}</p>
               </motion.div>
             ))}
           </div>
         </div>
 
-        <div className="py-16 border-y border-white/5 relative overflow-hidden">
+        <div className="relative overflow-hidden border-y border-white/5 py-8 md:py-16">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/10 to-violet-900/10 pointer-events-none" />
-          <h3 className="text-center text-slate-500 uppercase tracking-widest font-semibold text-sm mb-12">{content.numbersTitle}</h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 divide-x-0 md:divide-x divide-white/5">
+          <h3 className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 md:mb-12 md:text-sm md:tracking-widest">{content.numbersTitle}</h3>
+          <div className="grid grid-cols-2 gap-3 md:hidden">
+            {stats.map((item, index) => renderMobileStatCard(item, index))}
+          </div>
+          <div className="hidden grid-cols-2 divide-x-0 divide-white/5 md:grid md:grid-cols-5 md:divide-x">
             {stats.map((item, index) => (
-              <motion.div key={item.en} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="flex flex-col items-center py-8 gap-5 group">
-                <div className="p-3 bg-cyan-400/10 rounded-xl text-cyan-400 group-hover:bg-cyan-400 group-hover:text-black transition-colors duration-300">
-                  <item.icon className="w-7 h-7" />
+              <motion.div
+                key={item.en}
+                initial={isMobile ? false : { opacity: 0 }}
+                {...(!isMobile ? { whileInView: { opacity: 1 }, viewport: { once: true } } : {})}
+                transition={{ delay: index * 0.1 }}
+                className="group flex flex-col items-center gap-3 py-4 md:gap-5 md:py-8"
+              >
+                <div className="rounded-xl bg-cyan-400/10 p-2.5 text-cyan-400 transition-colors duration-300 group-hover:bg-cyan-400 group-hover:text-black md:p-3">
+                  <item.icon className="h-6 w-6 md:h-7 md:w-7" />
                 </div>
-                <p className="font-display text-4xl md:text-6xl font-black text-white group-hover:text-cyan-300 transition-colors drop-shadow-lg">{item.num}</p>
-                <p className="text-slate-500 text-sm text-center font-medium">{isArabic ? item.ar : item.en}</p>
+                <p className="font-display text-2xl font-black text-white drop-shadow-lg transition-colors group-hover:text-cyan-300 md:text-6xl">{item.num}</p>
+                <p className="text-center text-[11px] font-medium leading-5 text-slate-500 md:text-sm">{isArabic ? item.ar : item.en}</p>
               </motion.div>
             ))}
           </div>

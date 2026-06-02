@@ -11,6 +11,7 @@ import {
 import { Link, useParams } from 'react-router-dom';
 
 import BlogPostCard from '../components/BlogPostCard';
+import MobileSectionPager from '../components/MobileSectionPager';
 import {
   getBlogPostBySlug,
   getRelatedBlogPosts,
@@ -21,7 +22,7 @@ import { usePageMetadata } from '../hooks/usePageMetadata';
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
-  const { lang } = useLanguage();
+  const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
   const text = (arabic: string, english: string) => (isArabic ? arabic : english);
 
@@ -41,10 +42,10 @@ const BlogDetailPage = () => {
 
   if (!post) {
     return (
-      <section className="section-shell py-28">
-        <div className="surface-card mx-auto max-w-3xl rounded-[2.2rem] p-10 text-center">
+        <section className="section-shell py-20 md:py-28">
+          <div className="surface-card mx-auto max-w-3xl rounded-[1.8rem] p-6 text-center md:rounded-[2.2rem] md:p-10">
           <p className="section-kicker mx-auto">404</p>
-          <h1 className="mt-5 font-display text-4xl font-semibold text-white">
+            <h1 className="mt-5 font-display text-3xl font-semibold text-white md:text-4xl">
             {text('المقال غير موجود', 'Article not found')}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-400">
@@ -54,10 +55,10 @@ const BlogDetailPage = () => {
             )}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link className="btn-primary" to="/blog">
+          <Link className="btn-primary" to={localizePath('/blog')}>
               {text('العودة للمدونة', 'Back to the blog')}
             </Link>
-            <Link className="btn-secondary" to="/contact">
+          <Link className="btn-secondary" to={localizePath('/contact')}>
               {text('تواصل معنا', 'Contact us')}
             </Link>
           </div>
@@ -83,9 +84,9 @@ const BlogDetailPage = () => {
 
       <div className="section-shell">
         <div className="mx-auto max-w-7xl">
-          <div className="surface-card-strong overflow-hidden rounded-[2.8rem] border border-white/10">
+          <div className="surface-card-strong overflow-hidden rounded-[1.8rem] border border-white/10 md:rounded-[2.8rem]">
             <div className="grid lg:grid-cols-[0.62fr_0.38fr] lg:items-stretch">
-              <div className="p-8 md:p-10 lg:p-12">
+              <div className="p-5 md:p-10 lg:p-12">
                 <div className="mb-4 flex flex-wrap items-center gap-3">
                   <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-300">
                     {text(post.categoryAr, post.categoryEn)}
@@ -95,10 +96,10 @@ const BlogDetailPage = () => {
                   </span>
                 </div>
 
-                <h1 className="font-display text-4xl font-semibold leading-tight text-white md:text-6xl">
+                <h1 className="font-display text-[2rem] font-semibold leading-tight text-white md:text-6xl">
                   {text(post.titleAr, post.titleEn)}
                 </h1>
-                <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
+                <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300 md:text-lg md:leading-8">
                   {text(post.excerptAr, post.excerptEn)}
                 </p>
 
@@ -117,18 +118,18 @@ const BlogDetailPage = () => {
                   </span>
                 </div>
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Link className="btn-secondary" to="/blog">
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link className="btn-secondary" to={localizePath('/blog')}>
                     {text('العودة للمدونة', 'Back to blog')}
                   </Link>
-                  <Link className="btn-primary inline-flex items-center gap-2" to="/contact">
-                    {text('ابدأ مشروعك', 'Start your project')}
+            <Link className="btn-primary inline-flex items-center gap-2" to={localizePath('/contact')}>
+                    {text('اطلب استشارة', 'Request a consultation')}
                     <ArrowUpLeft className={`h-4 w-4 ${isArabic ? '' : '-scale-x-100'}`} />
                   </Link>
                 </div>
               </div>
 
-              <div className="relative min-h-[320px] border-t border-white/10 lg:border-l lg:border-t-0">
+              <div className="relative min-h-[240px] border-t border-white/10 lg:border-l lg:border-t-0 md:min-h-[320px]">
                 <img
                   src={post.coverImage}
                   alt={text(post.titleAr, post.titleEn)}
@@ -147,7 +148,7 @@ const BlogDetailPage = () => {
 
           <div className="mt-10 grid gap-8 lg:grid-cols-[0.68fr_0.32fr] lg:items-start">
             <div className="space-y-6">
-              <div className="surface-card rounded-[2.2rem] p-6 md:p-8">
+               <div className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-8">
                 <p className="section-kicker">{text('أهم الخلاصات', 'Key takeaways')}</p>
                 <div className="mt-6 grid gap-4">
                   {takeaways.map((item) => (
@@ -169,7 +170,7 @@ const BlogDetailPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ delay: index * 0.06 }}
-                  className="surface-card rounded-[2.2rem] p-6 md:p-8"
+                   className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-8"
                 >
                   <p className="section-kicker">{text(`القسم ${index + 1}`, `Section ${index + 1}`)}</p>
                   <h2 className="mt-5 font-display text-2xl font-semibold text-white md:text-3xl">
@@ -187,7 +188,7 @@ const BlogDetailPage = () => {
             </div>
 
             <div className="space-y-6 lg:sticky lg:top-28">
-              <div className="surface-card rounded-[2.2rem] p-6">
+              <div className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-6">
                 <p className="section-kicker">{text('ملخص سريع', 'Quick summary')}</p>
                 <div className="mt-5 space-y-4 text-sm text-slate-300">
                   <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.02] p-4">
@@ -205,7 +206,7 @@ const BlogDetailPage = () => {
                 </div>
               </div>
 
-              <div className="surface-card rounded-[2.2rem] p-6">
+              <div className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-6">
                 <p className="section-kicker">{text('وسوم المقال', 'Article tags')}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {tags.map((tag) => (
@@ -219,23 +220,23 @@ const BlogDetailPage = () => {
                 </div>
               </div>
 
-              <div className="rounded-[2.2rem] border border-white/10 bg-gradient-to-br from-cyan-500/10 via-white/[0.03] to-violet-500/10 p-6">
-                <p className="section-kicker">{text('مناسبة لمشروعك؟', 'Relevant to your project?')}</p>
+              <div className="rounded-[1.8rem] border border-white/10 bg-gradient-to-br from-cyan-500/10 via-white/[0.03] to-violet-500/10 p-5 md:rounded-[2.2rem] md:p-6">
+                <p className="section-kicker">{text('مناسبة لاحتياج شركتك؟', 'Relevant to your company need?')}</p>
                 <h3 className="mt-5 font-display text-2xl font-semibold text-white">
                   {text(
-                    'إذا كان هذا هو النوع من التحديات الذي تعمل عليه، يمكننا تطبيقه على مشروعك',
-                    'If this is the kind of challenge you are working through, we can apply it to your project',
+                    'إذا كان هذا هو النوع من التحديات الذي تواجهه شركتك، يمكن تحويله إلى مسار رقمي واضح',
+                    'If this is the kind of challenge your company is facing, it can become a clear digital path',
                   )}
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-slate-300">
                   {text(
-                    'نحوّل الفكرة هنا إلى صفحة خدمة أو موقع أو تجربة رقمية تخاطب عميلك بشكل أوضح وتدعم قرار الشراء.',
-                    'We turn ideas like this into service pages, websites, and digital experiences that speak to your customer more clearly and support the buying decision.',
+                    'حوّل الفكرة هنا إلى صفحة خدمة أو موقع أو تجربة رقمية تخاطب زائر شركتك بوضوح وتدعم قرار الشراء.',
+                    'Turn ideas like this into service pages, websites, and digital experiences that speak clearly to your visitors and support the buying decision.',
                   )}
                 </p>
                 <div className="mt-5 flex flex-col gap-3">
-                  <Link className="btn-primary justify-center" to="/contact">
-                    {text('ابدأ مناقشة المشروع', 'Start the project discussion')}
+              <Link className="btn-primary justify-center" to={localizePath('/contact')}>
+                    {text('اطلب مناقشة المشروع', 'Request a project discussion')}
                   </Link>
                   <a
                     className="btn-secondary inline-flex items-center justify-center gap-2"
@@ -257,24 +258,37 @@ const BlogDetailPage = () => {
                   {text('اقرأ أيضًا', 'Continue reading')}
                 </h2>
               </div>
-              <Link className="btn-secondary hidden md:inline-flex" to="/blog">
-                {text('كل المقالات', 'All articles')}
+          <Link className="btn-secondary hidden md:inline-flex" to={localizePath('/blog')}>
+                {text('المقالات', 'Articles')}
               </Link>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {relatedPosts.map((relatedPost, index) => (
-                <motion.div
-                  key={relatedPost.slug}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ delay: index * 0.06 }}
-                >
-                  <BlogPostCard post={relatedPost} variant="compact" />
-                </motion.div>
-              ))}
-            </div>
+            <MobileSectionPager
+              desktop={(
+                <div className="hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-3">
+                  {relatedPosts.map((relatedPost, index) => (
+                    <motion.div
+                      key={relatedPost.slug}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ delay: index * 0.06 }}
+                    >
+                      <BlogPostCard post={relatedPost} variant="compact" />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+              items={relatedPosts}
+              label="related-posts"
+              renderPage={(pageItems) => (
+                <div className="grid gap-4">
+                  {pageItems.map((relatedPost) => (
+                    <BlogPostCard key={relatedPost.slug} post={relatedPost} variant="compact" />
+                  ))}
+                </div>
+              )}
+            />
           </div>
         </div>
       </div>

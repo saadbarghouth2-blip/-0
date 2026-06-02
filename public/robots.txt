@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.xn--2gbwk.site/sitemap.xml
+Host: www.xn--2gbwk.site

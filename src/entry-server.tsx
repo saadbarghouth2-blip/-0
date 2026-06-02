@@ -10,11 +10,11 @@ export { prerenderRoutes };
 
 export const render = async (url: string, lang: Language = 'ar') => {
   const app = renderToString(
-    <LanguageProvider initialLang={lang}>
-      <StaticRouter location={url}>
+    <StaticRouter location={url}>
+      <LanguageProvider initialLang={lang}>
         <AppServer />
-      </StaticRouter>
-    </LanguageProvider>,
+      </LanguageProvider>
+    </StaticRouter>,
   );
 
   return {

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import { LanguageProvider } from './hooks/useLanguage';
+import { initializeAnalytics } from './lib/analytics';
 
 const container = document.getElementById('root');
 
@@ -11,13 +12,15 @@ if (!container) {
   throw new Error('Root container was not found.');
 }
 
+initializeAnalytics();
+
 const app = (
   <StrictMode>
-    <LanguageProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <LanguageProvider>
         <App />
-      </BrowserRouter>
-    </LanguageProvider>
+      </LanguageProvider>
+    </BrowserRouter>
   </StrictMode>
 );
 

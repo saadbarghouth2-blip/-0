@@ -20,58 +20,95 @@ const PageImageShowcaseSection = ({ showcase }: PageImageShowcaseProps) => {
     description: lang === 'ar' ? showcase.descriptionAr : showcase.descriptionEn,
   };
 
-  const imageCopy = (image?: ShowcaseImageItem) => {
+  const imageAlt = (image?: ShowcaseImageItem) => {
     if (!image) {
-      return null;
+      return '';
     }
 
-    return {
-      alt: lang === 'ar' ? image.altAr : image.altEn,
-      caption: lang === 'ar' ? image.captionAr : image.captionEn,
-    };
+    return lang === 'ar' ? image.altAr : image.altEn;
   };
-
-  const primary = imageCopy(primaryImage);
-  const secondary = imageCopy(secondaryImage);
 
   const renderImage = (
     image: ShowcaseImageItem | undefined,
     className: string,
-    captionClassName = 'mt-3 text-sm leading-7 text-slate-400',
+    wrapperClassName = '',
   ) => {
-    const localizedImage = imageCopy(image);
-
-    if (!image || !localizedImage) {
+    if (!image) {
       return null;
     }
 
     return (
-      <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-2 shadow-[0_30px_70px_-50px_rgba(0,0,0,0.9)]">
+      <motion.figure
+        initial={{ opacity: 0, y: 18, scale: 0.98 }}
+        transition={{ duration: 0.45 }}
+        viewport={{ once: true, amount: 0.25 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        className={`group overflow-hidden rounded-[1.35rem] border border-white/10 bg-[radial-gradient(circle_at_50%_15%,rgba(34,211,238,0.12),rgba(255,255,255,0.045)_44%,rgba(2,6,23,0.52))] p-2 shadow-[0_30px_80px_-55px_rgba(0,0,0,0.95)] backdrop-blur md:rounded-[2rem] ${wrapperClassName}`}
+      >
         <ProjectImage
-          alt={localizedImage.alt}
-          className={className}
+          alt={imageAlt(image)}
+          className={`${className} transition-transform duration-700 group-hover:scale-[1.015]`}
           loading="lazy"
           src={image.src}
         />
-        {!showcase.hideImageCaptions && localizedImage.caption && (
-          <p className={captionClassName}>{localizedImage.caption}</p>
-        )}
-      </div>
+      </motion.figure>
     );
   };
 
   const textBlock = (
-    <div className="space-y-5">
+    <div className="space-y-4 md:space-y-5">
       <p className="section-kicker">{copy.kicker}</p>
-      <h2 className="font-display text-3xl font-semibold leading-tight text-white md:text-4xl">
+      <h2 className="font-display text-[1.65rem] font-semibold leading-[1.16] text-white sm:text-[1.85rem] md:text-4xl md:leading-tight">
         {copy.title}
       </h2>
-      <p className="max-w-2xl text-base leading-8 text-slate-400">{copy.description}</p>
+      <p className="max-w-2xl text-[0.92rem] leading-7 text-slate-400 md:text-base md:leading-8">
+        {copy.description}
+      </p>
+    </div>
+  );
+
+  const featureImages = (
+    <div className="relative">
+      <div className="absolute -inset-4 rounded-[2.5rem] bg-cyan-300/5 blur-2xl" aria-hidden="true" />
+      <div className="relative grid gap-3 md:grid-cols-[1.15fr_0.85fr] md:items-end lg:block lg:min-h-[500px]">
+        {renderImage(
+          primaryImage,
+          'h-[220px] w-full rounded-[1rem] object-contain p-2.5 md:h-[340px] md:rounded-[1.45rem] lg:h-[430px]',
+          'lg:w-[78%]',
+        )}
+        {renderImage(
+          secondaryImage,
+          'h-[200px] w-full rounded-[1rem] object-contain p-2.5 md:h-[270px] md:rounded-[1.45rem] lg:h-[280px]',
+          'lg:absolute lg:bottom-0 lg:end-0 lg:w-[48%]',
+        )}
+        {renderImage(
+          tertiaryImage,
+          'h-[180px] w-full rounded-[1rem] object-contain p-2.5 md:h-[230px] md:rounded-[1.45rem] lg:h-[220px]',
+          'lg:absolute lg:bottom-8 lg:start-6 lg:w-[38%]',
+        )}
+      </div>
+    </div>
+  );
+
+  const compactImages = (
+    <div className="relative">
+      <div className="absolute -inset-4 rounded-[2.5rem] bg-teal-300/5 blur-2xl" aria-hidden="true" />
+      <div className="relative grid gap-3 md:grid-cols-2 lg:grid-cols-1">
+        {renderImage(
+          primaryImage,
+          'h-[220px] w-full rounded-[1rem] object-contain p-2.5 md:h-[350px] md:rounded-[1.45rem]',
+        )}
+        {renderImage(
+          secondaryImage,
+          'h-[200px] w-full rounded-[1rem] object-contain p-2.5 md:h-[285px] md:rounded-[1.45rem]',
+          'lg:ms-10 lg:-mt-10',
+        )}
+      </div>
     </div>
   );
 
   return (
-    <section className="section-shell py-16 md:py-24">
+    <section className="section-shell py-10 md:py-24">
       <motion.div
         initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -80,124 +117,45 @@ const PageImageShowcaseSection = ({ showcase }: PageImageShowcaseProps) => {
         className="mx-auto max-w-7xl"
       >
         {showcase.variant === 'mosaic' && (
-          <div className="surface-card rounded-[2.6rem] p-6 md:p-8">
-            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-              {textBlock}
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="sm:col-span-2">
-                  {renderImage(primaryImage, 'h-[260px] w-full rounded-[1.4rem] object-cover md:h-[360px]')}
-                </div>
-                <div>
-                  {renderImage(secondaryImage, 'h-[220px] w-full rounded-[1.4rem] object-cover')}
-                </div>
-                {tertiaryImage ? (
-                  <div>
-                    {renderImage(tertiaryImage, 'h-[220px] w-full rounded-[1.4rem] object-cover')}
-                  </div>
-                ) : (
-                  <div className="flex items-end rounded-[2rem] border border-white/10 bg-white/[0.03] p-5">
-                    <p className="text-sm leading-7 text-slate-300">
-                      {secondary?.caption ?? primary?.caption}
-                    </p>
-                  </div>
-                )}
-              </div>
+          <div className="surface-card rounded-[1.45rem] p-4 md:rounded-[2.6rem] md:p-8">
+            <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+              <div className="order-2 lg:order-1">{featureImages}</div>
+              <div className="order-1 lg:order-2">{textBlock}</div>
             </div>
           </div>
         )}
 
         {showcase.variant === 'portrait' && (
-          <div className="grid gap-6 lg:grid-cols-[0.68fr_1.32fr] lg:items-center">
-            <div>
-              {renderImage(
-                primaryImage,
-                'h-[380px] w-full rounded-[1.4rem] object-cover md:h-[560px]',
-                'mt-3 text-sm leading-7 text-slate-400',
-              )}
-            </div>
-            <div className="grid gap-6">
-              <div className="surface-card rounded-[2.5rem] p-6 md:p-8">{textBlock}</div>
-              {secondaryImage && (
-                <div>
-                  {renderImage(secondaryImage, 'h-[220px] w-full rounded-[1.4rem] object-cover md:h-[280px]')}
-                </div>
-              )}
+          <div className="grid gap-4 md:gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+            <div>{compactImages}</div>
+            <div className="surface-card rounded-[1.45rem] p-4 md:rounded-[2.5rem] md:p-8">
+              {textBlock}
             </div>
           </div>
         )}
 
         {showcase.variant === 'split' && (
-          <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-            <div className="grid gap-4">
-              {renderImage(primaryImage, 'h-[280px] w-full rounded-[1.5rem] object-cover md:h-[360px]')}
-              {secondaryImage && (
-                <div className="grid gap-4 md:grid-cols-[0.8fr_1.2fr]">
-                  {renderImage(secondaryImage, 'h-[180px] w-full rounded-[1.4rem] object-cover md:h-[220px]')}
-                  <div className="surface-card flex items-center rounded-[2rem] p-6">
-                    <p className="text-sm leading-7 text-slate-300">
-                      {primary?.caption}
-                    </p>
-                  </div>
-                </div>
-              )}
+          <div className="grid gap-4 md:gap-6 lg:grid-cols-[1fr_1fr] lg:items-center">
+            <div className="surface-card-strong rounded-[1.45rem] p-4 md:rounded-[2.5rem] md:p-8">
+              {textBlock}
             </div>
-            <div className="surface-card-strong rounded-[2.5rem] p-6 md:p-8">{textBlock}</div>
+            <div>{compactImages}</div>
           </div>
         )}
 
         {showcase.variant === 'band' && (
-          <div className="surface-card rounded-[2.8rem] p-6 md:p-8">
-            <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+          <div className="surface-card rounded-[1.45rem] p-4 md:rounded-[2.8rem] md:p-8">
+            <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
               <div>{textBlock}</div>
-              <div className="space-y-4">
-                {renderImage(primaryImage, 'h-[260px] w-full rounded-[1.5rem] object-cover md:h-[330px]')}
-                <div className="grid gap-4 md:grid-cols-[0.8fr_1.2fr]">
-                  {secondaryImage && (
-                    <div>
-                      {renderImage(
-                        secondaryImage,
-                        'h-[180px] w-full rounded-[1.25rem] object-cover',
-                        'mt-2 text-xs leading-6 text-slate-400',
-                      )}
-                    </div>
-                  )}
-                  <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-5">
-                    <p className="text-sm leading-7 text-slate-300">
-                      {secondary?.caption ?? primary?.caption}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <div>{featureImages}</div>
             </div>
           </div>
         )}
 
         {showcase.variant === 'spotlight' && (
-          <div className="surface-card rounded-[2.8rem] p-6 md:p-8">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="section-kicker mx-auto">{copy.kicker}</p>
-              <h2 className="mt-5 font-display text-3xl font-semibold leading-tight text-white md:text-4xl">
-                {copy.title}
-              </h2>
-              <p className="mt-4 text-base leading-8 text-slate-400">{copy.description}</p>
-            </div>
-            <div className="mt-8 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-              <div>
-                {renderImage(primaryImage, 'h-[300px] w-full rounded-[1.5rem] object-cover md:h-[400px]')}
-              </div>
-              <div className="grid gap-4">
-                {secondaryImage && (
-                  <div>
-                    {renderImage(secondaryImage, 'h-[180px] w-full rounded-[1.4rem] object-cover md:h-[220px]')}
-                  </div>
-                )}
-                <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-5">
-                  <p className="text-sm leading-7 text-slate-300">
-                    {primary?.caption}
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="surface-card rounded-[1.45rem] p-4 md:rounded-[2.8rem] md:p-8">
+            <div className="mx-auto max-w-3xl text-center">{textBlock}</div>
+            <div className="mt-6 md:mt-8">{featureImages}</div>
           </div>
         )}
       </motion.div>

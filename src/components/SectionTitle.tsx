@@ -14,12 +14,12 @@ const SectionTitle = ({
   const alignment = align === 'center' ? 'text-center mx-auto' : '';
 
   return (
-    <div className={`max-w-3xl ${alignment}`}>
+    <div className={`max-w-3xl space-y-4 md:space-y-5 ${alignment}`}>
       <p className={`section-kicker ${align === 'center' ? 'mx-auto' : ''}`}>{kicker}</p>
-      <h2 className="mt-5 font-display text-4xl font-semibold tracking-tight text-foreground md:text-5xl">
+      <h2 className="font-display text-[1.7rem] font-semibold leading-[1.12] tracking-tight text-foreground sm:text-[2.05rem] md:text-5xl md:leading-tight">
         {title}
       </h2>
-      <p className="mt-5 text-base leading-8 text-muted-foreground md:text-lg">{description}</p>
+      <p className="text-[0.92rem] leading-6 text-muted-foreground sm:text-base md:text-lg md:leading-8">{description}</p>
     </div>
   );
 };

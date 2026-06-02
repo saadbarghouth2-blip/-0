@@ -116,7 +116,7 @@ const localProjectImageSlugs = new Set([
 ]);
 
 const projectLibraryImage = (slug: string) =>
-  localProjectImageSlugs.has(slug) ? publicImage(`projects/${slug}.png`) : undefined;
+  localProjectImageSlugs.has(slug) ? publicImage(`projects/${slug}.webp`) : undefined;
 
 const buildProject = (
   project: Omit<PortfolioProject, 'coverImage' | 'screenshots' | 'thumbnailImage'> & {
@@ -148,43 +148,41 @@ export const portfolioProfile = {
   role: 'Digital Solutions Agency',
   roleAr: 'وكالة حلول رقمية',
   tagline:
-    'نصمم ونطور مواقع وتجارب رقمية تعكس هوية الشركات بوضوح، وتحوّل الخدمة إلى حضور بصري مقنع يلفت الانتباه ويزيد الثقة.',
+    'احصل على مواقع وتجارب رقمية تعكس هوية شركتك بوضوح، وتحوّل خدماتها إلى حضور بصري مقنع يلفت الانتباه ويزيد الثقة.',
   englishTagline:
-    'We design and build digital experiences that reflect brand identity clearly and turn services into compelling visual presence.',
+    'Get websites, service pages, and digital experiences that reflect your business clearly and build stronger trust.',
   intro:
     'نُطق شركة رقمية متخصصة في بناء مواقع الشركات، المنصات التفاعلية، حلول العرض المؤسسي، وتجارب الويب التي تجمع بين الجمال البصري، التنظيم الواضح، وسهولة التحويل من زائر إلى عميل.',
   englishIntro:
-    'Notaq is a digital studio specializing in corporate websites, interactive platforms, presentation systems, and web experiences that blend visual impact with clear conversion paths.',
+    'Notaq is a digital studio focused on company websites, service pages, interactive platforms, and web experiences that blend strong presentation with clear conversion paths.',
   location: 'القاهرة، مصر',
   locationEn: 'Cairo, Egypt',
-  email: 'saadbarghouth11@gmail.com',
-  phone: '+20 106 743 1264',
-  phoneHref: '+201067431264',
+  email: 'info@نطق.site',
+  phone: '01507631264',
+  phoneHref: '+201507631264',
   logo: BRAND_LOGO_SRC,
-  heroImage: publicImage('notaq_hero_branding.png'),
-  aboutImage: publicImage('WhatsApp Image 2025-07-25 at 17.40.56_6dae988c.jpg'),
+  heroImage: publicImage('notaq-og-cover.jpg'),
+  aboutImage: publicImage('ChatGPT Image Apr 8, 2026, 11_26_40 AM.png'),
   photoGallery: [
     {
       title: 'جلسات من الشغل الحقيقي',
-      image:
-        'https://saad-elsayed-barghouth-d7kv.vercel.app/WhatsApp%20Image%202026-02-15%20at%203.19.23%20AM.jpeg',
+      image: publicImage('WhatsApp Image 2026-02-15 at 05.05.18 (3).jpeg'),
       alt: 'Professional GIS training and team delivery session',
     },
     {
-      title: 'متابعة العميل والمراجعات',
-      image: 'https://saad-elsayed-barghouth-d7kv.vercel.app/photo8.jpg',
+      title: 'متابعة المشروع والمراجعات',
+      image: publicImage('WhatsApp Image 2026-02-15 at 05.05.18 (4).jpeg'),
       alt: 'Professional GIS collaboration and project briefing',
     },
     {
       title: 'نقاش الحلول قبل التسليم',
-      image:
-        'https://saad-elsayed-barghouth-d7kv.vercel.app/WhatsApp%20Image%202026-02-01%20at%208.47.19%20PM.jpeg',
+      image: publicImage('WhatsApp Image 2026-02-01 at 8.47.19 PM.jpeg'),
       alt: 'Client review meeting and project discussion',
     },
   ],
   stats: [
     { label: 'مشروع منجز', englishLabel: 'Completed projects', value: '+180' },
-    { label: 'عميل سعيد', englishLabel: 'Happy clients', value: '+160' },
+    { label: 'شريك نجاح', englishLabel: 'Success partners', value: '+160' },
     { label: 'سنوات خبرة', englishLabel: 'Years of experience', value: '+8' },
     { label: 'دولة مخدومة', englishLabel: 'Countries served', value: '+18' },
   ] as ProfileStat[],
@@ -217,9 +215,9 @@ export const services: ServiceItem[] = [
     title: 'مواقع الشركات والبراندات',
     englishTitle: 'Corporate and brand websites',
     description:
-      'نبني مواقع رسمية تقدم الشركة بصورة قوية وواضحة، وتشرح الخدمات بشكل منظم يسهّل على العميل فهم القيمة واتخاذ خطوة التواصل.',
+      'تحصل على موقع رسمي يقدم شركتك بصورة قوية وواضحة ويشرح خدماتها بشكل منظم يساعد الزائر على فهم القيمة واتخاذ خطوة التواصل.',
     englishDescription:
-      'We build polished corporate websites that present the company clearly, organize services well, and make it easier for clients to understand the value and get in touch.',
+      'You get a polished corporate website that presents your company clearly, organizes its services well, and helps visitors understand the value and reach out.',
     bullets: ['هوية مؤسسية', 'صفحات تعريفية', 'بنية تحويل واضحة'],
     englishBullets: ['Brand identity', 'Company pages', 'Clear conversion flow'],
   },
@@ -227,9 +225,9 @@ export const services: ServiceItem[] = [
     title: 'منصات وتجارب تفاعلية',
     englishTitle: 'Interactive platforms and experiences',
     description:
-      'نطوّر تجارب ويب غنية بالحركة والتفاعل لتقديم المحتوى، الخدمات، أو العمليات الداخلية بصورة حديثة وسهلة الاستخدام.',
+      'تحصل على تجربة ويب تفاعلية وحديثة تجعل المحتوى او الخدمات او العمليات الداخلية اوضح واسهل في الاستخدام.',
     englishDescription:
-      'We create motion-rich web experiences for content, services, and internal workflows in a modern and easy-to-use format.',
+      'You get a modern interactive web experience that makes content, services, or internal workflows clearer and easier to use.',
     bullets: ['واجهات ديناميكية', 'تفاعل محسوب', 'رحلة استخدام مدروسة'],
     englishBullets: ['Dynamic interfaces', 'Intentional interaction', 'Thoughtful user journey'],
   },
@@ -237,9 +235,9 @@ export const services: ServiceItem[] = [
     title: 'لوحات تحكم وأنظمة خاصة',
     englishTitle: 'Dashboards and custom systems',
     description:
-      'نصمم حلولاً مخصصة لإدارة البيانات، سير العمل، والمتابعة التشغيلية مع واجهات تساعد الفرق على العمل بسرعة ووضوح.',
+      'تحصل على نظام مخصص يساعدك على ادارة البيانات وسير العمل والمتابعة التشغيلية بوضوح اكبر وسرعة اعلى.',
     englishDescription:
-      'We design tailored systems for data management, workflows, and operations with interfaces that help teams work quickly and clearly.',
+      'You get a tailored system for data, workflows, and operations with interfaces that help your team move faster and with more clarity.',
     bullets: ['Dashboards', 'Workflow systems', 'واجهة عملية'],
     englishBullets: ['Dashboards', 'Workflow systems', 'Practical interface'],
   },
@@ -247,9 +245,9 @@ export const services: ServiceItem[] = [
     title: 'حلول ذكاء اصطناعي موجهة',
     englishTitle: 'Applied AI solutions',
     description:
-      'نطوّر منتجات ومساعدين ذكيين يقدّمون المعرفة والخدمة بطريقة مفهومة، مع واجهات توصل الفائدة بسرعة وثقة.',
+      'تحصل على حلول ومساعدين ذكيين يقدمون المعرفة او الخدمة بطريقة مفهومة مع تجربة توصل القيمة بسرعة وثقة.',
     englishDescription:
-      'We build AI products and assistants that deliver knowledge and service in a clear way, with interfaces that communicate value quickly and confidently.',
+      'You get AI products and assistants that deliver knowledge or service clearly, with an interface that communicates value quickly and confidently.',
     bullets: ['Assistant UX', 'تكامل ذكي', 'تجربة محادثة واضحة'],
     englishBullets: ['Assistant UX', 'Smart integration', 'Clear conversational flow'],
   },
@@ -260,17 +258,17 @@ export const processSteps: ProcessItem[] = [
     title: 'اكتشاف الاحتياج',
     englishTitle: 'Needs discovery',
     description:
-      'نبدأ بفهم نشاط الشركة، الجمهور المستهدف، وطبيعة الهدف التجاري حتى تتحول الفكرة إلى مسار رقمي واضح.',
+      'تبدأ الفكرة بفهم نشاط شركتك، الزائر المستهدف، وطبيعة الهدف التجاري حتى تتحول إلى مسار رقمي واضح.',
     englishDescription:
-      'We start by understanding the business, audience, and commercial goal so the idea can become a clear digital direction.',
+      'The idea starts by clarifying the business, audience, and commercial goal so it can become a clear digital direction.',
   },
   {
     title: 'بناء الهوية والواجهة',
     englishTitle: 'Identity and interface design',
     description:
-      'نصمم تجربة بصرية متوازنة تجمع بين القوة الجمالية ووضوح الرسالة، مع أقسام مدروسة تعكس شخصية البراند.',
+      'تحصل على تجربة بصرية متوازنة تجمع بين القوة الجمالية ووضوح الرسالة، مع أقسام مدروسة تعكس شخصية البراند.',
     englishDescription:
-      'We design a balanced visual experience that combines strong aesthetics with message clarity through sections that reflect the brand personality.',
+      'You get a balanced visual experience that combines strong aesthetics with message clarity through sections that reflect the brand personality.',
   },
   {
     title: 'التنفيذ والتكامل',
@@ -336,7 +334,7 @@ export const projects: PortfolioProject[] = [
     projectType: 'موقع عرض ثقافي',
     role: 'تشكيل العرض البصري وتجربة الواجهة',
     liveUrl: 'https://egyptian-museum-theta.vercel.app/',
-    coverImage: 'https://egyptian-museum-theta.vercel.app/images/atrium.jpg',
+    coverImage: publicImage('projects/grand-egyptian-museum-new.webp'),
     accent: 'from-[#d2a63a]/30 via-[#f8e6b7]/15 to-[#0d1b2a]/12',
     techStack: ['Visual storytelling', 'Large-format imagery', 'Sectioned content', 'Interactive presentation'],
     focus: ['Institutional feel', 'Immersive imagery', 'Cultural framing'],
@@ -446,8 +444,8 @@ export const projects: PortfolioProject[] = [
       'النتيجة صفحة تبدو كواجهة براند حديثة وقابلة للتوسع إلى متجر كامل، وتضيف للبورتفوليو مثالًا واضحًا على تقديم المنتجات الاستهلاكية بهوية بصرية قوية.',
     englishOutcome:
       'The result feels like a scalable brand storefront and gives the portfolio a strong consumer-product example with a confident visual identity.',
-    audience: 'العلامات الاستهلاكية والعملاء الباحثون عن عرض منتج واضح',
-    englishAudience: 'Consumer brands and customers looking for clear product presentation',
+    audience: 'العلامات الاستهلاكية والجمهور الباحث عن عرض منتج واضح',
+    englishAudience: 'Consumer brands and audiences looking for clear product presentation',
     projectType: 'واجهة براند/متجر منتجات',
     englishProjectType: 'Brand storefront / product shop',
     role: 'صياغة العرض البصري للمنتج وبناء واجهة شراء أولية',
@@ -762,8 +760,7 @@ export const projects: PortfolioProject[] = [
     projectType: 'إصدار متقدم من لوحة اختبارات',
     role: 'صقل التجربة وإظهار النضج البصري',
     liveUrl: 'https://kids-geo-quiz-dashboard-v12-dense18-gamma.vercel.app/',
-    coverImage:
-      'https://kids-geo-quiz-dashboard-v12-dense18-gamma.vercel.app/assets/kids_world_map-BIEothDf.jpg',
+    coverImage: publicImage('projects/kids-geo-quiz-dashboard-v12.webp'),
     accent: 'from-[#457b9d]/24 via-[#f1faee]/12 to-[#1d3557]/16',
     techStack: ['Refined educational UI', 'Versioned product design', 'Map-based learning', 'Dashboard iteration'],
     focus: ['Maturity', 'Readability', 'Product polish'],
@@ -965,7 +962,7 @@ export const projects: PortfolioProject[] = [
       screenshotOf('https://time-care-log.lovable.app/install', 'mobile'),
       screenshotOf('https://time-care-log.lovable.app/install', 'tablet'),
     ],
-    thumbnailImage: 'https://time-care-log.lovable.app/assets/logo-CMpwqvS-.jpeg',
+    thumbnailImage: publicImage('projects/worklog.webp'),
     accent: 'from-[#588b8b]/22 via-[#f0f3bd]/12 to-[#1d3557]/16',
     techStack: ['Installable PWA experience', 'Productivity workflow', 'Clean entry point', 'Mobile-first presentation'],
     focus: ['Speed', 'Usability', 'Install clarity'],
@@ -1075,6 +1072,46 @@ export const projects: PortfolioProject[] = [
     focus: ['Innovation showcase', 'Team credibility', 'Vision clarity'],
     deliverables: ['صفحة هبوط عصرية', 'عرض الفريق', 'قصص نجاح', 'تصميم جذاب'],
     experience: ['ابتكار واضح', 'ثقة في الفريق', 'رؤية مستقبلية', 'جاذبية عالية'],
+    featured: true,
+  }),
+  buildProject({
+    slug: 'notaq',
+    title: 'نطق',
+    englishTitle: 'Notaq - Speech & Voice Solutions',
+    category: 'تطبيق ويب',
+    englishCategory: 'Web Application',
+    excerpt:
+      'منصة متخصصة في حلول النطق والصوت، توفر أدوات لتحسين الكلام والنطق بتقنيات حديثة.',
+    englishExcerpt:
+      'A specialized platform for speech and voice solutions, providing tools for speech improvement and pronunciation enhancement.',
+    summary:
+      'نطق منصة تفاعلية توفر حلولاً شاملة لتحسين مهارات النطق والكلام من خلال تقنيات الذكاء الاصطناعي والتعليم التفاعلي.',
+    englishSummary:
+      'Notaq is an interactive platform providing comprehensive solutions for speech improvement through AI-powered techniques and interactive learning.',
+    challenge:
+      'تحدي بناء منصة تعليمية تجمع بين التكنولوجيا والمحتوى التعليمي الفعال، مع واجهة سهلة الاستخدام ودقة عالية في التقييم.',
+    englishChallenge:
+      'Building an educational platform that combines technology with effective learning content, featuring an intuitive interface and accurate assessment.',
+    approach:
+      'تم تطوير المنصة باستخدام تقنيات الذكاء الاصطناعي للتعرف على الكلام، وتصميم واجهة تفاعلية توفر تجربة تعليمية شاملة.',
+    englishApproach:
+      'The platform was developed using AI speech recognition technology with an interactive interface providing comprehensive learning experience.',
+    outcome:
+      'منصة احترافية توفر قيمة حقيقية للمستخدمين في تحسين مهارات النطق، مع تصميم جذاب وتجربة مستخدم سلسة.',
+    englishOutcome:
+      'A professional platform delivering real value for speech improvement with attractive design and seamless user experience.',
+    audience: 'الطلاب والمتعلمون والمهتمون بتحسين النطق',
+    englishAudience: 'Students, learners, and those interested in speech improvement',
+    projectType: 'منصة تعليمية',
+    englishProjectType: 'Educational Platform',
+    role: 'تطوير المنصة والواجهة التفاعلية',
+    englishRole: 'Platform development and interactive interface design',
+    liveUrl: 'https://notaq.com/',
+    accent: 'from-cyan-400/24 via-blue-500/10 to-cyan-600/16',
+    techStack: ['React', 'TypeScript', 'AI Speech Recognition', 'Interactive Learning', 'Responsive Design'],
+    focus: ['دقة التقييم', 'تجربة تعليمية سلسة', 'واجهة جذابة', 'محتوى تفاعلي'],
+    deliverables: ['منصة تعليمية كاملة', 'نظام تقييم ذكي', 'محتوى تفاعلي', 'تقارير تقدم المستخدم'],
+    experience: ['تجربة تعليمية فعالة', 'واجهة سهلة الاستخدام', 'تقييم فوري', 'محتوى متنوع'],
     featured: true,
   }),
 ];

@@ -11,16 +11,23 @@ import {
 } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
+import MobileSectionPager from '../components/MobileSectionPager';
+import PageImageShowcaseSection from '../components/PageImageShowcase';
 import ProjectCard from '../components/ProjectCard';
 import ProjectImage from '../components/ProjectImage';
+import HeroMediaBackdrop from '../components/HeroMediaBackdrop';
+import { enrichmentMediaById } from '../data/enrichmentMedia';
+import { getPageEnrichment } from '../data/pageEnrichment';
 import { findProjectBySlug, projects } from '../data/portfolio';
+import { pageImageShowcases } from '../data/pageImageShowcases';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
+import { trackEvent } from '../lib/analytics';
 import { getPageSeoByPath, getProjectPageSeo } from '../lib/pageSeo';
 
 const ProjectDetailPage = () => {
   const { slug } = useParams();
-  const { lang } = useLanguage();
+  const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
   const project = slug ? findProjectBySlug(slug) : undefined;
 
@@ -36,10 +43,10 @@ const ProjectDetailPage = () => {
 
   if (!project) {
     return (
-      <section className="section-shell py-28">
-        <div className="surface-card mx-auto max-w-3xl rounded-[2.2rem] p-10 text-center">
+        <section className="section-shell py-20 md:py-28">
+          <div className="surface-card mx-auto max-w-3xl rounded-[1.8rem] p-6 text-center md:rounded-[2.2rem] md:p-10">
           <p className="section-kicker mx-auto">404</p>
-          <h1 className="mt-5 font-display text-4xl font-semibold text-white">
+            <h1 className="mt-5 font-display text-3xl font-semibold text-white md:text-4xl">
             {isArabic ? 'المشروع غير موجود' : 'Project not found'}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-400">
@@ -48,10 +55,10 @@ const ProjectDetailPage = () => {
               : 'The link you opened does not contain an available project right now. You can return to the projects page or contact us directly.'}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link className="btn-primary" to="/projects">
+          <Link className="btn-primary" to={localizePath('/projects')}>
               {isArabic ? 'العودة إلى الأعمال' : 'Back to projects'}
             </Link>
-            <Link className="btn-secondary" to="/contact">
+          <Link className="btn-secondary" to={localizePath('/contact')}>
               {isArabic ? 'تواصل معنا' : 'Contact us'}
             </Link>
           </div>
@@ -75,9 +82,26 @@ const ProjectDetailPage = () => {
   const techStack = project.techStack;
   const experience = project.experience;
   const gallery = [...new Set([project.coverImage, ...(project.screenshots ?? [])])];
+  const projectEnrichment = getPageEnrichment(`/projects/${project.slug}`);
+  const heroFallbackMedia = projectEnrichment
+    ? enrichmentMediaById[projectEnrichment.heroMediaId]
+    : enrichmentMediaById['projects-hero-review'];
+  const heroMedia = projectEnrichment
+    ? enrichmentMediaById[projectEnrichment.videoMediaId] ?? heroFallbackMedia
+    : enrichmentMediaById['projects-interface-scroll'];
   const relatedProjects = projects
     .filter((item) => item.slug !== project.slug)
     .slice(0, 3);
+
+  const handleLiveProjectClick = () => {
+    trackEvent('portfolio_open', {
+      action: 'detail_page_live_cta',
+      destination: 'live',
+      project_slug: project.slug,
+      project_title: title,
+      language: lang,
+    });
+  };
 
   const detailCards = [
     {
@@ -98,11 +122,13 @@ const ProjectDetailPage = () => {
   ];
 
   return (
-    <section className="section-shell pb-20 pt-14 md:pt-20">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div className="space-y-6">
-            <p className="section-kicker">
+    <section className="relative overflow-hidden pb-20 md:pb-28">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <div className="relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[calc(100svh-3.75rem)] w-screen items-end overflow-hidden px-4 pb-7 pt-20 sm:px-6 md:min-h-[calc(100svh-4.35rem)] md:px-10 md:pb-10 md:pt-[7.5rem] lg:px-14">
+          <HeroMediaBackdrop fallbackMedia={heroFallbackMedia} isArabic={isArabic} media={heroMedia} />
+          <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div className="space-y-5 md:space-y-6">
+            <p className="section-kicker border-cyan-300/35 bg-[#06151c]/62 text-cyan-50 shadow-[0_18px_55px_-36px_rgba(45,212,191,0.8)] backdrop-blur-2xl">
               <Sparkles className={`${isArabic ? 'ml-2' : 'mr-2'} inline h-3.5 w-3.5`} />
               {isArabic ? 'دراسة حالة مشروع' : 'Project case study'}
             </p>
@@ -116,50 +142,55 @@ const ProjectDetailPage = () => {
                 </span>
               )}
             </div>
-            <h1 className="font-display text-4xl font-semibold leading-tight text-white md:text-6xl">
+            <h1 className="max-w-[12ch] font-display text-[2.45rem] font-black leading-[1.04] text-white drop-shadow-[0_18px_36px_rgba(0,0,0,0.62)] sm:text-[3.35rem] md:text-7xl lg:text-[5.25rem]">
               {title}
             </h1>
-            <p className="max-w-3xl text-lg leading-8 text-slate-300">{summary}</p>
-            <p className="max-w-3xl text-base leading-8 text-slate-400">{excerpt}</p>
-            <div className="flex flex-wrap gap-3">
+            <p className="max-w-3xl text-base font-semibold leading-8 text-slate-100 drop-shadow-[0_10px_24px_rgba(0,0,0,0.72)] md:text-xl md:leading-9">{summary}</p>
+            <p className="max-w-3xl text-base leading-8 text-slate-200 drop-shadow-[0_10px_24px_rgba(0,0,0,0.72)]">{excerpt}</p>
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a
                 className="btn-primary inline-flex items-center gap-2"
                 href={project.liveUrl}
+                onClick={handleLiveProjectClick}
                 rel="noreferrer"
                 target="_blank"
               >
                 {isArabic ? 'فتح المشروع الحي' : 'Open live project'}
                 <ExternalLink className="h-4 w-4" />
               </a>
-              <Link className="btn-secondary inline-flex items-center gap-2" to="/contact">
-                {isArabic ? 'ابدأ مشروعك معنا' : 'Start your project'}
+              <Link className="btn-secondary inline-flex items-center gap-2" to={localizePath('/contact')}>
+                {isArabic ? 'ناقش مشروعاً مشابهاً' : 'Discuss a similar project'}
                 <ArrowUpLeft className={`h-4 w-4 ${isArabic ? '' : '-scale-x-100'}`} />
               </Link>
             </div>
           </div>
 
-          <div className="surface-card-strong overflow-hidden rounded-[2.5rem] border border-white/10">
+          <div className="overflow-hidden rounded-[1.35rem] border border-white/12 bg-[#061016]/58 shadow-[0_20px_60px_-38px_rgba(0,0,0,0.95)] backdrop-blur-2xl md:rounded-[1.8rem] aspect-video">
             <ProjectImage
               alt={title}
-              className="h-full min-h-[320px] w-full object-cover"
+              className="h-full w-full object-cover"
               fallbackSrc={project.thumbnailImage}
               fallbacks={project.screenshots}
+              loading="eager"
               src={project.coverImage}
             />
+          </div>
           </div>
         </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {detailCards.map((item) => (
-            <div key={item.label} className="surface-card rounded-[1.8rem] p-6">
+            <div key={item.label} className="surface-card rounded-[1.6rem] p-5 md:rounded-[1.8rem] md:p-6">
               <div className="inline-flex rounded-2xl bg-cyan-400/10 p-3 text-cyan-300">
                 <item.icon className="h-5 w-5" />
               </div>
               <p className="mt-4 text-sm text-slate-500">{item.label}</p>
-              <p className="mt-2 text-base leading-7 text-white">{item.value}</p>
+              <p className="mt-2 text-sm leading-7 text-white md:text-base">{item.value}</p>
             </div>
           ))}
         </div>
+
+        <PageImageShowcaseSection showcase={pageImageShowcases.projectDetail} />
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[0.62fr_0.38fr]">
           <div className="space-y-6">
@@ -167,7 +198,7 @@ const ProjectDetailPage = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              className="surface-card rounded-[2.2rem] p-6 md:p-8"
+               className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-8"
             >
               <p className="section-kicker">{isArabic ? 'التحدي' : 'Challenge'}</p>
               <h2 className="mt-5 font-display text-2xl font-semibold text-white md:text-3xl">
@@ -181,7 +212,7 @@ const ProjectDetailPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: 0.05 }}
-              className="surface-card rounded-[2.2rem] p-6 md:p-8"
+               className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-8"
             >
               <p className="section-kicker">{isArabic ? 'المنهج' : 'Approach'}</p>
               <h2 className="mt-5 font-display text-2xl font-semibold text-white md:text-3xl">
@@ -195,7 +226,7 @@ const ProjectDetailPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: 0.1 }}
-              className="surface-card rounded-[2.2rem] p-6 md:p-8"
+               className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-8"
             >
               <p className="section-kicker">{isArabic ? 'النتيجة' : 'Outcome'}</p>
               <h2 className="mt-5 font-display text-2xl font-semibold text-white md:text-3xl">
@@ -206,7 +237,7 @@ const ProjectDetailPage = () => {
           </div>
 
           <div className="space-y-6 lg:sticky lg:top-28">
-            <div className="surface-card rounded-[2.2rem] p-6">
+            <div className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-6">
               <p className="section-kicker">{isArabic ? 'التركيز' : 'Focus'}</p>
               <div className="mt-5 grid gap-3">
                 {focus.map((item) => (
@@ -221,7 +252,7 @@ const ProjectDetailPage = () => {
               </div>
             </div>
 
-            <div className="surface-card rounded-[2.2rem] p-6">
+            <div className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-6">
               <p className="section-kicker">{isArabic ? 'التقنيات' : 'Tech stack'}</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {techStack.map((item) => (
@@ -235,7 +266,7 @@ const ProjectDetailPage = () => {
               </div>
             </div>
 
-            <div className="surface-card rounded-[2.2rem] p-6">
+            <div className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-6">
               <p className="section-kicker">{isArabic ? 'مخرجات التنفيذ' : 'Deliverables'}</p>
               <div className="mt-5 grid gap-3">
                 {deliverables.map((item) => (
@@ -249,7 +280,7 @@ const ProjectDetailPage = () => {
               </div>
             </div>
 
-            <div className="surface-card rounded-[2.2rem] p-6">
+            <div className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.2rem] md:p-6">
               <p className="section-kicker">{isArabic ? 'تجربة المستخدم' : 'Experience highlights'}</p>
               <div className="mt-5 grid gap-3">
                 {experience.map((item) => (
@@ -283,11 +314,11 @@ const ProjectDetailPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ delay: index * 0.06 }}
-                  className="surface-card overflow-hidden rounded-[2rem] border border-white/10"
+                   className="surface-card overflow-hidden rounded-[1.6rem] border border-white/10 md:rounded-[2rem]"
                 >
                   <ProjectImage
                     alt={`${title} ${index + 1}`}
-                    className="h-72 w-full object-cover"
+                     className="h-56 w-full object-cover md:h-72"
                     fallbackSrc={project.coverImage}
                     fallbacks={project.screenshots}
                     src={image}
@@ -306,16 +337,29 @@ const ProjectDetailPage = () => {
                 {isArabic ? 'اكتشف مشاريع أخرى' : 'Explore more projects'}
               </h2>
             </div>
-            <Link className="btn-secondary hidden md:inline-flex" to="/projects">
+          <Link className="btn-secondary hidden md:inline-flex" to={localizePath('/projects')}>
               {isArabic ? 'كل الأعمال' : 'All projects'}
             </Link>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {relatedProjects.map((relatedProject) => (
-              <ProjectCard key={relatedProject.slug} compact project={relatedProject} />
-            ))}
-          </div>
+          <MobileSectionPager
+            desktop={(
+              <div className="hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-3">
+                {relatedProjects.map((relatedProject) => (
+                  <ProjectCard key={relatedProject.slug} compact project={relatedProject} />
+                ))}
+              </div>
+            )}
+            items={relatedProjects}
+            label="related-projects"
+            renderPage={(pageItems) => (
+              <div className="grid gap-4">
+                {pageItems.map((relatedProject) => (
+                  <ProjectCard key={relatedProject.slug} compact project={relatedProject} />
+                ))}
+              </div>
+            )}
+          />
         </div>
       </div>
     </section>
