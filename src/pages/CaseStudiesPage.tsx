@@ -200,11 +200,11 @@ const CaseStudyCard = ({ study, isArabic }: { study: typeof caseStudies[0]; isAr
                 </button>
               </div>
 
-              <div className="space-y-3 mb-6">
+              <div className="space-y-3 mb-6" dir="ltr">
                 {study.technicalStack.map((tech, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm text-slate-300 bg-white/[0.02] border border-white/5 p-3 rounded-xl">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                    <span>{tech}</span>
+                    <span dir="ltr" className="text-left font-medium">{tech}</span>
                   </div>
                 ))}
               </div>

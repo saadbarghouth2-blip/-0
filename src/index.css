@@ -218,6 +218,19 @@ html[data-theme='light'] ::-webkit-scrollbar-track {
 }
 
 /* Base Utility Classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 .section-shell {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
