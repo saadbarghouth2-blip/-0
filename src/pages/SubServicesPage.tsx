@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
+import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SubServicesGrid } from '../components/SubServiceCard';
 import { SubServiceDetailPage } from '../components/SubServiceDetailPage';

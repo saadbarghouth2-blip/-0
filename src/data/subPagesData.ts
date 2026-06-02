@@ -742,7 +742,7 @@ export const teamSubPages: Record<string, TeamSubPage> = {
       ar: 'إنجازات الفريق والجوائز',
       en: 'Team achievements and awards',
     },
-    icon: Trophy,
+    icon: Award,
     type: 'achievements',
     content: {
       awards: [

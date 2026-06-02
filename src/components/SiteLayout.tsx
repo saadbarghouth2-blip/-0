@@ -1218,6 +1218,32 @@ const SiteLayout = () => {
                       : 'Ready to discuss a company website, service page, or a clearer digital experience.'}
                   </p>
                 </div>
+
+                <div className="mt-4 rounded-[1.3rem] border border-amber-300/14 bg-amber-300/[0.045] p-4 text-sm text-slate-400 md:rounded-[1.5rem]">
+                  <p className="text-xs font-semibold tracking-[0.18em] text-amber-200/80">
+                    {lang === 'ar' ? 'بيانات التوثيق' : 'Verification details'}
+                  </p>
+                  <div className="mt-3 grid gap-2">
+                    {portfolioProfile.legalDocumentation.map((item) => (
+                      <div
+                        key={item.value}
+                        className="rounded-[0.9rem] border border-white/7 bg-black/15 px-3 py-2"
+                      >
+                        <p className="text-[11px] font-semibold text-slate-500">
+                          {lang === 'ar' ? item.label : item.englishLabel}
+                        </p>
+                        <p className="mt-1 break-all text-sm font-bold text-slate-100" dir="ltr">
+                          {item.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs leading-6 text-amber-100/70">
+                    {lang === 'ar'
+                      ? portfolioProfile.legalDocumentationNotice
+                      : portfolioProfile.englishLegalDocumentationNotice}
+                  </p>
+                </div>
               </div>
             </div>
 

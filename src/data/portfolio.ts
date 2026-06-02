@@ -12,6 +12,14 @@ export interface ProfileStat {
   value: string;
 }
 
+export interface LegalDocumentationItem {
+  label: string;
+  englishLabel: string;
+  value: string;
+  note: string;
+  englishNote: string;
+}
+
 export interface ServiceItem {
   title: string;
   englishTitle?: string;
@@ -160,6 +168,40 @@ export const portfolioProfile = {
   email: 'info@نطق.site',
   phone: '01507631264',
   phoneHref: '+201507631264',
+  legalDocumentationNotice:
+    'بيانات التوثيق التالية مؤقتة ووهمية لحين اعتماد المستندات الرسمية، ولا تصلح للاستخدام القانوني أو التعاقدي.',
+  englishLegalDocumentationNotice:
+    'The following verification details are temporary placeholders until official documents are issued, and must not be used for legal or contractual purposes.',
+  legalDocumentation: [
+    {
+      label: 'السجل التجاري',
+      englishLabel: 'Commercial registry',
+      value: 'TMP-NTQ-CR-000000',
+      note: 'رقم مؤقت غير رسمي لحين إدخال رقم السجل التجاري المعتمد.',
+      englishNote: 'Temporary non-official number until the verified commercial registry is added.',
+    },
+    {
+      label: 'البطاقة الضريبية',
+      englishLabel: 'Tax card',
+      value: 'TMP-NTQ-TAX-000000000',
+      note: 'رقم وهمي واضح وليس رقماً تابعاً لأي شركة قائمة.',
+      englishNote: 'Clearly fake placeholder and not assigned to any existing company.',
+    },
+    {
+      label: 'ملف ضريبي',
+      englishLabel: 'Tax file',
+      value: 'TMP-NTQ-TF-000/000/000',
+      note: 'يستبدل فور إصدار أو توثيق الملف الضريبي الفعلي.',
+      englishNote: 'To be replaced once the actual tax file is issued or verified.',
+    },
+    {
+      label: 'عنوان قانوني',
+      englishLabel: 'Legal address',
+      value: 'قيد التوثيق - القاهرة، مصر',
+      note: 'صياغة مؤقتة حتى تثبيت العنوان الرسمي في المستندات.',
+      englishNote: 'Temporary wording until the official address is confirmed in documents.',
+    },
+  ] as LegalDocumentationItem[],
   logo: BRAND_LOGO_SRC,
   heroImage: publicImage('notaq-og-cover.jpg'),
   aboutImage: publicImage('ChatGPT Image Apr 8, 2026, 11_26_40 AM.png'),
