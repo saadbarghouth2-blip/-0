@@ -59,6 +59,7 @@ import HeroMediaBackdrop from '../components/HeroMediaBackdrop';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import type { PageExperienceConfig } from '../data/pageVariations';
 
 const detailPagesByPrefix: Array<{ prefix: string; pages: DetailPageContent[] }> = [
   { prefix: '/home/', pages: homeDetailPages },
@@ -292,6 +293,91 @@ interface WorldBlockProps {
   shouldReduceMotion: boolean;
   text: (value: { ar: string; en: string }) => string;
 }
+
+const defaultPageExperience: PageExperienceConfig = {
+  heroStyle: 'cinematic',
+  contentRhythm: 'zigzag',
+  visualTreatment: 'glass',
+  mediaRole: 'mockupPanel',
+};
+
+const getExperienceClass = (experience: PageExperienceConfig) =>
+  [
+    'detail-experience',
+    `detail-hero-${experience.heroStyle}`,
+    `detail-rhythm-${experience.contentRhythm}`,
+    `detail-treatment-${experience.visualTreatment}`,
+    `detail-media-${experience.mediaRole}`,
+  ].join(' ');
+
+const DetailStoryPanel = ({
+  experience,
+  isArabic,
+  media,
+  page,
+  shouldReduceMotion,
+  text,
+}: WorldBlockProps & {
+  experience: PageExperienceConfig;
+  media: typeof enrichmentMediaById[keyof typeof enrichmentMediaById];
+}) => {
+  const isGallery = experience.mediaRole === 'galleryStrip';
+  const isDashboard = experience.heroStyle === 'dashboard' || experience.contentRhythm === 'dashboardGrid';
+  const isEditorial = experience.heroStyle === 'editorial' || experience.contentRhythm === 'magazine';
+
+  return (
+    <motion.section
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.18 }}
+      className={`detail-story-panel overflow-hidden rounded-[1.65rem] border border-white/10 bg-white/[0.035] md:rounded-[2.25rem] ${
+        isEditorial ? 'md:grid md:grid-cols-[0.75fr_1.25fr]' : 'lg:grid lg:grid-cols-[1.05fr_0.95fr]'
+      }`}
+    >
+      <div className={`relative min-h-[18rem] overflow-hidden ${isEditorial ? 'md:order-2' : ''}`}>
+        <img
+          alt={text(media.alt)}
+          className="h-full min-h-[18rem] w-full object-cover"
+          loading="lazy"
+          src={media.src}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#06090f]/75 via-[#06090f]/10 to-transparent" />
+        {isGallery && (
+          <div className="absolute inset-x-4 bottom-4 grid grid-cols-3 gap-2">
+            {page.metrics?.slice(0, 3).map((metric) => (
+              <div key={metric.value} className="rounded-2xl border border-white/15 bg-black/35 p-3 backdrop-blur-xl">
+                <p className="font-display text-xl font-black text-cyan-200">{metric.value}</p>
+                <p className="mt-1 text-[10px] leading-4 text-slate-200">{text(metric.label)}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="p-5 md:p-7 lg:p-8">
+        <p className="section-kicker mb-5">
+          {isDashboard ? <Grid className="h-4 w-4" /> : isEditorial ? <BookOpen className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
+          {isArabic ? 'زاوية عرض مختلفة' : 'Different presentation angle'}
+        </p>
+        <h2 className="font-display text-2xl font-black leading-tight text-white md:text-3xl">
+          {text(page.promise)}
+        </h2>
+        <p className="mt-4 text-sm leading-8 text-slate-400 md:text-base">
+          {text(page.summary)}
+        </p>
+
+        <div className={`mt-6 grid gap-3 ${isDashboard ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
+          {page.deliverables.slice(0, isDashboard ? 3 : 4).map((item, index) => (
+            <div key={item.en} className="rounded-[1.1rem] border border-white/8 bg-[#06090f]/55 p-4">
+              <span className="font-display text-2xl font-black text-white/15">0{index + 1}</span>
+              <p className="mt-2 text-sm font-bold leading-6 text-slate-200">{text(item)}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </motion.section>
+  );
+};
 
 const InsightsBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBlockProps) => (
   <motion.div
@@ -694,9 +780,20 @@ const DetailPage = () => {
   const detailHeroMedia = detailHeroContent
     ? enrichmentMediaById[detailHeroContent.videoMediaId] ?? detailHeroFallbackMedia
     : enrichmentMediaById['digital-workflow'];
+  const detailStoryMedia = detailHeroContent
+    ? enrichmentMediaById[detailHeroContent.storyMediaId] ?? detailHeroFallbackMedia
+    : enrichmentMediaById['team-planning'];
+  const pageExperience = detailHeroContent?.pageExperience ?? defaultPageExperience;
+  const experienceClass = getExperienceClass(pageExperience);
   const heroComposition = detailHeroContent?.heroComposition ?? 'text-right';
   const heroGridClass =
-    heroComposition === 'centered'
+    pageExperience.heroStyle === 'cinematic'
+      ? 'relative z-10 mx-auto flex w-full max-w-6xl flex-col justify-end gap-7'
+      : pageExperience.heroStyle === 'proofWall'
+        ? 'relative z-10 mx-auto grid w-full max-w-7xl gap-7 lg:grid-cols-[minmax(0,0.8fr)_minmax(20rem,0.45fr)] lg:items-end'
+        : pageExperience.heroStyle === 'dashboard'
+          ? 'relative z-10 mx-auto grid w-full max-w-7xl gap-7 lg:grid-cols-[minmax(0,0.62fr)_minmax(20rem,0.38fr)] lg:items-end'
+          : heroComposition === 'centered'
       ? 'relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center text-center'
       : heroComposition === 'metrics-bottom'
         ? 'relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-7'
@@ -704,7 +801,9 @@ const DetailPage = () => {
           ? 'relative z-10 mx-auto grid w-full max-w-7xl gap-7 lg:grid-cols-[minmax(20rem,0.55fr)_minmax(0,1fr)] lg:items-end'
           : 'relative z-10 mx-auto grid w-full max-w-7xl gap-7 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,0.48fr)] lg:items-end';
   const heroTextClass =
-    heroComposition === 'centered'
+    pageExperience.heroStyle === 'cinematic'
+      ? isArabic ? 'max-w-5xl text-right' : 'max-w-5xl text-left'
+      : heroComposition === 'centered'
       ? 'text-center'
       : heroComposition === 'text-left'
         ? 'text-left'
@@ -712,11 +811,25 @@ const DetailPage = () => {
           ? 'text-right'
           : 'text-left';
   const heroTitleClass =
-    heroComposition === 'centered'
+    pageExperience.heroStyle === 'cinematic'
+      ? 'max-w-[15ch]'
+      : pageExperience.heroStyle === 'editorial'
+        ? 'max-w-[18ch]'
+        : heroComposition === 'centered'
       ? 'mx-auto max-w-[14ch]'
       : heroComposition === 'split-media'
         ? 'max-w-[13ch]'
         : 'max-w-[12ch]';
+  const overviewClass =
+    pageExperience.contentRhythm === 'magazine'
+      ? 'grid gap-5 lg:grid-cols-[0.9fr_1.1fr]'
+      : pageExperience.contentRhythm === 'cardsDense'
+        ? 'grid gap-3 md:grid-cols-2 xl:grid-cols-3'
+        : pageExperience.contentRhythm === 'dashboardGrid'
+          ? 'grid gap-3 md:grid-cols-3'
+          : pageExperience.contentRhythm === 'storyScroll'
+            ? 'grid gap-5'
+            : 'grid gap-4';
   const variationWorldBlocks = (detailHeroContent?.sectionOrder ?? [])
     .map((block) => {
       if (block === 'timeline') return 'roadmap';
@@ -765,7 +878,7 @@ const DetailPage = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden pb-20 md:pb-28">
+    <section className={`relative overflow-hidden pb-20 md:pb-28 ${experienceClass}`}>
       <div className="pointer-events-none absolute inset-0 z-[-1] overflow-hidden">
         <div className="mobile-ornament absolute right-[-10%] top-10 h-[28rem] w-[28rem] rounded-full bg-cyan-500/10 blur-[140px]" />
         <div className="mobile-ornament absolute bottom-[18%] left-[-12%] h-[30rem] w-[30rem] rounded-full bg-amber-400/8 blur-[150px]" />
@@ -839,7 +952,16 @@ const DetailPage = () => {
 
         <div className="mt-10 grid gap-5">
           <div className="grid gap-6">
-            <div id="overview" className="grid gap-4">
+            <DetailStoryPanel
+              experience={pageExperience}
+              isArabic={isArabic}
+              media={detailStoryMedia}
+              page={displayPage}
+              shouldReduceMotion={shouldReduceMotion}
+              text={text}
+            />
+
+            <div id="overview" className={overviewClass}>
               {displayPage.sections.map((section, index) => (
                 <motion.article
                   key={section.title.en}
@@ -847,7 +969,7 @@ const DetailPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.07 }}
-                  className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 md:rounded-[2rem] md:p-7"
+                  className="detail-overview-card rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 md:rounded-[2rem] md:p-7"
                 >
                   <div className="flex items-start gap-4">
                     <span className="font-display text-3xl font-black text-white/10">0{index + 1}</span>

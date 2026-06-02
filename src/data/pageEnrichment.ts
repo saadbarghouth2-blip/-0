@@ -1,6 +1,12 @@
 import { stripLanguagePrefix } from '../lib/localizedPath';
 import { enrichmentMediaById } from './enrichmentMedia';
-import { getPageVariation, type HeroComposition, type VariationLayout, type VariationSection } from './pageVariations';
+import {
+  getPageVariation,
+  type HeroComposition,
+  type PageExperienceConfig,
+  type VariationLayout,
+  type VariationSection,
+} from './pageVariations';
 
 export interface LocalizedCopy {
   ar: string;
@@ -30,6 +36,7 @@ export interface PageEnrichmentContent {
   layoutVariant?: VariationLayout;
   heroComposition?: HeroComposition;
   sectionOrder?: VariationSection[];
+  pageExperience?: PageExperienceConfig;
   tone?: string;
   accent?: string;
   eyebrow: LocalizedCopy;
@@ -359,6 +366,7 @@ const withVariation = (profile: PageEnrichmentContent, path: string): PageEnrich
     layoutVariant: variation.layoutVariant,
     heroComposition: variation.heroComposition,
     sectionOrder: variation.sectionOrder,
+    pageExperience: variation.pageExperience,
     tone: variation.tone,
     accent: variation.accent,
     eyebrow: variation.eyebrow ?? profile.eyebrow,
@@ -374,6 +382,13 @@ const profileByRoute = (path: string) => {
   const normalized = stripLanguagePrefix(path);
 
   if (normalized === '/') return pageEnrichmentProfiles.home;
+  if (normalized.startsWith('/home/')) {
+    return withVariation(withVideo(pageEnrichmentProfiles.home, normalized, [
+      'home-interface',
+      'projects-interface-scroll',
+      'digital-workflow',
+    ]), normalized);
+  }
   if (normalized === '/about') return pageEnrichmentProfiles.about;
   if (normalized.startsWith('/about/')) {
     return withVariation(withVideo(pageEnrichmentProfiles.about, normalized, [

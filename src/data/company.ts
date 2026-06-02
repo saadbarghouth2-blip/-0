@@ -1954,6 +1954,100 @@ export const detailWorldEnhancements: Record<string, DetailWorldEnhancement> = {
   }
 };
 
+const makeExperienceSpecificEnhancement = (page: DetailPageContent): DetailWorldEnhancement => {
+  const isService = page.parentPath === '/services';
+  const isContact = page.parentPath === '/contact';
+  const isProof = page.parentPath === '/testimonials' || page.layoutVariant === 'proof';
+  const isAbout = page.parentPath === '/about';
+  const routeLabel = `${page.parentPath}/${page.slug}`;
+  const slugWords = page.slug.split('-').length;
+  const contentDepth = page.sections.length + page.deliverables.length + page.useCases.length;
+
+  const focusLabel = isService
+    ? richCopy('تفاصيل تنفيذ مرتبطة بالخدمة', 'service-linked delivery details')
+    : isContact
+      ? richCopy('محاور تجهيز قبل التواصل', 'pre-contact preparation points')
+      : isProof
+        ? richCopy('دلائل ثقة قابلة للفحص', 'auditable trust proof')
+        : isAbout
+          ? richCopy('معايير تشغيل داخل نُطق', 'Notaq operating standards')
+          : richCopy('طبقات قرار داخل الصفحة', 'decision layers inside the page');
+
+  return {
+    metrics: [
+      { value: `${contentDepth}+`, label: focusLabel },
+      { value: `${Math.max(3, slugWords + 2)}`, label: richCopy('زوايا عرض مختلفة داخل التجربة', 'different presentation angles') },
+      { value: isService ? 'B2B' : isContact ? '24h' : isProof ? 'Proof' : 'UX', label: richCopy('إشارة تركيز خاصة بهذه الصفحة', 'page-specific focus signal') },
+    ],
+    faq: [
+      {
+        question: richCopy(`ما الذي يجعل صفحة ${page.title.ar} مختلفة بصرياً؟`, `What makes ${page.title.en} visually different?`),
+        answer: richCopy(
+          `هذه الصفحة لا تعتمد على نفس ترتيب الكروت؛ يتم عرض ${page.eyebrow.ar} بإيقاع مختلف وصورة/فيديو مرتبط بالهدف ثم أقسام قرار مخصصة.`,
+          `This page does not rely on the same card order; ${page.eyebrow.en} is presented through a distinct rhythm, goal-related media, and custom decision sections.`,
+        ),
+      },
+      {
+        question: richCopy('هل التفاصيل هنا مجرد شرح طويل؟', 'Are these details just long explanation?'),
+        answer: richCopy(
+          'لا. كل كتلة مرتبطة بسؤال عملي: ماذا أفهم؟ ماذا أستلم؟ ماذا أخاف؟ وما الخطوة التالية المناسبة؟',
+          'No. Every block connects to a practical question: what do I understand, what do I receive, what might worry me, and what next step fits?',
+        ),
+      },
+      {
+        question: richCopy('هل الصفحة مناسبة للموبايل رغم كثرة التفاصيل؟', 'Is the page suitable for mobile despite the extra detail?'),
+        answer: richCopy(
+          'نعم، لأن التفاصيل تقسم إلى وحدات قصيرة ومسارات قراءة واضحة بدلاً من كتلة نصية طويلة أو كروت متشابهة.',
+          'Yes. Details are divided into short units and clear reading paths instead of a long text wall or repeated cards.',
+        ),
+      },
+    ],
+    proofPoints: [
+      {
+        title: richCopy('هوية عرض مختلفة', 'Distinct presentation identity'),
+        body: richCopy(
+          `تم ربط ${routeLabel} بتجربة عرض خاصة حتى لا تبدو الصفحة نسخة من صفحة أخرى داخل نفس القائمة.`,
+          `${routeLabel} is tied to a specific presentation experience so it does not feel copied from another dropdown page.`,
+        ),
+      },
+      {
+        title: richCopy('ميديا تخدم القرار', 'Decision-serving media'),
+        body: richCopy(
+          'الصورة أو الفيديو لا يستخدم كخلفية فقط؛ يظهر كدليل بصري أو لوحة قصة أو مساحة تلخيص حسب هدف الصفحة.',
+          'The image or video is not used as decoration only; it appears as visual proof, story panel, or summary space depending on page intent.',
+        ),
+      },
+      {
+        title: richCopy('تفاصيل قابلة للتصفح', 'Browsable detail'),
+        body: richCopy(
+          'تم توزيع العمق بين مقاييس، مصفوفات، سيناريوهات، وأسئلة حتى لا يشعر الزائر بتكرار نفس القالب.',
+          'Depth is distributed across metrics, matrices, scenarios, and questions so visitors do not feel the same template repeating.',
+        ),
+      },
+    ],
+    decisionMatrix: [
+      {
+        label: richCopy('القارئ السريع', 'Fast scanner'),
+        value: page.metrics?.[0]?.label ?? page.eyebrow,
+        note: richCopy('يحتاج عنواناً واضحاً ومؤشراً سريعاً يثبت لماذا هذه الصفحة مهمة له.', 'Needs a clear heading and fast signal proving why this page matters.'),
+      },
+      {
+        label: richCopy('صاحب القرار', 'Decision maker'),
+        value: page.promise,
+        note: richCopy('يريد معرفة النتيجة التي سيحصل عليها قبل الدخول في التفاصيل الطويلة.', 'Wants to know the outcome before entering deeper detail.'),
+      },
+      {
+        label: richCopy('فريق التنفيذ', 'Execution team'),
+        value: page.deliverables[0] ?? page.title,
+        note: richCopy('يبحث عن مخرجات يمكن تحويلها إلى عمل واضح أو مراجعة داخلية.', 'Looks for outputs that can become clear work or internal review.'),
+      },
+    ],
+  };
+};
+
 addedDeepPages.forEach((page) => {
-  detailWorldEnhancements[`${page.parentPath}/${page.slug}`] = makeDeepEnhancement(page);
+  detailWorldEnhancements[`${page.parentPath}/${page.slug}`] = {
+    ...makeDeepEnhancement(page),
+    ...makeExperienceSpecificEnhancement(page),
+  };
 });

@@ -231,6 +231,87 @@ html[data-theme='light'] ::-webkit-scrollbar-track {
   backface-visibility: hidden;
 }
 
+.detail-experience {
+  --detail-accent: rgba(45, 212, 191, 0.32);
+  --detail-panel: rgba(6, 16, 22, 0.58);
+}
+
+.detail-treatment-commerce {
+  --detail-accent: rgba(251, 191, 36, 0.34);
+  --detail-panel: rgba(25, 15, 6, 0.54);
+}
+
+.detail-treatment-technical {
+  --detail-accent: rgba(96, 165, 250, 0.34);
+  --detail-panel: rgba(7, 13, 28, 0.58);
+}
+
+.detail-treatment-proof {
+  --detail-accent: rgba(52, 211, 153, 0.34);
+  --detail-panel: rgba(7, 24, 20, 0.56);
+}
+
+.detail-treatment-editorial {
+  --detail-accent: rgba(251, 113, 133, 0.28);
+  --detail-panel: rgba(22, 10, 18, 0.5);
+}
+
+.detail-experience .section-kicker {
+  border-color: color-mix(in srgb, var(--detail-accent) 55%, rgba(255, 255, 255, 0.08));
+}
+
+.detail-hero-cinematic h1 {
+  max-width: min(15ch, 100%);
+}
+
+.detail-hero-dashboard .site-scroll-progress,
+.detail-hero-dashboard .detail-story-panel {
+  box-shadow: 0 28px 100px -64px var(--detail-accent);
+}
+
+.detail-hero-proofWall .detail-overview-card,
+.detail-treatment-proof .surface-card-strong {
+  border-color: color-mix(in srgb, var(--detail-accent) 50%, rgba(255, 255, 255, 0.08));
+}
+
+.detail-hero-editorial .detail-overview-card:nth-child(1),
+.detail-rhythm-magazine .detail-overview-card:nth-child(1) {
+  min-height: 18rem;
+}
+
+.detail-rhythm-zigzag .detail-overview-card:nth-child(even) {
+  margin-inline-start: clamp(0rem, 6vw, 5rem);
+}
+
+.detail-rhythm-zigzag .detail-overview-card:nth-child(odd) {
+  margin-inline-end: clamp(0rem, 6vw, 5rem);
+}
+
+.detail-rhythm-dashboardGrid .detail-overview-card,
+.detail-rhythm-cardsDense .detail-overview-card {
+  background: linear-gradient(145deg, var(--detail-panel), rgba(255, 255, 255, 0.025));
+}
+
+.detail-rhythm-storyScroll .detail-overview-card {
+  position: sticky;
+  top: 6rem;
+}
+
+.detail-story-panel {
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--detail-accent) 55%, transparent), transparent 36%),
+    linear-gradient(135deg, var(--detail-panel), rgba(255, 255, 255, 0.025));
+}
+
+@media (max-width: 767px) {
+  .detail-rhythm-zigzag .detail-overview-card:nth-child(n),
+  .detail-rhythm-storyScroll .detail-overview-card {
+    margin-inline: 0;
+    position: relative;
+    top: auto;
+  }
+}
+
 .section-shell {
   padding-left: 0.75rem;
   padding-right: 0.75rem;

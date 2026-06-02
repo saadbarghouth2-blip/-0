@@ -17,6 +17,44 @@ export type HeroComposition =
   | 'split-media'
   | 'metrics-bottom';
 
+export type PageHeroStyle =
+  | 'cinematic'
+  | 'splitShowcase'
+  | 'dashboard'
+  | 'editorial'
+  | 'proofWall'
+  | 'processMap';
+
+export type PageContentRhythm =
+  | 'zigzag'
+  | 'magazine'
+  | 'cardsDense'
+  | 'timelineFirst'
+  | 'dashboardGrid'
+  | 'storyScroll';
+
+export type PageVisualTreatment =
+  | 'glass'
+  | 'editorial'
+  | 'technical'
+  | 'commerce'
+  | 'proof'
+  | 'minimal';
+
+export type PageMediaRole =
+  | 'backgroundVideo'
+  | 'heroImage'
+  | 'storyImage'
+  | 'galleryStrip'
+  | 'mockupPanel';
+
+export interface PageExperienceConfig {
+  heroStyle: PageHeroStyle;
+  contentRhythm: PageContentRhythm;
+  visualTreatment: PageVisualTreatment;
+  mediaRole: PageMediaRole;
+}
+
 export type VariationSection =
   | 'timeline'
   | 'comparison'
@@ -37,6 +75,7 @@ export interface PageVariationConfig {
   heroMediaId: string;
   storyMediaId: string;
   videoMediaId: string;
+  pageExperience?: PageExperienceConfig;
   eyebrow?: { ar: string; en: string };
   title?: { ar: string; en: string };
   lead?: { ar: string; en: string };
@@ -47,39 +86,42 @@ export interface PageVariationConfig {
 
 const routeKey = (path: string) => path.replace(/^\/en(?=\/|$)/, '') || '/';
 
-const serviceMediaByFamily: Record<string, Pick<PageVariationConfig, 'heroMediaId' | 'storyMediaId' | 'videoMediaId' | 'layoutVariant' | 'heroComposition' | 'tone' | 'accent' | 'sectionOrder'>> = {
+const serviceMediaByFamily: Record<string, Pick<PageVariationConfig, 'heroMediaId' | 'storyMediaId' | 'videoMediaId' | 'layoutVariant' | 'heroComposition' | 'tone' | 'accent' | 'sectionOrder' | 'pageExperience'>> = {
   presence: {
-    heroMediaId: 'subpage-service-interface',
-    storyMediaId: 'services-story-code',
+    heroMediaId: 'detail-presence-interface',
+    storyMediaId: 'detail-blueprint-board',
     videoMediaId: 'home-interface',
     layoutVariant: 'service',
     heroComposition: 'text-right',
     tone: 'cyan',
     accent: 'from-cyan-400/20 via-sky-500/10 to-transparent',
     sectionOrder: ['comparison', 'deliverables', 'timeline', 'matrix', 'proof', 'faq'],
+    pageExperience: { heroStyle: 'splitShowcase', contentRhythm: 'zigzag', visualTreatment: 'glass', mediaRole: 'mockupPanel' },
   },
   sales: {
-    heroMediaId: 'subpage-commerce-analytics',
-    storyMediaId: 'product-build',
+    heroMediaId: 'detail-commerce-store',
+    storyMediaId: 'subpage-commerce-analytics',
     videoMediaId: 'projects-interface-scroll',
     layoutVariant: 'visual-hub',
     heroComposition: 'metrics-bottom',
     tone: 'amber',
     accent: 'from-amber-300/20 via-orange-500/10 to-transparent',
     sectionOrder: ['scenarios', 'comparison', 'matrix', 'deliverables', 'proof', 'faq'],
+    pageExperience: { heroStyle: 'dashboard', contentRhythm: 'dashboardGrid', visualTreatment: 'commerce', mediaRole: 'galleryStrip' },
   },
   systems: {
-    heroMediaId: 'subpage-systems-dashboard',
-    storyMediaId: 'strategy-board',
+    heroMediaId: 'detail-dashboard-mockup',
+    storyMediaId: 'subpage-systems-dashboard',
     videoMediaId: 'digital-workflow',
     layoutVariant: 'method',
     heroComposition: 'split-media',
     tone: 'emerald',
     accent: 'from-emerald-400/20 via-teal-500/10 to-transparent',
     sectionOrder: ['timeline', 'matrix', 'scenarios', 'comparison', 'proof', 'faq'],
+    pageExperience: { heroStyle: 'dashboard', contentRhythm: 'timelineFirst', visualTreatment: 'technical', mediaRole: 'mockupPanel' },
   },
   marketing: {
-    heroMediaId: 'subpage-content-writing',
+    heroMediaId: 'detail-editorial-desk',
     storyMediaId: 'blog-story-research',
     videoMediaId: 'blog-writing',
     layoutVariant: 'editorial',
@@ -87,9 +129,10 @@ const serviceMediaByFamily: Record<string, Pick<PageVariationConfig, 'heroMediaI
     tone: 'rose',
     accent: 'from-rose-400/18 via-amber-500/10 to-transparent',
     sectionOrder: ['proof', 'comparison', 'scenarios', 'deliverables', 'matrix', 'faq'],
+    pageExperience: { heroStyle: 'editorial', contentRhythm: 'magazine', visualTreatment: 'editorial', mediaRole: 'storyImage' },
   },
   experience: {
-    heroMediaId: 'subpage-brand-board',
+    heroMediaId: 'detail-brand-system',
     storyMediaId: 'about-story-notes',
     videoMediaId: 'about-team-review',
     layoutVariant: 'visual-hub',
@@ -97,26 +140,29 @@ const serviceMediaByFamily: Record<string, Pick<PageVariationConfig, 'heroMediaI
     tone: 'violet',
     accent: 'from-violet-400/20 via-cyan-500/10 to-transparent',
     sectionOrder: ['comparison', 'proof', 'matrix', 'timeline', 'scenarios', 'faq'],
+    pageExperience: { heroStyle: 'cinematic', contentRhythm: 'storyScroll', visualTreatment: 'glass', mediaRole: 'heroImage' },
   },
   ai: {
-    heroMediaId: 'subpage-ai-workflow',
-    storyMediaId: 'product-build',
+    heroMediaId: 'detail-ai-product',
+    storyMediaId: 'subpage-ai-workflow',
     videoMediaId: 'digital-workflow',
     layoutVariant: 'method',
     heroComposition: 'split-media',
     tone: 'blue',
     accent: 'from-blue-400/18 via-fuchsia-500/10 to-transparent',
     sectionOrder: ['scenarios', 'matrix', 'comparison', 'timeline', 'proof', 'faq'],
+    pageExperience: { heroStyle: 'processMap', contentRhythm: 'cardsDense', visualTreatment: 'technical', mediaRole: 'backgroundVideo' },
   },
   operations: {
-    heroMediaId: 'subpage-standards-desk',
-    storyMediaId: 'services-story-code',
+    heroMediaId: 'detail-quality-workspace',
+    storyMediaId: 'subpage-standards-desk',
     videoMediaId: 'services-code-build',
     layoutVariant: 'contact',
     heroComposition: 'metrics-bottom',
     tone: 'teal',
     accent: 'from-teal-400/20 via-amber-500/10 to-transparent',
     sectionOrder: ['checklist', 'timeline', 'comparison', 'proof', 'matrix', 'faq'],
+    pageExperience: { heroStyle: 'processMap', contentRhythm: 'timelineFirst', visualTreatment: 'minimal', mediaRole: 'storyImage' },
   },
 };
 
@@ -236,6 +282,251 @@ const explicitVariations: Record<string, PageVariationConfig> = {
   },
 };
 
+const detailRouteVariations: Record<string, PageVariationConfig> = {
+  '/home/homepage-blueprint': {
+    layoutVariant: 'editorial',
+    heroComposition: 'split-media',
+    sectionOrder: ['timeline', 'matrix', 'comparison', 'proof', 'scenarios', 'faq'],
+    tone: 'cyan',
+    accent: 'from-cyan-400/20 via-emerald-500/10 to-transparent',
+    heroMediaId: 'detail-cinematic-home',
+    storyMediaId: 'detail-blueprint-board',
+    videoMediaId: 'home-interface',
+    pageExperience: { heroStyle: 'cinematic', contentRhythm: 'storyScroll', visualTreatment: 'glass', mediaRole: 'mockupPanel' },
+  },
+  '/home/trust-layers': {
+    layoutVariant: 'proof',
+    heroComposition: 'centered',
+    sectionOrder: ['proof', 'comparison', 'scenarios', 'matrix', 'timeline', 'faq'],
+    tone: 'emerald',
+    accent: 'from-emerald-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-proof-interface',
+    storyMediaId: 'subpage-proof-meeting',
+    videoMediaId: 'testimonials-client-call',
+    pageExperience: { heroStyle: 'proofWall', contentRhythm: 'cardsDense', visualTreatment: 'proof', mediaRole: 'galleryStrip' },
+  },
+  '/home/conversion-path': {
+    layoutVariant: 'method',
+    heroComposition: 'metrics-bottom',
+    sectionOrder: ['matrix', 'timeline', 'scenarios', 'comparison', 'proof', 'faq'],
+    tone: 'amber',
+    accent: 'from-amber-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-conversion-path',
+    storyMediaId: 'subpage-commerce-analytics',
+    videoMediaId: 'projects-interface-scroll',
+    pageExperience: { heroStyle: 'dashboard', contentRhythm: 'dashboardGrid', visualTreatment: 'commerce', mediaRole: 'backgroundVideo' },
+  },
+  '/home/mobile-first-journey': {
+    layoutVariant: 'method',
+    heroComposition: 'text-left',
+    sectionOrder: ['checklist', 'scenarios', 'timeline', 'matrix', 'proof', 'faq'],
+    tone: 'blue',
+    accent: 'from-blue-400/18 via-violet-500/10 to-transparent',
+    heroMediaId: 'detail-mobile-flow',
+    storyMediaId: 'home-story-strategy',
+    videoMediaId: 'home-interface',
+    pageExperience: { heroStyle: 'processMap', contentRhythm: 'zigzag', visualTreatment: 'technical', mediaRole: 'storyImage' },
+  },
+  '/about/quality-system': {
+    layoutVariant: 'method',
+    heroComposition: 'split-media',
+    sectionOrder: ['checklist', 'timeline', 'matrix', 'proof', 'comparison', 'faq'],
+    tone: 'teal',
+    accent: 'from-teal-400/20 via-emerald-500/10 to-transparent',
+    heroMediaId: 'detail-quality-workspace',
+    storyMediaId: 'subpage-standards-desk',
+    videoMediaId: 'services-code-build',
+    pageExperience: { heroStyle: 'processMap', contentRhythm: 'timelineFirst', visualTreatment: 'minimal', mediaRole: 'storyImage' },
+  },
+  '/about/collaboration-style': {
+    layoutVariant: 'narrative',
+    heroComposition: 'centered',
+    sectionOrder: ['timeline', 'scenarios', 'proof', 'matrix', 'comparison', 'faq'],
+    tone: 'cyan',
+    accent: 'from-cyan-400/20 via-blue-500/10 to-transparent',
+    heroMediaId: 'detail-collaboration-room',
+    storyMediaId: 'client-workshop',
+    videoMediaId: 'about-team-review',
+    pageExperience: { heroStyle: 'splitShowcase', contentRhythm: 'storyScroll', visualTreatment: 'glass', mediaRole: 'galleryStrip' },
+  },
+  '/about/tools-and-standards': {
+    layoutVariant: 'method',
+    heroComposition: 'metrics-bottom',
+    sectionOrder: ['matrix', 'checklist', 'timeline', 'proof', 'scenarios', 'faq'],
+    tone: 'blue',
+    accent: 'from-blue-400/18 via-emerald-500/10 to-transparent',
+    heroMediaId: 'detail-standards-stack',
+    storyMediaId: 'services-story-code',
+    videoMediaId: 'digital-workflow',
+    pageExperience: { heroStyle: 'dashboard', contentRhythm: 'dashboardGrid', visualTreatment: 'technical', mediaRole: 'mockupPanel' },
+  },
+  '/about/why-notaq': {
+    layoutVariant: 'proof',
+    heroComposition: 'text-left',
+    sectionOrder: ['comparison', 'proof', 'scenarios', 'timeline', 'matrix', 'faq'],
+    tone: 'violet',
+    accent: 'from-violet-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-brand-system',
+    storyMediaId: 'about-story-notes',
+    videoMediaId: 'contact-organizing-tasks',
+    pageExperience: { heroStyle: 'cinematic', contentRhythm: 'magazine', visualTreatment: 'proof', mediaRole: 'heroImage' },
+  },
+  '/services/service-audit': {
+    layoutVariant: 'method',
+    heroComposition: 'split-media',
+    sectionOrder: ['checklist', 'matrix', 'comparison', 'timeline', 'proof', 'faq'],
+    tone: 'cyan',
+    accent: 'from-cyan-400/20 via-blue-500/10 to-transparent',
+    heroMediaId: 'detail-audit-board',
+    storyMediaId: 'subpage-standards-desk',
+    videoMediaId: 'digital-workflow',
+    pageExperience: { heroStyle: 'processMap', contentRhythm: 'timelineFirst', visualTreatment: 'technical', mediaRole: 'storyImage' },
+  },
+  '/services/service-bundles': {
+    layoutVariant: 'visual-hub',
+    heroComposition: 'metrics-bottom',
+    sectionOrder: ['matrix', 'scenarios', 'comparison', 'proof', 'timeline', 'faq'],
+    tone: 'emerald',
+    accent: 'from-emerald-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-bundles-map',
+    storyMediaId: 'strategy-board',
+    videoMediaId: 'home-interface',
+    pageExperience: { heroStyle: 'dashboard', contentRhythm: 'dashboardGrid', visualTreatment: 'glass', mediaRole: 'mockupPanel' },
+  },
+  '/services/launch-readiness': {
+    layoutVariant: 'contact',
+    heroComposition: 'text-right',
+    sectionOrder: ['checklist', 'timeline', 'matrix', 'proof', 'comparison', 'faq'],
+    tone: 'amber',
+    accent: 'from-amber-400/20 via-teal-500/10 to-transparent',
+    heroMediaId: 'detail-launch-checklist',
+    storyMediaId: 'detail-quality-workspace',
+    videoMediaId: 'services-code-build',
+    pageExperience: { heroStyle: 'processMap', contentRhythm: 'timelineFirst', visualTreatment: 'minimal', mediaRole: 'storyImage' },
+  },
+  '/services/support-maintenance': {
+    layoutVariant: 'method',
+    heroComposition: 'centered',
+    sectionOrder: ['timeline', 'checklist', 'scenarios', 'matrix', 'proof', 'faq'],
+    tone: 'teal',
+    accent: 'from-teal-400/20 via-amber-500/10 to-transparent',
+    heroMediaId: 'detail-support-loop',
+    storyMediaId: 'subpage-standards-desk',
+    videoMediaId: 'contact-organizing-tasks',
+    pageExperience: { heroStyle: 'editorial', contentRhythm: 'storyScroll', visualTreatment: 'minimal', mediaRole: 'storyImage' },
+  },
+  '/services/integration-map': {
+    layoutVariant: 'method',
+    heroComposition: 'split-media',
+    sectionOrder: ['matrix', 'scenarios', 'timeline', 'comparison', 'proof', 'faq'],
+    tone: 'blue',
+    accent: 'from-blue-400/18 via-emerald-500/10 to-transparent',
+    heroMediaId: 'detail-integration-map',
+    storyMediaId: 'subpage-systems-dashboard',
+    videoMediaId: 'digital-workflow',
+    pageExperience: { heroStyle: 'dashboard', contentRhythm: 'dashboardGrid', visualTreatment: 'technical', mediaRole: 'mockupPanel' },
+  },
+  '/services/growth-roadmap': {
+    layoutVariant: 'editorial',
+    heroComposition: 'text-left',
+    sectionOrder: ['timeline', 'proof', 'scenarios', 'matrix', 'comparison', 'faq'],
+    tone: 'violet',
+    accent: 'from-violet-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-growth-roadmap',
+    storyMediaId: 'subpage-editorial-research',
+    videoMediaId: 'blog-writing',
+    pageExperience: { heroStyle: 'editorial', contentRhythm: 'magazine', visualTreatment: 'editorial', mediaRole: 'galleryStrip' },
+  },
+  '/testimonials/result-types': {
+    layoutVariant: 'proof',
+    heroComposition: 'metrics-bottom',
+    sectionOrder: ['proof', 'matrix', 'comparison', 'scenarios', 'timeline', 'faq'],
+    tone: 'cyan',
+    accent: 'from-cyan-400/20 via-emerald-500/10 to-transparent',
+    heroMediaId: 'detail-proof-interface',
+    storyMediaId: 'testimonials-story-handshake',
+    videoMediaId: 'testimonials-client-call',
+    pageExperience: { heroStyle: 'proofWall', contentRhythm: 'dashboardGrid', visualTreatment: 'proof', mediaRole: 'galleryStrip' },
+  },
+  '/testimonials/client-before-after': {
+    layoutVariant: 'proof',
+    heroComposition: 'split-media',
+    sectionOrder: ['comparison', 'proof', 'timeline', 'scenarios', 'matrix', 'faq'],
+    tone: 'emerald',
+    accent: 'from-emerald-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-before-after',
+    storyMediaId: 'projects-story-mockup',
+    videoMediaId: 'projects-interface-scroll',
+    pageExperience: { heroStyle: 'splitShowcase', contentRhythm: 'zigzag', visualTreatment: 'proof', mediaRole: 'mockupPanel' },
+  },
+  '/testimonials/review-audit': {
+    layoutVariant: 'editorial',
+    heroComposition: 'centered',
+    sectionOrder: ['checklist', 'matrix', 'proof', 'comparison', 'scenarios', 'faq'],
+    tone: 'amber',
+    accent: 'from-amber-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-review-audit',
+    storyMediaId: 'subpage-editorial-research',
+    videoMediaId: 'about-team-review',
+    pageExperience: { heroStyle: 'editorial', contentRhythm: 'magazine', visualTreatment: 'editorial', mediaRole: 'storyImage' },
+  },
+  '/testimonials/proof-library': {
+    layoutVariant: 'proof',
+    heroComposition: 'text-right',
+    sectionOrder: ['proof', 'scenarios', 'comparison', 'matrix', 'timeline', 'faq'],
+    tone: 'blue',
+    accent: 'from-blue-400/18 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-proof-library',
+    storyMediaId: 'subpage-proof-meeting',
+    videoMediaId: 'contact-organizing-tasks',
+    pageExperience: { heroStyle: 'proofWall', contentRhythm: 'cardsDense', visualTreatment: 'proof', mediaRole: 'galleryStrip' },
+  },
+  '/contact/project-readiness': {
+    layoutVariant: 'contact',
+    heroComposition: 'split-media',
+    sectionOrder: ['checklist', 'matrix', 'timeline', 'scenarios', 'proof', 'faq'],
+    tone: 'cyan',
+    accent: 'from-cyan-400/20 via-emerald-500/10 to-transparent',
+    heroMediaId: 'detail-contact-ready',
+    storyMediaId: 'subpage-contact-brief',
+    videoMediaId: 'contact-organizing-tasks',
+    pageExperience: { heroStyle: 'processMap', contentRhythm: 'timelineFirst', visualTreatment: 'minimal', mediaRole: 'storyImage' },
+  },
+  '/contact/meeting-prep': {
+    layoutVariant: 'contact',
+    heroComposition: 'centered',
+    sectionOrder: ['timeline', 'checklist', 'scenarios', 'matrix', 'proof', 'faq'],
+    tone: 'amber',
+    accent: 'from-amber-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-meeting-prep',
+    storyMediaId: 'client-workshop',
+    videoMediaId: 'about-team-review',
+    pageExperience: { heroStyle: 'splitShowcase', contentRhythm: 'storyScroll', visualTreatment: 'glass', mediaRole: 'galleryStrip' },
+  },
+  '/contact/response-process': {
+    layoutVariant: 'contact',
+    heroComposition: 'metrics-bottom',
+    sectionOrder: ['timeline', 'matrix', 'comparison', 'proof', 'checklist', 'faq'],
+    tone: 'emerald',
+    accent: 'from-emerald-400/20 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-response-process',
+    storyMediaId: 'contact-story-brief',
+    videoMediaId: 'contact-organizing-tasks',
+    pageExperience: { heroStyle: 'processMap', contentRhythm: 'dashboardGrid', visualTreatment: 'technical', mediaRole: 'backgroundVideo' },
+  },
+  '/contact/scope-request': {
+    layoutVariant: 'contact',
+    heroComposition: 'text-left',
+    sectionOrder: ['matrix', 'checklist', 'comparison', 'timeline', 'scenarios', 'faq'],
+    tone: 'blue',
+    accent: 'from-blue-400/18 via-cyan-500/10 to-transparent',
+    heroMediaId: 'detail-scope-request',
+    storyMediaId: 'subpage-contact-brief',
+    videoMediaId: 'blog-writing',
+    pageExperience: { heroStyle: 'dashboard', contentRhythm: 'cardsDense', visualTreatment: 'technical', mediaRole: 'mockupPanel' },
+  },
+};
+
 const blogCategoryVariations: Record<string, PageVariationConfig> = {
   '/blog/category/seo': {
     layoutVariant: 'editorial',
@@ -272,6 +563,34 @@ const projectVariation: PageVariationConfig = {
 };
 
 const fallbackFamilyVariation = (path: string): PageVariationConfig | undefined => {
+  if (path.startsWith('/home/')) {
+    return {
+      layoutVariant: 'narrative',
+      heroComposition: 'split-media',
+      sectionOrder: ['timeline', 'matrix', 'proof', 'scenarios', 'comparison', 'faq'],
+      tone: 'cyan',
+      accent: 'from-cyan-400/20 via-emerald-500/10 to-transparent',
+      heroMediaId: 'detail-cinematic-home',
+      storyMediaId: 'detail-blueprint-board',
+      videoMediaId: 'home-interface',
+      pageExperience: { heroStyle: 'cinematic', contentRhythm: 'zigzag', visualTreatment: 'glass', mediaRole: 'mockupPanel' },
+    };
+  }
+
+  if (path.startsWith('/about/')) {
+    return {
+      layoutVariant: 'method',
+      heroComposition: 'split-media',
+      sectionOrder: ['timeline', 'matrix', 'proof', 'comparison', 'scenarios', 'faq'],
+      tone: 'emerald',
+      accent: 'from-emerald-400/20 via-cyan-500/10 to-transparent',
+      heroMediaId: 'detail-quality-workspace',
+      storyMediaId: 'about-story-notes',
+      videoMediaId: 'about-team-review',
+      pageExperience: { heroStyle: 'processMap', contentRhythm: 'timelineFirst', visualTreatment: 'minimal', mediaRole: 'storyImage' },
+    };
+  }
+
   if (path.startsWith('/services/')) {
     const slug = path.split('/').pop();
     const service = serviceLibrary.find((item) => item.slug === slug);
@@ -309,10 +628,38 @@ const fallbackFamilyVariation = (path: string): PageVariationConfig | undefined 
     return projectVariation;
   }
 
+  if (path.startsWith('/testimonials/')) {
+    return {
+      layoutVariant: 'proof',
+      heroComposition: 'metrics-bottom',
+      sectionOrder: ['proof', 'comparison', 'scenarios', 'matrix', 'timeline', 'faq'],
+      tone: 'teal',
+      accent: 'from-teal-400/20 via-cyan-500/10 to-transparent',
+      heroMediaId: 'detail-proof-library',
+      storyMediaId: 'testimonials-story-handshake',
+      videoMediaId: 'testimonials-client-call',
+      pageExperience: { heroStyle: 'proofWall', contentRhythm: 'cardsDense', visualTreatment: 'proof', mediaRole: 'galleryStrip' },
+    };
+  }
+
+  if (path.startsWith('/contact/')) {
+    return {
+      layoutVariant: 'contact',
+      heroComposition: 'split-media',
+      sectionOrder: ['checklist', 'timeline', 'matrix', 'comparison', 'proof', 'faq'],
+      tone: 'blue',
+      accent: 'from-blue-400/18 via-cyan-500/10 to-transparent',
+      heroMediaId: 'detail-contact-ready',
+      storyMediaId: 'subpage-contact-brief',
+      videoMediaId: 'contact-organizing-tasks',
+      pageExperience: { heroStyle: 'processMap', contentRhythm: 'timelineFirst', visualTreatment: 'technical', mediaRole: 'storyImage' },
+    };
+  }
+
   return undefined;
 };
 
 export const getPageVariation = (path: string): PageVariationConfig | undefined => {
   const normalized = routeKey(path);
-  return explicitVariations[normalized] ?? fallbackFamilyVariation(normalized);
+  return explicitVariations[normalized] ?? detailRouteVariations[normalized] ?? fallbackFamilyVariation(normalized);
 };
