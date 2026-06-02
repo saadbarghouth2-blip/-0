@@ -92,7 +92,6 @@ const DetailPageEnhanced: React.FC<DetailPageEnhancedProps> = ({ page, isLoading
   const isArabic = lang === 'ar';
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
   const enrichment = page ? getPageEnrichment(`${page.parentPath}/${page.slug}`) : undefined;
@@ -468,31 +467,21 @@ const DetailPageEnhanced: React.FC<DetailPageEnhancedProps> = ({ page, isLoading
                   transition={{ delay: idx * 0.05 }}
                   className="border border-white/10 rounded-lg overflow-hidden hover:border-cyan-500/30 transition-colors"
                 >
-                  <button
-                    onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
-                    className="w-full p-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors"
-                  >
+                  <div className="w-full p-4 flex items-center justify-between">
                     <p className="font-medium text-white flex-1 text-start">{text(item.question)}</p>
-                    <motion.div
-                      animate={{ rotate: expandedFaq === idx ? 180 : 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                    <div>
                       <HelpCircle className="h-5 w-5 text-cyan-400" />
-                    </motion.div>
-                  </button>
-                  <AnimatePresence>
-                    {expandedFaq === idx && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="border-t border-white/10 bg-white/[0.02] p-4"
-                      >
-                        <p className="text-slate-300 leading-7">{text(item.answer)}</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                    </div>
+                  </div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-30px' }}
+                    transition={{ duration: 0.25 }}
+                    className="border-t border-white/10 bg-white/[0.02] p-4"
+                  >
+                    <p className="text-slate-300 leading-7">{text(item.answer)}</p>
+                  </motion.div>
                 </motion.div>
               ))}
             </div>

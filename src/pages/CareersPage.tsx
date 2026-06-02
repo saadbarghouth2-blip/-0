@@ -1,10 +1,9 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ChevronDown, Check, Send, CheckCircle2, Award, Users, Heart } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Sparkles, Check, Send, CheckCircle2, Award, Users, Heart } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
-import { cn } from '../lib/utils';
 
 const openRoles = [
   {
@@ -63,9 +62,6 @@ const CareersPage = () => {
   const text = (arabic: string, english: string) => (isArabic ? arabic : english);
   const pickList = (arabic: string[], english: string[]) => (isArabic ? arabic : english);
 
-  // States
-  const [expandedRoleId, setExpandedRoleId] = useState<string | null>(null);
-  
   const [applicantName, setApplicantName] = useState('');
   const [applicantEmail, setApplicantEmail] = useState('');
   const [portfolioLink, setPortfolioLink] = useState('');
@@ -154,15 +150,11 @@ const CareersPage = () => {
 
           <div className="space-y-4">
             {openRoles.map((role) => {
-              const isExpanded = expandedRoleId === role.id;
               return (
                 <div key={role.id} className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden">
                   
                   {/* Job Accordion Header */}
-                  <button
-                    onClick={() => { setExpandedRoleId(isExpanded ? null : role.id); setFormSubmitted(false); }}
-                    className="w-full p-5 text-right flex flex-col sm:flex-row sm:justify-between sm:items-center text-xs font-bold text-white hover:bg-white/5 transition-colors gap-4"
-                  >
+                  <div className="w-full p-5 text-right flex flex-col sm:flex-row sm:justify-between sm:items-center text-xs font-bold text-white gap-4">
                     <div>
                       <h3 className="font-display text-sm md:text-base text-white">{text(role.titleAr, role.titleEn)}</h3>
                       <div className="flex flex-wrap gap-3 mt-1.5 text-[10px] text-slate-500 font-semibold">
@@ -171,19 +163,15 @@ const CareersPage = () => {
                         <span className="text-cyan-400">{text(role.experienceAr, role.experienceEn)}</span>
                       </div>
                     </div>
-                    
-                    <ChevronDown className={cn("h-5 w-5 text-slate-400 shrink-0 transition-transform self-end sm:self-auto", isExpanded && "rotate-180")} />
-                  </button>
+                  </div>
 
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="p-5 border-t border-white/5 bg-black/20 space-y-6 text-xs">
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-30px' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-5 border-t border-white/5 bg-black/20 space-y-6 text-xs">
                           
                           {/* Role Description */}
                           <div>
@@ -273,10 +261,8 @@ const CareersPage = () => {
                             )}
                           </div>
 
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                    </div>
+                  </motion.div>
                 </div>
               );
             })}

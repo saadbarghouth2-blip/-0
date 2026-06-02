@@ -28,12 +28,6 @@ import SectionTitle from '../components/SectionTitle';
 import PageHero from '../components/PageHero';
 import PageImageShowcaseSection from '../components/PageImageShowcase';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '../components/ui/accordion';
-import {
   contactFaqs,
   inquiryTypes,
   languageOptions,
@@ -338,12 +332,6 @@ const ContactPage = () => {
   );
 
   const whatsappUrl = buildWhatsAppUrl(getDefaultWhatsAppMessage(lang));
-  const faqTriggerClass = isArabic
-    ? 'px-0 py-3.5 text-right hover:no-underline [&>svg]:mt-2 [&>svg]:shrink-0 [&>svg]:text-cyan-200/65'
-    : 'px-0 py-3.5 text-left hover:no-underline [&>svg]:mt-2 [&>svg]:shrink-0 [&>svg]:text-cyan-200/65';
-  const faqAnswerClass = isArabic
-    ? 'pb-3 text-right text-[0.92rem] leading-7 text-slate-400'
-    : 'pb-3 text-left text-[0.92rem] leading-7 text-slate-400';
   const faqDesktopCardClass = isArabic
     ? 'group relative h-full overflow-hidden rounded-[1.25rem] border border-white/8 bg-[linear-gradient(180deg,rgba(11,18,32,0.9),rgba(8,13,22,0.82))] p-4 text-right shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-400/22 md:p-5'
     : 'group relative h-full overflow-hidden rounded-[1.25rem] border border-white/8 bg-[linear-gradient(180deg,rgba(11,18,32,0.9),rgba(8,13,22,0.82))] p-4 text-left shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-400/22 md:p-5';
@@ -1138,32 +1126,7 @@ const ContactPage = () => {
           <h2 className="mb-8 text-center font-display text-2xl font-bold text-white md:text-4xl">
             {content.faqTitle}
           </h2>
-          <div className="mx-auto max-w-5xl md:hidden">
-            <div className="overflow-hidden rounded-[1.7rem] border border-white/10 bg-[#09111c]/84 px-4 pb-1 pt-2 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.85)] backdrop-blur-xl">
-              <Accordion collapsible type="single" defaultValue="faq-0">
-                {contactFaqs.map((faq, index) => (
-                  <AccordionItem
-                    key={faq.qEn}
-                    value={`faq-${index}`}
-                    className="border-white/8"
-                  >
-                    <AccordionTrigger className={faqTriggerClass}>
-                      <div className="min-w-0">
-                        <span className="min-w-0 break-words text-[0.97rem] font-semibold leading-6 text-white">
-                          {isArabic ? faq.qAr : faq.qEn}
-                        </span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className={faqAnswerClass}>
-                      {isArabic ? faq.aAr : faq.aEn}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </div>
-
-          <div className="mx-auto hidden max-w-5xl gap-3 md:grid md:grid-cols-2 md:items-start lg:gap-4">
+          <div className="mx-auto grid max-w-5xl gap-3 md:grid-cols-2 md:items-start lg:gap-4">
             {contactFaqs.map((faq, index) => (
               <motion.article
                 key={faq.qEn}

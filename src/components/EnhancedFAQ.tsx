@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, HelpCircle, MessageSquare, AlertCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { HelpCircle, MessageSquare, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 
@@ -28,7 +28,6 @@ export const EnhancedFAQ: React.FC<EnhancedFAQProps> = ({
 }) => {
   const { lang } = useLanguage();
   const isArabic = lang === 'ar';
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [helpfulVotes, setHelpfulVotes] = useState<Record<string, 'yes' | 'no' | null>>({});
 
@@ -107,7 +106,6 @@ export const EnhancedFAQ: React.FC<EnhancedFAQProps> = ({
         <div className="space-y-4">
           {filteredItems.map((item, i) => {
             const IconComponent = item.icon || HelpCircle;
-            const isExpanded = expandedId === item.id;
 
             return (
               <motion.div
@@ -118,8 +116,7 @@ export const EnhancedFAQ: React.FC<EnhancedFAQProps> = ({
                 className="rounded-lg border border-slate-800 overflow-hidden"
               >
                 {/* Question */}
-                <motion.button
-                  onClick={() => setExpandedId(isExpanded ? null : item.id)}
+                <motion.div
                   className="w-full p-6 text-left bg-slate-900/30 hover:bg-slate-900/50 transition-colors flex items-start justify-between gap-4 group"
                   whileHover={{ backgroundColor: 'rgb(15, 23, 42)' }}
                 >
@@ -129,23 +126,17 @@ export const EnhancedFAQ: React.FC<EnhancedFAQProps> = ({
                       {text(item.question)}
                     </h3>
                   </div>
-                  <ChevronDown
-                    size={20}
-                    className={`flex-shrink-0 text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                  />
-                </motion.button>
+                </motion.div>
 
                 {/* Answer */}
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="bg-slate-900/20"
-                    >
-                      <div className="p-6 pt-0 border-t border-slate-800">
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.25 }}
+                  className="bg-slate-900/20"
+                >
+                  <div className="p-6 pt-0 border-t border-slate-800">
                         <p className="text-slate-300 leading-relaxed mb-6">{text(item.answer)}</p>
 
                         {/* Related Topics */}
@@ -193,10 +184,8 @@ export const EnhancedFAQ: React.FC<EnhancedFAQProps> = ({
                             {isArabic ? '👎 لا' : '👎 No'}
                           </motion.button>
                         </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                  </div>
+                </motion.div>
               </motion.div>
             );
           })}

@@ -354,22 +354,14 @@ const PricingTierCard: FC<{ tier: any }> = ({ tier }) => (
 );
 
 const FAQItem: FC<{ question: string; answer: string }> = ({ question, answer }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500 transition-colors">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-6 flex items-center justify-between hover:bg-slate-800/50 transition-colors"
-      >
+      <div className="w-full p-6 flex items-center justify-between">
         <span className="text-lg font-semibold text-white text-right">{question}</span>
-        <span className={`text-cyan-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
-      </button>
-      {isOpen && (
-        <div className="px-6 pb-6 border-t border-slate-700 text-slate-300">
-          {answer}
-        </div>
-      )}
+      </div>
+      <div className="px-6 pb-6 border-t border-slate-700 text-slate-300">
+        {answer}
+      </div>
     </div>
   );
 };

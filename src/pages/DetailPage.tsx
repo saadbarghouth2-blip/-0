@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowUpLeft,
@@ -699,8 +698,6 @@ const TestimonialSpotlightBlock = ({ isArabic, page, shouldReduceMotion, text }:
 };
 
 const ChecklistBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBlockProps) => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
   if (!page.checklist) return null;
   
   return (
@@ -717,30 +714,24 @@ const ChecklistBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBlock
       </p>
       <div className="divide-y divide-white/5">
         {page.checklist.map((item, index) => {
-          const isOpen = activeIndex === index;
           return (
             <div key={index} className="py-3 first:pt-0 last:pb-0">
-              <button
-                onClick={() => setActiveIndex(isOpen ? null : index)}
-                className="w-full flex items-center justify-between gap-3 text-right text-white hover:text-cyan-300 transition-colors"
-              >
+              <div className="w-full flex items-center justify-between gap-3 text-right text-white">
                 <div className="flex items-center gap-3">
-                  <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${isOpen ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300' : 'border-white/20 text-slate-500'}`}>
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-cyan-400 bg-cyan-500/20 text-cyan-300">
                     <Check className="h-3.5 w-3.5" />
                   </span>
                   <span className="text-sm md:text-base font-bold">{text(item.item)}</span>
                 </div>
-                <ChevronDown className={`h-4 w-4 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 text-cyan-300' : 'text-slate-500'}`} />
-              </button>
-              {isOpen && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  className="mt-2 pr-8 pl-2 text-xs md:text-sm text-slate-400 leading-6"
-                >
-                  {text(item.details)}
-                </motion.div>
-              )}
+              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                className="mt-2 pr-8 pl-2 text-xs md:text-sm text-slate-400 leading-6"
+              >
+                {text(item.details)}
+              </motion.div>
             </div>
           );
         })}

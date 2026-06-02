@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { HelpCircle, Search, ChevronDown, ThumbsUp, ThumbsDown, MessageSquare, ArrowUpLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { HelpCircle, Search, ThumbsUp, ThumbsDown, MessageSquare, ArrowUpLeft } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
@@ -54,8 +54,6 @@ const FAQPage = () => {
   // States
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  
   // Keep track of rated FAQs to prevent double rating
   const [helpfulRatings, setHelpfulRatings] = useState<Record<number, 'yes' | 'no'>>({});
 
@@ -134,7 +132,7 @@ const FAQPage = () => {
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => { setSearchQuery(e.target.value); setExpandedIndex(null); }}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={text('ابحث في مركز المساعدة...', 'Search help center...')}
               className="w-full bg-[#06090f]/60 border border-white/10 rounded-full pl-11 pr-5 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
             />
@@ -146,7 +144,7 @@ const FAQPage = () => {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => { setSelectedCategory(cat); setExpandedIndex(null); }}
+              onClick={() => setSelectedCategory(cat)}
               className={cn(
                 "px-4 py-2 rounded-full text-xs font-bold transition-all border",
                 selectedCategory === cat 
@@ -159,11 +157,10 @@ const FAQPage = () => {
           ))}
         </div>
 
-        {/* FAQ list Accordion */}
+        {/* FAQ list */}
         <div className="space-y-4 mb-20">
           {filteredFaqs.length > 0 ? (
             filteredFaqs.map((faq, idx) => {
-              const isExpanded = expandedIndex === idx;
               const hasRated = helpfulRatings[idx] !== undefined;
 
               return (
@@ -172,58 +169,43 @@ const FAQPage = () => {
                   layout
                   className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden"
                 >
-                  <button
-                    onClick={() => setExpandedIndex(isExpanded ? null : idx)}
-                    className="w-full p-5 text-right flex justify-between items-center text-xs font-bold text-white hover:bg-white/5 transition-colors gap-4"
-                  >
+                  <div className="w-full p-5 text-right flex justify-between items-center text-xs font-bold text-white gap-4">
                     <span className="font-display text-sm md:text-base leading-snug">{text(faq.qAr, faq.qEn)}</span>
-                    <ChevronDown className={cn("h-4 w-4 text-slate-400 shrink-0 transition-transform", isExpanded && "rotate-180")} />
-                  </button>
+                  </div>
 
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="p-5 border-t border-white/5 bg-black/20 space-y-4">
-                          <p className="text-xs md:text-sm leading-relaxed text-slate-400 font-body">
-                            {text(faq.aAr, faq.aEn)}
-                          </p>
+                  <div className="p-5 border-t border-white/5 bg-black/20 space-y-4">
+                    <p className="text-xs md:text-sm leading-relaxed text-slate-400 font-body">
+                      {text(faq.aAr, faq.aEn)}
+                    </p>
 
-                          {/* Helpfulness Rating card */}
-                          <div className="flex justify-between items-center border-t border-white/5 pt-4 text-[10px] text-slate-500 font-semibold">
-                            <span>{text('هل كانت هذه الإجابة مفيدة؟', 'Was this answer helpful?')}</span>
+                    {/* Helpfulness Rating card */}
+                    <div className="flex justify-between items-center border-t border-white/5 pt-4 text-[10px] text-slate-500 font-semibold">
+                      <span>{text('هل كانت هذه الإجابة مفيدة؟', 'Was this answer helpful?')}</span>
                             
-                            {!hasRated ? (
-                              <div className="flex items-center gap-2">
-                                <button 
-                                  onClick={() => handleHelpfulClick(idx, 'yes')}
-                                  className="flex items-center gap-1 bg-white/5 hover:bg-emerald-500/10 hover:text-emerald-400 border border-white/10 px-2.5 py-1 rounded transition-colors"
-                                >
-                                  <ThumbsUp className="h-3 w-3" />
-                                  {text('نعم', 'Yes')}
-                                </button>
-                                <button 
-                                  onClick={() => handleHelpfulClick(idx, 'no')}
-                                  className="flex items-center gap-1 bg-white/5 hover:bg-red-500/10 hover:text-red-400 border border-white/10 px-2.5 py-1 rounded transition-colors"
-                                >
-                                  <ThumbsDown className="h-3 w-3" />
-                                  {text('لا', 'No')}
-                                </button>
-                              </div>
-                            ) : (
-                              <span className="text-emerald-400 font-bold">
-                                {text('شكرًا لك على ملاحظاتك!', 'Thank you for your feedback!')}
-                              </span>
-                            )}
-                          </div>
+                      {!hasRated ? (
+                        <div className="flex items-center gap-2">
+                          <button 
+                            onClick={() => handleHelpfulClick(idx, 'yes')}
+                            className="flex items-center gap-1 bg-white/5 hover:bg-emerald-500/10 hover:text-emerald-400 border border-white/10 px-2.5 py-1 rounded transition-colors"
+                          >
+                            <ThumbsUp className="h-3 w-3" />
+                            {text('نعم', 'Yes')}
+                          </button>
+                          <button 
+                            onClick={() => handleHelpfulClick(idx, 'no')}
+                            className="flex items-center gap-1 bg-white/5 hover:bg-red-500/10 hover:text-red-400 border border-white/10 px-2.5 py-1 rounded transition-colors"
+                          >
+                            <ThumbsDown className="h-3 w-3" />
+                            {text('لا', 'No')}
+                          </button>
                         </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      ) : (
+                        <span className="text-emerald-400 font-bold">
+                          {text('شكرًا لك على ملاحظاتك!', 'Thank you for your feedback!')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </motion.div>
               );
             })

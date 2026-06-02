@@ -601,7 +601,6 @@ const HomePage = () => {
   const mouseX = useSpring(0, { stiffness: 40, damping: 20 });
   const mouseY = useSpring(0, { stiffness: 40, damping: 20 });
   const [mobileTestimonialIndex, setMobileTestimonialIndex] = useState(0);
-  const [activeFaqIndex, setActiveFaqIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -1970,8 +1969,8 @@ const HomePage = () => {
             </h2>
             <p className="mt-5 max-w-xl text-base leading-8 text-slate-400 md:text-lg md:leading-9">
               {text(
-                'اضغط على أي سؤال لترى الإجابة بوضوح. كل إجابة هنا مصممة لتقربك خطوة من قرار التواصل.',
-                'Tap any question to see the answer clearly. Each response is designed to move you one step closer to reaching out.',
+                'كل سؤال وإجابته ظاهران مباشرة حتى تقرأ الصورة كاملة بدون خطوات إضافية.',
+                'Every question and answer is visible upfront so you can read the full picture without extra steps.',
               )}
             </p>
 
@@ -1981,17 +1980,10 @@ const HomePage = () => {
                 const Icon = visual.icon;
 
                 return (
-                  <motion.button
+                  <motion.div
                     key={item.category}
-                    type="button"
-                    onClick={() => setActiveFaqIndex(index)}
                     whileHover={{ y: -4, scale: 1.03 }}
-                    whileTap={{ scale: 0.96 }}
-                    className={`group rounded-[1.25rem] border p-3 text-start transition-all ${
-                      activeFaqIndex === index
-                        ? 'border-cyan-300/45 bg-cyan-300/12'
-                        : 'border-white/8 bg-white/[0.03] hover:border-cyan-300/30'
-                    }`}
+                    className="group rounded-[1.25rem] border border-cyan-300/24 bg-cyan-300/[0.055] p-3 text-start transition-all"
                     aria-label={text(item.questionAr, item.questionEn)}
                   >
                     <span className={`inline-flex h-9 w-9 items-center justify-center rounded-[1rem] bg-gradient-to-br ${visual.accent} text-white shadow-lg ${visual.glow}`}>
@@ -2000,7 +1992,7 @@ const HomePage = () => {
                     <span className="mt-2 block text-[10px] font-black uppercase tracking-[0.16em] text-slate-400 group-hover:text-cyan-300">
                       {item.category}
                     </span>
-                  </motion.button>
+                  </motion.div>
                 );
               })}
             </div>
@@ -2010,7 +2002,7 @@ const HomePage = () => {
             {frequentlyAskedQuestions.map((item, index) => {
               const visual = faqVisuals[index] ?? faqVisuals[0];
               const Icon = visual.icon;
-              const isActive = activeFaqIndex === index;
+              const isActive = true;
 
               return (
                 <motion.article
@@ -2037,12 +2029,7 @@ const HomePage = () => {
                     className="absolute inset-y-0 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent"
                   />
 
-                  <button
-                    type="button"
-                    onClick={() => setActiveFaqIndex(isActive ? -1 : index)}
-                    className="relative z-10 flex w-full items-start gap-4 p-4 text-start md:p-6"
-                    aria-expanded={isActive}
-                  >
+                  <div className="relative z-10 flex w-full items-start gap-4 p-4 text-start md:p-6">
                     <span className={`mt-1 inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.15rem] bg-gradient-to-br ${visual.accent} text-white shadow-xl ${visual.glow}`}>
                       <Icon className="h-5 w-5" />
                     </span>
@@ -2059,13 +2046,7 @@ const HomePage = () => {
                         {text(item.questionAr, item.questionEn)}
                       </span>
                     </span>
-                    <motion.span
-                      animate={{ rotate: isActive ? 180 : 0 }}
-                      className="mt-2 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-cyan-300"
-                    >
-                      <ChevronDown className="h-4 w-4" />
-                    </motion.span>
-                  </button>
+                  </div>
 
                   <AnimatePresence initial={false}>
                     {isActive ? (
