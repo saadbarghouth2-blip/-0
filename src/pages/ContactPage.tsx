@@ -2,16 +2,20 @@ import { motion } from 'framer-motion';
 import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import {
   ArrowUpLeft,
+  Building2,
   CheckCircle,
   Check,
   ChevronDown,
   Clock3,
   FileText,
+  Landmark,
   Loader2,
   Mail,
+  MapPinned,
   MapPin,
   MessageCircle,
   Phone,
+  ReceiptText,
   Rocket,
   Send,
   ShieldCheck,
@@ -43,6 +47,13 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useIsMobile } from '../hooks/use-mobile';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { trackEvent } from '../lib/analytics';
+
+const legalIssuerIcons = {
+  registry: Building2,
+  tax: Landmark,
+  'tax-file': ReceiptText,
+  address: MapPinned,
+};
 import { buildWhatsAppUrl, getDefaultWhatsAppMessage } from '../lib/contactLinks';
 import { CONTACT_EMAIL, isEmailJsConfigured, sendContactEmails } from '../lib/emailjsClient';
 import { illustrationAssets } from '../lib/illustrationAssets';
@@ -765,31 +776,43 @@ const ContactPage = () => {
               </div>
 
               <div className="mt-5 grid gap-3">
-                {portfolioProfile.legalDocumentation.map((item, index) => (
-                  <motion.div
-                    key={item.value}
-                    initial={isMobile ? false : { opacity: 0, y: 12 }}
-                    whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="rounded-[1.15rem] border border-white/8 bg-black/20 p-4"
-                  >
-                    <div className="flex items-start gap-3">
-                      <FileText className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
-                          {isArabic ? item.label : item.englishLabel}
-                        </p>
-                        <p className="mt-1 break-all font-display text-lg font-black text-white" dir="ltr">
-                          {item.value}
-                        </p>
-                        <p className="mt-2 text-xs leading-6 text-slate-400">
-                          {isArabic ? item.note : item.englishNote}
-                        </p>
+                {portfolioProfile.legalDocumentation.map((item, index) => {
+                  const IssuerIcon = legalIssuerIcons[item.issuerMark];
+
+                  return (
+                    <motion.div
+                      key={item.value}
+                      initial={isMobile ? false : { opacity: 0, y: 12 }}
+                      whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.25 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="rounded-[1.15rem] border border-white/8 bg-black/20 p-4"
+                    >
+                      <div className="flex items-start gap-3">
+                        <FileText className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
+                              {isArabic ? item.label : item.englishLabel}
+                            </p>
+                            <span className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-emerald-300/15 bg-emerald-300/[0.06] px-2.5 py-1 text-[11px] font-bold text-emerald-100/85">
+                              <IssuerIcon className="h-3.5 w-3.5 shrink-0" />
+                              <span className="truncate">
+                                {isArabic ? item.issuerLabel : item.englishIssuerLabel}
+                              </span>
+                            </span>
+                          </div>
+                          <p className="mt-2 break-all font-display text-lg font-black text-white" dir="ltr">
+                            {item.value}
+                          </p>
+                          <p className="mt-2 text-xs leading-6 text-slate-400">
+                            {isArabic ? item.note : item.englishNote}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
 

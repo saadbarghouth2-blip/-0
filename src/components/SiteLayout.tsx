@@ -2,13 +2,17 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import {
   ArrowUpLeft,
+  Building2,
   ChevronDown,
   Facebook,
   Github,
+  Landmark,
   Linkedin,
   Mail,
   Menu,
   Phone,
+  ReceiptText,
+  MapPinned,
   X,
   Youtube,
 } from 'lucide-react';
@@ -27,6 +31,13 @@ const socialIcons = {
   github: Github,
   linkedin: Linkedin,
   youtube: Youtube,
+};
+
+const legalIssuerIcons = {
+  registry: Building2,
+  tax: Landmark,
+  'tax-file': ReceiptText,
+  address: MapPinned,
 };
 
 const joinClasses = (...classes: Array<string | false | null | undefined>) =>
@@ -1215,22 +1226,34 @@ const SiteLayout = () => {
                     {lang === 'ar' ? 'بيانات التوثيق' : 'Verification details'}
                   </p>
                   <div className="mt-3 grid gap-1.5">
-                    {portfolioProfile.legalDocumentation.map((item) => (
-                      <div
-                        key={item.value}
-                        className="rounded-[0.8rem] border border-white/7 bg-black/15 px-2.5 py-2"
-                      >
-                        <p className="text-[11px] font-semibold text-slate-500">
-                          {lang === 'ar' ? item.label : item.englishLabel}
-                        </p>
-                        <p className="mt-1 break-all text-sm font-bold text-slate-100" dir="ltr">
-                          {item.value}
-                        </p>
-                        <p className="mt-1 text-[11px] leading-5 text-slate-500">
-                          {lang === 'ar' ? item.note : item.englishNote}
-                        </p>
-                      </div>
-                    ))}
+                    {portfolioProfile.legalDocumentation.map((item) => {
+                      const IssuerIcon = legalIssuerIcons[item.issuerMark];
+
+                      return (
+                        <div
+                          key={item.value}
+                          className="rounded-[0.8rem] border border-white/7 bg-black/15 px-2.5 py-2"
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <p className="text-[11px] font-semibold text-slate-500">
+                              {lang === 'ar' ? item.label : item.englishLabel}
+                            </p>
+                            <span className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-emerald-300/15 bg-emerald-300/[0.055] px-2 py-1 text-[10px] font-bold text-emerald-100/85">
+                              <IssuerIcon className="h-3 w-3 shrink-0" />
+                              <span className="truncate">
+                                {lang === 'ar' ? item.issuerLabel : item.englishIssuerLabel}
+                              </span>
+                            </span>
+                          </div>
+                          <p className="mt-1 break-all text-sm font-bold text-slate-100" dir="ltr">
+                            {item.value}
+                          </p>
+                          <p className="mt-1 text-[11px] leading-5 text-slate-500">
+                            {lang === 'ar' ? item.note : item.englishNote}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
                   <p className="mt-3 text-xs leading-6 text-emerald-100/70">
                     {lang === 'ar'

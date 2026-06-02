@@ -16,6 +16,9 @@ export interface LegalDocumentationItem {
   label: string;
   englishLabel: string;
   value: string;
+  issuerLabel: string;
+  englishIssuerLabel: string;
+  issuerMark: 'registry' | 'tax' | 'tax-file' | 'address';
   note: string;
   englishNote: string;
 }
@@ -177,27 +180,39 @@ export const portfolioProfile = {
       label: 'السجل التجاري',
       englishLabel: 'Commercial registry',
       value: 'NTQ-CR-2026-157632',
-      note: 'رقم السجل التجاري المعتمد في ملف الشركة التعريفي.',
-      englishNote: 'Commercial registry number approved in the company profile.',
+      issuerLabel: 'السجل التجاري المصري',
+      englishIssuerLabel: 'Egyptian Commercial Registry',
+      issuerMark: 'registry',
+      note: 'رقم تعريف تجاري موثق داخل ملف نُطق التعريفي ومخصص لمراسلات العملاء.',
+      englishNote: 'Business identification number listed in Notaq profile and used for client correspondence.',
     },
     {
       label: 'البطاقة الضريبية',
       englishLabel: 'Tax card',
       value: 'NTQ-TAX-506-312-640',
-      note: 'رقم البطاقة الضريبية المستخدم في بيانات التعريف الرسمية.',
-      englishNote: 'Tax card identifier used in the official profile details.',
+      issuerLabel: 'مصلحة الضرائب المصرية',
+      englishIssuerLabel: 'Egyptian Tax Authority',
+      issuerMark: 'tax',
+      note: 'معرّف البطاقة الضريبية المستخدم ضمن بيانات التعريف التجاري لنُطق.',
+      englishNote: 'Tax card identifier used within Notaq business profile details.',
     },
     {
       label: 'ملف ضريبي',
       englishLabel: 'Tax file',
       value: 'NTQ-TF-2026/015/763',
-      note: 'ملف ضريبي مرتبط ببيانات الشركة الأساسية.',
-      englishNote: 'Tax file linked to the company identification details.',
+      issuerLabel: 'ملف ضريبي - مصر',
+      englishIssuerLabel: 'Egyptian Tax File',
+      issuerMark: 'tax-file',
+      note: 'رقم ملف ضريبي مرتبط ببيانات الشركة الأساسية في قنوات التواصل.',
+      englishNote: 'Tax file number connected to the company identity used across contact channels.',
     },
     {
       label: 'عنوان قانوني',
       englishLabel: 'Legal address',
       value: 'القاهرة، مصر',
+      issuerLabel: 'نطاق العمل القانوني',
+      englishIssuerLabel: 'Legal operating area',
+      issuerMark: 'address',
       note: 'العنوان القانوني المختصر المستخدم في قنوات التواصل الرسمية.',
       englishNote: 'Short legal address used across official contact channels.',
     },
