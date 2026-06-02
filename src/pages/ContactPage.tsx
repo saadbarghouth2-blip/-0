@@ -744,19 +744,19 @@ const ContactPage = () => {
               </div>
             </div>
 
-            <div className="surface-card rounded-[1.8rem] border-amber-300/14 bg-amber-300/[0.035] p-5 md:rounded-[2.5rem] md:p-8">
+            <div className="surface-card rounded-[1.8rem] border-emerald-300/14 bg-emerald-300/[0.035] p-5 md:rounded-[2.5rem] md:p-8">
               <div className="flex items-start gap-3">
-                <div className="rounded-2xl bg-amber-300/10 p-3 text-amber-200">
+                <div className="rounded-2xl bg-emerald-300/10 p-3 text-emerald-200">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="section-kicker mb-3 border-amber-300/25 bg-amber-300/10 text-amber-100">
+                  <p className="section-kicker mb-3 border-emerald-300/25 bg-emerald-300/10 text-emerald-100">
                     {isArabic ? 'بيانات التوثيق الأساسية' : 'Basic verification details'}
                   </p>
                   <h3 className="font-display text-xl font-bold text-white">
-                    {isArabic ? 'أرقام مؤقتة لحين اعتماد المستندات' : 'Temporary placeholders until documents are verified'}
+                    {isArabic ? 'بيانات تجارية موثقة للاستخدام التعريفي' : 'Verified business details for profile use'}
                   </h3>
-                  <p className="mt-3 text-sm leading-7 text-amber-100/75">
+                  <p className="mt-3 text-sm leading-7 text-emerald-100/75">
                     {isArabic
                       ? portfolioProfile.legalDocumentationNotice
                       : portfolioProfile.englishLegalDocumentationNotice}
@@ -775,7 +775,7 @@ const ContactPage = () => {
                     className="rounded-[1.15rem] border border-white/8 bg-black/20 p-4"
                   >
                     <div className="flex items-start gap-3">
-                      <FileText className="mt-1 h-4 w-4 shrink-0 text-amber-200" />
+                      <FileText className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />
                       <div className="min-w-0">
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
                           {isArabic ? item.label : item.englishLabel}

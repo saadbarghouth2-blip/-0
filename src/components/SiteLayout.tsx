@@ -1161,24 +1161,15 @@ const SiteLayout = () => {
                   <span className="h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.7)]" />
                   {footerQuickLinksLabel}
                 </div>
-                <div className="mt-5 grid grid-cols-1 gap-2.5 text-sm text-slate-300 sm:grid-cols-2">
+                <div className="mt-4 flex flex-wrap justify-center gap-2 text-xs text-slate-300 lg:justify-start">
                   {footerLinks.map((item) => (
                     <Link
                       key={item.to}
                       to={localizePath(item.to)}
-                      className="group flex min-h-[4.25rem] items-center justify-between gap-3 rounded-[1.15rem] border border-white/8 bg-white/[0.025] px-3.5 py-3 text-start transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/35 hover:bg-cyan-300/[0.055] hover:text-white"
+                      className="group inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.025] px-3 py-1.5 font-semibold transition-all duration-200 hover:border-cyan-300/35 hover:bg-cyan-300/[0.055] hover:text-white"
                     >
-                      <span className="min-w-0">
-                        <span className="block font-bold text-white transition-colors group-hover:text-cyan-100">
-                          {item.label}
-                        </span>
-                        <span className="mt-1 block text-xs leading-5 text-slate-500 transition-colors group-hover:text-slate-300">
-                          {item.description}
-                        </span>
-                      </span>
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-[#07141b] text-cyan-300 transition-all duration-300 group-hover:border-cyan-300/45 group-hover:bg-cyan-400/12 group-hover:text-white">
-                        <ArrowUpLeft className="h-3.5 w-3.5" />
-                      </span>
+                      <span className="max-w-[9rem] truncate">{item.label}</span>
+                      <ArrowUpLeft className="h-3 w-3 text-cyan-300 transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Link>
                   ))}
                 </div>
@@ -1219,15 +1210,15 @@ const SiteLayout = () => {
                   </p>
                 </div>
 
-                <div className="mt-4 rounded-[1.3rem] border border-amber-300/14 bg-amber-300/[0.045] p-4 text-sm text-slate-400 md:rounded-[1.5rem]">
-                  <p className="text-xs font-semibold tracking-[0.18em] text-amber-200/80">
+                <div className="mt-4 rounded-[1.15rem] border border-emerald-300/14 bg-emerald-300/[0.045] p-3.5 text-sm text-slate-400 md:rounded-[1.35rem]">
+                  <p className="text-xs font-semibold tracking-[0.18em] text-emerald-200/80">
                     {lang === 'ar' ? 'بيانات التوثيق' : 'Verification details'}
                   </p>
-                  <div className="mt-3 grid gap-2">
+                  <div className="mt-3 grid gap-1.5">
                     {portfolioProfile.legalDocumentation.map((item) => (
                       <div
                         key={item.value}
-                        className="rounded-[0.9rem] border border-white/7 bg-black/15 px-3 py-2"
+                        className="rounded-[0.8rem] border border-white/7 bg-black/15 px-2.5 py-2"
                       >
                         <p className="text-[11px] font-semibold text-slate-500">
                           {lang === 'ar' ? item.label : item.englishLabel}
@@ -1235,10 +1226,13 @@ const SiteLayout = () => {
                         <p className="mt-1 break-all text-sm font-bold text-slate-100" dir="ltr">
                           {item.value}
                         </p>
+                        <p className="mt-1 text-[11px] leading-5 text-slate-500">
+                          {lang === 'ar' ? item.note : item.englishNote}
+                        </p>
                       </div>
                     ))}
                   </div>
-                  <p className="mt-3 text-xs leading-6 text-amber-100/70">
+                  <p className="mt-3 text-xs leading-6 text-emerald-100/70">
                     {lang === 'ar'
                       ? portfolioProfile.legalDocumentationNotice
                       : portfolioProfile.englishLegalDocumentationNotice}
