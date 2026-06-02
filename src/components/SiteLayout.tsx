@@ -243,28 +243,24 @@ const SiteLayout = () => {
   const localizedContactPath = localizePath('/contact');
   const isContactRoute = /(^|\/)contact\/?$/.test(location.pathname);
   const brandLabel = lang === 'ar' ? 'نُطق' : 'Notaq';
-  const footerLinks =
-    lang === 'ar'
-      ? [
-          { to: '/', label: 'الرئيسية', description: 'ابدأ من الصورة الكاملة.' },
-          { to: '/about', label: 'من نحن', description: 'اعرف طريقة التفكير والتنفيذ.' },
-          { to: '/services', label: 'الخدمات', description: 'اختر ما يناسب احتياج شركتك.' },
-          { to: '/projects', label: 'الأعمال', description: 'شاهد شكل النتائج الممكنة.' },
-          { to: '/blog', label: 'المدونة', description: 'اقرأ أفكارًا تساعد قرارك.' },
-          { to: '/testimonials', label: 'آراء العملاء', description: 'اطمئن من تجارب حقيقية.' },
-          { to: '/contact', label: 'تواصل معنا', description: 'حوّل الاحتياج إلى خطوة واضحة.' },
-          { to: '/contact/brief', label: 'Brief سريع', description: 'رتّب متطلبات شركتك الآن.' },
-        ]
-      : [
-          { to: '/', label: 'Home', description: 'Start with the full picture.' },
-          { to: '/about', label: 'About', description: 'See how we think and build.' },
-          { to: '/services', label: 'Services', description: 'Choose what fits your company need.' },
-          { to: '/projects', label: 'Projects', description: 'Preview possible outcomes.' },
-          { to: '/blog', label: 'Blog', description: 'Read ideas that guide your decision.' },
-          { to: '/testimonials', label: 'Testimonials', description: 'Trust the experience of others.' },
-          { to: '/contact', label: 'Contact', description: 'Turn the need into a clear next step.' },
-          { to: '/contact/brief', label: 'Quick brief', description: 'Organize your company requirements now.' },
-        ];
+  const footerLinks = Array.from(
+    new Map(
+      navGroups
+        .flatMap((group) => [
+          {
+            to: group.mainTo,
+            label: lang === 'ar' ? group.fallbackLabel.ar : group.fallbackLabel.en,
+            description: lang === 'ar' ? group.fallbackLabel.ar : group.fallbackLabel.en,
+          },
+          ...group.items.slice(0, 4).map((item) => ({
+            to: item.to,
+            label: lang === 'ar' ? item.label.ar : item.label.en,
+            description: lang === 'ar' ? item.description.ar : item.description.en,
+          })),
+        ])
+        .map((item) => [item.to, item] as const),
+    ).values(),
+  ).slice(0, 28);
   const footerTagline = lang === 'ar' ? 'حرفية رقمية' : 'Digital Craftsmanship';
   const footerDescription =
     lang === 'ar'
@@ -1125,8 +1121,8 @@ const SiteLayout = () => {
         <div className="mobile-ornament pointer-events-none absolute bottom-[-18%] left-[12%] h-[30rem] w-[30rem] rounded-full bg-violet-900/10 blur-[160px]" />
 
         <div className="section-shell relative z-10">
-          <div className="rounded-[1.8rem] border border-white/8 bg-white/[0.02] p-5 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.95)] md:rounded-[2.4rem] md:p-8 lg:p-10">
-            <div className="grid gap-8 md:gap-10 lg:grid-cols-[1.05fr_1.1fr_0.95fr]">
+          <div className="rounded-[1.65rem] border border-white/8 bg-[linear-gradient(145deg,rgba(255,255,255,0.045),rgba(255,255,255,0.012))] p-5 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.95)] md:rounded-[2.1rem] md:p-7 lg:p-8">
+            <div className="grid gap-7 md:gap-8 lg:grid-cols-[0.95fr_1.35fr_0.9fr]">
               <div className="text-center lg:text-start">
                 <Link to={localizedHomePath} className="inline-flex max-w-full items-center gap-3 sm:gap-4">
                   <BrandLogo
@@ -1167,20 +1163,21 @@ const SiteLayout = () => {
                 </div>
               </div>
 
-              <div className="text-center lg:text-start">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3.5 py-2 text-sm font-semibold text-slate-300">
+              <div className="rounded-[1.25rem] border border-white/8 bg-black/18 p-3.5 text-center lg:text-start">
+                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/[0.045] px-3.5 py-2 text-sm font-semibold text-cyan-50">
                   <span className="h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.7)]" />
                   {footerQuickLinksLabel}
                 </div>
-                <div className="mt-4 flex flex-wrap justify-center gap-2 text-xs text-slate-300 lg:justify-start">
+                <div className="mt-4 grid grid-cols-2 gap-2 text-start text-xs text-slate-300 sm:grid-cols-3">
                   {footerLinks.map((item) => (
                     <Link
                       key={item.to}
                       to={localizePath(item.to)}
-                      className="group inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.025] px-3 py-1.5 font-semibold transition-all duration-200 hover:border-cyan-300/35 hover:bg-cyan-300/[0.055] hover:text-white"
+                      title={item.description}
+                      className="group flex min-h-[2.65rem] items-center justify-between gap-2 rounded-xl border border-white/8 bg-white/[0.025] px-2.5 py-2 font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300/35 hover:bg-cyan-300/[0.055] hover:text-white"
                     >
-                      <span className="max-w-[9rem] truncate">{item.label}</span>
-                      <ArrowUpLeft className="h-3 w-3 text-cyan-300 transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
+                      <span className="min-w-0 truncate leading-5">{item.label}</span>
+                      <ArrowUpLeft className="h-3 w-3 shrink-0 text-cyan-300 transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Link>
                   ))}
                 </div>
