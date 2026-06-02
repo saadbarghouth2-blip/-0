@@ -18,13 +18,13 @@ const BrandLogo = ({
 }: BrandLogoProps) => (
   <div
     className={joinClasses(
-      'flex items-center justify-center rounded-full overflow-hidden aspect-square bg-white shadow-sm',
+      'flex items-center justify-center overflow-hidden rounded-[1rem] border border-white/10 bg-white/95 shadow-[0_12px_28px_-18px_rgba(15,23,42,0.7)]',
       className,
     )}
   >
     <img
       alt={alt}
-      className={joinClasses('block h-full w-full object-cover', imageClassName)}
+      className={joinClasses('block h-auto w-full object-contain', imageClassName)}
       decoding="async"
       loading={loading}
       src={BRAND_LOGO_SRC}

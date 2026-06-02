@@ -1,431 +1,1135 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '../hooks/useLanguage';
-import { usePageMetadata } from '../hooks/usePageMetadata';
-import { getPageSeoByPath } from '../lib/pageSeo';
-
+import { motion } from 'framer-motion';
+import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import {
+  ArrowUpLeft,
   CheckCircle,
+  Check,
+  ChevronDown,
+  Clock3,
+  FileText,
   Loader2,
   Mail,
   MapPin,
-  MessageSquareText,
-  ShieldCheck,
+  MessageCircle,
   Phone,
-  Send,
-  TimerReset,
-  Workflow,
-  Orbit,
   Rocket,
-  Clock,
-  Star
+  Send,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  Zap,
 } from 'lucide-react';
 
 import SectionTitle from '../components/SectionTitle';
+import PageHero from '../components/PageHero';
+import PageImageShowcaseSection from '../components/PageImageShowcase';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '../components/ui/accordion';
+import {
+  contactFaqs,
+  inquiryTypes,
+  languageOptions,
+  pageNeedOptions,
+  timelineOptions,
+  websiteTypeOptions,
+} from '../data/contactPageContent';
+import { pageImageShowcases } from '../data/pageImageShowcases';
 import { portfolioProfile } from '../data/portfolio';
+import { useLanguage } from '../hooks/useLanguage';
+import { useIsMobile } from '../hooks/use-mobile';
+import { usePageMetadata } from '../hooks/usePageMetadata';
+import { trackEvent } from '../lib/analytics';
+import { buildWhatsAppUrl, getDefaultWhatsAppMessage } from '../lib/contactLinks';
+import { CONTACT_EMAIL, isEmailJsConfigured, sendContactEmails } from '../lib/emailjsClient';
+import { illustrationAssets } from '../lib/illustrationAssets';
+import { getPageSeoByPath } from '../lib/pageSeo';
 
-const contactCards = [
-  {
-    icon: Mail,
-    titleAr: 'البريد الإلكتروني',
-    titleEn: 'Email',
-    valueAr: portfolioProfile.email,
-    valueEn: portfolioProfile.email,
-    href: `mailto:${portfolioProfile.email}`,
-    color: 'from-cyan-400 to-teal-400',
-  },
-  {
-    icon: Phone,
-    titleAr: 'الهاتف',
-    titleEn: 'Phone',
-    valueAr: portfolioProfile.phone,
-    valueEn: portfolioProfile.phone,
-    href: `tel:${portfolioProfile.phoneHref}`,
-    color: 'from-violet-400 to-fuchsia-400',
-  },
-  {
-    icon: MapPin,
-    titleAr: 'الموقع',
-    titleEn: 'Location',
-    valueAr: portfolioProfile.location,
-    valueEn: portfolioProfile.locationEn,
-    href: '#',
-    color: 'from-amber-400 to-orange-400',
-  },
-];
+type FormState = {
+  name: string;
+  email: string;
+  phone_or_whatsapp: string;
+  company: string;
+  inquiry_type: string;
+  website_type: string;
+  timeline: string;
+  preferred_language: string;
+  pages_needed: string[];
+  details: string;
+  botField: string;
+};
 
-const inquiryTypes = [
-  { ar: 'موقع شركة كامل', en: 'Full corporate website' },
-  { ar: 'منصة تفاعلية (SaaS)', en: 'Interactive SaaS Platform' },
-  { ar: 'إعادة تصميم للهوية الرقمية', en: 'Digital Identity Redesign' },
-  { ar: 'تطوير مسارات (Funnels)', en: 'Funnel Development' },
-  { ar: 'استشارة هندسية', en: 'Architecture Consultation' },
+const initialFormState: FormState = {
+  name: '',
+  email: '',
+  phone_or_whatsapp: '',
+  company: '',
+  inquiry_type: inquiryTypes[0]?.key ?? '',
+  website_type: websiteTypeOptions[0]?.key ?? '',
+  timeline: timelineOptions[0]?.key ?? '',
+  preferred_language: languageOptions[2]?.key ?? '',
+  pages_needed: ['home', 'services', 'contact'],
+  details: '',
+  botField: '',
+};
+
+const socialProofStats = [
+  {
+    icon: Rocket,
+    valueAr: '180+',
+    valueEn: '180+',
+    labelAr: 'نماذج ومشاريع منفذة',
+    labelEn: 'Delivered projects and showcases',
+  },
+  {
+    icon: Clock3,
+    valueAr: '< 24h',
+    valueEn: '< 24h',
+    labelAr: 'متوسط وقت الرد الأول',
+    labelEn: 'Average first-response time',
+  },
+  {
+    icon: ShieldCheck,
+    valueAr: 'دعم أولي',
+    valueEn: 'Initial support',
+    labelAr: 'متابعة بعد الإطلاق حسب نطاق المشروع',
+    labelEn: 'Post-launch follow-up based on scope',
+  },
 ];
 
 const workflowSteps = [
   {
-    icon: TimerReset,
-    titleAr: 'التحليل الاستراتيجي',
-    titleEn: 'Strategic review',
-    timeAr: 'يوم واحد',
-    timeEn: 'One day',
-    descAr: 'نراجع تفاصيل مشروعك ونقارنها بأفضل الأساليب المناسبة حتى نحدد مسار التنفيذ بثقة.',
-    descEn: 'We review your project details against the right delivery approach so we can define the execution path with confidence.',
+    titleAr: 'مراجعة سريعة للاحتياج',
+    titleEn: 'Fast discovery review',
+    descAr: 'نقرأ الفكرة، السوق، ونقطة التحويل الأساسية قبل أي اقتراح تنفيذي.',
+    descEn: 'We review the idea, market, and key conversion point before recommending the build path.',
   },
   {
-    icon: MessageSquareText,
-    titleAr: 'الاجتماع المعماري',
-    titleEn: 'Architecture session',
-    timeAr: 'العمل المشترك',
-    timeEn: 'Collaborative phase',
-    descAr: 'نجلس معًا لوضع الخطوط العريضة للهيكلة البصرية والهندسية حتى تتوحد الرؤية من البداية.',
-    descEn: 'We align on the visual and technical structure early so the vision stays consistent from day one.',
+    titleAr: 'تحديد المسار المناسب',
+    titleEn: 'Defining the right path',
+    descAr: 'نحدد هل الأنسب موقع شركة، صفحة خدمة، متجر، أو تجربة أكثر تخصصًا.',
+    descEn: 'We define whether you need a company website, a service page, an e-commerce flow, or something more custom.',
   },
   {
-    icon: Workflow,
-    titleAr: 'مرحلة التصنيع',
-    titleEn: 'Build phase',
-    timeAr: 'أيام/أسابيع',
-    timeEn: 'Days / weeks',
-    descAr: 'نطوّر الواجهات، نضيف الحركة المناسبة، ونبني الأنظمة الخلفية بأسلوب متقن وقابل للتوسع.',
-    descEn: 'We build the interface, add the right motion, and ship the supporting systems in a polished scalable way.',
-  },
-  {
-    icon: ShieldCheck,
-    titleAr: 'الإطلاق والدعم',
-    titleEn: 'Launch and support',
-    timeAr: 'الإصدار النهائي',
-    timeEn: 'Final release',
-    descAr: 'نطلق المشروع بعد اختبارات السرعة والأمان ونبقى معك لضمان الاستقرار بعد النشر.',
-    descEn: 'We launch after performance and security checks, then stay close to make sure the release remains stable.',
+    titleAr: 'رد عملي واضح',
+    titleEn: 'Clear practical response',
+    descAr: 'ترجع لك صورة أوضح للخطوة التالية، المدى المتوقع، وكيف نتحرك بسرعة.',
+    descEn: 'You get a clearer next step, an expected range, and a practical direction to move quickly.',
   },
 ];
 
-const socialProofStats = [
-  { icon: Rocket, valueAr: '180+', valueEn: '180+', labelAr: 'مشروع مكتمل', labelEn: 'Completed projects' },
-  { icon: Clock, valueAr: '< 24h', valueEn: '< 24h', labelAr: 'متوسط وقت الرد', labelEn: 'Average response time' },
-  { icon: ShieldCheck, valueAr: '3 أشهر', valueEn: '3 mo', labelAr: 'دعم مجاني بعد الإطلاق', labelEn: 'Free post-launch support' },
-  { icon: Star, valueAr: '100%', valueEn: '100%', labelAr: 'تقييم عملاء ممتاز', labelEn: 'Excellent client rating' },
+const contactPromises = [
+  {
+    icon: Target,
+    titleAr: 'نحدد الهدف قبل العرض',
+    titleEn: 'Goal before proposal',
+    descAr: 'لن تحصل على رقم عام قبل فهم المطلوب؛ ستعرف المسار الأنسب بناءً على هدف شركتك.',
+    descEn: 'We do not start with a generic quote. We understand the need, then suggest the right path.',
+  },
+  {
+    icon: Zap,
+    titleAr: 'رد سريع ومفيد',
+    titleEn: 'Fast useful response',
+    descAr: 'الرد الأول يكون عمليًا: اتجاه، أسئلة مهمة، وخطوة تالية واضحة.',
+    descEn: 'The first response is practical: direction, key questions, and a clear next step.',
+  },
+  {
+    icon: FileText,
+    titleAr: 'Brief مرتب',
+    titleEn: 'Structured brief',
+    descAr: 'ستتحول رسالتك إلى نقاط منظمة تساعدك على اتخاذ قرار أوضح بثقة.',
+    descEn: 'Your message becomes organized points that help you decide with confidence.',
+  },
 ];
 
-const contactFaqs = [
-  {
-    qAr: 'هل الاستشارة مجانية؟',
-    qEn: 'Is the consultation free?',
-    aAr: 'نعم تمامًا. أول جلسة استشارية لمدة 15 إلى 30 دقيقة مجانية بالكامل ولا تُلزمك بأي شيء.',
-    aEn: 'Yes. The first 15 to 30 minute consultation is completely free and comes with no obligation.',
-  },
-  {
-    qAr: 'كم يستغرق تنفيذ الموقع؟',
-    qEn: 'How long does delivery usually take?',
-    aAr: 'يعتمد ذلك على الحجم. صفحة مستقلة تستغرق عادة 5 إلى 7 أيام، والموقع الكامل 2 إلى 4 أسابيع، والمنصة المتكاملة قد تحتاج شهرًا أو أكثر.',
-    aEn: 'It depends on scope. A standalone page usually takes 5 to 7 days, a full site 2 to 4 weeks, and a full platform may take a month or more.',
-  },
-  {
-    qAr: 'هل تعملون مع عملاء خارج المنطقة؟',
-    qEn: 'Do you work with clients outside the region?',
-    aAr: 'نعم، نعمل مع عملاء في الشرق الأوسط وشمال أفريقيا إلى جانب بعض العملاء الدوليين.',
-    aEn: 'Yes. We work across the Middle East and North Africa in addition to selected international clients.',
-  },
-  {
-    qAr: 'ماذا يحدث بعد تسليم المشروع؟',
-    qEn: 'What happens after launch?',
-    aAr: 'تحصل على 90 يوم دعم فني لإصلاح الأخطاء أو تنفيذ التعديلات الصغيرة بدون تكلفة إضافية.',
-    aEn: 'You get 90 days of technical support for bug fixes and small refinements at no extra cost.',
-  },
-  {
-    qAr: 'هل يمكن تعديل الموقع بسهولة بعد الإطلاق؟',
-    qEn: 'Can the site be updated easily after launch?',
-    aAr: 'نعم، نبني مع CMS أو نسلّمك لوحة تحكم مناسبة حتى تتمكن من إدارة المحتوى بسهولة.',
-    aEn: 'Yes. We can build with a CMS or provide the right dashboard so you can manage content easily.',
-  },
-  {
-    qAr: 'ما طرق الدفع المتاحة؟',
-    qEn: 'Which payment methods do you accept?',
-    aAr: 'نقبل التحويل البنكي وPayPal وطرق الدفع الدولية المناسبة، وعادة يكون الدفع 50% عند البدء و50% عند التسليم.',
-    aEn: 'We accept bank transfers, PayPal, and suitable international payment methods. Typical terms are 50% to start and 50% on delivery.',
-  },
-];
+const optionLabel = (
+  options: Array<{ key: string; ar: string; en: string }>,
+  key: string,
+  isArabic: boolean,
+) => options.find((item) => item.key === key)?.[isArabic ? 'ar' : 'en'] ?? key;
+
+const optionLabels = (
+  options: Array<{ key: string; ar: string; en: string }>,
+  keys: string[],
+  isArabic: boolean,
+) => keys.map((key) => optionLabel(options, key, isArabic)).join(', ');
+
+const getSubmitErrorMessage = (error: unknown, isArabic: boolean) => {
+  const maybeEmailJsError = error as { status?: number; text?: string; message?: string };
+  const details = maybeEmailJsError.text || maybeEmailJsError.message || '';
+
+  if (/account not found/i.test(details)) {
+    return isArabic
+      ? 'إعداد EmailJS غير صحيح: الحساب غير موجود أو الـ Public Key لا يطابق الحساب. تقدر ترسل نفس الطلب الآن على واتساب.'
+      : 'EmailJS setup is not valid: account not found or the public key does not match this account. You can send the same request on WhatsApp now.';
+  }
+
+  if (!details) {
+    return isArabic
+      ? 'حدثت مشكلة أثناء الإرسال. افتح الكونسول لمعرفة السبب أو استخدم زر الإيميل البديل.'
+      : 'Something went wrong while sending. Check the console or use the fallback email button.';
+  }
+
+  return isArabic
+    ? `فشل الإرسال من EmailJS: ${details}`
+    : `EmailJS sending failed: ${details}`;
+};
+
+type ContactSelectProps = {
+  isArabic: boolean;
+  label: string;
+  name: keyof FormState;
+  onValueChange: (name: keyof FormState, value: string) => void;
+  options: Array<{ key: string; ar: string; en: string }>;
+  value: string;
+};
+
+const ContactSelect = ({
+  isArabic,
+  label,
+  name,
+  onValueChange,
+  options,
+  value,
+}: ContactSelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedLabel = optionLabel(options, value, isArabic);
+  const inputId = `contact-select-${name}`;
+
+  return (
+    <div className="relative space-y-2">
+      <label className="block text-sm text-slate-300" htmlFor={inputId}>
+        {label}
+      </label>
+      <input id={inputId} name={name} type="hidden" value={value} />
+      <button
+        aria-expanded={isOpen}
+        className={`group flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#06090f]/55 px-4 py-3 text-white outline-none transition-all hover:border-cyan-300/35 hover:bg-[#07131f]/85 focus:border-cyan-400/60 focus:bg-[#06090f]/80 focus:shadow-[0_0_0_4px_rgba(45,212,191,0.1)] ${
+          isOpen ? 'border-cyan-400/55 shadow-[0_0_0_4px_rgba(45,212,191,0.08)]' : ''
+        }`}
+        onClick={() => setIsOpen((current) => !current)}
+        type="button"
+      >
+        <span className={`min-w-0 flex-1 truncate text-sm font-semibold ${isArabic ? 'text-right' : 'text-left'}`}>
+          {selectedLabel}
+        </span>
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-cyan-200 transition-transform duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+      {isOpen ? (
+        <div
+          className={`absolute z-40 mt-2 max-h-72 w-full overflow-auto rounded-2xl border border-cyan-300/20 bg-[#07111d]/98 p-1.5 shadow-[0_22px_70px_rgba(0,0,0,0.65)] backdrop-blur-xl ${
+            isArabic ? 'right-0 text-right' : 'left-0 text-left'
+          }`}
+          dir={isArabic ? 'rtl' : 'ltr'}
+        >
+          {options.map((item) => {
+            const isSelected = item.key === value;
+            return (
+              <button
+                key={item.key}
+                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
+                  isSelected
+                    ? 'bg-cyan-300/14 text-cyan-50'
+                    : 'text-slate-300 hover:bg-white/[0.06] hover:text-white'
+                } ${isArabic ? 'flex-row-reverse' : ''}`}
+                onClick={() => {
+                  onValueChange(name, item.key);
+                  setIsOpen(false);
+                }}
+                type="button"
+              >
+                <span className="min-w-0 flex-1 truncate">{isArabic ? item.ar : item.en}</span>
+                <span
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
+                    isSelected
+                      ? 'border-cyan-300 bg-cyan-300 text-slate-950'
+                      : 'border-white/10 text-transparent'
+                  }`}
+                >
+                  <Check className="h-3.5 w-3.5" />
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+};
 
 const ContactPage = () => {
   const { lang } = useLanguage();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const isArabic = lang === 'ar';
-  const content = {
-    signal: isArabic ? 'تم استقبال الإشارة بوضوح' : 'Signal Received Loud & Clear',
-    heroTitleLine1: isArabic ? 'هل أنت جاهز لصناعة' : 'Are you ready to build',
-    heroTitleLine2: isArabic ? 'التغيير الجذري؟' : 'the real shift?',
-    heroDescription: isArabic
-      ? 'نحن لا نقبل المشاريع العادية. إذا كنت تبحث عن واجهة تلفت الانتباه وبنية قوية قابلة للنمو، فأنت في المكان الصحيح.'
-      : 'We do not take on ordinary work. If you want a striking interface backed by strong scalable foundations, you are in the right place.',
-    directChannels: isArabic ? 'قنوات الاتصال المباشرة' : 'Direct channels',
-    whatAreYouLookingFor: isArabic ? 'ما الذي تبحث عنه؟' : 'What are you looking for?',
-    formTitle: isArabic ? 'أرسل إشعار البدء' : 'Send the kickoff signal',
-    formDescription: isArabic
-      ? 'أخبرنا بما يدور في ذهنك وسنعود إليك بخطة عمل واضحة ومناسبة.'
-      : 'Tell us what you are planning and we will reply with a clear practical next step.',
-    nameLabel: isArabic ? 'الاسم والصفة' : 'Name and role',
-    emailLabel: isArabic ? 'البريد الإلكتروني للعمل' : 'Work email',
-    projectLabel: isArabic ? 'اسم المؤسسة أو المشروع' : 'Company or project name',
-    detailsLabel: isArabic
-      ? 'حدثنا عن الرؤية، الأهداف، وأي مواقع تعجبك بأسلوبها...'
-      : 'Tell us about the vision, goals, and any sites whose style you like...',
-    loadingLabel: isArabic ? 'جاري تحليل الإرسال...' : 'Analyzing your request...',
-    successLabel: isArabic ? 'تم إطلاق الإشارة بنجاح' : 'Signal sent successfully',
-    submitLabel: isArabic ? 'إطلاق المشروع' : 'Launch the project',
-    workflowDescription: isArabic
-      ? 'شفافية تامة حتى تعرف بالضبط متى وكيف سنحوّل الفكرة إلى منصة حقيقية.'
-      : 'Full clarity so you know exactly when and how the idea moves into a real platform.',
-    workflowKicker: isArabic ? 'الجدول التنفيذي' : 'Execution Timeline',
-    workflowTitle: isArabic ? 'من الإرسال إلى الإطلاق' : 'From first message to launch',
-    faqTitle: isArabic ? 'أسئلة شائعة قبل التواصل' : 'Common questions before we talk',
-  };
-  const labelAlignmentClass = isArabic ? 'right-0 text-right' : 'left-0 text-left';
+  const isMobile = useIsMobile();
+  const [formState, setFormState] = useState<FormState>(initialFormState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitErrorMessage, setSubmitErrorMessage] = useState('');
 
   usePageMetadata(getPageSeoByPath('/contact', lang));
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const content = useMemo(
+    () => ({
+      heroKicker: isArabic ? 'تواصل احترافي مباشر' : 'Direct professional contact',
+      heroTitle: isArabic
+        ? 'رتّب احتياج شركتك الرقمي في خطوة واضحة'
+        : 'Organize your company’s digital need in one clear step',
+      heroDescription: isArabic
+        ? 'إذا كانت شركتك تستهدف عملاء في مصر أو الخليج، يساعدك فريق نُطق على ترتيب الرسالة، شكل العرض، ومسار التنفيذ بما يناسب السوق والهدف التجاري.'
+        : 'If your company targets audiences in Egypt or the Gulf, Notaq helps shape the message, presentation, and execution path around the market and business goal.',
+      directChannels: isArabic ? 'قنوات التواصل المباشرة' : 'Direct channels',
+      directChannelsNote: isArabic
+        ? 'يمكنك إرسال الطلب عبر النموذج أو بدء الحديث فورًا على واتساب.'
+        : 'You can send a structured brief through the form or start the conversation immediately on WhatsApp.',
+      formKicker: isArabic ? 'نموذج الطلب' : 'Lead intake',
+      formTitle: isArabic ? 'أرسل تفاصيل الاحتياج' : 'Send the project need',
+      formDescription: isArabic
+        ? 'كلما كانت التفاصيل أوضح، كان الرد أدق وأسرع.'
+        : 'The clearer the brief, the faster and sharper our response can be.',
+      heroSideTitle: isArabic ? 'ماذا يحدث بعد رسالتك؟' : 'What happens after your message?',
+      heroSideBody: isArabic
+        ? 'نقرأ الهدف، نرتب الأولويات، ثم نرجع لك بخطوة عملية يمكن تنفيذها.'
+        : 'We read the goal, organize priorities, then come back with a practical next move.',
+      briefHint: isArabic ? 'اكتب التفاصيل المتاحة الآن، وسنساعدك على ترتيب الصورة المهنية الكاملة.' : 'Share the available details now, and we will help structure the full professional picture.',
+      nameLabel: isArabic ? 'الاسم' : 'Name',
+      emailLabel: isArabic ? 'البريد الإلكتروني' : 'Email',
+      phoneLabel: isArabic ? 'الهاتف أو واتساب' : 'Phone or WhatsApp',
+      companyLabel: isArabic ? 'اسم الشركة أو النشاط' : 'Company or business name',
+      inquiryLabel: isArabic ? 'نوع الطلب' : 'Inquiry type',
+      detailsLabel: isArabic ? 'تفاصيل سريعة عن الهدف والسوق وما تحتاجه' : 'A quick brief about the goal, market, and what you need',
+      submitLabel: isArabic ? 'إرسال الطلب' : 'Send request',
+      loadingLabel: isArabic ? 'جارٍ إرسال الطلب...' : 'Sending your request...',
+      successLabel: isArabic
+        ? 'تم استلام طلبك. سنعود إليك قريبًا.'
+        : 'Your request was received. We will get back to you shortly.',
+      errorLabel: isArabic
+        ? 'حدثت مشكلة أثناء الإرسال. جرّب مرة أخرى أو تواصل عبر واتساب.'
+        : 'Something went wrong while sending. Please try again or use WhatsApp.',
+      whatsappLabel: isArabic ? 'راسلنا على واتساب' : 'Message us on WhatsApp',
+      workflowKicker: isArabic ? 'بعد الإرسال' : 'After you send it',
+      workflowTitle: isArabic ? 'كيف نتحرك بعد الرسالة الأولى؟' : 'What happens after the first message?',
+      workflowDescription: isArabic
+        ? 'نحافظ على الخطوة الأولى بسيطة، لكن نربطها بمسار عمل عملي وواضح.'
+        : 'We keep the first step simple, but connect it to a practical and clear workflow.',
+      faqTitle: isArabic ? 'أسئلة شائعة قبل التواصل' : 'Common questions before reaching out',
+      statsKicker: isArabic ? 'مؤشرات ثقة' : 'Trust signals',
+      promiseKicker: isArabic ? 'قبل أن تبدأ' : 'Before you start',
+      promiseTitle: isArabic ? 'تواصل بسيط، لكن نتيجته أوضح' : 'Simple contact, clearer outcome',
+    }),
+    [isArabic],
+  );
+
+  const whatsappUrl = buildWhatsAppUrl(getDefaultWhatsAppMessage(lang));
+  const faqTriggerClass = isArabic
+    ? 'px-0 py-3.5 text-right hover:no-underline [&>svg]:mt-2 [&>svg]:shrink-0 [&>svg]:text-cyan-200/65'
+    : 'px-0 py-3.5 text-left hover:no-underline [&>svg]:mt-2 [&>svg]:shrink-0 [&>svg]:text-cyan-200/65';
+  const faqAnswerClass = isArabic
+    ? 'pb-3 text-right text-[0.92rem] leading-7 text-slate-400'
+    : 'pb-3 text-left text-[0.92rem] leading-7 text-slate-400';
+  const faqDesktopCardClass = isArabic
+    ? 'group relative h-full overflow-hidden rounded-[1.25rem] border border-white/8 bg-[linear-gradient(180deg,rgba(11,18,32,0.9),rgba(8,13,22,0.82))] p-4 text-right shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-400/22 md:p-5'
+    : 'group relative h-full overflow-hidden rounded-[1.25rem] border border-white/8 bg-[linear-gradient(180deg,rgba(11,18,32,0.9),rgba(8,13,22,0.82))] p-4 text-left shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-400/22 md:p-5';
+
+  const contactCards = [
+    {
+      icon: Mail,
+      label: isArabic ? 'البريد الإلكتروني' : 'Email',
+      value: portfolioProfile.email,
+      href: `mailto:${portfolioProfile.email}`,
+      onClick: () => undefined,
+    },
+    {
+      icon: Phone,
+      label: isArabic ? 'الهاتف' : 'Phone',
+      value: portfolioProfile.phone,
+      href: `tel:${portfolioProfile.phoneHref}`,
+      onClick: () =>
+        trackEvent('phone_click', {
+          placement: 'contact_page',
+          language: lang,
+          phone_number: portfolioProfile.phoneHref,
+        }),
+    },
+    {
+      icon: MessageCircle,
+      label: isArabic ? 'واتساب' : 'WhatsApp',
+      value: isArabic ? 'راسل فريق نُطق مباشرة' : 'Message the Notaq team directly',
+      href: whatsappUrl,
+      onClick: () =>
+        trackEvent('whatsapp_click', {
+          placement: 'contact_page_card',
+          language: lang,
+        }),
+    },
+    {
+      icon: MapPin,
+      label: isArabic ? 'المنطقة' : 'Region',
+      value: isArabic ? 'القاهرة | نخدم مصر والخليج' : 'Cairo | Serving Egypt and the Gulf',
+      href: '#region',
+      onClick: () => undefined,
+    },
+  ];
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = event.target;
+    setFormState((current) => ({ ...current, [name]: value }));
+  };
+
+  const handlePageNeedChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    setFormState((current) => ({
+      ...current,
+      pages_needed: checked
+        ? Array.from(new Set([...current.pages_needed, value]))
+        : current.pages_needed.filter((item) => item !== value),
+    }));
+  };
+
+  const handleSelectChange = (name: keyof FormState, value: string) => {
+    setFormState((current) => ({ ...current, [name]: value }));
+  };
+
+  const fallbackMailBody = [
+    `${isArabic ? 'الاسم' : 'Name'}: ${formState.name}`,
+    `${isArabic ? 'الإيميل' : 'Email'}: ${formState.email}`,
+    `${isArabic ? 'الهاتف/واتساب' : 'Phone/WhatsApp'}: ${formState.phone_or_whatsapp}`,
+    `${isArabic ? 'الشركة/المشروع' : 'Company/project'}: ${formState.company}`,
+    `${isArabic ? 'نوع الطلب' : 'Inquiry type'}: ${optionLabel(inquiryTypes, formState.inquiry_type, isArabic)}`,
+    `${isArabic ? 'نوع الموقع' : 'Website type'}: ${optionLabel(websiteTypeOptions, formState.website_type, isArabic)}`,
+    `${isArabic ? 'المدة' : 'Timeline'}: ${optionLabel(timelineOptions, formState.timeline, isArabic)}`,
+    `${isArabic ? 'لغة الموقع' : 'Website language'}: ${optionLabel(languageOptions, formState.preferred_language, isArabic)}`,
+    `${isArabic ? 'الصفحات المطلوبة' : 'Needed pages'}: ${optionLabels(pageNeedOptions, formState.pages_needed, isArabic)}`,
+    '',
+    `${isArabic ? 'التفاصيل' : 'Details'}:`,
+    formState.details,
+  ].join('\n');
+  const fallbackMailUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+    isArabic ? 'طلب جديد من موقع نطق' : 'New request from Notaq website',
+  )}&body=${encodeURIComponent(fallbackMailBody)}`;
+  const formWhatsAppBody = [
+    isArabic ? 'طلب جديد من موقع نطق' : 'New request from Notaq website',
+    '',
+    fallbackMailBody,
+  ].join('\n');
+  const formWhatsAppUrl = buildWhatsAppUrl(formWhatsAppBody);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setSubmitState('idle');
+    setSubmitErrorMessage('');
     setIsSubmitting(true);
-    // Fake complex payload process
-    await new Promise((resolve) => setTimeout(resolve, 2500));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    window.setTimeout(() => setIsSubmitted(false), 5000);
+
+    try {
+      const inquiryTypeLabel = optionLabel(inquiryTypes, formState.inquiry_type, isArabic);
+      const websiteTypeLabel = optionLabel(websiteTypeOptions, formState.website_type, isArabic);
+      const timelineLabel = optionLabel(timelineOptions, formState.timeline, isArabic);
+      const preferredLanguageLabel = optionLabel(languageOptions, formState.preferred_language, isArabic);
+      const pagesNeededLabel = optionLabels(pageNeedOptions, formState.pages_needed, isArabic);
+      const emailCopy = {
+        email_lang: isArabic ? 'ar' : 'en',
+        email_dir: isArabic ? 'rtl' : 'ltr',
+        email_align: isArabic ? 'right' : 'left',
+        brand_label: isArabic ? 'نُطق | NOTAQ' : 'NOTAQ | نُطق',
+        owner_subject: isArabic
+          ? `طلب جديد من موقع نُطق - ${websiteTypeLabel} - ${formState.name}`
+          : `New Notaq website request - ${websiteTypeLabel} - ${formState.name}`,
+        auto_reply_subject: isArabic
+          ? 'وصلنا طلبك في نُطق'
+          : 'We received your request at Notaq',
+        owner_kicker: isArabic ? 'طلب جديد من الموقع' : 'New website lead',
+        owner_heading: isArabic ? 'وصل طلب جديد من صفحة التواصل' : 'A new contact request arrived',
+        owner_intro: isArabic
+          ? 'راجع تفاصيل العميل والاحتياج، ثم أرسل رداً عملياً يوضح الخطوة التالية.'
+          : 'Review the client and project need, then reply with a practical next step.',
+        auto_kicker: isArabic ? 'نُطق' : 'Notaq',
+        auto_heading: isArabic ? 'وصلنا طلبك بنجاح' : 'We received your request',
+        auto_intro: isArabic
+          ? `شكرًا لتواصلك معنا يا ${formState.name}. وصلتنا تفاصيل الاحتياج وسنراجعها قبل العودة بخطوة واضحة.`
+          : `Thanks for reaching out, ${formState.name}. We received your company need and will review it before coming back with a clear next step.`,
+        next_title: isArabic ? 'ماذا يحدث الآن؟' : 'What happens next?',
+        next_body: isArabic
+          ? 'هنراجع الهدف، نوع الموقع، الجمهور، والأقسام المطلوبة. بعدها نرد عليك بأسئلة قليلة ومهمة أو اتجاه تنفيذي واضح.'
+          : 'We will review the goal, website type, audience, and needed sections. Then we will reply with a few important questions or a clear execution direction.',
+        footer_note: isArabic
+          ? 'لو حابب تضيف أي تفاصيل، تقدر ترد على نفس الإيميل.'
+          : 'If you want to add more details, you can reply to this email.',
+        section_customer: isArabic ? 'بيانات العميل' : 'Client details',
+        section_project: isArabic ? 'تفاصيل المشروع' : 'Project details',
+        section_message: isArabic ? 'رسالة العميل' : 'Client message',
+        section_summary: isArabic ? 'ملخص طلبك' : 'Your request summary',
+        label_name: isArabic ? 'الاسم' : 'Name',
+        label_email: isArabic ? 'الإيميل' : 'Email',
+        label_phone: isArabic ? 'الهاتف/واتساب' : 'Phone/WhatsApp',
+        label_company: isArabic ? 'الشركة/المشروع' : 'Company/project',
+        label_inquiry: isArabic ? 'نوع الطلب' : 'Inquiry type',
+        label_website_type: isArabic ? 'نوع الموقع' : 'Website type',
+        label_timeline: isArabic ? 'المدة' : 'Timeline',
+        label_language: isArabic ? 'لغة الموقع' : 'Website language',
+        label_pages: isArabic ? 'الصفحات المطلوبة' : 'Needed pages',
+        label_submitted_from: isArabic ? 'الصفحة' : 'Page',
+        label_submitted_at: isArabic ? 'وقت الإرسال' : 'Submitted at',
+      };
+
+      const payload = {
+        'form-name': 'lead-intake',
+        ...emailCopy,
+        name: formState.name,
+        email: formState.email,
+        phone_or_whatsapp: formState.phone_or_whatsapp,
+        company: formState.company,
+        inquiry_type: formState.inquiry_type,
+        inquiry_type_label: inquiryTypeLabel,
+        website_type: formState.website_type,
+        website_type_label: websiteTypeLabel,
+        timeline: formState.timeline,
+        timeline_label: timelineLabel,
+        preferred_language: formState.preferred_language,
+        preferred_language_label: preferredLanguageLabel,
+        pages_needed: formState.pages_needed.join(', '),
+        pages_needed_label: pagesNeededLabel,
+        details: formState.details,
+        submitted_from: window.location.href,
+        submitted_at: new Date().toLocaleString(isArabic ? 'ar-EG' : 'en-US'),
+        'bot-field': formState.botField,
+      };
+
+      await sendContactEmails(payload);
+
+      trackEvent('lead_form_submit', {
+        language: lang,
+        inquiry_type: formState.inquiry_type,
+        website_type: formState.website_type,
+      });
+
+      setSubmitState('success');
+      setFormState({
+        ...initialFormState,
+        inquiry_type: inquiryTypes[0]?.key ?? '',
+        website_type: websiteTypeOptions[0]?.key ?? '',
+        timeline: timelineOptions[0]?.key ?? '',
+        preferred_language: languageOptions[2]?.key ?? '',
+        pages_needed: ['home', 'services', 'contact'],
+      });
+    } catch (error) {
+      console.error('Contact form submission failed:', error);
+      setSubmitErrorMessage(getSubmitErrorMessage(error, isArabic));
+      setSubmitState('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <section className="relative pb-24 pt-14 md:pt-20 min-h-screen overflow-hidden">
-      
-      {/* Background World Orb Effect */}
-      <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] pointer-events-none z-[-1]">
-         <motion.div 
-           animate={{ rotate: 360 }} 
-           transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
-           className="w-full h-full rounded-full border-[100px] border-cyan-900/5 mix-blend-screen blur-3xl opacity-50"
-         />
-      </div>
+    <section className="relative overflow-x-hidden pb-0 pt-14 md:pb-4 md:pt-20">
+      <div className="pointer-events-none absolute left-[-10%] top-10 h-[26rem] w-[26rem] rounded-full bg-cyan-500/10 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-[-8%] right-[-6%] h-[28rem] w-[28rem] rounded-full bg-violet-500/10 blur-[140px]" />
+
+      <PageHero
+        description={content.heroDescription}
+        kicker={content.heroKicker}
+        metrics={socialProofStats.map((item) => ({
+          value: isArabic ? item.valueAr : item.valueEn,
+          label: isArabic ? item.labelAr : item.labelEn,
+        }))}
+        primaryAction={{
+          external: true,
+          href: whatsappUrl,
+          icon: <MessageCircle className="h-4 w-4" />,
+          label: content.whatsappLabel,
+          onClick: () =>
+            trackEvent('whatsapp_click', {
+              placement: 'contact_page_hero',
+              language: lang,
+            }),
+        }}
+        profileId="contact"
+        secondaryAction={{
+          href: `tel:${portfolioProfile.phoneHref}`,
+          icon: <Phone className="h-4 w-4" />,
+          label: portfolioProfile.phone,
+          onClick: () =>
+            trackEvent('phone_click', {
+              placement: 'contact_page_hero',
+              language: lang,
+              phone_number: portfolioProfile.phoneHref,
+            }),
+        }}
+        title={content.heroTitle}
+      />
 
       <div className="mx-auto max-w-7xl px-4 md:px-8">
-        
-        {/* Massive Contact Hero */}
-        <div className="text-center max-w-4xl mx-auto mb-20 relative">
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", bounce: 0.5 }}
-            className="absolute -top-10 left-1/2 -translate-x-1/2 w-40 h-40 bg-cyan-500/20 rounded-full blur-[80px]"
-          />
-          <motion.div 
-             initial={{ opacity: 0, y: -20 }}
-             animate={{ opacity: 1, y: 0 }}
-             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 text-white backdrop-blur-md mb-8"
-          >
-             <Orbit className="w-5 h-5 text-cyan-400 animate-spin-slow" />
-             <span className="font-medium tracking-wide">{content.signal}</span>
-          </motion.div>
-          <motion.h1 
-             initial={{ opacity: 0, y: 30 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ delay: 0.1 }}
-             className="text-3xl sm:text-5xl md:text-[6rem] font-display font-bold text-white leading-tight md:leading-[1.1] tracking-tighter"
-          >
-             {content.heroTitleLine1} <br className="hidden md:block"/>
-             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-300 to-violet-400">{content.heroTitleLine2}</span>
-          </motion.h1>
-          <motion.p 
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             transition={{ delay: 0.2 }}
-             className="text-xl md:text-2xl mt-8 text-slate-400 leading-relaxed font-medium"
-          >
-            {content.heroDescription}
-          </motion.p>
-        </div>
-
-        {/* Dynamic Interactive Split Layout */}
-        <div className="grid gap-8 md:gap-12 lg:grid-cols-[1fr_1.3fr] items-start mb-16 md:mb-32">
-          
-          {/* Methods & Info */}
-          <div className="space-y-10">
-            <div className="glass-card p-6 md:p-10 rounded-3xl md:rounded-[3rem] border-white/10 bg-[#06090f]/60 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
-               <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/10 blur-[80px] rounded-full group-hover:bg-cyan-500/20 transition-colors duration-1000" />
-               <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-8">{content.directChannels}</h3>
-               
-               <div className="space-y-6 relative z-10">
-                 {contactCards.map((card, idx) => (
-                   <motion.a 
-                     initial={{ opacity: 0, x: -20 }}
-                     animate={{ opacity: 1, x: 0 }}
-                     transition={{ delay: idx * 0.1 }}
-                     href={card.href} 
-                     key={idx}
-                     className="flex items-center gap-6 p-4 rounded-2xl hover:bg-white/5 transition-colors group/item"
-                   >
-                     <div className={`p-4 rounded-full bg-gradient-to-bl ${card.color} text-[#06090f] shadow-[0_0_20px_rgba(255,255,255,0.1)] group-hover/item:scale-110 transition-transform duration-300`}>
-                       <card.icon className="w-6 h-6" />
-                     </div>
-                     <div>
-                       <p className="text-slate-400 text-sm tracking-widest uppercase mb-1">{lang === 'ar' ? card.titleAr : card.titleEn}</p>
-                       <p className="text-xl font-bold text-white">{isArabic ? card.valueAr : card.valueEn}</p>
-                     </div>
-                   </motion.a>
-                 ))}
-               </div>
-            </div>
-
-            {/* Interest Tags */}
-            <div>
-               <h3 className="text-slate-500 font-semibold uppercase tracking-widest mb-4">{content.whatAreYouLookingFor}</h3>
-               <div className="flex flex-wrap gap-3">
-                  {inquiryTypes.map(tag => (
-                     <span key={tag.ar} className="px-5 py-2.5 rounded-full border border-white/10 bg-white/5 text-slate-300 hover:text-cyan-300 hover:border-cyan-400/40 cursor-default transition-all duration-300 backdrop-blur-sm">
-                       {lang === 'ar' ? tag.ar : tag.en}
-                     </span>
-                  ))}
-               </div>
-            </div>
+        <div className="hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.16),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.12),transparent_38%)]" />
+          <div className="absolute inset-y-0 left-0 hidden w-[42%] md:block">
+            <img
+              src={illustrationAssets.cloudSync.src}
+              alt={illustrationAssets.cloudSync.alt}
+              className="h-full w-full object-cover object-center opacity-[0.08] blur-[2px]"
+              loading="eager"
+            />
           </div>
 
-          {/* HIGH-END INTERACTIVE FORM */}
-          <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="surface-card-strong rounded-3xl md:rounded-[3rem] p-6 md:p-12 shadow-[0_30px_100px_rgba(0,0,0,0.8)] relative"
-          >
-             {/* Neon top border */}
-             <div className="absolute top-0 inset-x-6 md:inset-x-12 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50" />
-             
-             <div className="mb-10">
-               <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">{content.formTitle}</h2>
-               <p className="text-slate-400 text-base md:text-lg">{content.formDescription}</p>
-             </div>
-
-             <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid gap-8 md:grid-cols-2">
-                   {/* Custom Input Structure */}
-                   <div className="relative group">
-                     <input type="text" required id="name" className="peer w-full bg-transparent border-b-2 border-white/20 px-0 py-4 text-xl text-white focus:outline-none focus:border-cyan-400 transition-colors placeholder-transparent" placeholder="Name" />
-                     <label htmlFor="name" className={`absolute top-4 text-slate-500 text-lg transition-all duration-300 peer-focus:-top-6 peer-focus:text-sm peer-focus:text-cyan-400 peer-valid:-top-6 peer-valid:text-sm peer-valid:text-slate-400 ${labelAlignmentClass}`}>{content.nameLabel}</label>
-                   </div>
-                   <div className="relative group">
-                     <input type="email" required id="email" className="peer w-full bg-transparent border-b-2 border-white/20 px-0 py-4 text-xl text-white focus:outline-none focus:border-cyan-400 transition-colors placeholder-transparent" placeholder="Email" />
-                     <label htmlFor="email" className={`absolute top-4 text-slate-500 text-lg transition-all duration-300 peer-focus:-top-6 peer-focus:text-sm peer-focus:text-cyan-400 peer-valid:-top-6 peer-valid:text-sm peer-valid:text-slate-400 ${labelAlignmentClass}`}>{content.emailLabel}</label>
-                   </div>
-                </div>
-
-                <div className="relative group pt-4">
-                   <input type="text" required id="project" className="peer w-full bg-transparent border-b-2 border-white/20 px-0 py-4 text-xl text-white focus:outline-none focus:border-cyan-400 transition-colors placeholder-transparent" placeholder="Project" />
-                   <label htmlFor="project" className={`absolute top-8 text-slate-500 text-lg transition-all duration-300 peer-focus:top-0 peer-focus:text-sm peer-focus:text-cyan-400 peer-valid:top-0 peer-valid:text-sm peer-valid:text-slate-400 ${labelAlignmentClass}`}>{content.projectLabel}</label>
-                </div>
-
-                <div className="relative group pt-4">
-                   <textarea required id="details" rows={4} className="peer w-full bg-transparent border-b-2 border-white/20 px-0 py-4 text-xl text-white focus:outline-none focus:border-cyan-400 transition-colors placeholder-transparent resize-none leading-relaxed" placeholder="Details" />
-                   <label htmlFor="details" className={`absolute top-8 text-slate-500 text-lg transition-all duration-300 peer-focus:top-0 peer-focus:text-sm peer-focus:text-cyan-400 peer-valid:top-0 peer-valid:text-sm peer-valid:text-slate-400 ${labelAlignmentClass}`}>{content.detailsLabel}</label>
-                </div>
-
-                <div className="pt-6">
-                   <button 
-                     type="submit" 
-                     disabled={isSubmitting || isSubmitted}
-                     className={`w-full py-6 rounded-2xl flex items-center justify-center gap-3 text-xl font-bold transition-all duration-500 shadow-[0_15px_30px_rgba(45,212,191,0.2)] hover:shadow-[0_20px_40px_rgba(45,212,191,0.4)] hover:-translate-y-1 ${isSubmitted ? 'bg-emerald-500 text-[#06090f]' : 'bg-gradient-to-r from-cyan-400 to-teal-400 text-[#06090f]'}`}
-                   >
-                     <AnimatePresence mode="wait">
-                       {isSubmitting ? (
-                         <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-3">
-                           <Loader2 className="w-6 h-6 animate-spin" /> {content.loadingLabel}
-                         </motion.div>
-                       ) : isSubmitted ? (
-                         <motion.div key="success" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} className="flex items-center gap-3">
-                           <CheckCircle className="w-7 h-7" /> {content.successLabel}
-                         </motion.div>
-                       ) : (
-                         <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-3">
-                           <Send className="w-6 h-6" /> {content.submitLabel}
-                         </motion.div>
-                       )}
-                     </AnimatePresence>
-                   </button>
-                </div>
-             </form>
-          </motion.div>
-        </div>
-
-
-
-        {/* WORKFLOW ROADMAP */}
-        <div className="mb-12 md:mb-20">
-          <SectionTitle
-            description={content.workflowDescription}
-            kicker={content.workflowKicker}
-            title={content.workflowTitle}
-          />
-          <div className="mt-10 md:mt-16 grid gap-4 md:gap-6 md:grid-cols-4">
-             {workflowSteps.map((step, idx) => (
-                <motion.div 
-                  key={step.titleEn}
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                  viewport={{ once: true }}
-                   transition={{ delay: idx * 0.15 }}
-                  className="surface-card rounded-3xl md:rounded-[2.5rem] p-6 md:p-8 border border-white/5 relative overflow-hidden group"
+          <div className="relative z-10 grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+            <motion.div
+              initial={isMobile ? false : { opacity: 0, y: 20 }}
+              animate={isMobile ? undefined : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+              className="max-w-4xl"
+            >
+              <p className="section-kicker border-cyan-400/25 bg-cyan-400/10 text-cyan-100">
+                <Sparkles className={`${isArabic ? 'ml-2' : 'mr-2'} inline h-3.5 w-3.5`} />
+                {content.heroKicker}
+              </p>
+              <h1 className="mt-5 font-display text-[2rem] font-bold leading-[1.12] tracking-tight text-white md:text-[4.3rem]">
+                {content.heroTitle}
+              </h1>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300 md:text-xl md:leading-9">
+                {content.heroDescription}
+              </p>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a
+                  className="btn-primary inline-flex items-center justify-center gap-2"
+                  href={whatsappUrl}
+                  onClick={() =>
+                    trackEvent('whatsapp_click', {
+                      placement: 'contact_page_hero',
+                      language: lang,
+                    })
+                  }
+                  rel="noreferrer"
+                  target="_blank"
                 >
-                   <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-400/5 blur-2xl group-hover:bg-cyan-400/20 transition-colors duration-500" />
-                   <div className="mb-6 p-4 rounded-2xl bg-[#06090f] border border-white/10 w-fit text-cyan-400 shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
-                     <step.icon className="w-8 h-8" />
-                   </div>
-                   <h3 className="text-2xl font-bold text-white mb-2">{isArabic ? step.titleAr : step.titleEn}</h3>
-                   <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded-full text-slate-300 block w-fit mb-4">{isArabic ? step.timeAr : step.timeEn}</span>
-                   <p className="text-slate-400 leading-relaxed">{isArabic ? step.descAr : step.descEn}</p>
-                </motion.div>
-             ))}
+                  <MessageCircle className="h-4 w-4" />
+                  {content.whatsappLabel}
+                </a>
+                <a
+                  className="btn-secondary inline-flex items-center justify-center gap-2"
+                  href={`tel:${portfolioProfile.phoneHref}`}
+                  onClick={() =>
+                    trackEvent('phone_click', {
+                      placement: 'contact_page_hero',
+                      language: lang,
+                      phone_number: portfolioProfile.phoneHref,
+                    })
+                  }
+                >
+                  <Phone className="h-4 w-4" />
+                  <span dir="ltr">{portfolioProfile.phone}</span>
+                </a>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={isMobile ? false : { opacity: 0, scale: 0.96, y: 18 }}
+              animate={isMobile ? undefined : { opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 0.12, duration: 0.45, ease: 'easeOut' }}
+              whileHover={isMobile ? undefined : { y: -6, scale: 1.01 }}
+              className="relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-[#06090f]/70 p-4 shadow-[0_26px_80px_-48px_rgba(0,0,0,0.9)] backdrop-blur-2xl md:rounded-[2.2rem] md:p-6"
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(45,212,191,0.16),transparent_36%)]" />
+              <div className="relative z-10">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-200/80">
+                      {content.promiseKicker}
+                    </p>
+                    <h2 className="mt-2 font-display text-xl font-bold text-white md:text-2xl">
+                      {content.heroSideTitle}
+                    </h2>
+                    <p className="mt-2 text-sm leading-7 text-slate-400">{content.heroSideBody}</p>
+                  </div>
+                  <div className="rounded-2xl bg-cyan-300 p-3 text-slate-950 shadow-[0_0_34px_rgba(45,212,191,0.35)]">
+                    <ArrowUpLeft className="h-5 w-5" />
+                  </div>
+                </div>
+
+                <div className="mt-5 grid gap-3">
+                  {workflowSteps.map((step, index) => (
+                    <motion.div
+                      key={`hero-${step.titleEn}`}
+                      animate={isMobile ? undefined : { opacity: [0.82, 1, 0.82] }}
+                      transition={{ duration: 2.8, repeat: Infinity, delay: index * 0.35, ease: 'easeInOut' }}
+                      className="flex items-start gap-3 rounded-[1.1rem] border border-white/8 bg-white/[0.035] p-3"
+                    >
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-cyan-300 text-xs font-black text-slate-950">
+                        0{index + 1}
+                      </span>
+                      <div>
+                        <p className="text-sm font-bold text-white">{isArabic ? step.titleAr : step.titleEn}</p>
+                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                          {isArabic ? step.descAr : step.descEn}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+                <p className="mt-4 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-center text-xs font-bold text-cyan-100">
+                  {content.briefHint}
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
 
-        {/* Social Proof Strip */}
-        <div className="mt-14 md:mt-20 border-y border-white/5 py-6 md:py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
-            {socialProofStats.map((item, i) => (
+        <div className="mt-10">
+          <div className="mb-8 text-center">
+            <p className="section-kicker mx-auto">{content.promiseKicker}</p>
+            <h2 className="mt-4 font-display text-2xl font-bold text-white md:text-4xl">
+              {content.promiseTitle}
+            </h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {contactPromises.map((item, index) => (
+              <motion.div
+                key={item.titleEn}
+                initial={isMobile ? false : { opacity: 0, y: 18 }}
+                whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ delay: index * 0.08 }}
+                whileHover={isMobile ? undefined : { y: -7 }}
+                className="surface-card group relative overflow-hidden rounded-[1.45rem] p-4 md:rounded-[2rem] md:p-6"
+              >
+                <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/35 to-transparent" />
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-300/10 text-cyan-300 transition-colors group-hover:bg-cyan-300 group-hover:text-slate-950">
+                  <item.icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-display text-lg font-bold text-white">{isArabic ? item.titleAr : item.titleEn}</h3>
+                <p className="mt-2 text-sm leading-7 text-slate-400">{isArabic ? item.descAr : item.descEn}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10 grid items-start gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-10">
+          <div className="space-y-8 lg:sticky lg:top-28">
+            <div className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.5rem] md:p-8">
+              <h2 className="font-display text-2xl font-bold text-white">{content.directChannels}</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-400">{content.directChannelsNote}</p>
+
+              <div className="mt-6 grid gap-3">
+                {contactCards.map((card, index) => (
+                  <motion.a
+                    key={card.label}
+                    initial={isMobile ? false : { opacity: 0, x: isArabic ? 18 : -18 }}
+                    whileInView={isMobile ? undefined : { opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ delay: index * 0.06 }}
+                    whileHover={isMobile ? undefined : { x: isArabic ? -5 : 5 }}
+                    className="group flex items-center gap-4 rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-cyan-400/30 hover:bg-white/[0.05]"
+                    href={card.href}
+                    onClick={card.onClick}
+                    rel={card.href.startsWith('https://') ? 'noreferrer' : undefined}
+                    target={card.href.startsWith('https://') ? '_blank' : undefined}
+                  >
+                    <div className="rounded-2xl bg-cyan-400/10 p-3 text-cyan-300 transition-colors group-hover:bg-cyan-400 group-hover:text-slate-950">
+                      <card.icon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{card.label}</p>
+                      <p className="mt-1 break-all text-sm font-medium text-white md:text-base">
+                        {card.value}
+                      </p>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            <div id="region" className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.5rem] md:p-8">
+              <SectionTitle
+                description={content.workflowDescription}
+                kicker={content.workflowKicker}
+                title={content.workflowTitle}
+              />
+              <div className="relative mt-6 grid gap-3">
+                <div className="pointer-events-none absolute bottom-4 start-5 top-4 hidden w-px bg-gradient-to-b from-cyan-300/40 via-white/10 to-transparent md:block" />
+                {workflowSteps.map((step, index) => (
+                  <motion.div
+                    key={step.titleEn}
+                    initial={isMobile ? false : { opacity: 0, y: 18 }}
+                    {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.25 } } : {})}
+                    transition={{ delay: index * 0.08 }}
+                    whileHover={isMobile ? undefined : { y: -4 }}
+                    className="relative rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4 md:ps-16"
+                  >
+                    <p className="absolute start-4 top-4 hidden h-9 w-9 items-center justify-center rounded-full bg-cyan-300 text-[11px] font-black text-slate-950 shadow-[0_0_26px_rgba(45,212,191,0.25)] md:flex">
+                      0{index + 1}
+                    </p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300 md:hidden">0{index + 1}</p>
+                    <h3 className="mt-2 font-display text-lg font-semibold text-white">
+                      {isArabic ? step.titleAr : step.titleEn}
+                    </h3>
+                    <p className="mt-2 text-sm leading-7 text-slate-400">
+                      {isArabic ? step.descAr : step.descEn}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <motion.div
+            initial={isMobile ? false : { opacity: 0, y: 24 }}
+            {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.2 } } : {})}
+            className="surface-card-strong relative overflow-hidden rounded-[1.8rem] p-5 shadow-[0_30px_100px_rgba(0,0,0,0.8)] md:rounded-[3rem] md:p-10"
+          >
+            <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/45 to-transparent" />
+            <div className="pointer-events-none absolute -end-12 -top-12 h-44 w-44 rounded-full bg-cyan-400/10 blur-3xl" />
+            <p className="section-kicker">{content.formKicker}</p>
+            <h2 className="mt-4 font-display text-2xl font-bold text-white md:text-4xl">
+              {content.formTitle}
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-slate-400 md:text-base">{content.formDescription}</p>
+            {!isEmailJsConfigured() ? (
+              <p className="mt-4 rounded-2xl border border-amber-300/20 bg-amber-300/10 px-4 py-3 text-sm leading-7 text-amber-100">
+                {isArabic
+                  ? 'تنبيه: مفاتيح EmailJS غير مكتملة. استخدم زر واتساب أو الإيميل الجاهز حتى يتم ضبطها.'
+                  : 'Note: EmailJS keys are incomplete. Use WhatsApp or the prepared email button until they are fixed.'}
+              </p>
+            ) : null}
+
+            <form
+              className="relative z-10 mt-8 space-y-5"
+              method="POST"
+              name="lead-intake"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
+            >
+              <input type="hidden" name="form-name" value="lead-intake" />
+              <input type="hidden" name="bot-field" value={formState.botField} />
+              <input type="hidden" name="to_email" value={CONTACT_EMAIL} />
+              <input type="hidden" name="pages_needed" value={formState.pages_needed.join(', ')} />
+              <input type="hidden" name="pages_needed_label" value={optionLabels(pageNeedOptions, formState.pages_needed, isArabic)} />
+
+              <div className="grid gap-5 md:grid-cols-2">
+                <label className="space-y-2">
+                  <span className="text-sm text-slate-300">{content.nameLabel}</span>
+                  <input
+                    className="w-full rounded-2xl border border-white/10 bg-[#06090f]/45 px-4 py-3 text-white outline-none transition-all placeholder:text-slate-500 focus:border-cyan-400/50 focus:bg-[#06090f]/72 focus:shadow-[0_0_0_4px_rgba(45,212,191,0.08)]"
+                    name="name"
+                    onChange={handleChange}
+                    placeholder={isArabic ? 'الاسم الكامل' : 'Full name'}
+                    required
+                    type="text"
+                    value={formState.name}
+                  />
+                </label>
+                <label className="space-y-2">
+                  <span className="text-sm text-slate-300">{content.emailLabel}</span>
+                  <input
+                    className="w-full rounded-2xl border border-white/10 bg-[#06090f]/45 px-4 py-3 text-white outline-none transition-all placeholder:text-slate-500 focus:border-cyan-400/50 focus:bg-[#06090f]/72 focus:shadow-[0_0_0_4px_rgba(45,212,191,0.08)]"
+                    name="email"
+                    onChange={handleChange}
+                    placeholder={isArabic ? 'name@company.com' : 'name@company.com'}
+                    required
+                    type="email"
+                    value={formState.email}
+                  />
+                </label>
+              </div>
+
+              <div className="grid gap-5 md:grid-cols-2">
+                <label className="space-y-2">
+                  <span className="text-sm text-slate-300">{content.phoneLabel}</span>
+                  <input
+                    className="w-full rounded-2xl border border-white/10 bg-[#06090f]/45 px-4 py-3 text-white outline-none transition-all placeholder:text-slate-500 focus:border-cyan-400/50 focus:bg-[#06090f]/72 focus:shadow-[0_0_0_4px_rgba(45,212,191,0.08)]"
+                    name="phone_or_whatsapp"
+                    onChange={handleChange}
+                    placeholder={isArabic ? '+20...' : '+20...'}
+                    required
+                    type="text"
+                    value={formState.phone_or_whatsapp}
+                  />
+                </label>
+                <label className="space-y-2">
+                  <span className="text-sm text-slate-300">{content.companyLabel}</span>
+                  <input
+                    className="w-full rounded-2xl border border-white/10 bg-[#06090f]/45 px-4 py-3 text-white outline-none transition-all placeholder:text-slate-500 focus:border-cyan-400/50 focus:bg-[#06090f]/72 focus:shadow-[0_0_0_4px_rgba(45,212,191,0.08)]"
+                    name="company"
+                    onChange={handleChange}
+                    placeholder={isArabic ? 'اسم الشركة أو البراند' : 'Company or brand name'}
+                    required
+                    type="text"
+                    value={formState.company}
+                  />
+                </label>
+              </div>
+
+              <ContactSelect
+                isArabic={isArabic}
+                label={content.inquiryLabel}
+                name="inquiry_type"
+                onValueChange={handleSelectChange}
+                options={inquiryTypes}
+                value={formState.inquiry_type}
+              />
+
+              <div className="grid gap-5 md:grid-cols-2">
+                <ContactSelect
+                  isArabic={isArabic}
+                  label={isArabic ? '\u0646\u0648\u0639 \u0627\u0644\u0645\u0648\u0642\u0639 \u0627\u0644\u0645\u0637\u0644\u0648\u0628' : 'Website type'}
+                  name="website_type"
+                  onValueChange={handleSelectChange}
+                  options={websiteTypeOptions}
+                  value={formState.website_type}
+                />
+
+                <ContactSelect
+                  isArabic={isArabic}
+                  label={isArabic ? '\u0645\u0648\u0639\u062f \u0627\u0644\u0628\u062f\u0627\u064a\u0629 \u0623\u0648 \u0627\u0644\u062a\u0633\u0644\u064a\u0645' : 'Timeline'}
+                  name="timeline"
+                  onValueChange={handleSelectChange}
+                  options={timelineOptions}
+                  value={formState.timeline}
+                />
+              </div>
+
+              <div className="grid gap-5 md:grid-cols-2">
+                <ContactSelect
+                  isArabic={isArabic}
+                  label={isArabic ? '\u0644\u063a\u0629 \u0627\u0644\u0645\u0648\u0642\u0639' : 'Website language'}
+                  name="preferred_language"
+                  onValueChange={handleSelectChange}
+                  options={languageOptions}
+                  value={formState.preferred_language}
+                />
+              </div>
+
+              <fieldset className="space-y-3">
+                <legend className="text-sm text-slate-300">
+                  {isArabic ? 'الصفحات أو الأقسام المطلوبة' : 'Needed pages or sections'}
+                </legend>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {pageNeedOptions.map((item) => (
+                    <label
+                      key={item.key}
+                      className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#06090f]/35 px-4 py-3 text-sm text-slate-200 transition-colors hover:border-cyan-400/30 hover:bg-cyan-400/5"
+                    >
+                      <input
+                        checked={formState.pages_needed.includes(item.key)}
+                        className="h-4 w-4 accent-cyan-300"
+                        name="page_need"
+                        onChange={handlePageNeedChange}
+                        type="checkbox"
+                        value={item.key}
+                      />
+                      <span>{isArabic ? item.ar : item.en}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <label className="space-y-2">
+                <span className="text-sm text-slate-300">{content.detailsLabel}</span>
+                <textarea
+                  className="min-h-[150px] w-full rounded-2xl border border-white/10 bg-[#06090f]/45 px-4 py-3 text-white outline-none transition-all placeholder:text-slate-500 focus:border-cyan-400/50 focus:bg-[#06090f]/72 focus:shadow-[0_0_0_4px_rgba(45,212,191,0.08)]"
+                  name="details"
+                  onChange={handleChange}
+                  placeholder={
+                    isArabic
+                      ? 'ما نوع النشاط؟ من الجمهور؟ هل الهدف طلبات أكثر، ظهور أقوى، أو إطلاق جديد؟'
+                      : 'What is the business, who is the audience, and is the goal more leads, stronger positioning, or a new launch?'
+                  }
+                  required
+                  value={formState.details}
+                />
+              </label>
+
+              {submitState === 'success' ? (
+                <div className="flex items-start gap-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-3 text-emerald-100">
+                  <CheckCircle className="mt-0.5 h-5 w-5 shrink-0" />
+                  <p className="text-sm leading-7">{content.successLabel}</p>
+                </div>
+              ) : null}
+
+              {submitState === 'error' ? (
+                <div className="space-y-3 rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm leading-7 text-rose-100">
+                  <p>{submitErrorMessage || content.errorLabel}</p>
+                  <a
+                    className="inline-flex rounded-xl border border-rose-200/25 bg-white/10 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-white/15"
+                    href={fallbackMailUrl}
+                  >
+                    {isArabic ? 'افتح الإيميل بالطلب جاهز' : 'Open prepared email'}
+                  </a>
+                  <a
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-cyan-200/30 bg-cyan-300/15 px-3 py-2 text-xs font-bold text-cyan-50 transition-colors hover:bg-cyan-300/20"
+                    href={formWhatsAppUrl}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    <MessageCircle className="h-3.5 w-3.5" />
+                    {isArabic ? 'أرسل نفس الطلب على واتساب' : 'Send this request on WhatsApp'}
+                  </a>
+                </div>
+              ) : null}
+
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap">
+                <button
+                  className="btn-primary inline-flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-70 sm:flex-1"
+                  disabled={isSubmitting}
+                  type="submit"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      {content.loadingLabel}
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" />
+                      {content.submitLabel}
+                    </>
+                  )}
+                </button>
+                <a
+                  className="btn-secondary inline-flex items-center justify-center gap-2 sm:flex-1"
+                  href={formWhatsAppUrl}
+                  onClick={() =>
+                    trackEvent('whatsapp_click', {
+                      placement: 'contact_page_form_side',
+                      language: lang,
+                    })
+                  }
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  {isArabic ? 'أرسل الطلب على واتساب' : 'Send request on WhatsApp'}
+                </a>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+
+        <PageImageShowcaseSection showcase={pageImageShowcases.contact} />
+
+        <div className="mt-14 border-y border-white/5 py-6 md:py-8">
+          <p className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+            {content.statsKicker}
+          </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            {socialProofStats.map((item, index) => (
               <motion.div
                 key={item.labelEn}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex flex-col items-center gap-2 py-6 border-l border-white/5 first:border-l-0 group"
+                initial={isMobile ? false : { opacity: 0, y: 18 }}
+                {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.25 } } : {})}
+                transition={{ delay: index * 0.08 }}
+                className="surface-card flex items-center gap-4 rounded-[1.5rem] p-4 md:p-5"
               >
-                <div className="p-3 rounded-full bg-cyan-400/10 text-cyan-400 mb-2 group-hover:bg-cyan-400 group-hover:text-slate-950 transition-all">
-                  <item.icon className="w-6 h-6" />
+                <div className="rounded-2xl bg-cyan-400/10 p-3 text-cyan-300">
+                  <item.icon className="h-5 w-5" />
                 </div>
-                <p className="font-display text-3xl font-black text-white group-hover:text-cyan-300 transition-colors">{isArabic ? item.valueAr : item.valueEn}</p>
-                <p className="text-slate-500 text-xs text-center">{isArabic ? item.labelAr : item.labelEn}</p>
+                <div>
+                  <p className="font-display text-xl font-bold text-white">
+                    {isArabic ? item.valueAr : item.valueEn}
+                  </p>
+                  <p className="text-sm leading-7 text-slate-400">
+                    {isArabic ? item.labelAr : item.labelEn}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* FAQ Contact Specific */}
-        <div className="mt-20">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-10 text-center">{content.faqTitle}</h2>
-          <div className="grid gap-5 md:grid-cols-2 max-w-5xl mx-auto">
-            {contactFaqs.map((faq, i) => (
-              <motion.div
+        <div className="mt-10 rounded-[1.8rem] border border-cyan-300/15 bg-gradient-to-br from-cyan-300/12 via-white/[0.035] to-violet-400/10 p-5 md:mt-12 md:rounded-[2.6rem] md:p-8">
+          <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <p className="section-kicker">{isArabic ? 'جاهز للخطوة الأولى؟' : 'Ready for the first step?'}</p>
+              <h2 className="mt-4 font-display text-2xl font-bold text-white md:text-4xl">
+                {isArabic ? 'أرسل الاحتياج الآن لتحصل على مسار أوضح' : 'Send the need now to get a clearer path'}
+              </h2>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-400 md:text-base md:leading-8">
+                {isArabic
+                  ? 'لا تحتاج تجهيز كل شيء. اكتب ما تعرفه عن شركتك والهدف، وسنساعدك على ترتيب الباقي.'
+                  : 'You do not need everything prepared. Share what you know about the company and goal, and we will help organize the rest.'}
+              </p>
+            </div>
+            <a
+              className="btn-primary justify-center"
+              href={whatsappUrl}
+              onClick={() =>
+                trackEvent('whatsapp_click', {
+                  placement: 'contact_page_bottom_cta',
+                  language: lang,
+                })
+              }
+              rel="noreferrer"
+              target="_blank"
+            >
+              <MessageCircle className="h-4 w-4" />
+              {content.whatsappLabel}
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-10 overflow-hidden md:mt-12">
+          <h2 className="mb-8 text-center font-display text-2xl font-bold text-white md:text-4xl">
+            {content.faqTitle}
+          </h2>
+          <div className="mx-auto max-w-5xl md:hidden">
+            <div className="overflow-hidden rounded-[1.7rem] border border-white/10 bg-[#09111c]/84 px-4 pb-1 pt-2 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.85)] backdrop-blur-xl">
+              <Accordion collapsible type="single" defaultValue="faq-0">
+                {contactFaqs.map((faq, index) => (
+                  <AccordionItem
+                    key={faq.qEn}
+                    value={`faq-${index}`}
+                    className="border-white/8"
+                  >
+                    <AccordionTrigger className={faqTriggerClass}>
+                      <div className="min-w-0">
+                        <span className="min-w-0 break-words text-[0.97rem] font-semibold leading-6 text-white">
+                          {isArabic ? faq.qAr : faq.qEn}
+                        </span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className={faqAnswerClass}>
+                      {isArabic ? faq.aAr : faq.aEn}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+
+          <div className="mx-auto hidden max-w-5xl gap-3 md:grid md:grid-cols-2 md:items-start lg:gap-4">
+            {contactFaqs.map((faq, index) => (
+              <motion.article
                 key={faq.qEn}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="glass-card rounded-3xl md:rounded-[2rem] p-6 md:p-7 border border-white/8 group hover:border-cyan-400/20 transition-all"
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ delay: index * 0.04 }}
+                className={faqDesktopCardClass}
               >
-                <p className="font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">{isArabic ? faq.qAr : faq.qEn}</p>
-                <p className="text-slate-400 text-sm leading-7">{isArabic ? faq.aAr : faq.aEn}</p>
-              </motion.div>
+                <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/35 to-transparent" />
+                <div className="flex items-start gap-3">
+                  <span className="mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 font-display text-[0.68rem] font-black text-cyan-100">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="break-words text-[0.96rem] font-semibold leading-6 text-white">
+                      {isArabic ? faq.qAr : faq.qEn}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                      {isArabic ? faq.aAr : faq.aEn}
+                    </p>
+                  </div>
+                </div>
+              </motion.article>
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );

@@ -77,7 +77,7 @@ const Contact = () => {
             تواصل معنا
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            لنبدأ <span className="gradient-text">مشروعك</span>
+            لنرتب <span className="gradient-text">احتياج شركتك</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             نحن هنا لمساعدتك في تحويل أفكارك إلى واقع رقمي. تواصل معنا اليوم
@@ -95,7 +95,7 @@ const Contact = () => {
             <div>
               <h3 className="text-2xl font-bold mb-4">معلومات التواصل</h3>
               <p className="text-muted-foreground mb-8">
-                لا تتردد في التواصل معنا لأي استفسار أو لمناقشة مشروعك القادم
+                تواصل معنا لأي استفسار أو لمناقشة احتياج شركتك القادم
               </p>
             </div>
 

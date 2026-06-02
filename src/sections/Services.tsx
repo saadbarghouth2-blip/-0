@@ -148,7 +148,7 @@ const Services = () => {
             href="#contact"
             className="btn-primary inline-flex items-center gap-2"
           >
-            دعنا نناقش مشروعك
+            دعنا نناقش احتياج شركتك
             <ArrowLeft className="w-4 h-4" />
           </a>
         </motion.div>

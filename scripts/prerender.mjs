@@ -10,6 +10,8 @@ const serverEntryUrl = pathToFileURL(path.join(distDir, 'server', 'entry-server.
 
 const SEO_START = '<!--app-seo:start-->';
 const SEO_END = '<!--app-seo:end-->';
+const englishPrefix = '/en';
+const trimTrailingSlash = (value) => value.replace(/\/+$/, '');
 
 const toOutputFilePath = (routePath) => {
   if (routePath === '/') {
@@ -20,16 +22,44 @@ const toOutputFilePath = (routePath) => {
   return path.join(distDir, ...segments, 'index.html');
 };
 
-const toAbsoluteUrl = (siteUrl, routePath, lang = 'ar') => {
-  const normalizedRoute = routePath === '/' ? '/' : routePath.replace(/\/+$/, '');
-  const pathname = normalizedRoute === '/' ? '/' : `${normalizedRoute}/`;
-  const url = new URL(pathname, `${siteUrl}/`);
-
-  if (lang === 'en') {
-    url.searchParams.set('lang', 'en');
+const normalizePath = (routePath) => {
+  if (!routePath || routePath === '/') {
+    return '/';
   }
 
-  return url.toString();
+  const withLeadingSlash = routePath.startsWith('/') ? routePath : `/${routePath}`;
+  return withLeadingSlash.replace(/\/+$/, '') || '/';
+};
+
+const stripLanguagePrefix = (routePath) => {
+  const normalizedPath = normalizePath(routePath);
+
+  if (normalizedPath === englishPrefix) {
+    return '/';
+  }
+
+  if (normalizedPath.startsWith(`${englishPrefix}/`)) {
+    return normalizedPath.slice(englishPrefix.length) || '/';
+  }
+
+  return normalizedPath;
+};
+
+const localizePath = (routePath, lang) => {
+  const basePath = stripLanguagePrefix(routePath);
+
+  if (lang === 'en') {
+    return basePath === '/' ? englishPrefix : `${englishPrefix}${basePath}`;
+  }
+
+  return basePath;
+};
+
+const toAbsoluteUrl = (siteUrl, routePath) => {
+  const normalizedRoute = normalizePath(routePath);
+  const pathname = normalizedRoute === '/' ? '/' : `${normalizedRoute}/`;
+
+  return `${trimTrailingSlash(siteUrl)}${pathname}`;
 };
 
 const replaceSeoBlock = (template, seoMarkup) => {
@@ -48,20 +78,27 @@ const replaceSeoBlock = (template, seoMarkup) => {
 const injectRenderedApp = (template, appMarkup) =>
   template.replace('<div id="root"></div>', `<div id="root">${appMarkup}</div>`);
 
+const replaceDocumentLanguage = (template, lang) =>
+  template.replace(
+    /<html[^>]*lang="[^"]+"[^>]*dir="[^"]+"[^>]*>/i,
+    `<html lang="${lang}" dir="${lang === 'ar' ? 'rtl' : 'ltr'}">`,
+  );
+
 const formatDate = (value) => new Date(value).toISOString().slice(0, 10);
 
 const renderSitemap = (siteUrl, routes) => {
   const entries = routes
     .map((route) => {
-      const loc = toAbsoluteUrl(siteUrl, route.path, 'ar');
-      const alternateEn = toAbsoluteUrl(siteUrl, route.path, 'en');
+      const loc = toAbsoluteUrl(siteUrl, route.path);
+      const alternateAr = toAbsoluteUrl(siteUrl, localizePath(route.path, 'ar'));
+      const alternateEn = toAbsoluteUrl(siteUrl, localizePath(route.path, 'en'));
       const lastModified = formatDate(route.lastModified ?? new Date().toISOString());
 
       return `  <url>
     <loc>${loc}</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="${loc}" />
+    <xhtml:link rel="alternate" hreflang="ar" href="${alternateAr}" />
     <xhtml:link rel="alternate" hreflang="en" href="${alternateEn}" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="${loc}" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${alternateAr}" />
     <lastmod>${lastModified}</lastmod>
     <changefreq>${route.changeFrequency}</changefreq>
     <priority>${route.priority.toFixed(1)}</priority>
@@ -82,22 +119,20 @@ ${entries}
 const renderRobots = (siteUrl) => `User-agent: *
 Allow: /
 
-Sitemap: ${new URL('/sitemap.xml', `${siteUrl}/`).toString()}
-Host: ${new URL('/', `${siteUrl}/`).host}
+Sitemap: ${trimTrailingSlash(siteUrl)}/sitemap.xml
+Host: ${trimTrailingSlash(siteUrl).replace(/^https?:\/\//, '')}
 `;
 
 const main = async () => {
   const template = await readFile(path.join(distDir, 'index.html'), 'utf8');
-  const {
-    SITE_URL,
-    prerenderRoutes,
-    render,
-    renderSeoBlock,
-  } = await import(serverEntryUrl);
+  const { SITE_URL, prerenderRoutes, render, renderSeoBlock } = await import(serverEntryUrl);
 
   for (const route of prerenderRoutes) {
-    const { app, seo } = await render(route.path, 'ar');
-    const html = injectRenderedApp(replaceSeoBlock(template, renderSeoBlock(seo)), app);
+    const { app, seo } = await render(route.path, route.lang);
+    const html = injectRenderedApp(
+      replaceDocumentLanguage(replaceSeoBlock(template, renderSeoBlock(seo)), route.lang),
+      app,
+    );
     const outputFilePath = toOutputFilePath(route.path);
 
     await mkdir(path.dirname(outputFilePath), { recursive: true });
@@ -106,7 +141,7 @@ const main = async () => {
 
   const notFound = await render('/404', 'ar');
   const notFoundHtml = injectRenderedApp(
-    replaceSeoBlock(template, renderSeoBlock(notFound.seo)),
+    replaceDocumentLanguage(replaceSeoBlock(template, renderSeoBlock(notFound.seo)), 'ar'),
     notFound.app,
   );
 

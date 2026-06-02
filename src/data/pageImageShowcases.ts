@@ -1,3 +1,5 @@
+import { localImages, type LocalImageAsset } from './localImageInventory';
+
 export type PageImageShowcaseVariant =
   | 'mosaic'
   | 'portrait'
@@ -22,234 +24,166 @@ export interface PageImageShowcase {
   descriptionAr: string;
   descriptionEn: string;
   images: ShowcaseImageItem[];
-  hideImageCaptions?: boolean;
 }
 
-const publicImage = (fileName: string) => encodeURI(`/images/${fileName}`);
+const showcaseImage = (asset: LocalImageAsset): ShowcaseImageItem => ({
+  src: asset.src,
+  altAr: asset.altAr,
+  altEn: asset.altEn,
+  captionAr: '',
+  captionEn: '',
+});
 
 export const pageImageShowcases = {
   home: {
     variant: 'mosaic',
-    kickerAr: 'لقطات من المشهد',
-    kickerEn: 'Visual moments',
-    titleAr: 'صور تضيف طبقة ملموسة وسط السرد بدل أن تبقى الصفحة نصوصًا فقط',
-    titleEn: 'Images that add a tangible layer inside the story instead of leaving the page text-only.',
+    kickerAr: 'مشهد يقرّب الفكرة',
+    kickerEn: 'A clearer visual feel',
+    titleAr: 'شاهد حضور شركتك وهو يبدو حقيقياً قبل التنفيذ',
+    titleEn: 'See your company presence feel real before execution.',
     descriptionAr:
-      'استخدمنا لقطات من مكتبة المشروع داخل مسار القراءة نفسه حتى يبقى الإيقاع البصري متجددًا ويشعر الزائر بأن وراء الهوية الرقمية فريقًا حقيقيًا ومشهدًا حيًا.',
+      'الصورة هنا ليست معرضاً زائداً؛ هي وقفة بصرية تساعد صاحب القرار على تخيل حضور الموقع أمام الزائر. بدل أن يقرأ الزائر وعوداً طويلة فقط، يرى واجهة واضحة، هوية متماسكة، وإحساساً بأن الشركة منظمة من أول لحظة.',
     descriptionEn:
-      'We placed images from the project library directly inside the reading flow to keep the visual rhythm alive and make the brand feel grounded in real studio energy.',
+      'This is not an extra gallery; it is a visual pause that helps decision-makers imagine how the website can feel to visitors. Instead of long promises only, visitors see a clearer interface, a consistent identity, and a more organized first impression.',
     images: [
-      {
-        src: publicImage('ChatGPT Image Apr 8, 2026, 11_23_42 AM.png'),
-        altAr: 'مشهد بصري إبداعي من هوية نُطق',
-        altEn: 'Creative visual scene from Notaq identity',
-        captionAr: 'مشهد بصري يدعم الإحساس بالابتكار والاتساع.',
-        captionEn: 'A visual scene that reinforces innovation and scale.',
-      },
-      {
-        src: publicImage('Gemini_Generated_Image_uigh61uigh61uigh.png'),
-        altAr: 'تكوين رقمي فني يعكس طابع الاستوديو',
-        altEn: 'Digital artistic composition reflecting the studio tone',
-        captionAr: 'إضافة خفيفة تربط النص بالمزاج العام للصفحة.',
-        captionEn: 'A soft layer that connects the copy with the page mood.',
-      },
+      showcaseImage(localImages.studioScene),
+      showcaseImage(localImages.interfaceScene),
     ],
   },
   about: {
     variant: 'portrait',
-    kickerAr: 'من داخل الفريق',
-    kickerEn: 'From the team',
-    titleAr: 'الحديث عن الرؤية يصبح أقوى حين تقاطعه لحظة بشرية حقيقية',
-    titleEn: 'Talking about vision becomes stronger when interrupted by a real human moment.',
+    kickerAr: 'طريقة العمل بوضوح',
+    kickerEn: 'A clearer workflow',
+    titleAr: 'افهم كيف يتحول احتياج الشركة إلى تجربة قابلة للثقة',
+    titleEn: 'Understand how a company need becomes a trustworthy experience.',
     descriptionAr:
-      'هنا وضعنا صورة أقرب للمشهد الإنساني ثم لقطة أوسع تكمل السياق، حتى تبقى صفحة من نحن غنية بالدفء لا بالمفاهيم المجردة فقط.',
+      'صاحب القرار لا يحتاج كلاماً عاماً عن الخبرة فقط؛ بل يحتاج أن يرى طريقة تفكير واضحة: كيف يُقرأ الاحتياج، كيف تُرتب الرسالة، وكيف تتحول التفاصيل الصغيرة إلى واجهة تساعد الزائر على الفهم واتخاذ قرار بثقة.',
     descriptionEn:
-      'Here we pair a more human-facing moment with a wider supporting frame so the About page feels warm and lived-in rather than purely conceptual.',
+      'Decision-makers do not need generic claims about experience only; they need to see a clear way of thinking: how the need is read, how the message is shaped, and how small details become an interface visitors can understand and trust.',
     images: [
-      {
-        src: publicImage('WhatsApp Image 2025-07-25 at 17.40.56_6dae988c.jpg'),
-        altAr: 'صورة عمودية من كواليس العمل',
-        altEn: 'Vertical behind-the-scenes work photo',
-        captionAr: 'حضور إنساني مباشر في قلب الصفحة.',
-        captionEn: 'A direct human presence at the center of the page.',
-      },
-      {
-        src: publicImage('WhatsApp Image 2026-02-15 at 2.31.19 AM (1).jpeg'),
-        altAr: 'مشهد عمل يوضح بيئة التنفيذ',
-        altEn: 'Work scene showing the execution environment',
-        captionAr: 'الصورة الثانية تكمل الحكاية بدل تكرارها.',
-        captionEn: 'The second frame extends the story instead of repeating it.',
-      },
+      showcaseImage(localImages.realPresentation),
+      showcaseImage(localImages.reviewMeeting),
     ],
   },
   services: {
     variant: 'split',
-    kickerAr: 'عرض الخدمات بصريًا',
-    kickerEn: 'Visualizing services',
-    titleAr: 'كل خدمة تستفيد من فاصل بصري مختلف يلتقط المعنى بسرعة',
-    titleEn: 'Each service benefits from a visual break that captures meaning quickly.',
+    kickerAr: 'الخدمة قبل القرار',
+    kickerEn: 'Service before decision',
+    titleAr: 'اختر الخدمة وأنت ترى كيف تخدم موقع الشركة وزائرها',
+    titleEn: 'Choose the service while seeing how it serves the company website and visitors.',
     descriptionAr:
-      'بدل أن تبقى الخدمات في بطاقات فقط، أضفنا لقطة رئيسية وأخرى مساندة في منتصف الصفحة حتى يتحول الشرح إلى تجربة قراءة أخف وأكثر توازنًا.',
+      'بدل قائمة خدمات جامدة، ستفهم ما الذي تضيفه كل خدمة للشركة: تنظيم أفضل للمحتوى، واجهة أهدأ، مسار أوضح للزائر، وتجربة تجعل التواصل أو الشراء أو طلب الخدمة أسهل.',
     descriptionEn:
-      'Instead of leaving services as cards alone, we added a primary and secondary visual break in the middle of the page to make the explanation lighter and more balanced.',
+      'Instead of a static services list, you understand what each service adds to the company: clearer content, calmer screens, a better visitor path, and an experience that makes contacting, buying, or requesting easier.',
     images: [
-      {
-        src: publicImage('Gemini_Generated_Image_8b3hvo8b3hvo8b3h.png'),
-        altAr: 'مشهد رقمي يعبر عن الحلول التقنية',
-        altEn: 'Digital scene expressing technical solutions',
-        captionAr: 'لقطة رئيسية تمنح الصفحة وقفة بصرية واضحة.',
-        captionEn: 'A hero frame that gives the page a clear visual pause.',
-      },
-      {
-        src: publicImage('Gemini_Generated_Image_96cd0396cd0396cd.png'),
-        altAr: 'صورة ثانوية تدعم الحديث عن بناء الخدمات',
-        altEn: 'Secondary image supporting the service-building narrative',
-        captionAr: 'الصورة الثانوية تضيف طبقة تفصيل بدون زحام.',
-        captionEn: 'The secondary frame adds detail without clutter.',
-      },
+      showcaseImage(localImages.abstractTech),
+      showcaseImage(localImages.brandWall),
     ],
   },
   projects: {
     variant: 'band',
-    kickerAr: 'بين المشاريع والنتائج',
-    kickerEn: 'Between work and results',
-    titleAr: 'فاصل بصري واسع يربط المعرض بنتائج التنفيذ بدل الانتقال المفاجئ',
-    titleEn: 'A wide visual bridge that connects the gallery with outcomes instead of jumping abruptly.',
+    kickerAr: 'من الصورة إلى النتيجة',
+    kickerEn: 'From image to outcome',
+    titleAr: 'راجع الأعمال وأنت تبحث عن شكل يناسب شركتك لا عن صور كثيرة فقط',
+    titleEn: 'Review the work while looking for what fits your company, not just more images.',
     descriptionAr:
-      'هذا الجزء يتوسط الصفحة ليمنح العين مساحة راحة قبل الدخول إلى الأرقام والدراسات، مع صور مختلفة تمامًا عن معروض المشاريع نفسه.',
+      'صفحة الأعمال يجب أن تساعد صاحب القرار على المقارنة بهدوء: هل الأسلوب مناسب؟ هل الواجهة واضحة؟ هل النتيجة قريبة من طموح الشركة؟ لذلك نعرض صورتين قويتين داخل النص بدل تكديس طويل يسرق الانتباه من القرار الأساسي.',
     descriptionEn:
-      'This section sits in the middle of the page to give the eye a pause before entering metrics and case studies, using visuals that differ from the project cards themselves.',
+      'The work page should help you compare calmly: does the style fit, is the interface clear, and is the outcome close to your ambition? Two strong visuals support the copy without stealing attention from the decision you need to make.',
     images: [
-      {
-        src: publicImage('ChatGPT Image Apr 8, 2026, 11_26_40 AM.png'),
-        altAr: 'صورة عرض بصري لمشاريع إبداعية',
-        altEn: 'Visual display image for creative projects',
-        captionAr: 'توسيع الإيقاع البصري خارج بطاقات الأعمال التقليدية.',
-        captionEn: 'Expanding the visual rhythm beyond regular project cards.',
-      },
-      {
-        src: publicImage('Gemini_Generated_Image_qr1zi5qr1zi5qr1z.png'),
-        altAr: 'تكوين مرئي يعكس تنوع المخرجات',
-        altEn: 'A visual composition reflecting output variety',
-        captionAr: 'تنويع في الأسلوب حتى لا تتكرر نفس لغة العرض.',
-        captionEn: 'A change in style so the presentation language never feels repeated.',
-      },
+      showcaseImage(localImages.brandMockup),
+      showcaseImage(localImages.premiumDashboard),
     ],
   },
   projectDetail: {
     variant: 'spotlight',
-    kickerAr: 'تفصيلة بصرية',
-    kickerEn: 'Visual detail',
-    titleAr: 'داخل صفحة المشروع نفسها أضفنا فاصلًا بصريًا مستقلًا يدعم القراءة',
-    titleEn: 'Inside the project page itself, we added an independent visual block that supports the reading flow.',
+    kickerAr: 'تفاصيل أسهل في القراءة',
+    kickerEn: 'Details made easier',
+    titleAr: 'اقرأ تفاصيل المشروع بإيقاع بصري يساعدك على فهم القرار',
+    titleEn: 'Read case details with a visual rhythm that supports the decision.',
     descriptionAr:
-      'بعد مقدمة المشروع والإحصاءات، تأتي هذه اللقطة كطبقة إضافية تعطي الصفحة إيقاعًا بصريًا قبل الدخول إلى المعرض والتفاصيل التفاعلية.',
+      'عند دخول صفحة مشروع، المهم أن يظهر السياق لا أن يغرق الزائر في صور متكررة. الصورتان هنا تعملان كفاصل واضح بين المقدمة والتفاصيل، وتساعدان صاحب القرار على قراءة ما تم تنفيذه ولماذا تم اختياره.',
     descriptionEn:
-      'After the project intro and quick stats, this frame adds another visual layer before moving into the gallery and interactive details.',
+      'When you open a project page, the goal is to understand the context, not scroll through repeated visuals. These two images create a clean pause between the intro and the details so the decisions behind the work are easier to follow.',
     images: [
-      {
-        src: publicImage('IMG-20251112-WA0012.jpg'),
-        altAr: 'صورة عملية من داخل مسار التنفيذ',
-        altEn: 'Practical image from the execution process',
-        captionAr: 'لقطة تساعد صفحة المشروع أن تبدو كقصة كاملة لا ككتلة محتوى واحدة.',
-        captionEn: 'A frame that helps the project page feel like a full story instead of one long content block.',
-      },
-      {
-        src: publicImage('Gemini_Generated_Image_rzfhaqrzfhaqrzfh.png'),
-        altAr: 'مشهد بصري مكمل لعرض تفاصيل المشروع',
-        altEn: 'Supporting visual scene for the project details',
-        captionAr: 'الصورة الثانوية تضيف تنفسًا بصريًا قبل الغوص في الأقسام التالية.',
-        captionEn: 'The secondary frame gives the eye a breather before the next sections.',
-      },
+      showcaseImage(localImages.briefRoom),
+      showcaseImage(localImages.projectVisual),
     ],
   },
   blog: {
     variant: 'mosaic',
-    kickerAr: 'قراءة مع إيقاع بصري',
-    kickerEn: 'Reading with visual rhythm',
-    titleAr: 'حتى المدونة تحتاج لحظة بصرية تكسر التكدس وتخدم الفكرة',
-    titleEn: 'Even the blog needs a visual interlude that breaks density and serves the idea.',
+    kickerAr: 'قراءة أخف',
+    kickerEn: 'Lighter reading',
+    titleAr: 'اقرأ الأفكار بدون تكدس نصي طويل يقطع تركيزك',
+    titleEn: 'Read ideas without dense blocks of text breaking your focus.',
     descriptionAr:
-      'وضعنا هذا العرض بين الأجزاء النصية والمقالات حتى تبقى المدونة حيوية، مع هوية بصرية مختلفة عن صور المقالات نفسها.',
+      'المحتوى التعليمي يكون أقوى عندما يمنح القارئ فرصة للتوقف والفهم. لذلك تظهر الصور هنا كاستراحة منظمة داخل الصفحة، لا كمعرض جانبي، مع الحفاظ على ارتباط الكلام باحتياج الشركة وموقعها.',
     descriptionEn:
-      'We placed this showcase between the textual sections and the article grid so the blog stays lively, with a visual identity distinct from the post thumbnails.',
-    hideImageCaptions: true,
+      'Educational content works better when it gives readers room to pause and understand. The visuals act as structured breaks while keeping the idea connected to the company need and website.',
     images: [
-      {
-        src: publicImage('ChatGPT Image Apr 8, 2026, 11_26_40 AM.png'),
-        altAr: 'مشهد مكتب نُطق مع شاشات العمل والهوية البصرية',
-        altEn: 'Notaq office scene with workstations and visual identity',
-        captionAr: '',
-        captionEn: '',
-      },
-      {
-        src: publicImage('Gemini_Generated_Image_8b3hvo8b3hvo8b3h.png'),
-        altAr: 'شعار نُطق على خلفية داكنة أنيقة',
-        altEn: 'Notaq logo on a refined dark wall',
-        captionAr: '',
-        captionEn: '',
-      },
-      {
-        src: publicImage('Gemini_Generated_Image_96cd0396cd0396cd.png'),
-        altAr: 'عرض واجهة نُطق على التابلت والهاتف',
-        altEn: 'Notaq interface shown on tablet and mobile',
-        captionAr: '',
-        captionEn: '',
-      },
+      showcaseImage(localImages.articleVisual),
+      showcaseImage(localImages.blogResearchLocal),
     ],
   },
   testimonials: {
     variant: 'portrait',
-    kickerAr: 'شهادات مدعومة بالمشهد',
-    kickerEn: 'Testimonials with context',
-    titleAr: 'الآراء تبدو أكثر صدقًا حين يرافقها مشهد بصري غير مكرر',
-    titleEn: 'Testimonials feel more credible when they are paired with a non-repetitive visual scene.',
+    kickerAr: 'ثقة أوضح',
+    kickerEn: 'Clearer trust',
+    titleAr: 'اقرأ الآراء ضمن سياق بصري يجعل الثقة أسهل',
+    titleEn: 'Read testimonials in a visual context that makes trust easier.',
     descriptionAr:
-      'أضفنا هنا صورتين مختلفتين عن بطاقات الاقتباسات نفسها، حتى تبقى الصفحة متوازنة بين الشهادة النصية والانطباع البصري.',
+      'آراء العملاء تظل شهادات مكتوبة، لكن وجود صور قليلة ومنظمة يجعل الصفحة أهدأ وأقرب للتصديق. يظهر الانطباع البصري الداعم بدون مبالغة، وتصبح قراءة التجارب أسهل قبل تقييم ملاءمة الأسلوب للشركة.',
     descriptionEn:
-      'We added two visuals different from the quote cards themselves so the page stays balanced between written proof and visual impression.',
+      'Testimonials remain written proof, but a small and organized visual context makes the page calmer and easier to trust, helping decision-makers assess whether this approach fits the company.',
     images: [
-      {
-        src: publicImage('WhatsApp Image 2026-02-15 at 2.31.19 AM.jpeg'),
-        altAr: 'لقطة أفقية داعمة لصفحة آراء العملاء',
-        altEn: 'Wide supporting image for the testimonials page',
-        captionAr: 'مساحة أهدأ بين الشهادات الطويلة.',
-        captionEn: 'A calmer space between longer testimonials.',
-      },
-      {
-        src: publicImage('WhatsApp Image 2026-02-01 at 8.47.19 PM.jpeg'),
-        altAr: 'صورة مكملة لعرض الانطباعات والثقة',
-        altEn: 'Supporting image for impressions and trust',
-        captionAr: 'الصورة هنا تخدم الإحساس بالثقة لا التكرار.',
-        captionEn: 'The image serves trust here, not repetition.',
-      },
+      showcaseImage(localImages.officeWide),
+      showcaseImage(localImages.testimonialsTrustLocal),
     ],
   },
   contact: {
     variant: 'band',
-    kickerAr: 'قبل الإرسال',
-    kickerEn: 'Before sending',
-    titleAr: 'فاصل بصري أخير يهدئ الصفحة قبل الجدول الزمني والأسئلة الشائعة',
-    titleEn: 'A final visual break that settles the page before the timeline and FAQ.',
+    kickerAr: 'قبل أن تبدأ التواصل',
+    kickerEn: 'Before you contact',
+    titleAr: 'اعرف ما الذي سيحدث بعد رسالتك حتى تبدأ بثقة',
+    titleEn: 'Know what happens after your message so you can start with confidence.',
     descriptionAr:
-      'بعد الفورم وقبل بقية المحتوى، أضفنا صورًا صغيرة ومختلفة لتخفيف الكثافة وإبقاء صفحة التواصل أكثر أناقة وتدرجًا.',
+      'صفحة التواصل ليست فورم فقط. صاحب القرار يحتاج أن يعرف كيف تبدأ الخطوة التالية، وما المعلومات التي تساعد على فهم احتياج الشركة بسرعة. الصورتان هنا تهدئان الصفحة وتدعمان الكلام بدل الزحمة.',
     descriptionEn:
-      'After the form and before the rest of the content, we added smaller, varied visuals to soften the density and keep the contact page elegant and well-paced.',
+      'A contact page is not just a form. Decision-makers need to know what happens next and what information will make the company need clear faster.',
     images: [
-      {
-        src: publicImage('WhatsApp Image 2026-02-15 at 05.05.18 (2).jpeg'),
-        altAr: 'صورة ضمن صفحة التواصل',
-        altEn: 'Image placed within the contact page',
-        captionAr: 'تعطي الصفحة لمسة بشرية خفيفة قبل الأقسام التالية.',
-        captionEn: 'Adds a soft human touch before the next sections.',
-      },
-      {
-        src: publicImage('WhatsApp Image 2026-02-15 at 05.05.18 (3).jpeg'),
-        altAr: 'صورة ثانوية لصفحة التواصل',
-        altEn: 'Secondary image for the contact page',
-        captionAr: 'تنويع بصري صغير لكنه مهم جدًا للإيقاع.',
-        captionEn: 'A small visual variation that matters a lot for rhythm.',
-      },
+      showcaseImage(localImages.presentationHall),
+      showcaseImage(localImages.strategyRoom),
+      showcaseImage(localImages.teamSession),
+    ],
+  },
+  gallery: {
+    variant: 'spotlight',
+    kickerAr: 'معرض بدون زحمة',
+    kickerEn: 'Gallery without clutter',
+    titleAr: 'استكشف الصور كمشاهد مختارة لا كصف طويل يشتت عينك',
+    titleEn: 'Explore visuals as selected moments, not a long distracting row.',
+    descriptionAr:
+      'المعرض يصبح أقوى عندما يختار لك لقطات محددة بدل أن يرمي كل شيء دفعة واحدة. هنا ترى صورتين تحملان الإحساس العام للهوية والعمل، وبعدها تستطيع متابعة الصفحة بدون فقدان الإيقاع أو الشعور بأن الصور تزاحم الكلام.',
+    descriptionEn:
+      'A gallery is stronger when it selects meaningful moments instead of throwing everything at once. These two visuals carry the overall feel while keeping the page focused and easy to continue.',
+    images: [
+      showcaseImage(localImages.galleryHero),
+      showcaseImage(localImages.interfaceScene),
+    ],
+  },
+  caseStudies: {
+    variant: 'band',
+    kickerAr: 'قرار أوضح',
+    kickerEn: 'Clearer decision',
+    titleAr: 'افهم دراسة الحالة من خلال صورة تساعدك على قراءة النتيجة',
+    titleEn: 'Understand the case study through visuals that support the outcome.',
+    descriptionAr:
+      'دراسة الحالة لا تحتاج صورًا كثيرة بقدر ما تحتاج ربطًا واضحًا بين المشكلة والقرار والنتيجة. لذلك نكتفي بصورتين مرتبطتين بالسياق، ونترك المساحة للكلام الذي يوضح ماذا تغيّر، ولماذا كان الاختيار مناسبًا، وكيف تستفيد الشركة من نفس المنطق.',
+    descriptionEn:
+      'A case study does not need many images as much as it needs a clear link between the problem, decision, and outcome. Two contextual visuals leave enough space for the explanation that helps companies apply the same thinking.',
+    images: [
+      showcaseImage(localImages.reeqStore),
+      showcaseImage(localImages.kidsLearningByMap),
     ],
   },
 } satisfies Record<string, PageImageShowcase>;

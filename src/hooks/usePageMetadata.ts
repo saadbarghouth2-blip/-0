@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { trackPageView } from '../lib/analytics';
 import { buildPageSeoState, type PageSeoInput } from '../lib/seo';
+import { SITE_NAME } from '../lib/siteConfig';
 
 const setMetaTag = (
   selector: string,
@@ -22,10 +24,7 @@ const removeElements = (selector: string) => {
   document.head.querySelectorAll(selector).forEach((element) => element.remove());
 };
 
-const setLinkTag = (
-  selector: string,
-  attributes: Record<string, string>,
-) => {
+const setLinkTag = (selector: string, attributes: Record<string, string>) => {
   let element = document.head.querySelector<HTMLLinkElement>(selector);
 
   if (!element) {
@@ -39,22 +38,27 @@ const setLinkTag = (
 };
 
 export const usePageMetadata = (input: PageSeoInput) => {
-  useEffect(() => {
-    const state = buildPageSeoState(input);
+  const state = useMemo(() => buildPageSeoState(input), [input]);
 
+  useEffect(() => {
     document.title = state.title;
+    document.documentElement.lang = state.lang;
+    document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
 
     setMetaTag('meta[name="description"]', 'name', 'description', state.description);
     setMetaTag('meta[name="robots"]', 'name', 'robots', state.robots);
     setMetaTag('meta[name="author"]', 'name', 'author', state.author ?? 'Saad Elsayed Barghouth');
     setMetaTag('meta[name="language"]', 'name', 'language', state.lang);
     setMetaTag('meta[property="og:locale"]', 'property', 'og:locale', state.locale);
-    setMetaTag('meta[property="og:site_name"]', 'property', 'og:site_name', 'نُطق | Notaq');
+    setMetaTag('meta[property="og:site_name"]', 'property', 'og:site_name', SITE_NAME);
     setMetaTag('meta[property="og:url"]', 'property', 'og:url', state.canonicalUrl);
     setMetaTag('meta[property="og:title"]', 'property', 'og:title', state.title);
     setMetaTag('meta[property="og:description"]', 'property', 'og:description', state.description);
     setMetaTag('meta[property="og:type"]', 'property', 'og:type', state.type ?? 'website');
     setMetaTag('meta[property="og:image"]', 'property', 'og:image', state.imageUrl);
+    setMetaTag('meta[property="og:image:type"]', 'property', 'og:image:type', 'image/jpeg');
+    setMetaTag('meta[property="og:image:width"]', 'property', 'og:image:width', '1200');
+    setMetaTag('meta[property="og:image:height"]', 'property', 'og:image:height', '630');
     setMetaTag('meta[property="og:image:alt"]', 'property', 'og:image:alt', state.imageAlt);
     setMetaTag('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
     setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', state.title);
@@ -127,21 +131,14 @@ export const usePageMetadata = (input: PageSeoInput) => {
       script.textContent = JSON.stringify(entry).replace(/</g, '\\u003c');
       document.head.appendChild(script);
     });
-  }, [
-    input.author,
-    input.description,
-    input.image,
-    input.imageAlt,
-    JSON.stringify(input.keywords ?? []),
-    input.lang,
-    input.modifiedTime,
-    input.noindex,
-    input.path,
-    input.publishedTime,
-    input.section,
-    JSON.stringify(input.structuredData ?? []),
-    JSON.stringify(input.tags ?? []),
-    input.title,
-    input.type,
-  ]);
+
+    trackPageView({
+      page_title: state.title,
+      page_location: state.canonicalUrl,
+      page_path:
+        typeof window !== 'undefined'
+          ? `${window.location.pathname}${window.location.search}`
+          : state.path ?? '/',
+    });
+  }, [state]);
 };

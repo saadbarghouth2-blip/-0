@@ -95,7 +95,7 @@ const rawBlogPosts: BlogPost[] = [
           'في بعض الحالات قد يكون ذكر أرقام واضحة، أو توفير وسيلة تواصل محلية، أو إظهار أمثلة قريبة من القطاع نفسه أكثر تأثيرا من أي فقرة تعريفية طويلة. الثقة هنا ليست عنصر تجميلي، بل طبقة بنائية داخل الصفحة.',
         ],
         paragraphsEn: [
-          'Trust signals are not universal. Some markets respond more to testimonials, some care about formal credentials, and others read response speed or pricing clarity as the clearest signal of professionalism. There is no single trust template that works everywhere.',
+          'Trust signals are not universal. Some markets respond more to testimonials, some care about formal credentials, and others read response speed or scope clarity as the clearest signal of professionalism. There is no single trust template that works everywhere.',
           'A good global website feels intentionally written for the user in front of it, even if the technical foundation behind the scenes is shared.',
           'In some cases, clear numbers, a local contact option, or examples from a familiar industry create more confidence than a long brand paragraph. Trust is not decorative here; it is structural.',
         ],
@@ -158,7 +158,7 @@ const rawBlogPosts: BlogPost[] = [
         ],
         paragraphsEn: [
           'The e-commerce opportunity in the region is growing quickly, but customer trust is still hard-earned. Many stores lose sales not because the product is weak, but because the page does not communicate clarity, professionalism, and confidence in the first minute.',
-          'The clearer the store is about pricing, delivery, returns, and payment options, the higher the likelihood of purchase. These are not secondary details; they sit at the core of conversion.',
+          'The clearer the store is about product details, delivery, returns, and payment options, the higher the likelihood of purchase. These are not secondary details; they sit at the core of conversion.',
           'This is why some strong products still underperform online. The first screen does not resolve the buyer questions early enough, and in regional markets, trust often determines how fast the customer moves toward purchase.',
         ],
       },
@@ -182,12 +182,12 @@ const rawBlogPosts: BlogPost[] = [
         paragraphsAr: [
           'المحتوى الذي يذكر المزايا العامة فقط لا يكفي. المتجر يحتاج لغة بيع محلية، صورا مناسبة، رسائل توصيل واضحة، وعروضا يشعر المستخدم أنها تخصه فعلا. الفارق هنا ليس تجميليا، بل مباشر في الأرقام.',
           'حين تبدو المنصة وكأنها بنيت لهذا الجمهور تحديدا، يصبح القرار أسرع والاعتراضات أقل.',
-          'الأمثلة المحلية، أسلوب كتابة السعر، وطريقة ترتيب الفئات قد تبدو تفاصيل صغيرة، لكنها تساهم في جعل المتجر مألوفا وسهل الفهم. وكلما زاد هذا الإحساس، زادت احتمالات الاستمرار في الرحلة.',
+          'الأمثلة المحلية، أسلوب عرض تفاصيل المنتج، وطريقة ترتيب الفئات قد تبدو تفاصيل صغيرة، لكنها تساهم في جعل المتجر مألوفا وسهل الفهم. وكلما زاد هذا الإحساس، زادت احتمالات الاستمرار في الرحلة.',
         ],
         paragraphsEn: [
           'Content that speaks only in generic benefits is not enough. A store needs local sales language, relevant imagery, clear delivery messaging, and offers that feel intentionally made for that audience. The impact here is not cosmetic; it is measurable.',
           'When the platform feels like it was built for this audience specifically, decisions become faster and objections become fewer.',
-          'Local references, price presentation, and category structure may feel like minor details, yet they make the store feel familiar and easier to trust. That familiarity often moves conversion in a meaningful way.',
+          'Local references, product detail presentation, and category structure may feel like minor details, yet they make the store feel familiar and easier to trust. That familiarity often moves conversion in a meaningful way.',
         ],
       },
       {

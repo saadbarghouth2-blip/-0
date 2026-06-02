@@ -1,9 +1,11 @@
-import { motion } from 'framer-motion';
-import { ArrowUpLeft, Calendar, Clock, Mail, Sparkles, User } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpLeft, Calendar, Clock, Mail, Sparkles, User, Flame, BookOpen, Send, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import BlogPostCard from '../components/BlogPostCard';
+import EditorialImageBreak from '../components/EditorialImageBreak';
+import PageHero from '../components/PageHero';
 import PageImageShowcaseSection from '../components/PageImageShowcase';
 import {
   blogCategories,
@@ -16,70 +18,31 @@ import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
 
-const blogBenefits = [
-  {
-    titleAr: 'خطوات عملية',
-    titleEn: 'Practical next steps',
-    descriptionAr: 'مقالات تساعدك تفهم ما الذي يحتاجه موقعك أو متجرك قبل أن تبدأ التنفيذ.',
-    descriptionEn: 'Articles that help you understand what your website or store needs before execution starts.',
-  },
-  {
-    titleAr: 'فهم أوضح لعميلك',
-    titleEn: 'Clearer customer view',
-    descriptionAr: 'نربط القرار التصميمي بما يتوقعه العميل فعلًا داخل السوق الذي تستهدفه.',
-    descriptionEn: 'We connect design decisions to what your customer actually expects in the market you serve.',
-  },
-  {
-    titleAr: 'رسائل تبيع بوضوح',
-    titleEn: 'Sharper messaging',
-    descriptionAr: 'المحتوى هنا مكتوب ليخدم الثقة والتحويل، لا ليبدو تقنيًا فقط.',
-    descriptionEn: 'The content here is written to support trust and conversion, not just sound technical.',
-  },
-  {
-    titleAr: 'تنفيذ مبني على فهم',
-    titleEn: 'Execution with context',
-    descriptionAr: 'كل مقال يقربك من قرار أوضح يمكن تحويله إلى صفحة أو موقع أو منصة فعلية.',
-    descriptionEn: 'Each article moves you toward a clearer decision that can become a real page, website, or platform.',
-  },
-];
-
 const blogStats = [
-  { value: '6', labelAr: 'مقالات أساسية', labelEn: 'Core articles' },
+  { value: '6', labelAr: 'مقالات مرجعية', labelEn: 'Reference articles' },
   { value: '4', labelAr: 'مسارات معرفة', labelEn: 'Knowledge tracks' },
   { value: '2', labelAr: 'لغات مدعومة', labelEn: 'Supported languages' },
-  { value: '100%', labelAr: 'هوية متسقة', labelEn: 'Consistent identity' },
 ];
 
-const blogHighlights = [
-  {
-    ar: 'مقالات تساعدك تكتشف أين تحتاج الصفحة إلى وضوح أكثر قبل أن تصرف على التنفيذ.',
-    en: 'Articles that help you spot where a page needs more clarity before you spend on execution.',
-  },
-  {
-    ar: 'ربط مباشر بين شكل الصفحة وبين الثقة والتحويل والنتيجة التجارية.',
-    en: 'A direct link between page design, trust, conversion, and business results.',
-  },
-  {
-    ar: 'قراءة بالعربية والإنجليزية بنفس الجودة إذا كان القرار يُراجع بين أكثر من طرف.',
-    en: 'A balanced Arabic and English reading experience when more than one stakeholder is reviewing the project.',
-  },
-  {
-    ar: 'صفحات مقالات حقيقية وروابط تعمل حتى تكون التجربة كاملة وليست مجرد معاينة.',
-    en: 'Real article pages and working links so the experience feels complete, not like a preview.',
-  },
+const trendingTopics = [
+  { tagAr: 'تجربة المستخدم UX', tagEn: 'UX Design', readsAr: '٢.٥ ألف قراءة', readsEn: '2.5K reads', trend: 95 },
+  { tagAr: 'زيادة التحويلات CRO', tagEn: 'Conversion Rates', readsAr: '١.٩ ألف قراءة', readsEn: '1.9K reads', trend: 88 },
+  { tagAr: 'هندسة فرونت إند', tagEn: 'React Performance', readsAr: '١.٢ ألف قراءة', readsEn: '1.2K reads', trend: 74 },
 ];
 
 const BlogPage = () => {
-  const { lang } = useLanguage();
+  const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  
   const text = (arabic: string, english: string) => (isArabic ? arabic : english);
 
   const featuredPost = featuredBlogPost;
   const featuredTags = isArabic ? featuredPost.tagsAr : featuredPost.tagsEn;
   const featuredDateLabel = new Date(featuredPost.publishedAt).toLocaleDateString(isArabic ? 'ar-EG' : 'en-US');
-  const activeCategory = blogCategories.find((category) => category.key === selectedCategory);
-  const activeCategoryLabel = text(activeCategory?.labelAr ?? 'الكل', activeCategory?.labelEn ?? 'All');
+  
   const gridPosts = blogPosts.filter(
     (post) =>
       post.slug !== featuredPost.slug &&
@@ -88,158 +51,156 @@ const BlogPage = () => {
 
   usePageMetadata(getPageSeoByPath('/blog', lang));
 
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newsletterEmail) {
+      setNewsletterSubscribed(true);
+      setNewsletterEmail('');
+    }
+  };
+
+  const activeCategory = blogCategories.find(c => c.key === selectedCategory);
+  const activeCategoryLabel = activeCategory ? text(activeCategory.labelAr, activeCategory.labelEn) : selectedCategory;
+
   return (
-    <section className="section-shell pb-20 pt-14 md:pt-20">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-12">
-          <p className="section-kicker">
-            <span className={`${isArabic ? 'ml-2' : 'mr-2'} inline-block h-3.5 w-3.5 rounded-full bg-primary`}></span>
-            {text('محتوى يساعدك تقرر', 'Content that helps you decide')}
-          </p>
-          <h1 className="font-display text-4xl font-semibold leading-tight text-white md:text-6xl">
-            {text('مقالات تساعدك تفهم مشروعك قبل ما تبدأ التنفيذ', 'Articles that help you understand your project before execution begins')}
-          </h1>
-          <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-            {text(
-              'إذا كنت تجهز موقعًا أو متجرًا أو صفحة خدمة، فهذه المقالات تساعدك ترى الصورة بوضوح: ماذا يحتاج العميل، أين تتكون الثقة، وكيف يتحول التصميم من شكل جميل إلى نتيجة فعلية.',
-              'If you are preparing a website, store, or service page, these articles help you see the full picture: what customers need, where trust is built, and how design turns from something attractive into something effective.',
-            )}
-          </p>
+    <section className="section-shell pb-12 md:pb-20 pt-10 md:pt-14 lg:pt-20">
+      <PageHero
+        description={text(
+          'أفكار وحقائق تقنية تساعد شركتك على اتخاذ قرارات واثقة في التصميم، تنظيم المحتوى، وسرعة الأداء البرمجي قبل الاستثمار في خطط التنفيذ الكبرى.',
+          'Technical insights helping your company make confident design, performance, and structure decisions before investing heavily in software plans.'
+        )}
+        kicker={text('مجلة نطق المعرفية', 'Notaq Knowledge Base')}
+        metrics={blogStats.map((item) => ({
+          value: item.value,
+          label: text(item.labelAr, item.labelEn),
+        }))}
+        primaryAction={{ label: text('اقرأ المقال الأحدث', 'Read latest article'), to: localizePath(`/blog/${featuredPost.slug}`) }}
+        profileId="blog"
+        secondaryAction={{ label: text('استشارة سريعة', 'Quick consultation'), to: localizePath('/contact') }}
+        title={text('مقالات ورؤى هندسية لبناء حضور رقمي فعال لمشروعك', 'Engineering insights to build a highly effective digital product')}
+      />
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {blogBenefits.map((item) => (
-              <div key={item.titleEn} className="rounded-[1.6rem] border border-white/8 bg-white/[0.03] p-5">
-                <p className="font-medium text-white">{text(item.titleAr, item.titleEn)}</p>
-                <p className="mt-2 text-sm leading-7 text-slate-400">{text(item.descriptionAr, item.descriptionEn)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="surface-card rounded-[2.6rem] p-8 md:p-10">
-          <div className="grid gap-8 lg:grid-cols-[0.62fr_0.38fr] lg:items-center">
-            <div>
-              <div className="mb-4 flex flex-wrap items-center gap-3">
-                <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-300">
-                  {text('اختيار التحرير', "Editor's pick")}
-                </span>
-                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-400">
-                  {text(featuredPost.categoryAr, featuredPost.categoryEn)}
-                </span>
-              </div>
-
-              <h2 className="font-display text-3xl font-semibold text-white md:text-4xl">
-                {text(featuredPost.titleAr, featuredPost.titleEn)}
-              </h2>
-              <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300 md:text-lg">
-                {text(featuredPost.excerptAr, featuredPost.excerptEn)}
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-400">
-                <span className="flex items-center gap-1.5">
-                  <User className="h-4 w-4" />
-                  {text(featuredPost.authorAr, featuredPost.authorEn)}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4" />
-                  {featuredDateLabel}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Clock className="h-4 w-4" />
-                  {text(featuredPost.readTimeAr, featuredPost.readTimeEn)}
-                </span>
+<div className="mx-auto max-w-7xl px-4 md:px-8">
+        
+        {/* Magazine Feature Section: Split Layout (Featured Post Left, Trending Topics Right) */}
+        <div className="grid lg:grid-cols-[1.4fr_0.6fr] gap-4 md:gap-6 lg:gap-8 mb-8 md:mb-10 lg:mb-16 items-start">
+          
+          {/* Main Featured Editorial Card */}
+          <div className="surface-card rounded-xl md:rounded-[2.2rem] p-4 md:p-8 border border-white/10 bg-gradient-to-br from-white/[0.04] to-transparent relative overflow-hidden flex flex-col justify-between">
+            <div className="absolute right-0 top-0 w-72 h-72 bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none" />
+            
+            <div className="grid md:grid-cols-[1fr_1.1fr] gap-4 md:gap-8 items-center">
+              
+              {/* Featured Cover Image */}
+              <div className="relative rounded-lg md:rounded-2xl overflow-hidden aspect-[5/4] md:aspect-[4/3] border border-white/10 shadow-xl group">
+                <img
+                  src={featuredPost.coverImage}
+                  alt={text(featuredPost.titleAr, featuredPost.titleEn)}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="absolute top-4 left-4 bg-cyan-400 text-black text-[10px] font-bold uppercase px-3 py-1.5 rounded-full">
+                  {text("مقال مميز", "Featured")}
+                </div>
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-2">
-                {featuredTags.map((tag) => (
-                  <span key={tag} className="rounded-full border border-white/10 bg-black/10 px-3 py-1 text-xs text-slate-300">
-                    {tag}
+              {/* Featured Meta & Copy */}
+              <div className="space-y-4">
+                <div className="flex flex-wrap gap-2.5 items-center text-xs text-slate-400">
+                  <span className="bg-white/5 border border-white/10 px-2.5 py-1 rounded-full">
+                    {text(featuredPost.categoryAr, featuredPost.categoryEn)}
                   </span>
-                ))}
-              </div>
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3.5 w-3.5 text-cyan-400" />
+                    {text(featuredPost.readTimeAr, featuredPost.readTimeEn)}
+                  </span>
+                </div>
 
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link className="btn-primary inline-flex items-center gap-2" to={`/blog/${featuredPost.slug}`}>
-                  {text('اقرأ المقال كاملًا', 'Read the full article')}
-                  <ArrowUpLeft className={`h-4 w-4 ${isArabic ? '' : '-scale-x-100'}`} />
-                </Link>
-                <Link className="btn-secondary" to="/contact">
-                  {text('خلّينا نطبّقها على مشروعك', 'Bring this clarity to your project')}
-                </Link>
-              </div>
-            </div>
+                <h2 className="font-display text-xl md:text-2xl font-bold text-white hover:text-cyan-300 transition-colors">
+                  <Link to={localizePath(`/blog/${featuredPost.slug}`)}>
+                    {text(featuredPost.titleAr, featuredPost.titleEn)}
+                  </Link>
+                </h2>
 
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10">
-              <img
-                src={featuredPost.coverImage}
-                alt={text(featuredPost.titleAr, featuredPost.titleEn)}
-                className="h-full min-h-[320px] w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#06090f] via-[#06090f]/25 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <p className="section-kicker inline-flex border-cyan-400/30 bg-cyan-400/10 text-cyan-100">
-                  <Sparkles className={`${isArabic ? 'ml-2' : 'mr-2'} h-3.5 w-3.5`} />
-                  {text('مقال محوري في هذا المسار', 'A defining read in this track')}
+                <p className="text-slate-400 text-xs md:text-sm leading-relaxed">
+                  {text(featuredPost.excerptAr, featuredPost.excerptEn)}
                 </p>
+
+                {/* Author Info */}
+                <div className="flex items-center gap-3 text-xs text-slate-400 border-t border-white/5 pt-4">
+                  <div className="h-8 w-8 rounded-full bg-cyan-400/20 border border-cyan-400/30 flex items-center justify-center text-cyan-300 font-bold">
+                    <User className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold">{text(featuredPost.authorAr, featuredPost.authorEn)}</p>
+                    <p className="text-[10px] text-slate-500">{featuredDateLabel}</p>
+                  </div>
+                </div>
+
+                <div className="pt-3">
+                  <Link className="btn-primary inline-flex items-center gap-2 text-xs" to={localizePath(`/blog/${featuredPost.slug}`)}>
+                    {text('قراءة المقال كاملاً', 'Read full article')}
+                    <ArrowUpLeft className="h-4 w-4" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-4">
-          {blogStats.map((item) => (
-            <div key={item.labelEn} className="surface-card rounded-[1.8rem] p-6 text-center">
-              <p className="font-display text-3xl font-semibold text-cyan-300">{item.value}</p>
-              <p className="mt-2 text-sm text-slate-400">{text(item.labelAr, item.labelEn)}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-10 surface-card rounded-[2rem] bg-slate-950/90 p-8">
-          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-            <div>
-              <p className="section-kicker">{text('لماذا قد يهمك هذا القسم؟', 'Why this matters for your project')}</p>
-              <h2 className="mt-5 font-display text-3xl font-semibold text-white">
-                {text(
-                  'محتوى يساعدك تقيّم الفكرة قبل أن تستثمر في التنفيذ',
-                  'Content that helps you evaluate the idea before you invest in execution',
-                )}
-              </h2>
-              <p className="mt-4 text-base leading-8 text-slate-400">
-                {text(
-                  'بدل الكلام النظري، ستجد هنا طريقة تفكير تساعدك تقرأ الصفحة بعين العميل: ما الذي يفهمه بسرعة، ما الذي يطمئنه، وما الذي يدفعه لاتخاذ خطوة.',
-                  'Instead of abstract advice, this section gives you a way to read pages through the customer\'s eyes: what they understand quickly, what builds reassurance, and what moves them to act.',
-                )}
-              </p>
+          {/* Right: Trending Topics Sidebar Widget */}
+          <div className="rounded-xl md:rounded-[2.2rem] border border-white/10 bg-white/[0.02] p-4 md:p-6 backdrop-blur-md space-y-4 md:space-y-6">
+            <div className="flex items-center gap-2 border-b border-white/5 pb-4">
+              <Flame className="h-5 w-5 text-amber-400" />
+              <h3 className="font-display text-sm font-bold text-white uppercase tracking-wider">
+                {text('الأكثر قراءة وتداولاً', 'Trending Discussions')}
+              </h3>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {blogHighlights.map((item) => (
-                <div key={item.en} className="rounded-[1.6rem] border border-white/8 bg-white/[0.03] p-4">
-                  <p className="text-sm leading-7 text-slate-300">{text(item.ar, item.en)}</p>
+            <div className="space-y-4">
+              {trendingTopics.map((topic, index) => (
+                <div key={index} className="group flex items-center justify-between p-3 rounded-xl border border-white/5 bg-[#06090f]/30 hover:border-cyan-400/30 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <span className="text-base font-black text-slate-600 group-hover:text-cyan-400 transition-colors">0{index + 1}</span>
+                    <div>
+                      <p className="text-xs font-bold text-white">{text(topic.tagAr, topic.tagEn)}</p>
+                      <p className="text-[10px] text-slate-500 mt-1">{text(topic.readsAr, topic.readsEn)}</p>
+                    </div>
+                  </div>
+                  {/* Miniature Trend Line SVG */}
+                  <svg className="w-10 h-6 shrink-0 stroke-cyan-400 fill-none stroke-2">
+                    <path d={`M 0 ${20 - (topic.trend / 10)} Q 20 ${10 - (topic.trend / 10)} 40 ${30 - (topic.trend / 5)}`} />
+                  </svg>
                 </div>
               ))}
             </div>
+
+            {/* Quick knowledge guide card */}
+            <div className="bg-gradient-to-br from-violet-500/10 to-cyan-500/10 border border-cyan-400/20 p-4 rounded-2xl text-center">
+              <BookOpen className="h-6 w-6 text-cyan-400 mx-auto mb-2" />
+              <h4 className="text-xs font-bold text-white mb-1">{text('دليل التحول الرقمي الموثق', 'Bilingual Tech Guides')}</h4>
+              <p className="text-[10px] text-slate-400 leading-relaxed mb-3">
+                {text('كل مقال مصاغ لمساعدة أصحاب القرار في قياس الجدوى قبل الأكواد.', 'Every guide helps stakeholders assess feasibility before writing code.')}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <PageImageShowcaseSection showcase={pageImageShowcases.blog} />
+        <EditorialImageBreak imageId="presentation-hall" variant="wide" />
+        <PageImageShowcaseSection showcase={pageImageShowcases.blog} />
 
-      <div className="mx-auto mt-4 max-w-7xl">
-        <div className="mb-8 flex flex-wrap items-center gap-3">
+        {/* Categories Tabs Selector */}
+        <div className="my-6 md:my-10 flex flex-wrap gap-2 md:gap-2.5 justify-center md:justify-start">
           {blogCategories.map((category) => {
             const isActive = selectedCategory === category.key;
-
             return (
               <button
                 key={category.key}
-                className={`rounded-full border px-4 py-2 text-sm transition-colors ${
-                  isActive
-                    ? 'border-cyan-400/40 bg-cyan-400/10 text-cyan-200'
-                    : 'border-slate-600 text-slate-300 hover:border-primary hover:text-primary'
-                }`}
                 onClick={() => setSelectedCategory(category.key)}
+                className={`rounded-full border px-4 py-2 text-xs md:text-sm font-semibold transition-all ${
+                  isActive
+                    ? 'border-cyan-400 bg-cyan-500/10 text-cyan-300 font-bold'
+                    : 'border-white/10 bg-white/5 text-slate-400 hover:border-cyan-400/50 hover:text-white'
+                }`}
                 type="button"
               >
                 {text(category.labelAr, category.labelEn)}
@@ -248,77 +209,93 @@ const BlogPage = () => {
           })}
         </div>
 
+        {/* Blog Post List (Magazine Grid Card Layout) */}
         {gridPosts.length > 0 ? (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 mb-16 md:mb-20">
             {gridPosts.map((post, index) => (
               <motion.div
                 key={post.slug}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.06 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
               >
                 <BlogPostCard post={post} />
               </motion.div>
             ))}
           </div>
         ) : (
-          <div className="surface-card rounded-[2.2rem] p-8 text-center">
-            <p className="section-kicker mx-auto">{text('لا توجد نتائج في الشبكة', 'No grid results')}</p>
-            <h3 className="mt-5 font-display text-2xl font-semibold text-white">
-              {text(
-                `المقال الموجود في هذا التصنيف هو المقال المميز بالأعلى: ${activeCategoryLabel}`,
-                `The featured article above is currently the main item in ${activeCategoryLabel}.`,
-              )}
+          <div className="surface-card rounded-[1.8rem] p-8 text-center mb-20">
+            <h3 className="font-display text-lg font-bold text-white mb-2">
+              {text(`لا توجد مقالات فرعية في تصنيف ${activeCategoryLabel}`, `No articles found in ${activeCategoryLabel}`)}
             </h3>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-slate-400">
-              {text(
-                'يمكنك فتح المقال المميز مباشرة أو العودة لكل التصنيفات لعرض بقية المقالات.',
-                'You can open the featured article directly, or switch back to all categories to browse the rest of the journal.',
-              )}
+            <p className="text-slate-400 text-xs max-w-lg mx-auto">
+              {text('يمكنك فتح المقال المرجعي المتميز في الأعلى أو تصفح كل المقالات.', 'Please switch back to the "All" category to review other reference guides.')}
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link className="btn-primary" to={`/blog/${featuredPost.slug}`}>
-                {text('فتح المقال المميز', 'Open featured article')}
-              </Link>
-              <button className="btn-secondary" onClick={() => setSelectedCategory('all')} type="button">
-                {text('عرض كل المقالات', 'Show all articles')}
-              </button>
-            </div>
           </div>
         )}
 
-        <div className="mt-16 rounded-[2.4rem] border border-white/10 bg-gradient-to-r from-cyan-500/10 via-white/[0.03] to-violet-500/10 p-8 md:p-10">
-          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+        {/* Newsletter Subscription Box (Interactive Form with Glass Design) */}
+        <div className="my-10 md:my-16 rounded-xl md:rounded-[2.2rem] border border-cyan-400/20 bg-gradient-to-r from-cyan-950/15 via-white/[0.02] to-violet-950/15 p-5 md:p-10 relative overflow-hidden">
+          <div className="absolute left-0 bottom-0 w-64 h-64 bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+          
+          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center">
             <div>
-              <p className="section-kicker">{text('إذا كان هذا قريبًا من مشروعك', 'If this sounds like your project')}</p>
-              <h3 className="mt-5 font-display text-3xl font-semibold text-white">
-                {text(
-                  'نقدر نحوّل ما قرأته هنا إلى صفحة أو موقع يخاطب عميلك بوضوح',
-                  'We can turn what you read here into a page or website that speaks clearly to your customer',
-                )}
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest block mb-2">{text('نشرة نطق الأسبوعية', 'Weekly Notaq Newsletter')}</span>
+              <h3 className="font-display text-xl md:text-2xl font-bold text-white mb-3">
+                {text('اشترك لتصلك تحليلات الأداء ودراسات الحالة مباشرة', 'Subscribe to receive performance audits & cases')}
               </h3>
-              <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
+              <p className="text-slate-400 text-xs md:text-sm leading-relaxed max-w-xl">
                 {text(
-                  'سواء كنت تبدأ من الصفر أو تعيد صياغة موقع موجود، نساعدك في بناء تجربة أوضح في الرسالة، أقوى في الثقة، وأفضل في التحويل.',
-                  'Whether you are starting from zero or improving an existing site, we can help you build a clearer message, stronger trust, and better conversion.',
+                  'انضم لأكثر من ١٠,٠٠٠ رائد أعمال وصاحب قرار يستقبلون مقالات وتوصيات تقنية أسبوعية خالية من الزحمة والحشو الإنشائي.',
+                  'Join over 10K founders receiving weekly, verified tech audits and product recommendations with zero fluff.'
                 )}
               </p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
-              <Link className="btn-primary justify-center" to="/contact">
-                {text('ابدأ النقاش', 'Start the conversation')}
-              </Link>
-              <a
-                className="btn-secondary inline-flex items-center justify-center gap-2"
-                href={`mailto:${portfolioProfile.email}`}
-              >
-                <Mail className="h-4 w-4" />
-                {text('راسلنا مباشرة', 'Email us directly')}
-              </a>
+            <div className="relative">
+              <AnimatePresence mode="wait">
+                {!newsletterSubscribed ? (
+                  <motion.form 
+                    key="form"
+                    onSubmit={handleSubscribe}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex flex-col sm:flex-row gap-2"
+                  >
+                    <input 
+                      type="email" 
+                      required
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      placeholder={text('بريدك الإلكتروني المهني...', 'Your professional email...')}
+                      className="bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400 flex-grow"
+                    />
+                    <button 
+                      type="submit"
+                      className="btn-primary py-3 px-5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 text-black hover:scale-[1.02]"
+                    >
+                      <Send className="h-4 w-4" />
+                      {text('اشترك الآن', 'Subscribe')}
+                    </button>
+                  </motion.form>
+                ) : (
+                  <motion.div 
+                    key="success"
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="p-4 bg-cyan-500/10 border border-cyan-400/30 rounded-xl flex items-center gap-3 text-cyan-300 text-xs"
+                  >
+                    <CheckCircle2 className="h-5 w-5 shrink-0" />
+                    <span>{text('تم الاشتراك بنجاح! شكراً لثقتك بنا.', 'Subscribed successfully! Thank you for your trust.')}</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );

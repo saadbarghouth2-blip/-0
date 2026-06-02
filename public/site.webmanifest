@@ -1,0 +1,27 @@
+{
+  "name": "نُطق | Notaq",
+  "short_name": "نُطق",
+  "description": "نُطق وكالة رقمية لتصميم المواقع وصفحات الخدمات وتجارب العلامة الواضحة.",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["business", "productivity", "utilities"],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#06090f",
+  "theme_color": "#09212c",
+  "icons": [
+    {
+      "src": "/favicon-256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/notaq-brand-mark.webp",
+      "sizes": "256x256",
+      "type": "image/webp",
+      "purpose": "maskable"
+    }
+  ]
+}
