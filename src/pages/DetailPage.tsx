@@ -217,12 +217,12 @@ const getComparison = (page: DetailPageContent): NonNullable<DetailPageContent['
     },
     {
       before: {
-        ar: 'تفاصيل كثيرة تظهر كقائمة طويلة بدون ترتيب واضح أو أولوية للقرار.',
-        en: 'Rich details appear as a long list without clear order or decision priority.',
+        ar: `عشوائية وتشتت عند محاولة بناء أو عرض ${page.eyebrow.ar} بدون خطة واضحة أو رؤية مسبقة.`,
+        en: `Confusion and fragmentation when attempting to establish ${page.eyebrow.en} without a structured approach.`,
       },
       after: {
-        ar: 'التفاصيل تتحول إلى طبقات: فهم، ثقة، دليل، ثم خطوة تالية واضحة.',
-        en: 'Details become layers: understanding, trust, proof, then a clear next step.',
+        ar: `تحقيق أهداف ${page.eyebrow.ar} من خلال ترتيب دقيق يضمن وصول الرسالة لجمهورك بأفضل وجه.`,
+        en: `Achieving ${page.eyebrow.en} goals through a structured journey that delivers your core message.`,
       },
     },
   ];
@@ -246,8 +246,8 @@ const getDecisionMatrix = (page: DetailPageContent): NonNullable<DetailPageConte
     label: item,
     value: page.useCases[index % page.useCases.length] ?? page.eyebrow,
     note: {
-      ar: 'يربط هذا الجزء بين ما تستلمه وبين الحالة التي يخدمها داخل شركتك.',
-      en: 'This connects what you receive with the use case it supports inside your company.',
+      ar: `نضمن أن ${item.ar} يخدم مباشرة متطلبات ${page.eyebrow.ar} لتسهيل القرار على الزائر وتقليل التشتت.`,
+      en: `We ensure that ${item.en} directly supports the requirements of ${page.eyebrow.en} to optimize conversions.`,
     },
   }));
 
@@ -255,24 +255,33 @@ const getScenarios = (page: DetailPageContent): NonNullable<DetailPageContent['s
   page.scenarios ?? page.useCases.map((item) => ({
     title: item,
     body: {
-      ar: `عندما يكون الهدف هو ${item.ar}، نرتب الرسائل والأدلة بحيث يشعر الزائر أن التجربة مصممة لحالته.`,
-      en: `When the goal is ${item.en}, we arrange messages and proof so visitors feel the experience is shaped around their case.`,
+      ar: `لتحقيق هدف ${item.ar} في سياق ${page.eyebrow.ar}، نقوم بتصميم تدفق يعالج كافة التفاصيل والأسئلة المتوقعة لدى متخذ القرار لتقريب الخطوة التالية.`,
+      en: `To achieve ${item.en} in the context of ${page.eyebrow.en}, we design a flow that answers all potential questions of the decision maker to secure the next step.`,
     },
   }));
 
 const getProofPoints = (page: DetailPageContent): NonNullable<DetailPageContent['proofPoints']> =>
   page.proofPoints ?? [
     {
-      title: { ar: 'وضوح قابل للقياس', en: 'Measurable clarity' },
-      body: { ar: 'كل قسم يجيب سؤالًا أو يقلل ترددًا أو يقرب الزائر من الخطوة التالية.', en: 'Every section answers a question, reduces hesitation, or moves visitors toward the next step.' },
+      title: { ar: `مخرجات ملموسة لـ ${page.eyebrow.ar}`, en: `Measurable outputs for ${page.eyebrow.en}` },
+      body: { 
+        ar: `كل ما يتم التخطيط له في "${page.title.ar}" يخضع لمقاييس دقيقة تقيس الأثر والتحول الفعلي للموقع.`, 
+        en: `Everything planned under "${page.title.en}" is measured with precise metrics for actual website transformation.` 
+      },
     },
     {
-      title: { ar: 'تفاصيل لا تبدو حشوًا', en: 'Details without filler' },
-      body: { ar: 'المحتوى الكثير يظهر في وحدات مختلفة حتى يظل سهل القراءة والتصفح.', en: 'Rich content appears in varied modules so it stays easy to read and browse.' },
+      title: { ar: `منهجية ${page.eyebrow.ar} المعتمدة`, en: `Proven ${page.eyebrow.en} methodology` },
+      body: { 
+        ar: `نطبق معايير متقدمة وتفاصيل مدروسة في ${page.eyebrow.ar} لنضمن بقاء موقع الشركة سريعاً وجاذباً لجمهورك.`, 
+        en: `We apply advanced standards and careful details in ${page.eyebrow.en} to ensure the company website remains fast and engaging.` 
+      },
     },
     {
-      title: { ar: 'قابلية توسع', en: 'Scalable structure' },
-      body: { ar: 'يمكن إضافة صفحات وخدمات وأسئلة لاحقًا بدون فقدان النظام البصري.', en: 'More pages, services, and questions can be added later without losing visual order.' },
+      title: { ar: `تكامل ${page.eyebrow.ar} الشامل`, en: `Complete ${page.eyebrow.en} integration` },
+      body: { 
+        ar: `نربط متطلبات ${page.eyebrow.ar} بكافة قنواتك الرقمية لتحقيق حضور متسق وقوي للبراند على المدى الطويل.`, 
+        en: `We connect ${page.eyebrow.en} requirements across all your digital channels for a consistent brand presence over the long term.` 
+      },
     },
   ];
 
