@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
+import type { FC } from 'react';
 import { servicesSubPages, projectsSubPages, blogSubPages, teamSubPages, pricingSubPages } from '../data/subPagesData';
 import { ArrowRight, Clock, Eye, MessageSquare, Download } from 'lucide-react';
 

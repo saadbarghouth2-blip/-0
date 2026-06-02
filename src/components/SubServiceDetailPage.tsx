@@ -1,5 +1,6 @@
-import { FC, useState } from 'react';
-import { SubServiceDetail, SubServiceCase } from '../data/subServicesData';
+import { useState } from 'react';
+import type { FC } from 'react';
+import type { SubServiceDetail, SubServiceCase } from '../data/subServicesData';
 import { Check, Users, Award, TrendingUp, BarChart3, MessageCircle, DollarSign } from 'lucide-react';
 
 interface SubServiceDetailPageProps {

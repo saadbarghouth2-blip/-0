@@ -1,5 +1,6 @@
-import { FC, useState } from 'react';
-import { subServicesData, SubServiceDetail } from '../data/subServicesData';
+import type { FC } from 'react';
+import { subServicesData } from '../data/subServicesData';
+import type { SubServiceDetail } from '../data/subServicesData';
 import { CheckCircle, X, Check } from 'lucide-react';
 
 interface SubServiceCardProps {

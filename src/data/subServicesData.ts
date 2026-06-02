@@ -935,7 +935,7 @@ export const subServicesData: Record<string, SubServiceDetail> = {
         isPopular: true,
         features: [
           { name: 'بنية سحابية متقدمة', included: true },
-          { name: 'دعم 1M+ مستخدم', include: true },
+          { name: 'دعم 1M+ مستخدم', included: true },
           { name: 'مراقبة شاملة وتنبيهات', included: true },
           { name: 'دعم 24/7', included: true },
         ],

@@ -744,6 +744,55 @@ const ContactPage = () => {
               </div>
             </div>
 
+            <div className="surface-card rounded-[1.8rem] border-amber-300/14 bg-amber-300/[0.035] p-5 md:rounded-[2.5rem] md:p-8">
+              <div className="flex items-start gap-3">
+                <div className="rounded-2xl bg-amber-300/10 p-3 text-amber-200">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="section-kicker mb-3 border-amber-300/25 bg-amber-300/10 text-amber-100">
+                    {isArabic ? 'بيانات التوثيق الأساسية' : 'Basic verification details'}
+                  </p>
+                  <h3 className="font-display text-xl font-bold text-white">
+                    {isArabic ? 'أرقام مؤقتة لحين اعتماد المستندات' : 'Temporary placeholders until documents are verified'}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-amber-100/75">
+                    {isArabic
+                      ? portfolioProfile.legalDocumentationNotice
+                      : portfolioProfile.englishLegalDocumentationNotice}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-3">
+                {portfolioProfile.legalDocumentation.map((item, index) => (
+                  <motion.div
+                    key={item.value}
+                    initial={isMobile ? false : { opacity: 0, y: 12 }}
+                    whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="rounded-[1.15rem] border border-white/8 bg-black/20 p-4"
+                  >
+                    <div className="flex items-start gap-3">
+                      <FileText className="mt-1 h-4 w-4 shrink-0 text-amber-200" />
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
+                          {isArabic ? item.label : item.englishLabel}
+                        </p>
+                        <p className="mt-1 break-all font-display text-lg font-black text-white" dir="ltr">
+                          {item.value}
+                        </p>
+                        <p className="mt-2 text-xs leading-6 text-slate-400">
+                          {isArabic ? item.note : item.englishNote}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
             <div id="region" className="surface-card rounded-[1.8rem] p-5 md:rounded-[2.5rem] md:p-8">
               <SectionTitle
                 description={content.workflowDescription}
