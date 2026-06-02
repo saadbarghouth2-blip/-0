@@ -764,14 +764,6 @@ const ContactPage = () => {
                   <p className="section-kicker mb-3 border-emerald-300/25 bg-emerald-300/10 text-emerald-100">
                     {isArabic ? 'بيانات التوثيق الأساسية' : 'Basic verification details'}
                   </p>
-                  <h3 className="font-display text-xl font-bold text-white">
-                    {isArabic ? 'بيانات تجارية موثقة للاستخدام التعريفي' : 'Verified business details for profile use'}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-emerald-100/75">
-                    {isArabic
-                      ? portfolioProfile.legalDocumentationNotice
-                      : portfolioProfile.englishLegalDocumentationNotice}
-                  </p>
                 </div>
               </div>
 
@@ -804,9 +796,6 @@ const ContactPage = () => {
                           </div>
                           <p className="mt-2 break-all font-display text-lg font-black text-white" dir="ltr">
                             {item.value}
-                          </p>
-                          <p className="mt-2 text-xs leading-6 text-slate-400">
-                            {isArabic ? item.note : item.englishNote}
                           </p>
                         </div>
                       </div>

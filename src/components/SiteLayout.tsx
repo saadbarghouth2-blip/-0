@@ -1248,18 +1248,10 @@ const SiteLayout = () => {
                           <p className="mt-1 break-all text-sm font-bold text-slate-100" dir="ltr">
                             {item.value}
                           </p>
-                          <p className="mt-1 text-[11px] leading-5 text-slate-500">
-                            {lang === 'ar' ? item.note : item.englishNote}
-                          </p>
                         </div>
                       );
                     })}
                   </div>
-                  <p className="mt-3 text-xs leading-6 text-emerald-100/70">
-                    {lang === 'ar'
-                      ? portfolioProfile.legalDocumentationNotice
-                      : portfolioProfile.englishLegalDocumentationNotice}
-                  </p>
                 </div>
               </div>
             </div>
