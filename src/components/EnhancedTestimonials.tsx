@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
+import { localizedText } from '../lib/repairText';
 
 interface TestimonialCard {
   name: { ar: string; en: string };
@@ -40,7 +41,7 @@ export const EnhancedTestimonials: React.FC<EnhancedTestimonialsProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
+  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
 
   const filteredTestimonials = selectedCategory
     ? testimonials.filter((t) => t.category === selectedCategory)

@@ -13,6 +13,7 @@ import HeroMediaBackdrop from './HeroMediaBackdrop';
 import { enrichmentMediaById } from '../data/enrichmentMedia';
 import { getPageEnrichment } from '../data/pageEnrichment';
 import { useLanguage } from '../hooks/useLanguage';
+import { localizedText } from '../lib/repairText';
 
 interface DetailSection {
   title: { ar: string; en: string };
@@ -93,7 +94,7 @@ const DetailPageEnhanced: React.FC<DetailPageEnhancedProps> = ({ page, isLoading
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
+  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
   const enrichment = page ? getPageEnrichment(`${page.parentPath}/${page.slug}`) : undefined;
   const heroFallbackMedia = enrichment
     ? enrichmentMediaById[enrichment.heroMediaId]

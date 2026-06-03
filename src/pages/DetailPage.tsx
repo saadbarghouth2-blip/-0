@@ -58,6 +58,7 @@ import HeroMediaBackdrop from '../components/HeroMediaBackdrop';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { localizedText } from '../lib/repairText';
 import type { PageExperienceConfig } from '../data/pageVariations';
 
 const detailPagesByPrefix: Array<{ prefix: string; pages: DetailPageContent[] }> = [
@@ -746,7 +747,7 @@ const DetailPage = () => {
   const { lang, localizePath } = useLanguage();
   const shouldReduceMotion = useReducedMotion() ?? false;
   const isArabic = lang === 'ar';
-  const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
+  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
   const page = findDetailPage(location.pathname, slug);
 
   usePageMetadata(getPageSeoByPath(location.pathname, lang));

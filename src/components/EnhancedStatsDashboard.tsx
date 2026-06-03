@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
+import { localizedText } from '../lib/repairText';
 
 interface Statistic {
   icon: typeof TrendingUp;
@@ -56,7 +57,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
   const isArabic = lang === 'ar';
   const [counts, setCounts] = useState<Record<number, number>>({});
 
-  const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
+  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
 
   // Animated counter for numbers
   useEffect(() => {

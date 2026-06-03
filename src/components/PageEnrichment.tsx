@@ -5,10 +5,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { getPageEnrichment, type EnrichmentPoint, type PageEnrichmentContent } from '../data/pageEnrichment';
 import { enrichmentMediaById, type EnrichmentMediaAsset } from '../data/enrichmentMedia';
 import { useLanguage, type Language } from '../hooks/useLanguage';
+import { localizedText } from '../lib/repairText';
 import DeferredVideo from './DeferredVideo';
 import ProjectImage from './ProjectImage';
 
-const getCopy = (value: { ar: string; en: string }, lang: Language) => value[lang];
+const getCopy = (value: { ar: string; en: string }, lang: Language) => localizedText(value, lang);
 
 const itemVariants = {
   hidden: { opacity: 0, y: 22, filter: 'blur(8px)' },

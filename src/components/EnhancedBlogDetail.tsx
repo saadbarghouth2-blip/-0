@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
+import { localizedText } from '../lib/repairText';
 
 interface ContentBlock {
   type: 'paragraph' | 'heading' | 'list' | 'quote' | 'highlight' | 'image';
@@ -65,7 +66,7 @@ export const EnhancedBlogDetail: React.FC<EnhancedBlogDetailProps> = ({
   const [saved, setSaved] = useState(false);
   const [shared, setShared] = useState(false);
 
-  const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
+  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
 
   return (
     <motion.article

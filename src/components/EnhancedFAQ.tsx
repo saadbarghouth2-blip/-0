@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { HelpCircle, MessageSquare, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
+import { localizedText } from '../lib/repairText';
 
 interface FAQItem {
   id: string;
@@ -31,7 +32,7 @@ export const EnhancedFAQ: React.FC<EnhancedFAQProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [helpfulVotes, setHelpfulVotes] = useState<Record<string, 'yes' | 'no' | null>>({});
 
-  const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
+  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
 
   const categories = Array.from(new Set(items.map((item) => item.category).filter(Boolean))) as string[];
   const filteredItems = selectedCategory ? items.filter((item) => item.category === selectedCategory) : items;

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle, Clock } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
+import { localizedText } from '../lib/repairText';
 
 interface JourneyStep {
   stage: string;
@@ -27,7 +28,7 @@ export const CustomerJourney: React.FC<CustomerJourneyProps> = ({
   const isArabic = lang === 'ar';
   const [activeStep, setActiveStep] = useState(0);
 
-  const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
+  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
 
   return (
     <motion.section

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle2, Target } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
+import { localizedText } from '../lib/repairText';
 
 interface OverviewSection {
   icon: typeof Target;
@@ -21,7 +22,7 @@ export const ComprehensiveOverview: React.FC<ComprehensiveOverviewProps> = ({
   const { lang } = useLanguage();
   const isArabic = lang === 'ar';
 
-  const text = (value: { ar: string; en: string }) => (isArabic ? value.ar : value.en);
+  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
 
   return (
     <motion.section
