@@ -562,6 +562,114 @@ const projectVariation: PageVariationConfig = {
   videoMediaId: 'projects-interface-scroll',
 };
 
+const routeSeed = (path: string) =>
+  [...path].reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 3), 0);
+
+const itemIndex = (items: readonly string[], value: string) => {
+  const index = items.indexOf(value);
+  return index >= 0 ? index : routeSeed(value);
+};
+
+const heroStyles: PageHeroStyle[] = ['cinematic', 'splitShowcase', 'dashboard', 'editorial', 'proofWall', 'processMap'];
+const contentRhythms: PageContentRhythm[] = ['zigzag', 'magazine', 'cardsDense', 'timelineFirst', 'dashboardGrid', 'storyScroll'];
+const visualTreatments: PageVisualTreatment[] = ['glass', 'editorial', 'technical', 'commerce', 'proof', 'minimal'];
+const mediaRoles: PageMediaRole[] = ['backgroundVideo', 'heroImage', 'storyImage', 'galleryStrip', 'mockupPanel'];
+const heroCompositions: HeroComposition[] = ['text-right', 'split-media', 'metrics-bottom', 'centered', 'text-left'];
+const sectionOrders: VariationSection[][] = [
+  ['timeline', 'matrix', 'proof', 'scenarios', 'comparison', 'faq'],
+  ['proof', 'comparison', 'deliverables', 'matrix', 'scenarios', 'faq'],
+  ['checklist', 'timeline', 'matrix', 'proof', 'comparison', 'faq'],
+  ['scenarios', 'matrix', 'timeline', 'comparison', 'proof', 'faq'],
+  ['comparison', 'proof', 'scenarios', 'deliverables', 'timeline', 'faq'],
+  ['matrix', 'checklist', 'scenarios', 'proof', 'comparison', 'faq'],
+  ['gallery', 'proof', 'timeline', 'matrix', 'scenarios', 'faq'],
+  ['deliverables', 'comparison', 'matrix', 'timeline', 'proof', 'faq'],
+];
+
+const pageExperienceForIndex = (index: number): PageExperienceConfig => ({
+  heroStyle: heroStyles[index % heroStyles.length],
+  contentRhythm: contentRhythms[Math.floor(index / heroStyles.length) % contentRhythms.length],
+  visualTreatment: visualTreatments[Math.floor(index / (heroStyles.length * contentRhythms.length)) % visualTreatments.length],
+  mediaRole: mediaRoles[(index + Math.floor(index / 2)) % mediaRoles.length],
+});
+
+const routeMediaPools = {
+  home: {
+    order: ['visitor-journey', 'pre-project-questions', 'homepage-blueprint', 'trust-layers', 'conversion-path', 'mobile-first-journey'],
+    images: ['detail-cinematic-home', 'detail-proof-interface', 'detail-conversion-path', 'detail-mobile-flow', 'detail-blueprint-board', 'home-story-strategy'],
+    videos: ['home-interface', 'projects-interface-scroll', 'digital-workflow', 'contact-organizing-tasks', 'about-team-review', 'services-code-build'],
+  },
+  about: {
+    order: ['story', 'method', 'culture', 'quality-system', 'collaboration-style', 'tools-and-standards', 'why-notaq', 'brand-clarity', 'execution-quality', 'client-journey', 'content-thinking', 'technical-standards'],
+    images: ['client-workshop', 'subpage-method-workshop', 'subpage-brand-board', 'detail-quality-workspace', 'detail-collaboration-room', 'detail-standards-stack', 'detail-brand-system', 'about-hero-team', 'about-story-notes', 'team-planning', 'strategy-board', 'subpage-editorial-research'],
+    videos: ['about-team-review', 'digital-workflow', 'contact-organizing-tasks', 'testimonials-client-call', 'services-code-build', 'home-interface', 'blog-writing'],
+  },
+  services: {
+    order: [
+      'company-websites', 'ecommerce', 'custom-systems', 'ai-products', 'service-audit', 'service-bundles',
+      'launch-readiness', 'support-maintenance', 'integration-map', 'growth-roadmap', 'seo', 'ui-ux',
+      'landing-pages', 'brand-content', 'web-apps', 'dashboards', 'maintenance', 'consultation',
+      'service-pages', 'portfolio-websites', 'personal-brand', 'product-pages', 'checkout-optimization',
+      'catalog-websites', 'crm-systems', 'booking-systems', 'internal-tools', 'blog-systems',
+      'content-strategy', 'copywriting', 'conversion-pages', 'design-systems', 'motion-interactions',
+      'chatbot-interfaces', 'automation-flows', 'prompt-workflows', 'speed-optimization', 'launch-audit',
+    ],
+    images: [
+      'detail-presence-interface', 'detail-commerce-store', 'detail-dashboard-mockup', 'detail-ai-product',
+      'detail-audit-board', 'detail-bundles-map', 'detail-launch-checklist', 'detail-support-loop',
+      'detail-integration-map', 'detail-growth-roadmap', 'subpage-service-interface', 'subpage-commerce-analytics',
+      'subpage-systems-dashboard', 'subpage-ai-workflow', 'subpage-content-writing', 'subpage-standards-desk',
+      'product-build', 'strategy-board', 'team-planning', 'projects-story-mockup', 'projects-hero-review',
+      'blog-hero-writing', 'blog-story-research', 'services-hero-product', 'services-story-code',
+      'contact-story-brief', 'subpage-contact-brief', 'subpage-project-review', 'detail-before-after',
+      'detail-proof-library', 'detail-scope-request', 'detail-response-process', 'detail-meeting-prep',
+      'home-hero-workshop', 'home-story-strategy', 'about-hero-team', 'about-story-notes',
+      'testimonials-hero-client', 'testimonials-story-handshake', 'contact-hero-message',
+    ],
+    videos: ['services-code-build', 'digital-workflow', 'home-interface', 'projects-interface-scroll', 'blog-writing', 'contact-organizing-tasks', 'about-team-review', 'testimonials-client-call'],
+  },
+  testimonials: {
+    order: ['trust-stories', 'questions-before-deciding', 'result-types', 'client-before-after', 'review-audit', 'proof-library', 'outcomes-proof', 'objections-handled', 'process-feedback', 'trust-library'],
+    images: ['testimonials-hero-client', 'testimonials-story-handshake', 'detail-proof-interface', 'detail-before-after', 'detail-review-audit', 'detail-proof-library', 'subpage-proof-meeting', 'projects-story-mockup', 'client-workshop', 'subpage-project-review'],
+    videos: ['testimonials-client-call', 'about-team-review', 'contact-organizing-tasks', 'projects-interface-scroll', 'digital-workflow', 'home-interface', 'services-code-build', 'blog-writing'],
+  },
+  contact: {
+    order: ['direct', 'project-readiness', 'meeting-prep', 'response-process', 'scope-request', 'pricing', 'timeline', 'before-contact', 'decision-questions'],
+    images: ['contact-hero-message', 'detail-contact-ready', 'detail-meeting-prep', 'detail-response-process', 'detail-scope-request', 'contact-story-brief', 'subpage-contact-brief', 'client-workshop', 'strategy-board'],
+    videos: ['contact-organizing-tasks', 'blog-writing', 'about-team-review', 'digital-workflow', 'home-interface', 'projects-interface-scroll', 'services-code-build', 'testimonials-client-call'],
+  },
+} as const;
+
+const getRouteVariety = (path: string) => {
+  const slug = path.split('/').pop() ?? path;
+  if (path.startsWith('/home/')) return { group: routeMediaPools.home, index: itemIndex(routeMediaPools.home.order, slug) };
+  if (path.startsWith('/about/')) return { group: routeMediaPools.about, index: itemIndex(routeMediaPools.about.order, slug) };
+  if (path.startsWith('/services/')) return { group: routeMediaPools.services, index: itemIndex(routeMediaPools.services.order, slug) };
+  if (path.startsWith('/testimonials/')) return { group: routeMediaPools.testimonials, index: itemIndex(routeMediaPools.testimonials.order, slug) };
+  if (path.startsWith('/contact/')) return { group: routeMediaPools.contact, index: itemIndex(routeMediaPools.contact.order, slug) };
+  return null;
+};
+
+const enforceRouteVariety = (path: string, variation: PageVariationConfig): PageVariationConfig => {
+  const variety = getRouteVariety(path);
+  if (!variety) return variation;
+
+  const { group, index } = variety;
+  const heroMediaId = group.images[index % group.images.length];
+  const storyMediaId = group.images[(index + 3) % group.images.length];
+  const videoMediaId = group.videos[index % group.videos.length];
+
+  return {
+    ...variation,
+    heroComposition: heroCompositions[index % heroCompositions.length],
+    sectionOrder: sectionOrders[index % sectionOrders.length],
+    heroMediaId,
+    storyMediaId,
+    videoMediaId,
+    pageExperience: pageExperienceForIndex(index),
+  };
+};
+
 const fallbackFamilyVariation = (path: string): PageVariationConfig | undefined => {
   if (path.startsWith('/home/')) {
     return {
@@ -661,5 +769,6 @@ const fallbackFamilyVariation = (path: string): PageVariationConfig | undefined 
 
 export const getPageVariation = (path: string): PageVariationConfig | undefined => {
   const normalized = routeKey(path);
-  return explicitVariations[normalized] ?? detailRouteVariations[normalized] ?? fallbackFamilyVariation(normalized);
+  const variation = explicitVariations[normalized] ?? detailRouteVariations[normalized] ?? fallbackFamilyVariation(normalized);
+  return variation ? enforceRouteVariety(normalized, variation) : undefined;
 };

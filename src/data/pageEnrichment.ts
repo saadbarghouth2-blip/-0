@@ -350,12 +350,125 @@ const withVideo = (
   videoMediaId: videos[routeIndex(path, videos.length)],
 });
 
+const routeLabel = (path: string) => {
+  const slug = path.split('/').filter(Boolean).pop() ?? path;
+  return slug.replace(/-/g, ' ');
+};
+
+const makeRouteEnrichment = (path: string, profile: PageEnrichmentContent) => {
+  const label = routeLabel(path);
+  const routeNumber = routeIndex(path, 9) + 1;
+
+  return {
+    storyTitle: copy(`Ø²Ø§ÙˆÙŠØ© Ø®Ø§ØµØ© Ù„Ù€ ${label}`, `Specific angle for ${label}`),
+    storyText: copy(
+      `Ù‡Ø°Ù‡ Ø§Ù„ØµÙØ­Ø© Ù„Ø§ ØªØ¹ÙŠØ¯ Ù†ÙØ³ Ø³Ø±Ø¯ ${profile.eyebrow.ar}. Ù†Ø±Ø¨Ø· Ø§Ù„Ù…ÙŠØ¯ÙŠØ§ ÙˆØ§Ù„Ù…Ø±Ø§Ø­Ù„ ÙˆØ§Ù„Ø£Ø³Ø¦Ù„Ø© Ø¨Ù…Ø³Ø§Ø± ${label} Ø­ØªÙ‰ ÙŠØ¸Ù‡Ø± Ù‡Ø¯ÙÙ‡Ø§ Ø¨ÙˆØ¶ÙˆØ­.`,
+      `This page does not repeat the same ${profile.eyebrow.en} story. Media, stages, and questions are tied to the ${label} path so its goal is clear.`,
+    ),
+    problems: [
+      {
+        title: copy(`ØªØ´Ø§Ø¨Ù‡ Ø§Ù„ØµÙØ­Ø§Øª Ø¯Ø§Ø®Ù„ ${profile.id}`, `Similar pages inside ${profile.id}`),
+        text: copy(
+          `Ø¹Ù†Ø¯Ù…Ø§ ØªØ³ØªØ®Ø¯Ù… Ø§Ù„ØµÙØ­Ø§Øª Ù†ÙØ³ Ø§Ù„Ø¨Ø·Ù„ ÙˆÙ†ÙØ³ Ø§Ù„Ø£Ø³Ø¦Ù„Ø©ØŒ ÙŠØ´Ø¹Ø± Ø§Ù„Ø²Ø§Ø¦Ø± Ø£Ù† ${label} Ù…Ø¬Ø±Ø¯ ØªØºÙŠÙŠØ± Ø¹Ù†ÙˆØ§Ù†.`,
+          `When pages reuse the same hero and questions, visitors feel ${label} is only a title change.`,
+        ),
+      },
+      {
+        title: copy('Ø§Ù„Ù…ÙŠØ¯ÙŠØ§ Ø§Ù„Ø¹Ø§Ù…Ø© ØªØ¶Ø¹Ù Ø§Ù„ÙØ±Ù‚', 'Generic media weakens contrast'),
+        text: copy(
+          'Ø§Ù„ØµÙˆØ±Ø© Ø£Ùˆ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙŠØ¬Ø¨ Ø£Ù† ÙŠØ®Ø¯Ù… Ø³Ø¤Ø§Ù„ Ø§Ù„ØµÙØ­Ø©ØŒ Ù„Ø§ Ø£Ù† ÙŠÙƒÙˆÙ† Ù…Ø¬Ø±Ø¯ Ø®Ù„ÙÙŠØ© Ù…Ù† Ø¹Ø§Ø¦Ù„Ø© ÙˆØ§Ø­Ø¯Ø©.',
+          'Image or video must serve the page question, not act as a background from one repeated family.',
+        ),
+      },
+    ],
+    solutions: [
+      {
+        title: copy(`Ø¥ÙŠÙ‚Ø§Ø¹ Ø¹Ø±Ø¶ ${routeNumber}`, `Presentation rhythm ${routeNumber}`),
+        text: copy(
+          `Ù†Ø®ØªØ§Ø± Ø¥ÙŠÙ‚Ø§Ø¹Ù‹Ø§ Ù…Ø®ØªÙ„ÙÙ‹Ø§ Ù„Ù€ ${label}: Ù…Ø±Ø© Ø®Ø±ÙŠØ·Ø©ØŒ Ù…Ø±Ø© proof wallØŒ Ù…Ø±Ø© dashboardØŒ ÙˆÙ…Ø±Ø© Ø³Ø±Ø¯ ØªØ­Ø±ÙŠØ±ÙŠ.`,
+          `We assign a different rhythm to ${label}: map, proof wall, dashboard, or editorial narrative depending on the route.`,
+        ),
+      },
+      {
+        title: copy('Ø£Ø³Ø¦Ù„Ø© Ù…Ø±ØªØ¨Ø·Ø© Ø¨Ø§Ù„Ù…Ø³Ø§Ø±', 'Route-linked questions'),
+        text: copy(
+          `Ø§Ù„Ø£Ø³Ø¦Ù„Ø© ØªØ°ÙƒØ± ${label} ØµØ±Ø§Ø­Ø© ÙˆØªØ´Ø±Ø­ Ù†Ù‚Ø·Ø© ØªØ±Ø¯Ø¯ Ù…Ø®ØªÙ„ÙØ© Ø¨Ø¯Ù„ Ø£Ø³Ø¦Ù„Ø© Ù…Ù†Ø³ÙˆØ®Ø©.`,
+          `Questions mention ${label} directly and explain a different hesitation point instead of copied FAQs.`,
+        ),
+      },
+    ],
+    process: [
+      {
+        title: copy(`ØªØ­Ø¯ÙŠØ¯ Ø¯ÙˆØ± ${label}`, `Define ${label} role`),
+        text: copy(
+          'Ù†Ø¨Ø¯Ø£ Ø¨ØªØ­Ø¯ÙŠØ¯ Ù…Ø§ Ø§Ù„Ø°ÙŠ ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙÙ‡Ù…Ù‡ Ø§Ù„Ø²Ø§Ø¦Ø± ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„ØµÙØ­Ø© ÙÙ‚Ø·.',
+          'We start by defining what visitors must understand on this page only.',
+        ),
+      },
+      {
+        title: copy('Ù…ÙŠØ¯ÙŠØ§ Ù…Ù†Ø§Ø³Ø¨Ø© Ù„Ù„Ø¯ÙˆØ±', 'Media matched to the role'),
+        text: copy(
+          `Ù†Ø±Ø¨Ø· ØµÙˆØ±Ø© Ø§Ù„Ù‡ÙŠØ±Ùˆ ÙˆÙ…Ù‚Ø·Ø¹ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ø¨ÙˆØ¸ÙŠÙØ© ${label} Ø¨Ø¯Ù„ ØªÙƒØ±Ø§Ø± Ù…ÙŠØ¯ÙŠØ§ Ø§Ù„Ù‚Ø³Ù….`,
+          `Hero image and video are tied to the function of ${label}, not repeated section media.`,
+        ),
+      },
+      {
+        title: copy('ÙØ­Øµ Ø§Ù„ØªÙ…Ø§ÙŠØ²', 'Difference check'),
+        text: copy(
+          'Ù†Ø±Ø§Ø¬Ø¹ Ø§Ù„ØµÙØ­Ø© Ø¨Ø¬ÙˆØ§Ø± Ø§Ù„ØµÙØ­Ø§Øª Ø§Ù„Ù…Ø¬Ø§ÙˆØ±Ø© Ù„Ø¶Ù…Ø§Ù† Ø¹Ø¯Ù… ØªÙƒØ±Ø§Ø± Ø§Ù„Ù‡ÙŠØ±Ùˆ Ø£Ùˆ ØªØ±ØªÙŠØ¨ Ø§Ù„Ø¨Ù„ÙˆÙƒØ§Øª.',
+          'We review the page beside siblings to ensure hero and block order are not repeated.',
+        ),
+      },
+    ],
+    videoTitle: copy(`ÙÙŠØ¯ÙŠÙˆ ÙŠØ®Ø¯Ù… ${label}`, `Video serving ${label}`),
+    videoText: copy(
+      `Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ù‡Ù†Ø§ ÙŠØ¹Ù…Ù„ ÙƒÙˆÙ‚ÙØ© Ø¨ØµØ±ÙŠØ© ØªØ®Øµ ${label} ÙˆÙ„Ø§ ÙŠØ¹ÙŠØ¯ Ù†ÙØ³ Ø¥Ø­Ø³Ø§Ø³ Ø§Ù„ØµÙØ­Ø§Øª Ø§Ù„Ù…Ø¬Ø§ÙˆØ±Ø©.`,
+      `The video acts as a visual pause specific to ${label}, not the same feeling as neighboring pages.`,
+    ),
+    videoPoints: [
+      {
+        title: copy('ÙƒØ³Ø± Ø§Ù„Ø±ØªØ§Ø¨Ø©', 'Break repetition'),
+        text: copy('ÙŠØºÙŠØ± Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ø¥ÙŠÙ‚Ø§Ø¹ Ø§Ù„Ù‚Ø±Ø§Ø¡Ø© Ø¨Ø¯Ù„ Ø§Ù„Ø§Ø¹ØªÙ…Ø§Ø¯ Ø¹Ù„Ù‰ ÙƒØ±ÙˆØª Ù…ØªØ´Ø§Ø¨Ù‡Ø©.', 'The video changes reading rhythm instead of relying on similar cards.'),
+      },
+      {
+        title: copy('ØªÙˆØ¶ÙŠØ­ Ø§Ù„Ø³ÙŠØ§Ù‚', 'Clarify context'),
+        text: copy(`ÙŠØ¶ÙŠÙ Ø¥Ø­Ø³Ø§Ø³Ù‹Ø§ Ø¨Ø³ÙŠØ§Ù‚ ${label} ÙˆØ¯ÙˆØ±Ù‡ Ø¯Ø§Ø®Ù„ Ø§Ù„Ø±Ø­Ù„Ø©.`, `It adds context for ${label} and its role inside the journey.`),
+      },
+    ],
+    faq: [
+      {
+        question: copy(`Ù„Ù…Ø§Ø°Ø§ ØªØ­ØªØ§Ø¬ ØµÙØ­Ø© ${label} ØªØµÙ…ÙŠÙ…Ù‹Ø§ Ù…Ø®ØªÙ„ÙÙ‹Ø§ØŸ`, `Why does ${label} need a different design?`),
+        answer: copy(
+          `Ù„Ø£Ù† ${label} ÙŠØ¬ÙŠØ¨ Ø³Ø¤Ø§Ù„Ù‹Ø§ Ù…Ø®ØªÙ„ÙÙ‹Ø§ØŒ ÙˆØ§Ù„ØªØµÙ…ÙŠÙ… Ø§Ù„Ù…ØªÙƒØ±Ø± ÙŠØ®ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„ÙØ±Ù‚ Ø¹Ù† Ø§Ù„Ø¹Ù…ÙŠÙ„.`,
+          `Because ${label} answers a different question, and repeated design hides that difference from the client.`,
+        ),
+      },
+      {
+        question: copy('ÙƒÙŠÙ Ù†Ù…Ù†Ø¹ ØªÙƒØ±Ø§Ø± Ø§Ù„ÙƒÙ„Ø§Ù…ØŸ', 'How do we prevent repeated copy?'),
+        answer: copy(
+          `Ù†Ø¬Ø¹Ù„ Ø§Ù„Ù…Ø´ÙƒÙ„Ø© ÙˆØ§Ù„Ø­Ù„ ÙˆØ§Ù„Ù…Ø±Ø§Ø­Ù„ ÙˆØ§Ù„Ø£Ø³Ø¦Ù„Ø© Ù…Ø±ØªØ¨Ø·Ø© Ø¨ÙƒÙ„Ù…Ø© ${label} ÙˆØ¨Ø¯ÙˆØ±Ù‡Ø§ ÙÙŠ Ø§Ù„Ù‚Ø³Ù….`,
+          `Problem, solution, stages, and questions are tied to ${label} and its role inside the section.`,
+        ),
+      },
+      {
+        question: copy('Ù‡Ù„ Ø§Ù„ØªÙ†ÙˆÙŠØ¹ ÙŠÙƒØ³Ø± Ù‡ÙˆÙŠØ© Ø§Ù„Ù…ÙˆÙ‚Ø¹ØŸ', 'Does variety break the site identity?'),
+        answer: copy(
+          'Ù„Ø§ØŒ Ø§Ù„Ù‡ÙˆÙŠØ© ØªØ¸Ù„ Ù…ÙˆØ­Ø¯Ø© ÙÙŠ Ø§Ù„Ø£Ù„ÙˆØ§Ù† ÙˆØ§Ù„ØªØ§ÙŠØ¨ÙˆØ¬Ø±Ø§ÙÙŠØŒ Ù„ÙƒÙ† Ø¥ÙŠÙ‚Ø§Ø¹ Ø§Ù„Ø¹Ø±Ø¶ ÙŠØªØºÙŠØ± Ø­Ø³Ø¨ Ù‡Ø¯Ù Ø§Ù„ØµÙØ­Ø©.',
+          'No. Identity stays consistent through color and typography, while presentation rhythm changes by page goal.',
+        ),
+      },
+    ],
+  };
+};
+
 const withVariation = (profile: PageEnrichmentContent, path: string): PageEnrichmentContent => {
   const variation = getPageVariation(path);
 
   if (!variation) {
     return profile;
   }
+
+  const routeEnrichment = makeRouteEnrichment(path, profile);
 
   return {
     ...profile,
@@ -372,7 +485,16 @@ const withVariation = (profile: PageEnrichmentContent, path: string): PageEnrich
     eyebrow: variation.eyebrow ?? profile.eyebrow,
     title: variation.title ?? profile.title,
     lead: variation.lead ?? profile.lead,
+    storyTitle: routeEnrichment.storyTitle,
+    storyText: routeEnrichment.storyText,
+    problems: routeEnrichment.problems,
+    solutions: routeEnrichment.solutions,
+    process: routeEnrichment.process,
     metrics: variation.metrics ?? profile.metrics,
+    videoTitle: routeEnrichment.videoTitle,
+    videoText: routeEnrichment.videoText,
+    videoPoints: routeEnrichment.videoPoints,
+    faq: routeEnrichment.faq,
     ctaTitle: variation.ctaTitle ?? profile.ctaTitle,
     ctaText: variation.ctaText ?? profile.ctaText,
   };

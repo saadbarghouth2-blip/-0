@@ -392,7 +392,7 @@ const InsightsBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBlockP
     initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="surface-card-strong motion-sheen rounded-[1.5rem] p-5 md:rounded-[2rem] md:p-7"
+    className="detail-world-block detail-block-insights surface-card-strong motion-sheen rounded-[1.5rem] p-5 md:rounded-[2rem] md:p-7"
   >
     <p className="section-kicker mb-5">
       <Sparkles className="h-4 w-4" />
@@ -414,7 +414,7 @@ const ComparisonBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBloc
     initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="grid gap-4 md:grid-cols-2"
+    className="detail-world-block detail-block-comparison grid gap-4 md:grid-cols-2"
   >
     <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 md:rounded-[2rem] md:p-7">
       <p className="section-kicker mb-5">{isArabic ? 'قبل' : 'Before'}</p>
@@ -444,7 +444,7 @@ const RoadmapBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBlockPr
     initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 md:rounded-[2rem] md:p-7"
+    className="detail-world-block detail-block-roadmap rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 md:rounded-[2rem] md:p-7"
   >
     <p className="section-kicker mb-5">{getBlockHeading(page, 'roadmap', isArabic)}</p>
     <div className="grid gap-3">
@@ -470,7 +470,7 @@ const MatrixBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBlockPro
     initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="surface-card-strong rounded-[1.5rem] p-5 md:rounded-[2rem] md:p-7"
+    className="detail-world-block detail-block-matrix surface-card-strong rounded-[1.5rem] p-5 md:rounded-[2rem] md:p-7"
   >
     <p className="section-kicker mb-5">{getBlockHeading(page, 'matrix', isArabic)}</p>
     <div className="grid gap-3 md:grid-cols-3">
@@ -494,7 +494,7 @@ const ScenariosBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBlock
     initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 md:rounded-[2rem] md:p-7"
+    className="detail-world-block detail-block-scenarios rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 md:rounded-[2rem] md:p-7"
   >
     <p className="section-kicker mb-5">{getBlockHeading(page, 'scenarios', isArabic)}</p>
     <div className="grid gap-3 md:grid-cols-3">
@@ -513,7 +513,7 @@ const ProofBlock = ({ isArabic, page, shouldReduceMotion, text }: WorldBlockProp
     initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className="surface-card-strong motion-sheen rounded-[1.5rem] p-5 md:rounded-[2rem] md:p-7"
+    className="detail-world-block detail-block-proof surface-card-strong motion-sheen rounded-[1.5rem] p-5 md:rounded-[2rem] md:p-7"
   >
     <p className="section-kicker mb-5">{getBlockHeading(page, 'proof', isArabic)}</p>
     <div className="grid gap-3 md:grid-cols-3">

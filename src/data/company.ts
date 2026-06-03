@@ -2045,9 +2045,294 @@ const makeExperienceSpecificEnhancement = (page: DetailPageContent): DetailWorld
   };
 };
 
-addedDeepPages.forEach((page) => {
-  detailWorldEnhancements[`${page.parentPath}/${page.slug}`] = {
-    ...makeDeepEnhancement(page),
+const getRouteTone = (page: DetailPageContent, index: number) => {
+  if (page.parentPath === '/home') {
+    const tones = [
+      richCopy('قراءة أولى منظمة', 'organized first read'),
+      richCopy('ثقة مبكرة قبل التمرير', 'early trust before scrolling'),
+      richCopy('تحويل هادئ للتواصل', 'calm conversion to contact'),
+      richCopy('موبايل سريع وواضح', 'fast clear mobile journey'),
+    ];
+    return tones[index % tones.length];
+  }
+
+  if (page.parentPath === '/about') {
+    const tones = [
+      richCopy('منهجية تشغيل واضحة', 'clear operating method'),
+      richCopy('تعاون بلا ضبابية', 'collaboration without ambiguity'),
+      richCopy('معايير تسليم قابلة للفحص', 'auditable delivery standards'),
+      richCopy('سبب اختيار نُطق', 'why choose Notaq'),
+    ];
+    return tones[index % tones.length];
+  }
+
+  if (page.parentPath === '/services') {
+    const tones = [
+      richCopy('قرار خدمة قابل للمقارنة', 'comparable service decision'),
+      richCopy('مخرجات تنفيذ محددة', 'defined delivery outputs'),
+      richCopy('تشخيص قبل البناء', 'diagnosis before build'),
+      richCopy('تشغيل بعد الإطلاق', 'post-launch operation'),
+      richCopy('ربط وتكاملات', 'connections and integrations'),
+      richCopy('نمو متدرج', 'staged growth'),
+    ];
+    return tones[index % tones.length];
+  }
+
+  if (page.parentPath === '/testimonials') {
+    const tones = [
+      richCopy('دليل نتيجة لا رأي عام', 'outcome proof, not generic praise'),
+      richCopy('قبل وبعد قابل للفحص', 'auditable before and after'),
+      richCopy('اعتراضات تم الرد عليها', 'answered objections'),
+      richCopy('مكتبة ثقة متعددة الأدلة', 'multi-proof trust library'),
+    ];
+    return tones[index % tones.length];
+  }
+
+  const tones = [
+    richCopy('بداية تواصل مرتبة', 'organized contact start'),
+    richCopy('مكالمة أولى مختصرة', 'short useful first call'),
+    richCopy('رد واضح بعد الرسالة', 'clear reply after the message'),
+    richCopy('نطاق مبدئي مفهوم', 'understandable initial scope'),
+  ];
+  return tones[index % tones.length];
+};
+
+const makeRouteFocusedEnhancement = (page: DetailPageContent, index: number): DetailWorldEnhancement => {
+  const route = `${page.parentPath}/${page.slug}`;
+  const routeTone = getRouteTone(page, index);
+  const primarySection = page.sections[index % page.sections.length] ?? page.sections[0];
+  const secondarySection = page.sections[(index + 1) % page.sections.length] ?? page.sections[1] ?? primarySection;
+  const firstDeliverable = page.deliverables[index % page.deliverables.length] ?? page.title;
+  const secondDeliverable = page.deliverables[(index + 1) % page.deliverables.length] ?? page.promise;
+  const firstUseCase = page.useCases[index % page.useCases.length] ?? page.audience;
+  const secondUseCase = page.useCases[(index + 1) % page.useCases.length] ?? page.promise;
+
+  return {
+    metrics: [
+      { value: `${index + 3}`, label: richCopy(`زوايا عرض خاصة بمسار ${page.eyebrow.ar}`, `${index + 3} angles for ${page.eyebrow.en}`) },
+      { value: `${Math.max(4, page.deliverables.length + 2)}`, label: richCopy(`مخرجات مرتبطة بـ ${firstDeliverable.ar}`, `outputs connected to ${firstDeliverable.en}`) },
+      { value: route.includes('/services/') ? 'Scope' : route.includes('/contact/') ? 'Reply' : route.includes('/testimonials/') ? 'Proof' : 'Flow', label: routeTone },
+    ],
+    insights: [
+      {
+        title: richCopy(`زاوية ${page.eyebrow.ar} الأساسية`, `Core angle for ${page.eyebrow.en}`),
+        body: richCopy(
+          `هذه الصفحة تبدأ من ${primarySection.title.ar} ثم تربطها مباشرة بسؤال العميل حول ${routeTone.ar}، لذلك لا تظهر كنص عام متكرر.`,
+          `This page starts from ${primarySection.title.en} and connects it to the client's question around ${routeTone.en}, so it does not feel generic.`,
+        ),
+      },
+      {
+        title: richCopy(`تفصيل يخص ${firstDeliverable.ar}`, `Detail specific to ${firstDeliverable.en}`),
+        body: richCopy(
+          `بدل تكرار وصف المخرجات، يتم شرح ${firstDeliverable.ar} كجزء من قرار عملي داخل ${page.title.ar}.`,
+          `Instead of repeating deliverable copy, ${firstDeliverable.en} is explained as a practical decision inside ${page.title.en}.`,
+        ),
+      },
+      {
+        title: richCopy(`حالة استخدام مختلفة`, `Different use case`),
+        body: richCopy(
+          `نستخدم حالة ${firstUseCase.ar} لتغيير زاوية القراءة والسيناريوهات، لا مجرد تغيير عنوان الصفحة.`,
+          `We use the ${firstUseCase.en} case to change the reading angle and scenarios, not only the page title.`,
+        ),
+      },
+      {
+        title: richCopy(`دور الصورة والفيديو`, `Role of image and video`),
+        body: richCopy(
+          `الميديا هنا تخدم ${routeTone.ar}: لقطة العمل تشرح السياق، والفيديو يكسر الرتابة في منتصف القراءة.`,
+          `Media supports ${routeTone.en}: the work shot explains context and the video breaks monotony mid-read.`,
+        ),
+      },
+    ],
+    comparison: [
+      {
+        before: richCopy(
+          `صفحة ${page.eyebrow.ar} بنمط كروت مكرر تجعل الزائر يشعر أنه يقرأ نفس الصفحة باسم مختلف.`,
+          `A repeated-card ${page.eyebrow.en} page makes visitors feel they are reading the same page under another name.`,
+        ),
+        after: richCopy(
+          `صفحة ${page.title.ar} تعرض ${routeTone.ar} من خلال ترتيب وميديا وأسئلة مختلفة داخل نفس هوية الموقع.`,
+          `${page.title.en} presents ${routeTone.en} through different order, media, and questions within the same brand identity.`,
+        ),
+      },
+      {
+        before: richCopy(
+          `الاعتماد على FAQ ومراحل عامة لا يوضح لماذا ${firstUseCase.ar} يحتاج هذا المسار تحديدًا.`,
+          `Generic FAQ and stages do not explain why ${firstUseCase.en} needs this exact path.`,
+        ),
+        after: richCopy(
+          `الأسئلة والسيناريوهات مرتبطة بـ ${firstUseCase.ar} و${secondUseCase.ar} حتى يصبح المحتوى خاصًا بالقرار.`,
+          `Questions and scenarios connect to ${firstUseCase.en} and ${secondUseCase.en}, making the content decision-specific.`,
+        ),
+      },
+    ],
+    roadmap: [
+      {
+        phase: '01',
+        title: richCopy(`تشخيص زاوية ${page.eyebrow.ar}`, `Diagnose the ${page.eyebrow.en} angle`),
+        body: richCopy(
+          `نحدد ما الذي يجب أن يفهمه الزائر أولًا قبل الدخول في تفاصيل ${primarySection.title.ar}.`,
+          `We define what the visitor must understand first before entering ${primarySection.title.en} details.`,
+        ),
+      },
+      {
+        phase: '02',
+        title: richCopy(`بناء إيقاع ${routeTone.ar}`, `Build the ${routeTone.en} rhythm`),
+        body: richCopy(
+          `نوزع النص والميديا والمقاييس بحيث لا تتكرر تجربة القراءة داخل نفس القائمة.`,
+          `We distribute copy, media, and metrics so the reading experience is not repeated inside the same dropdown.`,
+        ),
+      },
+      {
+        phase: '03',
+        title: richCopy(`تثبيت مخرجات ${firstDeliverable.ar}`, `Anchor ${firstDeliverable.en} outputs`),
+        body: richCopy(
+          `نربط المخرجات بما سيراه العميل فعليًا، ثم نوضح أين تظهر القيمة في الصفحة.`,
+          `We connect outputs to what the client will actually see, then clarify where the value appears on the page.`,
+        ),
+      },
+      {
+        phase: '04',
+        title: richCopy(`اختبار عدم التشابه`, `Check non-repetition`),
+        body: richCopy(
+          `نراجع الصفحة بجانب صفحات القسم للتأكد أن البطل، الترتيب، والسيناريوهات لا تتطابق.`,
+          `We review the page next to its section siblings to ensure hero, order, and scenarios do not match.`,
+        ),
+      },
+    ],
+    decisionMatrix: [
+      {
+        label: richCopy('القارئ السريع', 'Fast scanner'),
+        value: routeTone,
+        note: richCopy(
+          `يرى قيمة ${page.eyebrow.ar} من العنوان والمقاييس بدون أن ينتظر فتح أقسام متشابهة.`,
+          `Sees ${page.eyebrow.en} value from title and metrics without waiting for similar sections.`,
+        ),
+      },
+      {
+        label: richCopy('صاحب القرار', 'Decision maker'),
+        value: page.promise,
+        note: richCopy(
+          `يربط الوعد بـ ${firstDeliverable.ar} و${secondDeliverable.ar} بدل قراءة وعد عام.`,
+          `Connects the promise to ${firstDeliverable.en} and ${secondDeliverable.en} instead of a generic promise.`,
+        ),
+      },
+      {
+        label: richCopy('فريق التنفيذ', 'Execution team'),
+        value: primarySection.title,
+        note: richCopy(
+          `يحصل على خطوات قابلة للمراجعة داخل ${secondarySection.title.ar} حتى تتحول الصفحة إلى brief واضح.`,
+          `Gets reviewable steps inside ${secondarySection.title.en}, turning the page into a clear brief.`,
+        ),
+      },
+    ],
+    scenarios: [
+      {
+        title: richCopy(`سيناريو ${firstUseCase.ar}`, `${firstUseCase.en} scenario`),
+        body: richCopy(
+          `هذا القارئ يحتاج رؤية ${routeTone.ar} قبل التفاصيل؛ لذلك تظهر المقارنة والمخرجات في ترتيب مختلف عن باقي صفحات القسم.`,
+          `This reader needs to see ${routeTone.en} before details, so comparison and outputs appear in a different order than sibling pages.`,
+        ),
+      },
+      {
+        title: richCopy(`سيناريو ${secondUseCase.ar}`, `${secondUseCase.en} scenario`),
+        body: richCopy(
+          `نستخدم أسئلة خاصة بهذه الحالة حتى لا تبدو صفحة ${page.title.ar} نسخة من صفحة فرعية أخرى.`,
+          `We use questions specific to this case so ${page.title.en} does not feel copied from another subpage.`,
+        ),
+      },
+      {
+        title: richCopy('سيناريو مراجعة داخلية', 'Internal review scenario'),
+        body: richCopy(
+          `يمكن للفريق مقارنة ${firstDeliverable.ar} بالميديا والـ roadmap للتأكد أن كل جزء له وظيفة.`,
+          `The team can compare ${firstDeliverable.en} with media and roadmap to confirm every block has a role.`,
+        ),
+      },
+    ],
+    proofPoints: [
+      {
+        title: richCopy(`إثبات خاص بـ ${routeTone.ar}`, `Proof specific to ${routeTone.en}`),
+        body: richCopy(
+          `الصفحة تعرض دليلًا مختلفًا حسب هدفها: مرة كخريطة قرار، مرة كاختبار جودة، ومرة كمكتبة ثقة.`,
+          `The page shows proof based on its goal: sometimes a decision map, sometimes a quality check, sometimes a trust library.`,
+        ),
+      },
+      {
+        title: richCopy('ميديا غير مكررة داخل القسم', 'Non-repeated media inside the section'),
+        body: richCopy(
+          `تم ربط route ${route} بأصول ميديا مختلفة عن الصفحات المجاورة داخل نفس dropdown.`,
+          `Route ${route} is assigned media assets different from neighboring pages in the same dropdown.`,
+        ),
+      },
+      {
+        title: richCopy('أسئلة مرتبطة بالقرار', 'Decision-linked questions'),
+        body: richCopy(
+          `كل سؤال يشرح نقطة تردد تخص ${page.eyebrow.ar} بدل سؤال عام يمكن نسخه لأي صفحة.`,
+          `Every question explains hesitation specific to ${page.eyebrow.en}, not a generic question that can be copied anywhere.`,
+        ),
+      },
+    ],
+    faq: [
+      {
+        question: richCopy(`لماذا لا تشبه صفحة ${page.title.ar} باقي الصفحات؟`, `Why does ${page.title.en} not look like the other pages?`),
+        answer: richCopy(
+          `لأنها مبنية حول ${routeTone.ar} مع ميديا وترتيب أقسام ومصفوفة قرار خاصة بها، وليس حول قالب واحد يتكرر.`,
+          `Because it is built around ${routeTone.en} with its own media, section order, and decision matrix, not one repeated template.`,
+        ),
+      },
+      {
+        question: richCopy(`ما أهم تفصيلة في ${page.eyebrow.ar}؟`, `What is the key detail in ${page.eyebrow.en}?`),
+        answer: richCopy(
+          `أهم تفصيلة هي ربط ${firstDeliverable.ar} بسيناريو ${firstUseCase.ar} حتى يفهم العميل القيمة العملية لا الاسم فقط.`,
+          `The key detail is connecting ${firstDeliverable.en} to the ${firstUseCase.en} scenario so the client understands practical value, not just the name.`,
+        ),
+      },
+      {
+        question: richCopy('كيف تم منع التكرار في المحتوى؟', 'How is content repetition prevented?'),
+        answer: richCopy(
+          `تم تغيير المقاييس، السيناريوهات، الأسئلة، وخريطة الطريق حسب route ${route} وحسب موضع الصفحة داخل القسم.`,
+          `Metrics, scenarios, questions, and roadmap are changed according to route ${route} and the page position inside the section.`,
+        ),
+      },
+    ],
+    checklist: [
+      {
+        item: richCopy('مراجعة اختلاف hero والميديا', 'Review hero and media difference'),
+        details: richCopy(
+          `لا تعتمد هذه الصفحة على نفس صورة أو فيديو الصفحات المجاورة في ${page.parentPath}.`,
+          `This page does not rely on the same image or video as neighboring pages in ${page.parentPath}.`,
+        ),
+      },
+      {
+        item: richCopy('مراجعة اختلاف ترتيب الأقسام', 'Review section order difference'),
+        details: richCopy(
+          `يجب أن يظهر ترتيب ${page.title.ar} مختلفًا عند فتح صفحتين متتاليتين من نفس القائمة.`,
+          `${page.title.en} should show a different section order when opened next to a sibling page.`,
+        ),
+      },
+      {
+        item: richCopy('مراجعة خصوصية الأسئلة', 'Review question specificity'),
+        details: richCopy(
+          `كل سؤال يجب أن يرتبط بـ ${page.eyebrow.ar} أو ${firstUseCase.ar} حتى لا يكون قابلًا للنسخ لأي صفحة.`,
+          `Every question should connect to ${page.eyebrow.en} or ${firstUseCase.en}, so it cannot be copied to any page.`,
+        ),
+      },
+    ],
+  };
+};
+
+const allExpandedDetailPages = [
+  ...homeDetailPages,
+  ...aboutDetailPages,
+  ...serviceDetailPages,
+  ...contactDetailPages,
+  ...testimonialStoryPages,
+];
+
+allExpandedDetailPages.forEach((page, index) => {
+  const route = `${page.parentPath}/${page.slug}`;
+  detailWorldEnhancements[route] = {
+    ...detailWorldEnhancements[route],
     ...makeExperienceSpecificEnhancement(page),
+    ...makeRouteFocusedEnhancement(page, index),
   };
 });

@@ -303,12 +303,76 @@ html[data-theme='light'] ::-webkit-scrollbar-track {
     linear-gradient(135deg, var(--detail-panel), rgba(255, 255, 255, 0.025));
 }
 
+.detail-world-block {
+  box-shadow: 0 28px 90px -66px var(--detail-accent);
+}
+
+.detail-rhythm-magazine .detail-block-insights,
+.detail-hero-editorial .detail-block-insights {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+.detail-rhythm-dashboardGrid .detail-block-matrix,
+.detail-hero-dashboard .detail-block-roadmap {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(145deg, var(--detail-panel), rgba(255, 255, 255, 0.025));
+  background-size: 3.5rem 3.5rem, 3.5rem 3.5rem, auto;
+}
+
+.detail-rhythm-cardsDense .detail-world-block {
+  border-radius: 1.1rem;
+}
+
+.detail-rhythm-timelineFirst .detail-block-roadmap {
+  border-inline-start: 0.35rem solid color-mix(in srgb, var(--detail-accent) 70%, rgba(255, 255, 255, 0.12));
+}
+
+.detail-rhythm-storyScroll .detail-block-comparison,
+.detail-rhythm-storyScroll .detail-block-proof {
+  min-height: 22rem;
+  display: grid;
+  align-content: center;
+}
+
+.detail-hero-proofWall .detail-block-proof {
+  background:
+    radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--detail-accent) 50%, transparent), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.018));
+}
+
+.detail-media-backgroundVideo .detail-story-panel {
+  border-style: dashed;
+}
+
+.detail-media-galleryStrip .detail-block-proof,
+.detail-media-galleryStrip .detail-block-scenarios {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1.25rem), calc(100% - 1.25rem) 100%, 0 100%);
+}
+
+.detail-media-mockupPanel .detail-overview-card {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 24px 80px -62px var(--detail-accent);
+}
+
 @media (max-width: 767px) {
   .detail-rhythm-zigzag .detail-overview-card:nth-child(n),
   .detail-rhythm-storyScroll .detail-overview-card {
     margin-inline: 0;
     position: relative;
     top: auto;
+  }
+
+  .detail-rhythm-magazine .detail-block-insights,
+  .detail-hero-editorial .detail-block-insights {
+    display: block;
+  }
+
+  .detail-media-galleryStrip .detail-block-proof,
+  .detail-media-galleryStrip .detail-block-scenarios {
+    clip-path: none;
   }
 }
 
