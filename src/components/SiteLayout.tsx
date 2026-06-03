@@ -23,6 +23,7 @@ import { portfolioProfile } from '../data/portfolio';
 import { serviceFamilies, serviceLibrary } from '../data/serviceLibrary';
 import { preloadPath } from '../lib/pageLoaders';
 import { trackEvent } from '../lib/analytics';
+import { localizedText } from '../lib/repairText';
 import BrandLogo from './BrandLogo';
 import PageEnrichment from './PageEnrichment';
 
@@ -249,13 +250,13 @@ const SiteLayout = () => {
         .flatMap((group) => [
           {
             to: group.mainTo,
-            label: lang === 'ar' ? group.fallbackLabel.ar : group.fallbackLabel.en,
-            description: lang === 'ar' ? group.fallbackLabel.ar : group.fallbackLabel.en,
+            label: localizedText(group.fallbackLabel, lang),
+            description: localizedText(group.fallbackLabel, lang),
           },
           ...group.items.slice(0, 4).map((item) => ({
             to: item.to,
-            label: lang === 'ar' ? item.label.ar : item.label.en,
-            description: lang === 'ar' ? item.description.ar : item.description.en,
+            label: localizedText(item.label, lang),
+            description: localizedText(item.description, lang),
           })),
         ])
         .map((item) => [item.to, item] as const),
@@ -286,8 +287,7 @@ const SiteLayout = () => {
     void preloadPath(path);
   };
 
-  const getLocalizedText = (value: { ar: string; en: string }) =>
-    isArabic ? value.ar : value.en;
+  const getLocalizedText = (value: { ar: string; en: string }) => localizedText(value, lang);
 
   const isGroupActive = (group: (typeof localizedNavGroups)[number]) => {
     if (currentPath === group.mainTo) {

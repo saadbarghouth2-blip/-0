@@ -1,4 +1,8 @@
-const mojibakePattern = /(?:Ø|Ù|Ã|Â|â€|â€™|â€œ|â€‌|â€“|â€”|â€¦)/;
+const mojibakePattern =
+  /(?:\u00d8|\u00d9|\u00c3|\u00c2|\u00e2|\u20ac|\u201a|\u0192|\u201e|\u2026|\u2020|\u2021|\u02c6|\u2030|\u0160|\u2039|\u0152|\u017d|\u2018|\u2019|\u201c|\u201d|\u2022|\u2013|\u2014|\u02dc|\u2122|\u0161|\u203a|\u0153|\u017e|\u0178)/;
+
+const latinishRunPattern =
+  /[\u0000-\u00ff\u0100-\u017f\u0192\u02c6\u02dc\u2018-\u201e\u2020-\u2026\u2030\u2039\u203a\u20ac\u2122]+/g;
 
 const windows1252Overrides: Record<number, number> = {
   0x20ac: 0x80,
@@ -30,12 +34,13 @@ const windows1252Overrides: Record<number, number> = {
   0x0178: 0x9f,
 };
 
-const decoder = typeof TextDecoder !== 'undefined' ? new TextDecoder('utf-8', { fatal: false }) : undefined;
+const decoder =
+  typeof TextDecoder !== 'undefined' ? new TextDecoder('utf-8', { fatal: false }) : undefined;
 
 const countMojibakeMarks = (value: string) => (value.match(mojibakePattern) ?? []).length;
 
-export const repairMojibake = (value: string) => {
-  if (!value || !decoder || !mojibakePattern.test(value)) {
+const decodeWindows1252Utf8 = (value: string) => {
+  if (!decoder || !mojibakePattern.test(value)) {
     return value;
   }
 
@@ -68,4 +73,19 @@ export const repairMojibake = (value: string) => {
   return value;
 };
 
-export const localizedText = (value: { ar: string; en: string }, lang: 'ar' | 'en') => repairMojibake(value[lang]);
+export const repairMojibake = (value: string) => {
+  if (!value || !decoder || !mojibakePattern.test(value)) {
+    return value;
+  }
+
+  const decodedWhole = decodeWindows1252Utf8(value);
+
+  if (decodedWhole !== value) {
+    return decodedWhole;
+  }
+
+  return value.replace(latinishRunPattern, (segment) => decodeWindows1252Utf8(segment));
+};
+
+export const localizedText = (value: { ar: string; en: string }, lang: 'ar' | 'en') =>
+  repairMojibake(value[lang]);

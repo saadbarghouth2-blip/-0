@@ -666,7 +666,7 @@ const TestimonialSpotlightBlock = ({ isArabic, page, shouldReduceMotion, text }:
       viewport={{ once: true }}
       className="relative overflow-hidden rounded-[1.5rem] border border-cyan-500/20 bg-gradient-to-br from-[#0c1a2d] to-[#060a12] p-6 md:rounded-[2rem] md:p-8"
     >
-      <span className="absolute -left-4 -top-8 font-serif text-[12rem] text-cyan-500/5 select-none leading-none">“</span>
+      <span className="absolute -left-4 -top-8 font-serif text-[12rem] text-cyan-500/5 select-none leading-none">�</span>
       
       <div className="relative z-10 space-y-4">
         <p className="section-kicker">

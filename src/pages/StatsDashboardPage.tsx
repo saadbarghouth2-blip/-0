@@ -255,7 +255,7 @@ const StatsDashboard = () => {
                 <p className="mt-3 text-sm leading-7 text-slate-300 md:text-base md:leading-8">
                   {text(
                     'الخريطة تعرض نطاق انتشار نُطق بشكل أبسط: دول رئيسية، نقاط واضحة، ومؤشرات تكفي لفهم حجم الحضور بدون ازدحام بصري.',
-                    'The map keeps Notaq’s reach easy to read: key countries, clear nodes, and enough signal without visual clutter.',
+                    'The map keeps Notaq�s reach easy to read: key countries, clear nodes, and enough signal without visual clutter.',
                   )}
                 </p>
                 <div className="mt-5 grid grid-cols-3 gap-2">

@@ -19,6 +19,7 @@ import {
   SITE_TITLE_SUFFIX,
   SITE_URL,
 } from './siteConfig';
+import { repairMojibake } from './repairText';
 
 export type JsonLdObject = Record<string, unknown>;
 
@@ -115,6 +116,29 @@ export const toStructuredDataArray = (
   return Array.isArray(structuredData) ? structuredData : [structuredData];
 };
 
+const repairSeoStringArray = (values?: string[]) => values?.map((value) => repairMojibake(value));
+
+const repairStructuredData = (value: unknown): unknown => {
+  if (typeof value === 'string') {
+    return repairMojibake(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => repairStructuredData(item));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([key, entry]) => [
+        key,
+        repairStructuredData(entry),
+      ]),
+    );
+  }
+
+  return value;
+};
+
 export const buildPageSeoState = (input: PageSeoInput): PageSeoState => {
   const lang =
     input.lang ??
@@ -136,18 +160,25 @@ export const buildPageSeoState = (input: PageSeoInput): PageSeoState => {
     ...input,
     lang,
     path: normalizedPath,
-    title: withTitleSuffix(input.title),
+    title: repairMojibake(withTitleSuffix(input.title)),
     canonicalUrl: getLocalizedAbsoluteUrl(normalizedPath, lang),
     imageUrl: toAbsoluteUrl(input.image ?? DEFAULT_SEO_IMAGE),
-    imageAlt: input.imageAlt ?? DEFAULT_SEO_IMAGE_ALT,
+    description: repairMojibake(input.description),
+    imageAlt: repairMojibake(input.imageAlt ?? DEFAULT_SEO_IMAGE_ALT),
     locale: localeMap[lang],
     robots: input.noindex ? 'noindex,nofollow' : DEFAULT_ROBOTS_POLICY,
+    keywords: repairSeoStringArray(input.keywords),
+    section: input.section ? repairMojibake(input.section) : undefined,
+    tags: repairSeoStringArray(input.tags),
+    author: input.author ? repairMojibake(input.author) : input.author,
     alternateLinks: [
       { hreflang: 'ar', href: getLocalizedAbsoluteUrl(normalizedPath, 'ar') },
       { hreflang: 'en', href: getLocalizedAbsoluteUrl(normalizedPath, 'en') },
       { hreflang: 'x-default', href: getLocalizedAbsoluteUrl(normalizedPath, 'ar') },
     ],
-    structuredDataList: toStructuredDataArray(input.structuredData),
+    structuredDataList: toStructuredDataArray(input.structuredData).map(
+      (entry) => repairStructuredData(entry) as JsonLdObject,
+    ),
   };
 };
 

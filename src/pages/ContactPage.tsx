@@ -285,7 +285,7 @@ const ContactPage = () => {
       heroKicker: isArabic ? 'تواصل احترافي مباشر' : 'Direct professional contact',
       heroTitle: isArabic
         ? 'رتّب احتياج شركتك الرقمي في خطوة واضحة'
-        : 'Organize your company’s digital need in one clear step',
+        : 'Organize your company�s digital need in one clear step',
       heroDescription: isArabic
         ? 'إذا كانت شركتك تستهدف عملاء في مصر أو الخليج، يساعدك فريق نُطق على ترتيب الرسالة، شكل العرض، ومسار التنفيذ بما يناسب السوق والهدف التجاري.'
         : 'If your company targets audiences in Egypt or the Gulf, Notaq helps shape the message, presentation, and execution path around the market and business goal.',

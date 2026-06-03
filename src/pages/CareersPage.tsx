@@ -159,7 +159,7 @@ const CareersPage = () => {
                       <h3 className="font-display text-sm md:text-base text-white">{text(role.titleAr, role.titleEn)}</h3>
                       <div className="flex flex-wrap gap-3 mt-1.5 text-[10px] text-slate-500 font-semibold">
                         <span>{text(role.typeAr, role.typeEn)}</span>
-                        <span>•</span>
+                        <span>�</span>
                         <span className="text-cyan-400">{text(role.experienceAr, role.experienceEn)}</span>
                       </div>
                     </div>

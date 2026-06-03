@@ -5,7 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { getPageEnrichment, type EnrichmentPoint, type PageEnrichmentContent } from '../data/pageEnrichment';
 import { enrichmentMediaById, type EnrichmentMediaAsset } from '../data/enrichmentMedia';
 import { useLanguage, type Language } from '../hooks/useLanguage';
-import { localizedText } from '../lib/repairText';
+import { useIsMobile } from '../hooks/use-mobile';
+import { localizedText, repairMojibake } from '../lib/repairText';
 import DeferredVideo from './DeferredVideo';
 import ProjectImage from './ProjectImage';
 
@@ -353,9 +354,122 @@ const FinalCta = ({ content, lang, to }: { content: PageEnrichmentContent; lang:
   </motion.section>
 );
 
+const MobilePageEnrichment = ({
+  content,
+  heroMedia,
+  storyMedia,
+  lang,
+  to,
+}: {
+  content: PageEnrichmentContent;
+  heroMedia: EnrichmentMediaAsset;
+  storyMedia: EnrichmentMediaAsset;
+  lang: Language;
+  to: string;
+}) => {
+  const problems = content.problems.slice(0, 2);
+  const solutions = content.solutions.slice(0, 2);
+  const process = content.process.slice(0, 3);
+  const faq = content.faq.slice(0, 3);
+
+  return (
+    <div className="page-enrichment page-enrichment-mobile md:hidden" aria-label={repairMojibake(lang === 'ar' ? 'تفاصيل إضافية مقنعة' : 'Additional persuasive details')}>
+      <section className="section-shell kinetic-section pb-4 pt-5">
+        <div className="surface-card-strong overflow-hidden rounded-[1.15rem] p-3">
+          <ProjectImage
+            alt={getCopy(heroMedia.alt, lang)}
+            className="h-[9.5rem] w-full rounded-[0.9rem] object-cover"
+            src={heroMedia.src}
+          />
+          <p className="section-kicker mt-3 w-fit">{getCopy(content.eyebrow, lang)}</p>
+          <h2 className="mt-3 font-display text-[1.35rem] font-semibold leading-tight text-white">
+            {getCopy(content.title, lang)}
+          </h2>
+          <p className="mt-2 text-[0.82rem] leading-6 text-slate-400">{getCopy(content.lead, lang)}</p>
+          <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1">
+            {content.metrics.map((metric) => (
+              <div key={metric.value} className="min-w-[8.5rem] snap-start rounded-[0.9rem] border border-white/8 bg-white/[0.035] p-2.5">
+                <p className="font-display text-lg font-bold text-cyan-300">{metric.value}</p>
+                <p className="mt-0.5 text-[0.7rem] leading-4 text-slate-400">{getCopy(metric.label, lang)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-shell kinetic-section py-4">
+        <div className="grid gap-3">
+          <div className="surface-card grid grid-cols-[5.7rem_1fr] gap-3 rounded-[1rem] p-3">
+            <ProjectImage
+              alt={getCopy(storyMedia.alt, lang)}
+              className="h-full min-h-[7.2rem] rounded-[0.8rem] object-cover"
+              src={storyMedia.src}
+            />
+            <div>
+              <p className="text-[0.72rem] font-bold text-cyan-300">{lang === 'ar' ? 'قصة الصفحة' : 'Page story'}</p>
+              <h3 className="mt-1 font-display text-[1.05rem] font-semibold leading-6 text-white">{getCopy(content.storyTitle, lang)}</h3>
+              <p className="mt-1 text-[0.78rem] leading-5 text-slate-400">{getCopy(content.storyText, lang)}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div className="surface-card rounded-[1rem] p-3">
+              <p className="text-[0.72rem] font-bold text-slate-400">{lang === 'ar' ? 'قبل' : 'Before'}</p>
+              <div className="mt-2 grid gap-2">
+                {problems.map((item) => (
+                  <div key={getCopy(item.title, lang)} className="rounded-[0.8rem] border border-white/8 bg-white/[0.025] p-2">
+                    <h4 className="text-[0.82rem] font-bold leading-5 text-white">{getCopy(item.title, lang)}</h4>
+                    <p className="mt-1 text-[0.7rem] leading-4 text-slate-400">{getCopy(item.text, lang)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="surface-card-strong rounded-[1rem] p-3">
+              <p className="text-[0.72rem] font-bold text-cyan-300">{lang === 'ar' ? 'بعد' : 'After'}</p>
+              <div className="mt-2 grid gap-2">
+                {solutions.map((item) => (
+                  <div key={getCopy(item.title, lang)} className="rounded-[0.8rem] border border-cyan-300/15 bg-cyan-300/8 p-2">
+                    <h4 className="text-[0.82rem] font-bold leading-5 text-white">{getCopy(item.title, lang)}</h4>
+                    <p className="mt-1 text-[0.7rem] leading-4 text-slate-400">{getCopy(item.text, lang)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex snap-x gap-2 overflow-x-auto pb-1">
+            {process.map((item, index) => (
+              <div key={getCopy(item.title, lang)} className="surface-card min-w-[15rem] snap-start rounded-[1rem] p-3">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-cyan-300 text-xs font-black text-slate-950">{index + 1}</span>
+                <h4 className="mt-2 font-display text-[1rem] font-semibold leading-6 text-white">{getCopy(item.title, lang)}</h4>
+                <p className="mt-1 text-[0.78rem] leading-5 text-slate-400">{getCopy(item.text, lang)}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid gap-2">
+            {faq.map((item) => (
+              <div key={getCopy(item.question, lang)} className="surface-card rounded-[1rem] p-3">
+                <h4 className="font-display text-[0.95rem] font-semibold leading-6 text-white">{getCopy(item.question, lang)}</h4>
+                <p className="mt-1.5 text-[0.78rem] leading-5 text-slate-400">{getCopy(item.answer, lang)}</p>
+              </div>
+            ))}
+          </div>
+
+          <Link className="btn-primary justify-center" to={to}>
+            {repairMojibake(lang === 'ar' ? 'ابدأ النقاش الآن' : 'Start the conversation')}
+            <ArrowUpLeft className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 const PageEnrichment = () => {
   const location = useLocation();
   const { lang, localizePath } = useLanguage();
+  const isMobile = useIsMobile();
   const content = getPageEnrichment(location.pathname);
 
   if (!content) {
@@ -368,6 +482,18 @@ const PageEnrichment = () => {
 
   if (!heroMedia || !storyMedia || !video) {
     return null;
+  }
+
+  if (isMobile) {
+    return (
+      <MobilePageEnrichment
+        content={content}
+        heroMedia={heroMedia}
+        lang={lang}
+        storyMedia={storyMedia}
+        to={localizePath('/contact')}
+      />
+    );
   }
 
   return (

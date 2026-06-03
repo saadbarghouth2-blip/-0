@@ -93,7 +93,7 @@ export const testimonialEntries: TestimonialEntry[] = [
     quoteAr:
       'التحسن لم يكن في الشكل فقط. صار أسهل علينا إرسال الموقع كواجهة رسمية للشركة ونحن مطمئنون أن الانطباع الأول أصبح على مستوى الخدمة التي نقدمها فعلًا.',
     quoteEn:
-      'The improvement was not only visual. It became much easier to send the website as the company’s official front because we finally felt the first impression matched the quality of the service we actually deliver.',
+      'The improvement was not only visual. It became much easier to send the website as the company�s official front because we finally felt the first impression matched the quality of the service we actually deliver.',
     highlightAr: 'انطباع أول أقوى',
     highlightEn: 'A stronger first impression',
     avatarAr: 'أ',

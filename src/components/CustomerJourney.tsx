@@ -101,7 +101,7 @@ export const CustomerJourney: React.FC<CustomerJourneyProps> = ({
                           <div className="space-y-2">
                             {step.activities.map((activity, j) => (
                               <div key={j} className="flex items-start gap-2 text-sm text-slate-300">
-                                <span className="text-cyan-400 flex-shrink-0">•</span>
+                                <span className="text-cyan-400 flex-shrink-0">�</span>
                                 <span>{text(activity)}</span>
                               </div>
                             ))}

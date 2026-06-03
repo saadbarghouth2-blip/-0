@@ -584,7 +584,7 @@ export const projects: PortfolioProject[] = [
     challenge:
       'التحدي كان في تقديم حدث ضخم ومليء بالمحتوى من دون أن تفقد الصفحة قوتها الافتتاحية أو تتشتت بصريًا.',
     englishChallenge:
-      'The challenge was to present a massive event with a lot of content without losing the page’s opening impact or visual control.',
+      'The challenge was to present a massive event with a lot of content without losing the page�s opening impact or visual control.',
     approach:
       'تم بناء الصفحة حول Hero سينمائي، شريط معلومات علوي، وأقسام منظمة تسمح باستكشاف البطولة تدريجيًا مع الحفاظ على طاقة الحدث.',
     englishApproach:

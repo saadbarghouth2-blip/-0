@@ -303,7 +303,7 @@ const TeamMemberCard: FC<{ member: any }> = ({ member }) => (
     </div>
     <div className="pt-4 border-t border-slate-700">
       <p className="text-sm text-slate-300">
-        {member.yearsOfExperience} سنوات خبرة • {member.certifications.length} شهادات
+        {member.yearsOfExperience} سنوات خبرة � {member.certifications.length} شهادات
       </p>
     </div>
   </div>

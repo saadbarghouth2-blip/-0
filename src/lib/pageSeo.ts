@@ -321,7 +321,7 @@ const createContactSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
   const title = isArabic
     ? 'تواصل مع نُطق ورتّب احتياج شركتك الرقمي'
-    : 'Contact Notaq and organize your company’s digital need';
+    : 'Contact Notaq and organize your company�s digital need';
   const description = isArabic
     ? 'تواصل مع نُطق لبدء موقع شركة، صفحة خدمة، أو تجربة رقمية تستهدف مصر والخليج، واحصل على خطوة أولى واضحة وسريعة.'
     : 'Contact Notaq to start a company website, service page, or digital experience for Egypt and Gulf audiences and get a clear next step.';

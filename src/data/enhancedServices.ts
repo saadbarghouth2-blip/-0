@@ -40,7 +40,7 @@ const enhancedServicePages: Record<string, EnhancedDetailPageContent> = {
         title: { ar: 'تحليل وتشخيص', en: 'Analysis & Diagnosis' },
         body: {
           ar: 'نبدأ بفهم موقع الشركة الحالي: ترتيبه، المشاكل الفنية، والكلمات المفتاحية التي يبحث عنها الزائر المستهدف. نحلل المنافسين ونحدد الفرص الضائعة.',
-          en: 'We start by understanding the company website’s current position: rankings, technical issues, and keywords target visitors search for. We analyze competitors and identify missed opportunities.',
+          en: 'We start by understanding the company website�s current position: rankings, technical issues, and keywords target visitors search for. We analyze competitors and identify missed opportunities.',
         },
         icon: Target,
         image: '/images/seo-analysis.jpg',

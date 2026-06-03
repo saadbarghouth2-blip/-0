@@ -176,7 +176,7 @@ const explicitVariations: Record<string, PageVariationConfig> = {
     heroMediaId: 'client-workshop',
     storyMediaId: 'about-story-notes',
     videoMediaId: 'about-team-review',
-    title: { ar: 'قصة نُطق كما يراها العميل في تفاصيل العمل', en: 'Notaq’s story through the details clients experience' },
+    title: { ar: 'قصة نُطق كما يراها العميل في تفاصيل العمل', en: 'Notaq�s story through the details clients experience' },
   },
   '/about/method': {
     layoutVariant: 'method',

@@ -454,7 +454,7 @@ export const aboutDetailPages: DetailPageContent[] = [
     eyebrow: { ar: 'قصة نُطق', en: 'Notaq Story' },
     title: { ar: 'من فكرة حضور رقمي إلى طريقة عمل كاملة', en: 'From digital presence idea to a complete working method' },
     summary: { ar: 'هذه الصفحة تشرح كيف نفكر في بناء شركة رقمية تبدو واضحة، موثوقة، وقابلة للنمو من أول زيارة.', en: 'This page explains how we think about building a digital company presence that feels clear, trusted, and ready to grow from the first visit.' },
-    audience: { ar: 'مناسبة لك إذا أردت فهم خلفية نُطق وطريقة التفكير قبل بدء المشروع.', en: 'For you if you want to understand Notaq’s background and thinking before starting.' },
+    audience: { ar: 'مناسبة لك إذا أردت فهم خلفية نُطق وطريقة التفكير قبل بدء المشروع.', en: 'For you if you want to understand Notaq�s background and thinking before starting.' },
     promise: { ar: 'حوّل موقع الشركة من بطاقة تعريف إلى أصل تجاري يساعد على الثقة والبيع.', en: 'Turn the company website from a profile card into a business asset that supports trust and sales.' },
     sections: [
       { title: { ar: 'البداية', en: 'The beginning' }, body: { ar: 'بدأت نُطق من ملاحظة بسيطة: أغلب المواقع العربية تبدو جميلة أحيانًا، لكنها لا تشرح القيمة بوضوح ولا تساعد الزائر على القرار.', en: 'Notaq started from a simple observation: many Arabic websites may look nice, but they often do not explain value clearly or help visitors decide.' } },
@@ -733,7 +733,7 @@ export const blogCategoryPages: BlogCategoryPageContent[] = [
       { step: '04', title: { ar: 'قياس وتحسين', en: 'Measure and improve' }, body: { ar: 'نربط الظهور بسلوك الزائر: هل قرأ؟ هل ضغط؟ هل تواصل؟', en: 'We connect visibility with visitor behavior: did they read, click, and contact?' } },
     ],
     deepDives: [
-      { title: { ar: 'Search intent', en: 'Search intent' }, body: { ar: 'الفرق بين "تصميم موقع شركة" و"أفضل شركة تصميم مواقع" يغير الرسالة وترتيب الأدلة داخل الصفحة.', en: 'The difference between “company website design” and “best web design company” changes the message and proof order.' } },
+      { title: { ar: 'Search intent', en: 'Search intent' }, body: { ar: 'الفرق بين "تصميم موقع شركة" و"أفضل شركة تصميم مواقع" يغير الرسالة وترتيب الأدلة داخل الصفحة.', en: 'The difference between �company website design� and �best web design company� changes the message and proof order.' } },
       { title: { ar: 'Internal linking', en: 'Internal linking' }, body: { ar: 'الروابط بين المقالات والخدمات والأعمال تساعد الزائر وجوجل على فهم بنية الموقع.', en: 'Links between articles, services, and work help visitors and Google understand the site structure.' } },
       { title: { ar: 'Schema و Metadata', en: 'Schema and metadata' }, body: { ar: 'لا نستخدمها كزينة تقنية، بل لتوضيح نوع الصفحة والسياق ومساعدة النتائج الغنية عند وجود فرصة حقيقية.', en: 'We do not use them as technical decoration, but to clarify page type and context when rich-result opportunities exist.' } },
       { title: { ar: 'Performance', en: 'Performance' }, body: { ar: 'الصفحة البطيئة تهدر الظهور. ضغط الصور، التحميل المؤجل، وحجم الجافاسكريبت جزء من SEO العملي.', en: 'A slow page wastes visibility. Image compression, deferred loading, and JavaScript weight are part of practical SEO.' } },
@@ -1804,7 +1804,7 @@ export const detailWorldEnhancements: Record<string, DetailWorldEnhancement> = {
       { title: { ar: 'رصد أبعاد الأثر المتعددة للوضوح الرقمي', en: 'Measuring Multi-dimensional Impact of Clarity' }, body: { ar: 'نبرهن بالقصص كيف يرفع الوضوح ثقة فريق مبيعاتك، يسهل شرح خدماتك، ويجلب لك عملاء أنضج.', en: 'We show how clarity boosts sales team confidence, simplifies service explanation, and brings mature clients.' } }
     ],
     faq: [
-      { question: { ar: 'ما الذي يجعل قصة الثقة مقنعة ومفيدة للزائر؟', en: 'What makes a trust story persuasive for visitors?' }, answer: { ar: 'أن تتضمن تفاصيل المشكلة التي تشبه مشكلة الزائر الحالي، وتشرح طريقة الحل الواقعية والنتائج الملموسة.', en: 'Including details of a problem that matches the current visitor’s issue, explaining the solution, and showing outcomes.' } },
+      { question: { ar: 'ما الذي يجعل قصة الثقة مقنعة ومفيدة للزائر؟', en: 'What makes a trust story persuasive for visitors?' }, answer: { ar: 'أن تتضمن تفاصيل المشكلة التي تشبه مشكلة الزائر الحالي، وتشرح طريقة الحل الواقعية والنتائج الملموسة.', en: 'Including details of a problem that matches the current visitor�s issue, explaining the solution, and showing outcomes.' } },
       { question: { ar: 'كيف تختلف قصة الثقة عن التقييمات التقليدية؟', en: 'How do trust stories differ from standard ratings?' }, answer: { ar: 'التقييم التقليدي يثبت جودة المعاملة، بينما قصة الثقة تثبت حل المشكلة وتحقيق الأثر العملي والتجاري.', en: 'Standard ratings prove transaction quality, while trust stories prove problem solving and business impact.' } }
     ],
     timeline: [

@@ -75,7 +75,7 @@ const translations: TranslationDictionary = {
       subtitle: { ar: 'لنرتب احتياج شركتك', en: "Let's organize your company need" },
       description: { ar: 'نساعدك على تحويل الاحتياج الرقمي إلى مسار واضح قابل للتنفيذ. تواصل معنا اليوم', en: 'We help turn the digital need into a clear, executable path. Contact us today.' },
       detailsTitle: { ar: 'معلومات التواصل', en: 'Contact details' },
-      detailsDescription: { ar: 'تواصل معنا لأي استفسار أو لمناقشة احتياج شركتك القادم', en: 'Reach out for any inquiry or to discuss your company’s next need.' },
+      detailsDescription: { ar: 'تواصل معنا لأي استفسار أو لمناقشة احتياج شركتك القادم', en: 'Reach out for any inquiry or to discuss your company�s next need.' },
       formTitle: { ar: 'أرسل لنا رسالة', en: 'Send us a message' },
       formName: { ar: 'الاسم', en: 'Name' },
       formEmail: { ar: 'البريد الإلكتروني', en: 'Email' },
