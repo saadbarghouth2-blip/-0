@@ -937,6 +937,8 @@ const makeDeepEnhancement = (page: DetailPageContent): DetailWorldEnhancement =>
   ],
 });
 
+void makeDeepEnhancement;
+
 const addedHomePages = [
   makeInternalDetailPage('homepage-blueprint', '/home', richCopy('الرئيسية', 'Home'), 'editorial', richCopy('خريطة بناء الصفحة الرئيسية', 'Homepage blueprint'), richCopy('كيف تتحول الصفحة الرئيسية إلى خريطة قرار واضحة لا مجرد مقدمة جميلة', 'How the homepage becomes a clear decision map, not only a polished introduction'), richCopy('نرتب أول شاشة، أقسام الثقة، الخدمات، الأعمال، والأسئلة بحيث يفهم الزائر قيمة الشركة ويتحرك للخطوة التالية بثقة.', 'We order the first screen, trust sections, services, work, and questions so visitors understand value and move confidently to the next step.'), 'from-cyan-400/18 via-white/[0.03] to-emerald-500/10'),
   makeInternalDetailPage('trust-layers', '/home', richCopy('الرئيسية', 'Home'), 'proof', richCopy('طبقات الثقة', 'Trust layers'), richCopy('أين تظهر الأدلة والضمانات داخل أول زيارة حتى لا يظل الزائر متردداً؟', 'Where proof and reassurance appear during the first visit so visitors do not stay hesitant'), richCopy('نوزع الشهادات، الأرقام، المنهجية، ونقاط الضمان في لحظات القراءة التي يظهر فيها التردد بدلاً من تركها في نهاية الصفحة.', 'We distribute testimonials, numbers, method, and reassurance at hesitation moments instead of leaving them at the bottom.'), 'from-emerald-400/18 via-white/[0.03] to-cyan-500/10'),
@@ -1038,6 +1040,8 @@ const addedDeepPages = [
   ...addedContactPages,
   ...addedTestimonialPages,
 ];
+
+void addedDeepPages;
 
 const makeBlogCategoryExpansion = (
   slug: string,

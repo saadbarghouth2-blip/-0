@@ -1,19 +1,8 @@
 import { motion } from 'framer-motion';
-import {
-  TrendingUp,
-  Users,
-  Award,
-  Zap,
-  Target,
-  CheckCircle,
-  BarChart3,
-  Clock,
-  Lightbulb,
-  Globe,
-} from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
-import { localizedText } from '../lib/repairText';
+import { clientFacingText, localizedText } from '../lib/repairText';
 
 interface Statistic {
   icon: typeof TrendingUp;
@@ -57,7 +46,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
   const isArabic = lang === 'ar';
   const [counts, setCounts] = useState<Record<number, number>>({});
 
-  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
+  const text = (value: { ar: string; en: string }) => clientFacingText(localizedText(value, lang), lang);
 
   // Animated counter for numbers
   useEffect(() => {

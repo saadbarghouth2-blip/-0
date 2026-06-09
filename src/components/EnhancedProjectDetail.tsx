@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
-import { localizedText } from '../lib/repairText';
+import { clientFacingText, localizedText } from '../lib/repairText';
 
 interface ProjectMetric {
   label: { ar: string; en: string };
@@ -74,7 +74,7 @@ export const EnhancedProjectDetail: React.FC<EnhancedProjectDetailProps> = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
 
-  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
+  const text = (value: { ar: string; en: string }) => clientFacingText(localizedText(value, lang), lang);
 
   return (
     <motion.section

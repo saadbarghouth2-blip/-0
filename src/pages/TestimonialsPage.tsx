@@ -1,31 +1,26 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
   BadgeCheck,
   Quote,
-  Sparkles,
-  TrendingUp,
-  Users2,
   Star,
   Play,
   X,
   ShieldCheck,
-  MessageSquare
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
-import SectionTitle from '../components/SectionTitle';
 import EditorialImageBreak from '../components/EditorialImageBreak';
 import PageHero from '../components/PageHero';
 import PageImageShowcaseSection from '../components/PageImageShowcase';
+import { enrichmentMediaById } from '../data/enrichmentMedia';
 import { testimonialEntries } from '../data/testimonials';
 import { pageImageShowcases } from '../data/pageImageShowcases';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
-import { illustrationAssets } from '../lib/illustrationAssets';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 const testimonials = testimonialEntries;
 
@@ -62,25 +57,6 @@ const industriesAr: Record<string, string> = {
   'Other': 'مجالات أخرى'
 };
 
-const trustPoints = [
-  {
-    ar: 'وضوح الرسالة وسهولة قراءة الصفحات للزائرين',
-    en: 'Clear messaging and easy-to-read pages for visitors',
-  },
-  {
-    ar: 'تحسين صورة العلامة التجارية أمام الممولين والعملاء',
-    en: 'A stronger brand impression in front of investors and clients',
-  },
-  {
-    ar: 'تنظيم المحتوى والخدمات بشكل مبسط دون تعقيد',
-    en: 'Simple and clean organization of content and services',
-  },
-  {
-    ar: 'الاهتمام بالتجربة الكاملة للهواتف وأجهزة الديسكتوب',
-    en: 'Care for the holistic mobile and desktop experiences',
-  },
-];
-
 const proofLayers = [
   {
     titleAr: 'رسالة واضحة تماماً',
@@ -114,7 +90,7 @@ const videoTestimonials = [
     titleAr: 'رأي المهندس أحمد السيد عن منصة الأكاديمية',
     titleEn: 'Eng. Ahmed El-Sayed on Academy Platform',
     thumbnail: '/images/projects/smart-educational-maps.webp',
-    videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    videoUrl: enrichmentMediaById['testimonials-client-call'].src,
     duration: '2:15'
   },
   {
@@ -122,7 +98,7 @@ const videoTestimonials = [
     titleAr: 'مراجعة متجر ملابس فاشن بوتيك',
     titleEn: 'Fashion Boutique Store Redesign Feedback',
     thumbnail: '/images/projects/tech-startup-landing.webp',
-    videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4',
+    videoUrl: enrichmentMediaById['about-team-review'].src,
     duration: '1:45'
   }
 ];
@@ -130,7 +106,7 @@ const videoTestimonials = [
 const TestimonialsPage = () => {
   const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
 
   // States
   const [selectedIndustry, setSelectedIndustry] = useState('All');
@@ -157,9 +133,6 @@ const TestimonialsPage = () => {
   const handlePrev = () => {
     setActiveFeedbackIndex(prev => (prev - 1 + filteredTestimonials.length) % filteredTestimonials.length);
   };
-
-  const prevIcon = isArabic ? ArrowRight : ArrowLeft;
-  const nextIcon = isArabic ? ArrowLeft : ArrowRight;
 
   return (
     <section className="section-shell pb-12 md:pb-20 pt-10 md:pt-14 lg:pt-20">

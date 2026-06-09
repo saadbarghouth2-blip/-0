@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.xn--2gbwk.site/sitemap.xml
-Host: www.xn--2gbwk.site
+Sitemap: https://xn--2gbwk.site/sitemap.xml
+Host: xn--2gbwk.site

@@ -18,12 +18,13 @@ import ProjectImage from '../components/ProjectImage';
 import HeroMediaBackdrop from '../components/HeroMediaBackdrop';
 import { enrichmentMediaById } from '../data/enrichmentMedia';
 import { getPageEnrichment } from '../data/pageEnrichment';
-import { findProjectBySlug, projects } from '../data/portfolio';
+import { findProjectBySlug, getProjectAlternates, visibleProjects } from '../data/portfolio';
 import { pageImageShowcases } from '../data/pageImageShowcases';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { trackEvent } from '../lib/analytics';
 import { getPageSeoByPath, getProjectPageSeo } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 const ProjectDetailPage = () => {
   const { slug } = useParams();
@@ -33,10 +34,10 @@ const ProjectDetailPage = () => {
 
   const text = (arabic: string, english?: string) => {
     if (isArabic) {
-      return arabic;
+      return clientFacingText(arabic, lang);
     }
 
-    return english ?? arabic;
+    return clientFacingText(english ?? arabic, lang);
   };
 
   usePageMetadata(project ? getProjectPageSeo(project, lang) : getPageSeoByPath('/404', lang));
@@ -82,6 +83,7 @@ const ProjectDetailPage = () => {
   const techStack = project.techStack;
   const experience = project.experience;
   const gallery = [...new Set([project.coverImage, ...(project.screenshots ?? [])])];
+  const alternateProjects = getProjectAlternates(project);
   const projectEnrichment = getPageEnrichment(`/projects/${project.slug}`);
   const heroFallbackMedia = projectEnrichment
     ? enrichmentMediaById[projectEnrichment.heroMediaId]
@@ -89,8 +91,8 @@ const ProjectDetailPage = () => {
   const heroMedia = projectEnrichment
     ? enrichmentMediaById[projectEnrichment.videoMediaId] ?? heroFallbackMedia
     : enrichmentMediaById['projects-interface-scroll'];
-  const relatedProjects = projects
-    .filter((item) => item.slug !== project.slug)
+  const relatedProjects = visibleProjects
+    .filter((item) => item.slug !== project.slug && item.familyKey !== project.familyKey)
     .slice(0, 3);
 
   const handleLiveProjectClick = () => {
@@ -324,6 +326,22 @@ const ProjectDetailPage = () => {
                     src={image}
                   />
                 </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {alternateProjects.length > 0 && (
+          <div className="mt-16">
+            <div className="mb-8">
+              <p className="section-kicker">{isArabic ? 'إصدارات نفس الفكرة' : 'Same idea editions'}</p>
+              <h2 className="mt-5 font-display text-3xl font-semibold text-white">
+                {isArabic ? 'نسخ أخرى محفوظة داخل نفس المشروع' : 'Other versions kept inside this project family'}
+              </h2>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {alternateProjects.map((alternateProject) => (
+                <ProjectCard key={alternateProject.slug} compact project={alternateProject} />
               ))}
             </div>
           </div>

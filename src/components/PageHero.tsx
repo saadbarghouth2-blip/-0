@@ -178,7 +178,7 @@ const PageHero = ({
     <motion.section
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        'relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[auto] sm:min-h-[85vh] lg:min-h-[calc(100svh-4.35rem)] w-screen items-end overflow-hidden px-4 pb-5 sm:pb-7 pt-10 sm:pt-20 md:px-10 md:pb-10 md:pt-[7.5rem] lg:px-14',
+        'relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[auto] sm:min-h-[85vh] lg:min-h-[calc(100svh-4.35rem)] w-screen items-end overflow-hidden px-3 pb-4 pt-5 sm:px-4 sm:pb-7 sm:pt-20 md:px-10 md:pb-10 md:pt-[7.5rem] lg:px-14',
         className,
       )}
       initial={{ opacity: 0, y: 18 }}

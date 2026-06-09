@@ -7,12 +7,14 @@ import { enhancedServicePages } from '../data/enhancedServices';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 const ServiceDetailEnhancedPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { lang, localizePath } = useLanguage();
   const navigate = useNavigate();
   const isArabic = lang === 'ar';
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
 
   const service = slug && enhancedServicePages[slug];
 
@@ -24,14 +26,14 @@ const ServiceDetailEnhancedPage = () => {
         <div className="surface-card mx-auto max-w-3xl rounded-[2rem] p-8 text-center">
           <p className="section-kicker">404</p>
           <h1 className="mt-5 font-display text-3xl font-bold text-white">
-            {isArabic ? 'الخدمة غير موجودة' : 'Service not found'}
+            {text('الخدمة غير موجودة', 'Service not found')}
           </h1>
           <p className="mt-4 text-slate-300">
-            {isArabic ? 'الخدمة التي تبحث عنها لا توجد. عد إلى الخدمات.' : 'The service you\'re looking for doesn\'t exist. Go back to services.'}
+            {text('الخدمة التي تبحث عنها لا توجد. عد إلى الخدمات.', 'The service you\'re looking for doesn\'t exist. Go back to services.')}
           </p>
           <Link className="btn-primary mt-7 inline-flex items-center gap-2" to={localizePath('/services')}>
             <ArrowLeft className="w-4 h-4" />
-            {isArabic ? 'الخدمات' : 'Services'}
+            {text('الخدمات', 'Services')}
           </Link>
         </div>
       </section>
@@ -58,7 +60,7 @@ const ServiceDetailEnhancedPage = () => {
             to={localizePath('/services')}
             className="text-slate-400 hover:text-slate-200 transition-colors"
           >
-            {isArabic ? 'الخدمات' : 'Services'}
+            {text('الخدمات', 'Services')}
           </Link>
           <span className="text-slate-500">/</span>
           <span className="text-cyan-300 font-medium">{service.eyebrow.ar.split(' ')[0]}</span>
@@ -97,12 +99,13 @@ const ServiceDetailEnhancedPage = () => {
           >
             <div className="text-center">
               <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-6">
-                {isArabic ? 'هل تحتاج مساراً واضحاً لهذه الخدمة؟' : 'Need a clear path for this service?'}
+                {text('هل تحتاج مساراً واضحاً لهذه الخدمة؟', 'Need a clear path for this service?')}
               </h2>
               <p className="text-slate-300 max-w-2xl mx-auto mb-8">
-                {isArabic
-                  ? 'تحدث معنا عن احتياج شركتك، وسنقترح نطاقاً عملياً يساعدك على اتخاذ قرار أوضح.'
-                  : 'Talk to us about your company need, and we will suggest a practical scope that supports a clearer decision.'}
+                {text(
+                  'تحدث مع نُطق عن احتياج الشركة، وستقترح نُطق نطاقاً عملياً يساعد على اتخاذ قرار أوضح.',
+                  'Talk to Notaq about the company need, and Notaq will suggest a practical scope that supports a clearer decision.',
+                )}
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -110,7 +113,7 @@ const ServiceDetailEnhancedPage = () => {
                 onClick={() => navigate(localizePath('/contact'))}
                 className="btn-primary inline-flex items-center gap-2"
               >
-                {isArabic ? 'تواصل معنا' : 'Contact us'}
+                {text('تواصل مع نُطق', 'Contact Notaq')}
                 <ArrowUpLeft className="w-4 h-4" />
               </motion.button>
             </div>
@@ -128,7 +131,7 @@ const ServiceDetailEnhancedPage = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <h2 className="font-display text-3xl font-bold text-white mb-10">
-              {isArabic ? 'الخدمات الأخرى' : 'Other Services'}
+              {text('الخدمات الأخرى', 'Other Services')}
             </h2>
 
             <div className="grid gap-6">

@@ -23,7 +23,7 @@ import { portfolioProfile } from '../data/portfolio';
 import { serviceFamilies, serviceLibrary } from '../data/serviceLibrary';
 import { preloadPath } from '../lib/pageLoaders';
 import { trackEvent } from '../lib/analytics';
-import { localizedText } from '../lib/repairText';
+import { clientFacingText, localizedText } from '../lib/repairText';
 import BrandLogo from './BrandLogo';
 import PageEnrichment from './PageEnrichment';
 
@@ -203,6 +203,9 @@ const SiteLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeNavGroupId, setActiveNavGroupId] = useState<string | null>(null);
   const [desktopDropdownLeft, setDesktopDropdownLeft] = useState<number | null>(null);
+  const [desktopActiveServiceFamilyId, setDesktopActiveServiceFamilyId] = useState<string | null>(
+    serviceFamilies[0]?.id ?? null,
+  );
   const [mobileOpenGroupId, setMobileOpenGroupId] = useState<string | null>('home');
   const [mobileOpenServiceFamilyId, setMobileOpenServiceFamilyId] = useState<string | null>(
     serviceFamilies[0]?.id ?? null,
@@ -244,29 +247,31 @@ const SiteLayout = () => {
   const localizedContactPath = localizePath('/contact');
   const isContactRoute = /(^|\/)contact\/?$/.test(location.pathname);
   const brandLabel = lang === 'ar' ? 'نُطق' : 'Notaq';
+  const copy = (value: string) => clientFacingText(value, lang);
   const footerLinks = Array.from(
     new Map(
       navGroups
         .flatMap((group) => [
           {
             to: group.mainTo,
-            label: localizedText(group.fallbackLabel, lang),
-            description: localizedText(group.fallbackLabel, lang),
+            label: copy(localizedText(group.fallbackLabel, lang)),
+            description: copy(localizedText(group.fallbackLabel, lang)),
           },
           ...group.items.slice(0, 4).map((item) => ({
             to: item.to,
-            label: localizedText(item.label, lang),
-            description: localizedText(item.description, lang),
+            label: copy(localizedText(item.label, lang)),
+            description: copy(localizedText(item.description, lang)),
           })),
         ])
         .map((item) => [item.to, item] as const),
     ).values(),
   ).slice(0, 28);
   const footerTagline = lang === 'ar' ? 'حرفية رقمية' : 'Digital Craftsmanship';
-  const footerDescription =
+  const footerDescription = copy(
     lang === 'ar'
       ? 'احصل على موقع أو صفحة خدمة أو تجربة رقمية تساعد شركتك على الظهور بوضوح وبناء ثقة أسرع مع الزائر المناسب.'
-      : 'Get a website, service page, or digital experience that helps your company show up clearly and build trust faster with the right visitors.';
+      : 'Get a website, service page, or digital experience that helps your company show up clearly and build trust faster with the right visitors.',
+  );
   const footerQuickLinksLabel = lang === 'ar' ? 'روابط سريعة' : 'Quick links';
   const footerContactLabel = lang === 'ar' ? 'تواصل مباشر' : 'Direct contact';
   const footerSocialLabel = lang === 'ar' ? 'تابع نُطق' : 'Follow Notaq';
@@ -277,7 +282,7 @@ const SiteLayout = () => {
   const footerBuiltWith = lang === 'ar' ? 'صُنع بدقة' : 'Built with';
   const footerPrecision = lang === 'ar' ? 'متقنة' : 'Precision';
   const navLinkClass = (isActive = false) =>
-    `site-mobile-nav-link ${isActive ? 'site-mobile-nav-link-active' : ''} rounded-full px-4 py-2 text-sm transition ${
+    `site-mobile-nav-link ${isActive ? 'site-mobile-nav-link-active' : ''} rounded-[0.68rem] px-2.5 py-1.5 text-[0.76rem] transition ${
       isActive
         ? 'bg-white/10 text-white'
         : 'text-slate-400 hover:bg-white/5 hover:text-white'
@@ -287,7 +292,7 @@ const SiteLayout = () => {
     void preloadPath(path);
   };
 
-  const getLocalizedText = (value: { ar: string; en: string }) => localizedText(value, lang);
+  const getLocalizedText = (value: { ar: string; en: string }) => copy(localizedText(value, lang));
 
   const isGroupActive = (group: (typeof localizedNavGroups)[number]) => {
     if (currentPath === group.mainTo) {
@@ -332,6 +337,10 @@ const SiteLayout = () => {
       return item.to !== '/services' && !serviceLibrarySlugs.has(slug);
     });
   }, [localizedNavGroups]);
+  const desktopActiveServiceFamily =
+    localizedServiceFamilies.find((family) => family.id === desktopActiveServiceFamilyId) ??
+    localizedServiceFamilies[0] ??
+    null;
 
   const trackPhoneClick = (placement: 'header' | 'mobile_menu' | 'footer') => {
     trackEvent('phone_click', {
@@ -656,6 +665,9 @@ const SiteLayout = () => {
                       setDesktopDropdownLeft(
                         shellRect ? triggerRect.left + triggerRect.width / 2 - shellRect.left : null,
                       );
+                      if (group.id === 'services' && !desktopActiveServiceFamilyId) {
+                        setDesktopActiveServiceFamilyId(localizedServiceFamilies[0]?.id ?? null);
+                      }
                       setActiveNavGroupId(isOpen ? null : group.id);
                     }}
                     onFocus={() => prefetchRoute(group.localizedMainTo)}
@@ -680,16 +692,127 @@ const SiteLayout = () => {
                   exit={{ opacity: 0, y: 6 }}
                   transition={{ duration: 0.14, ease: 'easeOut' }}
                   className={joinClasses(
-                    'site-dropdown absolute left-0 top-[calc(100%+0.55rem)] z-50 hidden -translate-x-1/2 overflow-hidden md:block',
+                    'site-dropdown absolute left-0 top-[calc(100%+0.35rem)] z-50 hidden -translate-x-1/2 overflow-hidden md:block',
                     activeNavGroup.id === 'services'
-                      ? 'site-services-mega w-[min(82vw,42rem)] p-1.5'
-                      : 'w-[min(14.5rem,calc(100vw-2rem))] p-1',
+                      ? 'site-services-mega w-[min(76vw,42rem)] p-1'
+                      : 'w-[min(12.25rem,calc(100vw-2rem))] p-0.5',
                   )}
                   style={{ left: desktopDropdownLeft ?? undefined }}
                 >
                   {activeNavGroup.id === 'services' ? (
-                    <div className="site-services-mega-scroll max-h-[min(58vh,27rem)] min-h-0 overflow-y-auto p-1.5">
-                      <div className="mb-2 flex flex-wrap items-center justify-between gap-2 rounded-[0.85rem] border border-cyan-300/12 bg-cyan-300/[0.045] px-2.5 py-2">
+                    <>
+                      <div className="p-1">
+                        <div className="mb-2 flex items-center justify-between gap-2 rounded-[0.85rem] border border-cyan-300/12 bg-cyan-300/[0.045] px-2.5 py-2">
+                          <p className="min-w-0 truncate text-xs font-bold text-white">
+                            {isArabic ? 'اختار التصنيف ثم الخدمة' : 'Choose a category, then a service'}
+                          </p>
+                          <Link
+                            className="inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-cyan-300 px-2.5 py-1 text-[10px] font-bold text-slate-950 transition hover:bg-cyan-200"
+                            to={activeNavGroup.localizedMainTo}
+                            onClick={() => setActiveNavGroupId(null)}
+                            onFocus={() => prefetchRoute(activeNavGroup.localizedMainTo)}
+                            onMouseEnter={() => prefetchRoute(activeNavGroup.localizedMainTo)}
+                          >
+                            {getLocalizedText(activeNavGroup.cta)}
+                            <ArrowUpLeft className="h-3 w-3" />
+                          </Link>
+                        </div>
+
+                        <div className="grid min-h-[18rem] gap-2 md:grid-cols-[13.5rem_minmax(0,1fr)]">
+                          <div className="site-services-mega-scroll max-h-[20rem] overflow-y-auto rounded-[0.9rem] border border-white/8 bg-[#050b14]/70 p-1.5">
+                            {localizedServiceFamilies.map((family) => {
+                              const isFamilyActive = desktopActiveServiceFamily?.id === family.id;
+
+                              return (
+                                <button
+                                  key={family.id}
+                                  type="button"
+                                  onClick={() => setDesktopActiveServiceFamilyId(family.id)}
+                                  onMouseEnter={() => setDesktopActiveServiceFamilyId(family.id)}
+                                  className={joinClasses(
+                                    'mb-1 flex w-full items-center justify-between gap-2 rounded-[0.72rem] border px-2.5 py-2 text-start transition',
+                                    isFamilyActive
+                                      ? 'border-cyan-300/40 bg-cyan-300/[0.11] text-white'
+                                      : 'border-white/6 bg-white/[0.025] text-slate-300 hover:border-cyan-300/20 hover:bg-white/[0.045]',
+                                  )}
+                                >
+                                  <span className="min-w-0">
+                                    <span className="block truncate text-[0.76rem] font-bold">
+                                      {getLocalizedText(family.label)}
+                                    </span>
+                                    <span className="mt-0.5 block truncate text-[10px] text-slate-500">
+                                      {family.services.length} {isArabic ? 'خدمات' : 'services'}
+                                    </span>
+                                  </span>
+                                  <ChevronDown className={`h-3.5 w-3.5 shrink-0 -rotate-90 ${isArabic ? 'rotate-90' : ''}`} />
+                                </button>
+                              );
+                            })}
+                          </div>
+
+                          <div className="relative overflow-hidden rounded-[0.95rem] border border-white/9 bg-[#07111c]/78 p-2.5">
+                            {desktopActiveServiceFamily ? (
+                              <>
+                                <div className={`pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-br ${desktopActiveServiceFamily.accent}`} />
+                                <div className="relative">
+                                  <div className="mb-2">
+                                    <h3 className="truncate text-sm font-bold text-white">
+                                      {getLocalizedText(desktopActiveServiceFamily.label)}
+                                    </h3>
+                                    <p className="mt-0.5 line-clamp-1 text-[11px] leading-4 text-slate-400">
+                                      {getLocalizedText(desktopActiveServiceFamily.description)}
+                                    </p>
+                                  </div>
+
+                                  <div className="grid max-h-[15rem] gap-1.5 overflow-y-auto pr-1">
+                                    {desktopActiveServiceFamily.services.map((service) => (
+                                      <Link
+                                        key={service.slug}
+                                        to={service.localizedTo}
+                                        title={getLocalizedText(service.bestFor)}
+                                        className="group flex items-center justify-between gap-2 rounded-[0.75rem] border border-white/8 bg-[#030914]/58 px-2.5 py-2 text-start transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"
+                                        onClick={() => setActiveNavGroupId(null)}
+                                        onFocus={() => prefetchRoute(service.localizedTo)}
+                                        onMouseEnter={() => prefetchRoute(service.localizedTo)}
+                                      >
+                                        <span className="min-w-0">
+                                          <span className="block truncate text-[0.78rem] font-bold text-slate-100 group-hover:text-cyan-100">
+                                            {getLocalizedText(service.eyebrow)}
+                                          </span>
+                                          <span className="mt-0.5 block truncate text-[10px] text-slate-500">
+                                            {getLocalizedText(service.bestFor)}
+                                          </span>
+                                        </span>
+                                        <ArrowUpLeft className="h-3.5 w-3.5 shrink-0 text-slate-500 transition group-hover:text-cyan-200" />
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </div>
+                              </>
+                            ) : null}
+                          </div>
+                        </div>
+
+                        {additionalServiceItems.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-1.5 border-t border-white/8 pt-2">
+                            {additionalServiceItems.slice(0, 4).map((item, itemIndex) => (
+                              <Link
+                                key={`additional-service-${item.to}-${itemIndex}`}
+                                to={item.localizedTo}
+                                title={getLocalizedText(item.description)}
+                                className="inline-flex max-w-full rounded-full border border-white/8 bg-[#030914]/55 px-2 py-1 text-start text-[11px] font-bold text-slate-200 transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07] hover:text-cyan-100"
+                                onClick={() => setActiveNavGroupId(null)}
+                                onFocus={() => prefetchRoute(item.localizedTo)}
+                                onMouseEnter={() => prefetchRoute(item.localizedTo)}
+                              >
+                                <span className="max-w-[9rem] truncate">{getLocalizedText(item.label)}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    <div className="hidden">
+                      <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2 rounded-[0.75rem] border border-cyan-300/12 bg-cyan-300/[0.045] px-2 py-1.5">
                         <div className="hidden">
                           <p className="text-sm font-bold text-white">
                             {isArabic ? 'الخدمات مقسمة حسب احتياج شركتك' : 'Services grouped by your company need'}
@@ -700,11 +823,11 @@ const SiteLayout = () => {
                               : 'Open a service to read details, outputs, and questions.'}
                           </p>
                         </div>
-                        <p className="min-w-0 truncate text-sm font-bold text-white">
+                        <p className="min-w-0 truncate text-xs font-bold text-white">
                           {isArabic ? 'الخدمات حسب الاحتياج' : 'Services by need'}
                         </p>
                         <Link
-                          className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-cyan-300 px-3 py-1.5 text-[11px] font-bold text-slate-950 transition hover:bg-cyan-200"
+                          className="inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-cyan-300 px-2.5 py-1 text-[10px] font-bold text-slate-950 transition hover:bg-cyan-200"
                           to={activeNavGroup.localizedMainTo}
                           onClick={() => setActiveNavGroupId(null)}
                           onFocus={() => prefetchRoute(activeNavGroup.localizedMainTo)}
@@ -715,38 +838,38 @@ const SiteLayout = () => {
                         </Link>
                       </div>
 
-                      <div className="grid min-w-0 gap-2 sm:grid-cols-2">
+                      <div className="grid min-w-0 gap-1.5 sm:grid-cols-2">
                         {localizedServiceFamilies.map((family) => (
                           <section
                             key={family.id}
-                            className="relative overflow-hidden rounded-[0.95rem] border border-white/9 bg-[#07111c]/72 p-2.5"
+                            className="relative overflow-hidden rounded-[0.78rem] border border-white/9 bg-[#07111c]/72 p-2"
                           >
-                            <div className={`absolute inset-x-0 top-0 h-14 bg-gradient-to-br ${family.accent}`} />
+                            <div className={`absolute inset-x-0 top-0 h-12 bg-gradient-to-br ${family.accent}`} />
                             <div className="relative">
-                              <div className="flex items-start justify-between gap-3">
+                              <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0">
-                                  <h3 className="truncate text-sm font-bold text-white">{getLocalizedText(family.label)}</h3>
-                                  <p className="mt-0.5 line-clamp-1 text-[11px] leading-5 text-slate-400">
+                                  <h3 className="truncate text-xs font-bold text-white">{getLocalizedText(family.label)}</h3>
+                                  <p className="mt-0.5 line-clamp-1 text-[10px] leading-4 text-slate-400">
                                     {getLocalizedText(family.description)}
                                   </p>
                                 </div>
-                                <span className="rounded-full border border-white/10 bg-white/[0.055] px-2 py-0.5 text-[11px] font-bold text-cyan-100">
+                                <span className="rounded-full border border-white/10 bg-white/[0.055] px-1.5 py-0.5 text-[10px] font-bold text-cyan-100">
                                   {family.services.length}
                                 </span>
                               </div>
 
-                              <div className="mt-2 flex flex-wrap gap-1.5">
+                              <div className="mt-1.5 flex flex-wrap gap-1">
                                 {family.services.map((service) => (
                                   <Link
                                     key={service.slug}
                                     to={service.localizedTo}
                                     title={getLocalizedText(service.bestFor)}
-                                    className="group inline-flex max-w-full items-center gap-1.5 rounded-full border border-white/8 bg-[#030914]/55 px-2.5 py-1.5 text-start transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"
+                                    className="group inline-flex max-w-full items-center gap-1 rounded-full border border-white/8 bg-[#030914]/55 px-2 py-1 text-start transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"
                                     onClick={() => setActiveNavGroupId(null)}
                                     onFocus={() => prefetchRoute(service.localizedTo)}
                                     onMouseEnter={() => prefetchRoute(service.localizedTo)}
                                   >
-                                    <span className="max-w-[11rem] truncate text-xs font-bold text-slate-200 group-hover:text-cyan-100">
+                                    <span className="max-w-[9rem] truncate text-[11px] font-bold text-slate-200 group-hover:text-cyan-100">
                                       {getLocalizedText(service.eyebrow)}
                                     </span>
                                     <ArrowUpLeft className="h-3 w-3 shrink-0 text-slate-500 transition group-hover:text-cyan-200" />
@@ -758,22 +881,22 @@ const SiteLayout = () => {
                         ))}
 
                         {additionalServiceItems.length > 0 && (
-                          <section className="rounded-[0.95rem] border border-white/9 bg-[#07111c]/72 p-2.5 sm:col-span-2">
-                            <h3 className="text-sm font-bold text-white">
+                          <section className="rounded-[0.78rem] border border-white/9 bg-[#07111c]/72 p-2 sm:col-span-2">
+                            <h3 className="text-xs font-bold text-white">
                               {isArabic ? 'خدمات إضافية' : 'Additional services'}
                             </h3>
-                            <div className="mt-2 flex flex-wrap gap-1.5">
+                            <div className="mt-1.5 flex flex-wrap gap-1">
                               {additionalServiceItems.map((item, itemIndex) => (
                                 <Link
                                   key={`additional-service-${item.to}-${itemIndex}`}
                                   to={item.localizedTo}
                                   title={getLocalizedText(item.description)}
-                                  className="inline-flex max-w-full rounded-full border border-white/8 bg-[#030914]/55 px-2.5 py-1.5 text-start text-xs font-bold text-slate-200 transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07] hover:text-cyan-100"
+                                  className="inline-flex max-w-full rounded-full border border-white/8 bg-[#030914]/55 px-2 py-1 text-start text-[11px] font-bold text-slate-200 transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07] hover:text-cyan-100"
                                   onClick={() => setActiveNavGroupId(null)}
                                   onFocus={() => prefetchRoute(item.localizedTo)}
                                   onMouseEnter={() => prefetchRoute(item.localizedTo)}
                                 >
-                                  <span className="max-w-[11rem] truncate">{getLocalizedText(item.label)}</span>
+                                  <span className="max-w-[9rem] truncate">{getLocalizedText(item.label)}</span>
                                 </Link>
                               ))}
                             </div>
@@ -781,6 +904,7 @@ const SiteLayout = () => {
                         )}
                       </div>
                     </div>
+                    </>
                   ) : (
                     <>
                       <Link
@@ -858,6 +982,7 @@ const SiteLayout = () => {
               type="button"
             >
               {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              <span className="sr-only">{isMenuOpen ? t('header.closeMenu') : t('header.openMenu')}</span>
             </button>
           </div>
         </div>
@@ -869,11 +994,11 @@ const SiteLayout = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.18, ease: 'easeOut' }}
-              className="site-mobile-menu-backdrop border-t border-white/8 bg-[#06090ff2] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.95)] lg:hidden"
+              className="site-mobile-menu-backdrop border-t border-white/8 bg-[#06090ff2] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.95)]"
             >
               <div className="section-shell py-2">
-                <div id="mobile-menu" className="site-mobile-menu-panel mx-auto flex max-w-7xl flex-col gap-1.5 overflow-y-auto rounded-[1.2rem] border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl">
-                  <div className="site-mobile-menu-head flex items-center justify-between gap-2 rounded-[0.9rem] border border-white/10 bg-white/[0.04] p-2">
+                <div id="mobile-menu" className="site-mobile-menu-panel mx-auto flex max-w-7xl flex-col gap-1 overflow-y-auto rounded-[1rem] border border-white/10 bg-white/[0.04] p-1.5 backdrop-blur-xl">
+                  <div className="site-mobile-menu-head flex items-center justify-between gap-2 rounded-[0.78rem] border border-white/10 bg-white/[0.04] p-1.5">
                     <div className="min-w-0">
                       <p className="text-[0.82rem] font-black leading-tight text-white">{t('header.navLabel')}</p>
                       <p className="mt-0.5 line-clamp-1 text-[0.7rem] leading-tight text-slate-400">{lang === 'ar' ? 'اختار الصفحة أو افتح القسم المناسب' : 'Pick a page or open a section'}</p>
@@ -888,40 +1013,17 @@ const SiteLayout = () => {
                     </button>
                   </div>
 
-                  <div className="site-mobile-quick-links grid grid-cols-3 gap-1.5">
-                    {localizedNavGroups.map((group) => (
-                      <NavLink
-                        key={`mobile-quick-${group.id}`}
-                        to={group.localizedMainTo}
-                        className={({ isActive }) =>
-                          joinClasses(
-                            'site-mobile-quick-link rounded-[0.75rem] border border-white/8 bg-[#06090f]/55 px-2 py-1.5 text-center text-[0.76rem] font-bold text-slate-200 transition hover:border-cyan-400/30 hover:text-white',
-                            isActive && 'site-mobile-nav-link-active',
-                          )
-                        }
-                        onFocus={() => prefetchRoute(group.localizedMainTo)}
-                        onMouseEnter={() => prefetchRoute(group.localizedMainTo)}
-                        onClick={() => {
-                          setIsMenuOpen(false);
-                          setActiveNavGroupId(null);
-                        }}
-                      >
-                        {t(group.labelKey, getLocalizedText(group.fallbackLabel))}
-                      </NavLink>
-                    ))}
-                  </div>
-
                   {localizedNavGroups.map((group) => {
                     const isOpen = mobileOpenGroupId === group.id;
 
                     return (
-                      <div key={group.id} className="site-mobile-nav-group overflow-hidden rounded-[0.9rem] border border-white/8 bg-white/[0.025]">
+                      <div key={group.id} className="site-mobile-nav-group overflow-hidden rounded-[0.78rem] border border-white/8 bg-white/[0.025]">
                         <button
                           type="button"
                           aria-expanded={isOpen}
                           aria-controls={`mobile-nav-group-${group.id}`}
                           onClick={() => setMobileOpenGroupId(isOpen ? null : group.id)}
-                          className="site-mobile-nav-trigger flex w-full items-center justify-between gap-2.5 px-3 py-2 text-start text-[0.84rem] font-bold text-white"
+                          className="site-mobile-nav-trigger flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-start text-[0.78rem] font-bold text-white"
                         >
                           <span>{t(group.labelKey, getLocalizedText(group.fallbackLabel))}</span>
                           <ChevronDown className={`h-3.5 w-3.5 text-cyan-300 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -936,7 +1038,7 @@ const SiteLayout = () => {
                               transition={{ duration: 0.2 }}
                               className="overflow-hidden"
                             >
-                              <div className="site-mobile-nav-children space-y-1 border-t border-white/8 p-1.5">
+                              <div className="site-mobile-nav-children space-y-1 border-t border-white/8 p-1">
                                 <NavLink
                                   to={group.localizedMainTo}
                                   className={({ isActive }) => navLinkClass(isActive)}
@@ -951,9 +1053,36 @@ const SiteLayout = () => {
                                 </NavLink>
                                 {group.id === 'services' ? (
                                   <div className="grid gap-1.5">
+                                    <div className="grid grid-cols-2 gap-1">
+                                      {localizedServiceFamilies.map((family) => {
+                                        const isFamilyOpen = mobileOpenServiceFamilyId === family.id;
+
+                                        return (
+                                          <button
+                                            key={`mobile-family-tab-${family.id}`}
+                                            type="button"
+                                            aria-pressed={isFamilyOpen}
+                                            onClick={() => setMobileOpenServiceFamilyId(family.id)}
+                                            className={joinClasses(
+                                              'site-mobile-service-tab flex min-h-[2.45rem] items-center justify-between gap-1.5 rounded-[0.72rem] border px-2 py-1.5 text-start transition',
+                                              isFamilyOpen
+                                                ? 'border-cyan-300/35 bg-cyan-300/[0.13] text-white'
+                                                : 'border-white/8 bg-[#06090f]/45 text-slate-300 hover:border-cyan-300/25 hover:bg-white/[0.055]',
+                                            )}
+                                          >
+                                            <span className="min-w-0 truncate text-[0.72rem] font-bold">
+                                              {getLocalizedText(family.label)}
+                                            </span>
+                                            <span className="shrink-0 rounded-full border border-white/10 bg-white/[0.055] px-1.5 py-0.5 text-[10px] font-black text-cyan-100">
+                                              {family.services.length}
+                                            </span>
+                                          </button>
+                                        );
+                                      })}
+                                    </div>
                                     <NavLink
                                       to={group.localizedMainTo}
-                                      className={({ isActive }) => navLinkClass(isActive)}
+                                      className={() => 'hidden'}
                                       onFocus={() => prefetchRoute(group.localizedMainTo)}
                                       onMouseEnter={() => prefetchRoute(group.localizedMainTo)}
                                       onClick={() => {
@@ -966,17 +1095,20 @@ const SiteLayout = () => {
                                     {localizedServiceFamilies.map((family) => (
                                       <section
                                         key={`mobile-${family.id}`}
-                                        className="site-mobile-service-family rounded-[0.8rem] border border-white/8 bg-[#06090f]/45 p-2"
+                                        className={joinClasses(
+                                          'site-mobile-service-family rounded-[0.78rem] border border-cyan-300/14 bg-[#07111c]/72 p-1.5',
+                                          mobileOpenServiceFamilyId !== family.id && 'hidden',
+                                        )}
                                       >
                                         <button
                                           type="button"
                                           className="flex w-full items-start justify-between gap-2 text-start"
                                           aria-expanded={mobileOpenServiceFamilyId === family.id}
-                                          onClick={() => setMobileOpenServiceFamilyId((openId) => (openId === family.id ? null : family.id))}
+                                          onClick={() => setMobileOpenServiceFamilyId(family.id)}
                                         >
                                           <div className="min-w-0">
-                                            <p className="line-clamp-1 text-[0.82rem] font-bold leading-tight text-white">{getLocalizedText(family.label)}</p>
-                                            <p className="mt-0.5 line-clamp-1 text-[0.7rem] leading-4 text-slate-400">
+                                            <p className="line-clamp-1 text-[0.76rem] font-bold leading-tight text-white">{getLocalizedText(family.label)}</p>
+                                            <p className="mt-0.5 line-clamp-1 text-[0.66rem] leading-4 text-slate-400">
                                               {getLocalizedText(family.description)}
                                             </p>
                                           </div>
@@ -994,12 +1126,12 @@ const SiteLayout = () => {
                                               transition={{ duration: 0.18 }}
                                               className="overflow-hidden"
                                             >
-                                              <div className="mt-1.5 grid gap-1">
+                                              <div className="mt-1 grid gap-1">
                                                 {family.services.map((service) => (
                                                   <Link
                                                     key={`mobile-service-${service.slug}`}
                                                     to={service.localizedTo}
-                                                    className="site-mobile-nav-link block rounded-[0.68rem] border border-white/8 bg-[#020713]/55 px-2.5 py-1.5 text-[0.78rem] text-slate-300 transition hover:border-cyan-400/30 hover:text-white"
+                                                    className="site-mobile-nav-link block rounded-[0.62rem] border border-white/8 bg-[#020713]/55 px-2 py-1.5 text-[0.74rem] text-slate-300 transition hover:border-cyan-400/30 hover:text-white"
                                                     onFocus={() => prefetchRoute(service.localizedTo)}
                                                     onMouseEnter={() => prefetchRoute(service.localizedTo)}
                                                     onClick={() => {
@@ -1008,7 +1140,7 @@ const SiteLayout = () => {
                                                     }}
                                                   >
                                                     <span className="line-clamp-1 block font-semibold leading-tight text-white">{getLocalizedText(service.eyebrow)}</span>
-                                                    <span className="mt-0.5 line-clamp-1 block text-[0.68rem] leading-4 text-slate-400">
+                                                    <span className="mt-0.5 line-clamp-1 block text-[0.64rem] leading-4 text-slate-400">
                                                       {getLocalizedText(service.bestFor)}
                                                     </span>
                                                   </Link>
@@ -1023,7 +1155,7 @@ const SiteLayout = () => {
                                       <Link
                                         key={`services-mobile-additional-${item.to}-${itemIndex}`}
                                         to={item.localizedTo}
-                                        className="site-mobile-nav-link block rounded-[0.75rem] border border-white/8 bg-[#06090f]/45 px-2.5 py-1.5 text-[0.78rem] text-slate-300 transition hover:border-cyan-400/30 hover:text-white"
+                                        className="site-mobile-nav-link block rounded-[0.62rem] border border-white/8 bg-[#06090f]/45 px-2 py-1.5 text-[0.74rem] text-slate-300 transition hover:border-cyan-400/30 hover:text-white"
                                         onFocus={() => prefetchRoute(item.localizedTo)}
                                         onMouseEnter={() => prefetchRoute(item.localizedTo)}
                                         onClick={() => {
@@ -1032,7 +1164,7 @@ const SiteLayout = () => {
                                         }}
                                       >
                                         <span className="line-clamp-1 block font-semibold leading-tight text-white">{getLocalizedText(item.label)}</span>
-                                        <span className="mt-0.5 line-clamp-1 block text-[0.68rem] leading-4 text-slate-400">
+                                        <span className="mt-0.5 line-clamp-1 block text-[0.64rem] leading-4 text-slate-400">
                                           {getLocalizedText(item.description)}
                                         </span>
                                       </Link>
@@ -1043,7 +1175,7 @@ const SiteLayout = () => {
                                     <Link
                                       key={`${group.id}-mobile-${item.to}-${itemIndex}`}
                                       to={item.localizedTo}
-                                      className="site-mobile-nav-link block rounded-[0.75rem] border border-white/8 bg-[#06090f]/45 px-2.5 py-1.5 text-[0.78rem] text-slate-300 transition hover:border-cyan-400/30 hover:text-white"
+                                      className="site-mobile-nav-link block rounded-[0.62rem] border border-white/8 bg-[#06090f]/45 px-2 py-1.5 text-[0.74rem] text-slate-300 transition hover:border-cyan-400/30 hover:text-white"
                                       onFocus={() => prefetchRoute(item.localizedTo)}
                                       onMouseEnter={() => prefetchRoute(item.localizedTo)}
                                       onClick={() => {

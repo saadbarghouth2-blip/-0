@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 const PROJECT_TYPES = [
   { id: 'ecommerce', labelAr: 'متجر إلكتروني متكامل', labelEn: 'E-commerce Platform', icon: ShoppingBag, descAr: 'بيع وتوصيل مع بوابات دفع آمنة.', descEn: 'Fully integrated store with payment gateways.' },
@@ -34,7 +35,7 @@ const CHECKLIST_OPTIONS = [
 const ContactBriefPage = () => {
   const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
   const navigate = useNavigate();
 
   // Wizard state

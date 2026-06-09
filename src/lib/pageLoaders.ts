@@ -30,6 +30,8 @@ const pageLoaders = {
   team: () => import('../pages/TeamPage'),
   process: () => import('../pages/ProcessPage'),
   careers: () => import('../pages/CareersPage'),
+  subServices: () => import('../pages/SubServicesPage'),
+  subPagesPortal: () => import('../pages/SubPagesPortalPage'),
 } satisfies Record<string, PageLoader>;
 
 const createLazyPage = (loader: PageLoader) => lazy(loader);
@@ -58,6 +60,8 @@ export const FAQPage = createLazyPage(pageLoaders.faq);
 export const TeamPage = createLazyPage(pageLoaders.team);
 export const ProcessPage = createLazyPage(pageLoaders.process);
 export const CareersPage = createLazyPage(pageLoaders.careers);
+export const SubServicesPage = createLazyPage(pageLoaders.subServices);
+export const SubPagesPortalPage = createLazyPage(pageLoaders.subPagesPortal);
 
 const preloadedLoaders = new Map<PageLoader, Promise<void>>();
 
@@ -74,15 +78,19 @@ const normalizePath = (path: string) => {
 const routeMatchers: Array<{ match: RegExp; loaders: PageLoader[] }> = [
   { match: /^\/$/,loaders: [pageLoaders.home] },
   { match: /^\/home\/[^/]+$/, loaders: [pageLoaders.detail] },
-  { match: /^\/about$/, loaders: [pageLoaders.about, pageLoaders.aboutEnhanced] },
+  { match: /^\/about$/, loaders: [pageLoaders.about] },
+  { match: /^\/about\/company$/, loaders: [pageLoaders.aboutEnhanced] },
   { match: /^\/about\/[^/]+$/, loaders: [pageLoaders.detail] },
   { match: /^\/services$/, loaders: [pageLoaders.services] },
   { match: /^\/services\/[^/]+$/, loaders: [pageLoaders.serviceDetailEnhanced] },
+  { match: /^\/sub-services$/, loaders: [pageLoaders.subServices] },
   { match: /^\/projects$/, loaders: [pageLoaders.projects] },
-  { match: /^\/projects\/[^/]+$/, loaders: [pageLoaders.projectDetail, pageLoaders.projectDetailEnhanced] },
+  { match: /^\/projects\/enhanced\/[^/]+$/, loaders: [pageLoaders.projectDetailEnhanced] },
+  { match: /^\/projects\/[^/]+$/, loaders: [pageLoaders.projectDetail] },
   { match: /^\/blog$/, loaders: [pageLoaders.blog] },
   { match: /^\/blog\/category\/[^/]+$/, loaders: [pageLoaders.blogCategory] },
-  { match: /^\/blog\/[^/]+$/, loaders: [pageLoaders.blogDetail, pageLoaders.blogDetailEnhanced] },
+  { match: /^\/blog\/enhanced\/[^/]+$/, loaders: [pageLoaders.blogDetailEnhanced] },
+  { match: /^\/blog\/[^/]+$/, loaders: [pageLoaders.blogDetail] },
   { match: /^\/testimonials$/, loaders: [pageLoaders.testimonials] },
   { match: /^\/testimonials\/[^/]+$/, loaders: [pageLoaders.detail] },
   { match: /^\/contact$/, loaders: [pageLoaders.contact] },
@@ -96,6 +104,7 @@ const routeMatchers: Array<{ match: RegExp; loaders: PageLoader[] }> = [
   { match: /^\/team$/, loaders: [pageLoaders.team] },
   { match: /^\/process$/, loaders: [pageLoaders.process] },
   { match: /^\/careers$/, loaders: [pageLoaders.careers] },
+  { match: /^\/sub-pages-portal$/, loaders: [pageLoaders.subPagesPortal] },
 ];
 
 const preloadLoader = (loader: PageLoader) => {

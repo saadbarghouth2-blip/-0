@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { editorialImages, type EditorialImageId } from '../data/editorialImages';
 import { useLanguage } from '../hooks/useLanguage';
+import ProjectImage from './ProjectImage';
 
 type EditorialVariant = 'split' | 'wide' | 'proof' | 'offset' | 'floating';
 
@@ -44,7 +45,7 @@ const EditorialImageBreak = ({
         variant === 'offset' && 'md:translate-y-8',
       )}
     >
-      <img
+      <ProjectImage
         alt={copy.alt}
         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         loading="lazy"

@@ -21,7 +21,7 @@ import { getPageEnrichment } from '../data/pageEnrichment';
 import { useLanguage, type Language } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
-import { localizedText } from '../lib/repairText';
+import { clientFacingText, localizedText } from '../lib/repairText';
 
 const normalize = (value: string) => value.toLowerCase().trim();
 
@@ -41,7 +41,8 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
 };
 
-const getCopy = (value: { ar: string; en: string }, lang: Language) => localizedText(value, lang);
+const getCopy = (value: { ar: string; en: string }, lang: Language) =>
+  clientFacingText(localizedText(value, lang), lang);
 
 const getCategoryTone = (slug: string) => {
   if (slug === 'seo') {

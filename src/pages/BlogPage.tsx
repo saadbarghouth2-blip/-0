@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpLeft, Calendar, Clock, Mail, Sparkles, User, Flame, BookOpen, Send, CheckCircle2 } from 'lucide-react';
+import { ArrowUpLeft, Clock, User, Flame, BookOpen, Send, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -13,10 +13,10 @@ import {
   featuredBlogPost,
 } from '../data/blog';
 import { pageImageShowcases } from '../data/pageImageShowcases';
-import { portfolioProfile } from '../data/portfolio';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 const blogStats = [
   { value: '6', labelAr: 'مقالات مرجعية', labelEn: 'Reference articles' },
@@ -37,10 +37,9 @@ const BlogPage = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
 
   const featuredPost = featuredBlogPost;
-  const featuredTags = isArabic ? featuredPost.tagsAr : featuredPost.tagsEn;
   const featuredDateLabel = new Date(featuredPost.publishedAt).toLocaleDateString(isArabic ? 'ar-EG' : 'en-US');
   
   const gridPosts = blogPosts.filter(

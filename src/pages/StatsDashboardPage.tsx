@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 // Scroll-triggered counter component
 const CountUp = ({ target, value }: { target: number; value: string }) => {
@@ -67,7 +68,7 @@ const MapNode = ({
 const StatsDashboard = () => {
   const { lang } = useLanguage();
   const isArabic = lang === 'ar';
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
 
   const [activeChartTab, setActiveChartTab] = useState<'industries' | 'growth'>('industries');
 
@@ -173,7 +174,7 @@ const StatsDashboard = () => {
   ];
 
   return (
-    <div className="relative pt-10 pb-16 md:pt-24 md:pb-32">
+    <div className="relative pt-6 pb-10 md:pt-24 md:pb-32">
       {/* Background */}
       <div className="pointer-events-none absolute inset-0 z-[-1] overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-1/2 bg-cyan-600/10 blur-[200px] rounded-full animate-pulse" />
@@ -185,13 +186,13 @@ const StatsDashboard = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16 text-center md:mb-24"
+          className="mb-8 text-center md:mb-24"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-300 mb-6">
-            <BarChart3 className="h-5 w-5 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1.5 text-xs font-medium text-cyan-300 mb-4 md:mb-6 md:px-4 md:py-2 md:text-sm">
+            <BarChart3 className="h-4 w-4 text-cyan-400 md:h-5 md:w-5" />
             {text('الأرقام الحية والبيانات التفاعلية', 'Interactive Performance Data')}
           </div>
-          <h1 className="font-display text-4xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="font-display text-3xl md:text-6xl font-bold text-white mb-4 md:mb-6">
             {text('مقاييس الكفاءة،', 'Efficiency indicators,')} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-violet-400">
               {text('الموثوقية والنمو بالأرقام', 'reliability & growth in figures')}
@@ -206,7 +207,7 @@ const StatsDashboard = () => {
         </motion.div>
 
         {/* Live Counters Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-20 md:mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-10 md:mb-32">
           {mainStats.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -217,14 +218,14 @@ const StatsDashboard = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -8 }}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-6 md:p-8 backdrop-blur-md transition-all hover:border-cyan-400/50"
+                className="group relative overflow-hidden rounded-[1.15rem] border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-4 backdrop-blur-md transition-all hover:border-cyan-400/50 md:rounded-3xl md:p-8"
               >
                 <div className={`absolute -right-12 -top-12 h-40 w-40 rounded-full bg-gradient-to-br ${stat.color} opacity-10 group-hover:opacity-25 blur-3xl transition-opacity`} />
                 <div className="relative z-10">
-                  <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-cyan-400 mb-4 group-hover:bg-cyan-400 group-hover:text-black transition-all`}>
-                    <Icon className="h-6 w-6" />
+                  <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-cyan-400 mb-3 group-hover:bg-cyan-400 group-hover:text-black transition-all md:mb-4 md:h-12 md:w-12`}>
+                    <Icon className="h-5 w-5 md:h-6 md:w-6" />
                   </div>
-                  <p className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300 mb-2">
+                  <p className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300 mb-1.5 md:mb-2">
                     <CountUp target={stat.target} value={stat.value} />
                   </p>
                   <p className="text-white font-bold mb-1.5 text-sm md:text-base">{text(stat.labelAr, stat.labelEn)}</p>
@@ -236,7 +237,7 @@ const StatsDashboard = () => {
         </div>
 
         {/* Regional Reach & Portfolio Mix */}
-        <div className="mb-24 grid gap-5 lg:grid-cols-[1.18fr_0.82fr]">
+        <div className="mb-10 grid gap-4 lg:mb-24 lg:grid-cols-[1.18fr_0.82fr]">
           <motion.section
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -272,9 +273,9 @@ const StatsDashboard = () => {
                 </div>
               </div>
 
-              <div className="relative min-h-[280px] overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#06101a]/85 md:min-h-[360px]">
+              <div className="relative min-h-[210px] overflow-hidden rounded-[1.15rem] border border-white/10 bg-[#06101a]/85 md:min-h-[360px] md:rounded-[1.35rem]">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:64px_64px]" />
-                <svg viewBox="0 0 420 280" className="relative z-10 h-full min-h-[280px] w-full md:min-h-[360px]" aria-label={text('خريطة انتشار نطق', 'Notaq reach map')}>
+                <svg viewBox="0 0 420 280" className="relative z-10 h-full min-h-[210px] w-full md:min-h-[360px]" aria-label={text('خريطة انتشار نطق', 'Notaq reach map')}>
                   <defs>
                     <linearGradient id="reachStroke" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stopColor="#67e8f9" stopOpacity="0.7" />
@@ -389,7 +390,7 @@ const StatsDashboard = () => {
         </div>
 
         {/* Middle Section: SVG MENA Client Map & Interactive Chart Tabs */}
-        <div className="hidden grid lg:grid-cols-2 gap-8 mb-24 items-stretch">
+        <div className="hidden grid lg:grid-cols-2 gap-8 mb-10 lg:mb-24 items-stretch">
           
           {/* Client Geographical Map */}
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.02] p-6 md:p-8 backdrop-blur-md flex flex-col justify-between">
@@ -534,10 +535,10 @@ const StatsDashboard = () => {
         </div>
 
         {/* Satisfaction 半圆 Gauge & Quality Badges */}
-        <div className="grid md:grid-cols-3 gap-6 mb-24">
+        <div className="grid md:grid-cols-3 gap-3 md:gap-6 mb-10 md:mb-24">
           
           {/* Customer Satisfaction Half-Circle Gauge */}
-          <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.02] p-6 text-center flex flex-col justify-between items-center backdrop-blur-md">
+          <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.02] p-4 text-center flex flex-col justify-between items-center backdrop-blur-md md:rounded-[1.8rem] md:p-6">
             <div>
               <span className="text-[10px] text-cyan-400 uppercase tracking-widest font-bold block mb-2">{text('مؤشر تقييم الرضا', 'Satisfaction Index')}</span>
               <h4 className="text-white text-base font-bold mb-4">{text('تقييم رضا العملاء الموثق', 'Verified Client Satisfaction')}</h4>
@@ -572,7 +573,7 @@ const StatsDashboard = () => {
           </div>
 
           {/* Achievement Trophy Badge */}
-          <div className="rounded-[1.8rem] border border-white/10 bg-gradient-to-br from-violet-500/5 via-white/[0.02] to-cyan-500/5 p-6 text-center flex flex-col justify-between items-center backdrop-blur-md">
+          <div className="rounded-[1.15rem] border border-white/10 bg-gradient-to-br from-violet-500/5 via-white/[0.02] to-cyan-500/5 p-4 text-center flex flex-col justify-between items-center backdrop-blur-md md:rounded-[1.8rem] md:p-6">
             <div>
               <span className="text-[10px] text-violet-400 uppercase tracking-widest font-bold block mb-2">{text('شارة التميز الرقمي', 'Honorary Badge')}</span>
               <h4 className="text-white text-base font-bold mb-4">{text('أفضل شريك تطوير برمجيات', 'Best Software Partner')}</h4>
@@ -588,7 +589,7 @@ const StatsDashboard = () => {
           </div>
 
           {/* Global Operations Badge */}
-          <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.02] p-6 text-center flex flex-col justify-between items-center backdrop-blur-md">
+          <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.02] p-4 text-center flex flex-col justify-between items-center backdrop-blur-md md:rounded-[1.8rem] md:p-6">
             <div>
               <span className="text-[10px] text-amber-400 uppercase tracking-widest font-bold block mb-2">{text('سرعة العمليات وحجمها', 'Operational Volume')}</span>
               <h4 className="text-white text-base font-bold mb-4">{text('إجمالي العمليات المنجزة', 'Total Processed Operations')}</h4>
@@ -609,7 +610,7 @@ const StatsDashboard = () => {
           <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-10 text-center">
             {text('المواصفات التقنية ومعايير كفاءة الكود', 'Technical Specifications & Quality Standards')}
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-3 md:gap-6">
             {performanceMetrics.map((section, idx) => (
               <motion.div
                 key={idx}

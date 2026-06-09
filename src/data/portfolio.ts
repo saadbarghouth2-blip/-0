@@ -159,13 +159,13 @@ export const portfolioProfile = {
   role: 'Digital Solutions Agency',
   roleAr: 'وكالة حلول رقمية',
   tagline:
-    'احصل على مواقع وتجارب رقمية تعكس هوية شركتك بوضوح، وتحوّل خدماتها إلى حضور بصري مقنع يلفت الانتباه ويزيد الثقة.',
+    'لأصحاب الشركات والعلامات التجارية الذين يحتاجون حضوراً رقمياً واضحاً: نُطق تصمم مواقع وتجارب تعرض القيمة بثقة وتحوّل الاهتمام إلى تواصل فعلي.',
   englishTagline:
-    'Get websites, service pages, and digital experiences that reflect your business clearly and build stronger trust.',
+    'For companies that need a clearer digital presence, Notaq designs websites, service pages, and web experiences that turn attention into qualified contact.',
   intro:
-    'نُطق شركة رقمية متخصصة في بناء مواقع الشركات، المنصات التفاعلية، حلول العرض المؤسسي، وتجارب الويب التي تجمع بين الجمال البصري، التنظيم الواضح، وسهولة التحويل من زائر إلى عميل.',
+    'نُطق شريك رقمي للشركات التي تريد أن يفهم العميل خدماتها بسرعة، يرى أدلتها بوضوح، ويصل إلى خطوة التواصل أو الطلب دون ارتباك.',
   englishIntro:
-    'Notaq is a digital studio focused on company websites, service pages, interactive platforms, and web experiences that blend strong presentation with clear conversion paths.',
+    'Notaq helps companies present services, proof, and next steps through websites, service pages, interactive platforms, and conversion-focused web experiences.',
   location: 'القاهرة، مصر',
   locationEn: 'Cairo, Egypt',
   email: 'info@نطق.site',
@@ -272,9 +272,9 @@ export const services: ServiceItem[] = [
     title: 'مواقع الشركات والبراندات',
     englishTitle: 'Corporate and brand websites',
     description:
-      'تحصل على موقع رسمي يقدم شركتك بصورة قوية وواضحة ويشرح خدماتها بشكل منظم يساعد الزائر على فهم القيمة واتخاذ خطوة التواصل.',
+      'موقع رسمي يشرح الشركة وخدماتها للعميل المحتمل من أول زيارة، ويجعل القيمة والدليل وخطوة التواصل أوضح.',
     englishDescription:
-      'You get a polished corporate website that presents your company clearly, organizes its services well, and helps visitors understand the value and reach out.',
+      'A polished corporate website that helps potential clients understand the company, trust the offer, and take the next step.',
     bullets: ['هوية مؤسسية', 'صفحات تعريفية', 'بنية تحويل واضحة'],
     englishBullets: ['Brand identity', 'Company pages', 'Clear conversion flow'],
   },
@@ -282,9 +282,9 @@ export const services: ServiceItem[] = [
     title: 'منصات وتجارب تفاعلية',
     englishTitle: 'Interactive platforms and experiences',
     description:
-      'تحصل على تجربة ويب تفاعلية وحديثة تجعل المحتوى او الخدمات او العمليات الداخلية اوضح واسهل في الاستخدام.',
+      'تجربة ويب تفاعلية تجعل المحتوى أو الخدمة أو العملية أوضح للزائر والمستخدم النهائي، بدون شرح طويل أو تعقيد.',
     englishDescription:
-      'You get a modern interactive web experience that makes content, services, or internal workflows clearer and easier to use.',
+      'A modern interactive web experience that makes content, services, or workflows clearer for visitors and end users.',
     bullets: ['واجهات ديناميكية', 'تفاعل محسوب', 'رحلة استخدام مدروسة'],
     englishBullets: ['Dynamic interfaces', 'Intentional interaction', 'Thoughtful user journey'],
   },
@@ -292,9 +292,9 @@ export const services: ServiceItem[] = [
     title: 'لوحات تحكم وأنظمة خاصة',
     englishTitle: 'Dashboards and custom systems',
     description:
-      'تحصل على نظام مخصص يساعدك على ادارة البيانات وسير العمل والمتابعة التشغيلية بوضوح اكبر وسرعة اعلى.',
+      'نظام مخصص ينظم البيانات وسير العمل بحيث يفهم الفريق الحالة التالية بسرعة، ويقل الاعتماد على المتابعة اليدوية.',
     englishDescription:
-      'You get a tailored system for data, workflows, and operations with interfaces that help your team move faster and with more clarity.',
+      'A tailored system for data, workflows, and operations, with interfaces that help teams move faster and make clearer decisions.',
     bullets: ['Dashboards', 'Workflow systems', 'واجهة عملية'],
     englishBullets: ['Dashboards', 'Workflow systems', 'Practical interface'],
   },
@@ -302,9 +302,9 @@ export const services: ServiceItem[] = [
     title: 'حلول ذكاء اصطناعي موجهة',
     englishTitle: 'Applied AI solutions',
     description:
-      'تحصل على حلول ومساعدين ذكيين يقدمون المعرفة او الخدمة بطريقة مفهومة مع تجربة توصل القيمة بسرعة وثقة.',
+      'حلول ومساعدون ذكيون يشرحون المعرفة أو الخدمة للمستخدم النهائي بطريقة مفهومة، مع حدود ثقة واضحة وتجربة استخدام عملية.',
     englishDescription:
-      'You get AI products and assistants that deliver knowledge or service clearly, with an interface that communicates value quickly and confidently.',
+      'AI products and assistants that deliver knowledge or service clearly, with interfaces that communicate value and boundaries quickly.',
     bullets: ['Assistant UX', 'تكامل ذكي', 'تجربة محادثة واضحة'],
     englishBullets: ['Assistant UX', 'Smart integration', 'Clear conversational flow'],
   },
@@ -315,7 +315,7 @@ export const processSteps: ProcessItem[] = [
     title: 'اكتشاف الاحتياج',
     englishTitle: 'Needs discovery',
     description:
-      'تبدأ الفكرة بفهم نشاط شركتك، الزائر المستهدف، وطبيعة الهدف التجاري حتى تتحول إلى مسار رقمي واضح.',
+      'تبدأ الرحلة بفهم نشاط الشركة، العميل المستهدف، وطبيعة القرار المطلوب حتى يتحول الاحتياج إلى مسار رقمي واضح.',
     englishDescription:
       'The idea starts by clarifying the business, audience, and commercial goal so it can become a clear digital direction.',
   },
@@ -323,25 +323,25 @@ export const processSteps: ProcessItem[] = [
     title: 'بناء الهوية والواجهة',
     englishTitle: 'Identity and interface design',
     description:
-      'تحصل على تجربة بصرية متوازنة تجمع بين القوة الجمالية ووضوح الرسالة، مع أقسام مدروسة تعكس شخصية البراند.',
+      'تُبنى التجربة البصرية حول الرسالة والبراند وما يحتاجه العميل ليفهم العرض ويتحرك للخطوة التالية.',
     englishDescription:
-      'You get a balanced visual experience that combines strong aesthetics with message clarity through sections that reflect the brand personality.',
+      'The visual experience is shaped around message clarity, brand personality, and the questions clients need answered.',
   },
   {
     title: 'التنفيذ والتكامل',
     englishTitle: 'Implementation and integration',
     description:
-      'نطوّر الموقع أو المنصة بأداء قوي واستجابة ممتازة، مع ضبط التفاصيل التقنية والحركية على كل الأجهزة.',
+      'ينتقل التصميم إلى تنفيذ سريع ومستقر ومتجاوب، مع ضبط التفاصيل التقنية والحركية بما يناسب تجربة العميل على كل جهاز.',
     englishDescription:
-      'We build the website or platform with strong performance and excellent responsiveness, refining the technical and motion details across devices.',
+      'The website or platform is built for performance, responsiveness, and a consistent client experience across devices.',
   },
   {
     title: 'الإطلاق والتحسين',
     englishTitle: 'Launch and refinement',
     description:
-      'نسلّم تجربة جاهزة للاستخدام والعرض، مع تحسينات نهائية تضمن ثبات الجودة ووضوح نقاط التواصل والتحويل.',
+      'تنتهي الرحلة بإطلاق جاهز للعرض والاستخدام، مع مراجعة نهائية لنقاط التواصل والتحويل وجودة التجربة.',
     englishDescription:
-      'We deliver an experience that is ready to use and present, with final refinements that secure quality and make contact and conversion points clear.',
+      'Launch focuses on a ready-to-present experience, clear conversion points, and final quality refinements.',
   },
 ];
 
@@ -1205,6 +1205,18 @@ export const projectsByFamily = projects.reduce<Record<string, PortfolioProject[
 export const projectFamilyLeads = Object.values(projectsByFamily).map((group) => group[0]);
 
 export const standaloneProjects = projects.filter((project) => !project.familyKey);
+
+export const visibleProjects = projects.filter((project) => !project.familyKey || project.isPrimaryVariant);
+
+export const featuredVisibleProjects = visibleProjects.filter((project) => project.featured);
+
+export const getProjectAlternates = (project: PortfolioProject) => {
+  if (!project.familyKey) {
+    return [];
+  }
+
+  return (projectsByFamily[project.familyKey] ?? []).filter((item) => item.slug !== project.slug);
+};
 
 export const findProjectBySlug = (slug: string) =>
   projects.find((project) => project.slug === slug);

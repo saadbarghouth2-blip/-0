@@ -27,7 +27,6 @@ import {
   BarChart3,
   FileText,
   BookOpenCheck,
-  ChevronDown,
   Clock3,
   CreditCard,
   HelpCircle,
@@ -41,7 +40,7 @@ import ProjectCard from '../components/ProjectCard';
 import PageImageShowcaseSection from '../components/PageImageShowcase';
 import SectionTitle from '../components/SectionTitle';
 import {
-  featuredProjects,
+  featuredVisibleProjects,
   portfolioProfile,
   services,
 } from '../data/portfolio';
@@ -56,6 +55,7 @@ import { pageImageShowcases } from '../data/pageImageShowcases';
 import { enrichmentMediaById } from '../data/enrichmentMedia';
 import { illustrationAssets } from '../lib/illustrationAssets';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 const AnimatedCounter = ({ value, duration = 2500 }: { value: string; duration?: number }) => {
   const [count, setCount] = useState(0);
@@ -597,7 +597,7 @@ const staggerItem = {
 const HomePage = () => {
   const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
   const mouseX = useSpring(0, { stiffness: 40, damping: 20 });
   const mouseY = useSpring(0, { stiffness: 40, damping: 20 });
   const [mobileTestimonialIndex, setMobileTestimonialIndex] = useState(0);
@@ -637,7 +637,7 @@ const HomePage = () => {
     };
   }, []);
 
-  const showcaseProjects = featuredProjects.slice(0, 6);
+  const showcaseProjects = featuredVisibleProjects.slice(0, 6);
   const mobileTestimonial = homeTestimonials[mobileTestimonialIndex] ?? homeTestimonials[0];
   const TestimonialPrevIcon = isArabic ? ArrowRight : ArrowLeft;
   const TestimonialNextIcon = isArabic ? ArrowLeft : ArrowRight;
@@ -1147,7 +1147,7 @@ const HomePage = () => {
               {text('فريق عمل متخصص بالكامل', 'A fully specialized team')}
             </h2>
             <p className="relative z-10 text-base font-medium text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 to-cyan-50 sm:text-xl md:text-4xl">
-              {text('كل سطر برمجي، وكل حركة مدروسة لنجاحك', 'Every line of code and every motion is designed for your success')}
+              {text('كل تفصيلة مدروسة لتوضيح شركتك أمام زوارها', 'Every detail is designed to clarify your company for its visitors')}
             </p>
           </motion.div>
         </div>
@@ -1567,8 +1567,8 @@ const HomePage = () => {
                 className="max-w-2xl text-base font-medium leading-8 text-slate-300 md:text-xl md:leading-9"
               >
                 {text(
-                  'جهزنا لك فريقاً متكاملاً من المصممين والمطورين جاهزين لمناقشة أهدافك. احجز مكالمة قصيرة لنتحدث عن الطريقة التي سنبني بها واجهتك القادمة.',
-                  'Our team of designers and developers is ready to discuss your goals. Book a short call and let us map the right direction for your next digital interface.',
+                  'فريق نُطق جاهز لمناقشة احتياج شركتك وتحديد المسار الذي يجعل واجهتها أوضح وأسهل في قرار التواصل.',
+                  'Notaq is ready to discuss your company need and define the path that makes its interface clearer and easier to contact.',
                 )}
               </motion.p>
               
@@ -1579,7 +1579,7 @@ const HomePage = () => {
                 className="flex flex-col gap-3 pt-3 sm:flex-row sm:flex-wrap md:gap-5 md:pt-4"
               >
               <Link className="btn-primary group text-base shadow-[0_15px_40px_rgba(45,212,191,0.5)] hover:shadow-[0_20px_60px_rgba(45,212,191,0.7)] md:px-10 md:py-5 md:text-xl" to={localizePath('/contact')}>
-                  {text('احجز استشارتك المجانية', 'Book your free consultation')}
+                  {text('ناقش احتياج شركتك', 'Discuss your company need')}
                   <ArrowUpLeft className="h-5 w-5 transition-transform group-hover:-translate-y-1 md:h-6 md:w-6" />
                 </Link>
                 <a className="btn-secondary glass-card group flex items-center gap-3 break-all text-sm hover:bg-white/10 md:px-8 md:py-4 md:text-lg" href={`mailto:${portfolioProfile.email}`}>

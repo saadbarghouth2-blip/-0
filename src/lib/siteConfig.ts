@@ -5,8 +5,8 @@ import {
   BRAND_OG_IMAGE_SRC,
 } from './brandAssets';
 
-const FALLBACK_SITE_URL = 'https://www.نطق.site';
-const FALLBACK_TECHNICAL_SITE_URL = 'https://www.xn--2gbwk.site';
+const FALLBACK_TECHNICAL_SITE_URL = 'https://xn--2gbwk.site';
+const FALLBACK_SITE_URL = FALLBACK_TECHNICAL_SITE_URL;
 const DEFAULT_TELEPHONE_HREF = '+201507631264';
 
 const trimTrailingSlash = (url: string) => url.replace(/\/+$/, '');

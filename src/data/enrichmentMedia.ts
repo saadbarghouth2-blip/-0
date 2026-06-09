@@ -553,10 +553,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-presence-interface',
     type: 'image',
-    src: '/images/projects/global-consulting-firm.png',
-    sourceUrl: '/images/projects/global-consulting-firm.png',
+    src: '/images/projects/global-consulting-firm.webp',
+    sourceUrl: '/images/projects/global-consulting-firm.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/global-consulting-firm.png',
+    licenseUrl: '/images/projects/global-consulting-firm.webp',
     usedForRoutes: ['/services/company-websites', '/services/landing-pages', '/services/service-pages'],
     alt: {
       ar: 'واجهة شركة احترافية تعرض حضورا مؤسسيا واضحا',
@@ -566,10 +566,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-commerce-store',
     type: 'image',
-    src: '/images/projects/reeq-store.png',
-    sourceUrl: '/images/projects/reeq-store.png',
+    src: '/images/projects/reeq-store.webp',
+    sourceUrl: '/images/projects/reeq-store.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/reeq-store.png',
+    licenseUrl: '/images/projects/reeq-store.webp',
     usedForRoutes: ['/services/ecommerce', '/services/product-pages', '/services/checkout-optimization'],
     alt: {
       ar: 'واجهة متجر إلكتروني تعرض تجربة شراء ومنتجات بوضوح',
@@ -579,10 +579,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-dashboard-mockup',
     type: 'image',
-    src: '/images/projects/worklog.png',
-    sourceUrl: '/images/projects/worklog.png',
+    src: '/images/projects/worklog.webp',
+    sourceUrl: '/images/projects/worklog.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/worklog.png',
+    licenseUrl: '/images/projects/worklog.webp',
     usedForRoutes: ['/services/dashboards', '/services/web-apps', '/services/internal-tools'],
     alt: {
       ar: 'لوحة تشغيل رقمية توضح البيانات والحالات والقرارات اليومية',
@@ -592,10 +592,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-ai-product',
     type: 'image',
-    src: '/images/projects/ask-saad.png',
-    sourceUrl: '/images/projects/ask-saad.png',
+    src: '/images/projects/ask-saad.webp',
+    sourceUrl: '/images/projects/ask-saad.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/ask-saad.png',
+    licenseUrl: '/images/projects/ask-saad.webp',
     usedForRoutes: ['/services/ai-products', '/services/chatbot-interfaces', '/services/prompt-workflows'],
     alt: {
       ar: 'واجهة منتج ذكاء اصطناعي تعرض محادثة وتدفق استخدام واضح',
@@ -605,10 +605,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-proof-interface',
     type: 'image',
-    src: '/images/projects/elite-catering.png',
-    sourceUrl: '/images/projects/elite-catering.png',
+    src: '/images/projects/elite-catering.webp',
+    sourceUrl: '/images/projects/elite-catering.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/elite-catering.png',
+    licenseUrl: '/images/projects/elite-catering.webp',
     usedForRoutes: ['/home/trust-layers', '/testimonials/result-types'],
     alt: {
       ar: 'واجهة مشروع منشور تستخدم كدليل بصري على جودة التنفيذ',
@@ -618,10 +618,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-conversion-path',
     type: 'image',
-    src: '/images/projects/international-ecommerce-platform.png',
-    sourceUrl: '/images/projects/international-ecommerce-platform.png',
+    src: '/images/projects/international-ecommerce-platform.webp',
+    sourceUrl: '/images/projects/international-ecommerce-platform.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/international-ecommerce-platform.png',
+    licenseUrl: '/images/projects/international-ecommerce-platform.webp',
     usedForRoutes: ['/home/conversion-path', '/services/service-bundles'],
     alt: {
       ar: 'واجهة تجارية توضح مسار التحويل من القراءة إلى الطلب',
@@ -631,10 +631,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-mobile-flow',
     type: 'image',
-    src: '/images/projects/interactive-learning-journey.png',
-    sourceUrl: '/images/projects/interactive-learning-journey.png',
+    src: '/images/projects/interactive-learning-journey.webp',
+    sourceUrl: '/images/projects/interactive-learning-journey.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/interactive-learning-journey.png',
+    licenseUrl: '/images/projects/interactive-learning-journey.webp',
     usedForRoutes: ['/home/mobile-first-journey'],
     alt: {
       ar: 'واجهة تعليمية متجاوبة تشرح تجربة قراءة واضحة على الشاشات الصغيرة',
@@ -657,10 +657,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-standards-stack',
     type: 'image',
-    src: '/images/projects/geoinformatics.png',
-    sourceUrl: '/images/projects/geoinformatics.png',
+    src: '/images/projects/geoinformatics.webp',
+    sourceUrl: '/images/projects/geoinformatics.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/geoinformatics.png',
+    licenseUrl: '/images/projects/geoinformatics.webp',
     usedForRoutes: ['/about/tools-and-standards', '/about/technical-standards'],
     alt: {
       ar: 'واجهة تقنية منظمة تعبر عن المعايير والأدوات وأنظمة القياس',
@@ -670,10 +670,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-brand-system',
     type: 'image',
-    src: '/images/notaq-logo-lockup.png',
-    sourceUrl: '/images/notaq-logo-lockup.png',
+    src: '/images/notaq-logo-lockup.webp',
+    sourceUrl: '/images/notaq-logo-lockup.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/notaq-logo-lockup.png',
+    licenseUrl: '/images/notaq-logo-lockup.webp',
     usedForRoutes: ['/about/why-notaq', '/services/brand-content'],
     alt: {
       ar: 'هوية نطق البصرية كنظام براند واضح وليس مجرد شعار',
@@ -683,10 +683,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-audit-board',
     type: 'image',
-    src: '/images/projects/kids-geo-dashboard.png',
-    sourceUrl: '/images/projects/kids-geo-dashboard.png',
+    src: '/images/projects/kids-geo-dashboard.webp',
+    sourceUrl: '/images/projects/kids-geo-dashboard.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/kids-geo-dashboard.png',
+    licenseUrl: '/images/projects/kids-geo-dashboard.webp',
     usedForRoutes: ['/services/service-audit'],
     alt: {
       ar: 'لوحة فحص تعرض عناصر التشخيص قبل التنفيذ',
@@ -696,10 +696,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-bundles-map',
     type: 'image',
-    src: '/images/projects/tech-startup-landing.png',
-    sourceUrl: '/images/projects/tech-startup-landing.png',
+    src: '/images/projects/tech-startup-landing.webp',
+    sourceUrl: '/images/projects/tech-startup-landing.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/tech-startup-landing.png',
+    licenseUrl: '/images/projects/tech-startup-landing.webp',
     usedForRoutes: ['/services/service-bundles'],
     alt: {
       ar: 'واجهة تعرض مسارات خدمات مترابطة حسب هدف المشروع',
@@ -709,10 +709,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-launch-checklist',
     type: 'image',
-    src: '/images/projects/kids-geo-quiz-dashboard.png',
-    sourceUrl: '/images/projects/kids-geo-quiz-dashboard.png',
+    src: '/images/projects/kids-geo-quiz-dashboard.webp',
+    sourceUrl: '/images/projects/kids-geo-quiz-dashboard.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/kids-geo-quiz-dashboard.png',
+    licenseUrl: '/images/projects/kids-geo-quiz-dashboard.webp',
     usedForRoutes: ['/services/launch-readiness'],
     alt: {
       ar: 'لوحة مراجعة قبل الإطلاق تعرض حالات واختبارات واضحة',
@@ -722,10 +722,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-support-loop',
     type: 'image',
-    src: '/images/projects/ana-map-grade-five.png',
-    sourceUrl: '/images/projects/ana-map-grade-five.png',
+    src: '/images/projects/ana-map-grade-five.webp',
+    sourceUrl: '/images/projects/ana-map-grade-five.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/ana-map-grade-five.png',
+    licenseUrl: '/images/projects/ana-map-grade-five.webp',
     usedForRoutes: ['/services/support-maintenance'],
     alt: {
       ar: 'واجهة متابعة وتحسين مستمر بعد التسليم',
@@ -735,10 +735,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-integration-map',
     type: 'image',
-    src: '/images/projects/kunuz-misr-interactive-maps.png',
-    sourceUrl: '/images/projects/kunuz-misr-interactive-maps.png',
+    src: '/images/projects/kunuz-misr-interactive-maps.webp',
+    sourceUrl: '/images/projects/kunuz-misr-interactive-maps.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/kunuz-misr-interactive-maps.png',
+    licenseUrl: '/images/projects/kunuz-misr-interactive-maps.webp',
     usedForRoutes: ['/services/integration-map'],
     alt: {
       ar: 'خريطة رقمية تشرح الربط والتكاملات بين الأنظمة',
@@ -748,10 +748,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-growth-roadmap',
     type: 'image',
-    src: '/images/projects/world-cup-2026.png',
-    sourceUrl: '/images/projects/world-cup-2026.png',
+    src: '/images/projects/world-cup-2026.webp',
+    sourceUrl: '/images/projects/world-cup-2026.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/world-cup-2026.png',
+    licenseUrl: '/images/projects/world-cup-2026.webp',
     usedForRoutes: ['/services/growth-roadmap'],
     alt: {
       ar: 'واجهة مشروع كبيرة توضح التوسع وبناء خارطة نمو بعد الإطلاق',
@@ -761,10 +761,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-before-after',
     type: 'image',
-    src: '/images/projects/mahrous-esraa.png',
-    sourceUrl: '/images/projects/mahrous-esraa.png',
+    src: '/images/projects/mahrous-esraa.webp',
+    sourceUrl: '/images/projects/mahrous-esraa.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/mahrous-esraa.png',
+    licenseUrl: '/images/projects/mahrous-esraa.webp',
     usedForRoutes: ['/testimonials/client-before-after'],
     alt: {
       ar: 'واجهة منشورة تساعد على عرض التحول قبل وبعد تجربة العميل',
@@ -774,10 +774,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-review-audit',
     type: 'image',
-    src: '/images/projects/kids-learning-by-map.png',
-    sourceUrl: '/images/projects/kids-learning-by-map.png',
+    src: '/images/projects/kids-learning-by-map.webp',
+    sourceUrl: '/images/projects/kids-learning-by-map.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/kids-learning-by-map.png',
+    licenseUrl: '/images/projects/kids-learning-by-map.webp',
     usedForRoutes: ['/testimonials/review-audit'],
     alt: {
       ar: 'واجهة مراجعة تساعد على قراءة الدليل والشهادة بشكل عملي',
@@ -787,10 +787,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-proof-library',
     type: 'image',
-    src: '/images/projects/qasr-tayiba.png',
-    sourceUrl: '/images/projects/qasr-tayiba.png',
+    src: '/images/projects/qasr-tayiba.webp',
+    sourceUrl: '/images/projects/qasr-tayiba.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/qasr-tayiba.png',
+    licenseUrl: '/images/projects/qasr-tayiba.webp',
     usedForRoutes: ['/testimonials/proof-library', '/testimonials/*'],
     alt: {
       ar: 'واجهة مشروع تعرض أدلة ثقة متعددة داخل مكتبة واحدة',
@@ -800,10 +800,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-contact-ready',
     type: 'image',
-    src: '/images/Cloud sync-bro.png',
-    sourceUrl: '/images/Cloud sync-bro.png',
+    src: '/images/cloud-sync-bro.webp',
+    sourceUrl: '/images/cloud-sync-bro.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/Cloud sync-bro.png',
+    licenseUrl: '/images/cloud-sync-bro.webp',
     usedForRoutes: ['/contact/project-readiness'],
     alt: {
       ar: 'رسم يوضح ترتيب المتطلبات قبل إرسال أول رسالة',
@@ -813,10 +813,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-meeting-prep',
     type: 'image',
-    src: '/images/ChatGPT Image Apr 8, 2026, 11_23_42 AM.png',
-    sourceUrl: '/images/ChatGPT Image Apr 8, 2026, 11_23_42 AM.png',
+    src: '/images/workspace-team.webp',
+    sourceUrl: '/images/workspace-team.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/ChatGPT Image Apr 8, 2026, 11_23_42 AM.png',
+    licenseUrl: '/images/workspace-team.webp',
     usedForRoutes: ['/contact/meeting-prep'],
     alt: {
       ar: 'مشهد تحضير لمكالمة أولى ومراجعة أهداف المشروع',
@@ -826,10 +826,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-response-process',
     type: 'image',
-    src: '/images/projects/smart-quran.png',
-    sourceUrl: '/images/projects/smart-quran.png',
+    src: '/images/projects/smart-quran.webp',
+    sourceUrl: '/images/projects/smart-quran.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/smart-quran.png',
+    licenseUrl: '/images/projects/smart-quran.webp',
     usedForRoutes: ['/contact/response-process'],
     alt: {
       ar: 'واجهة منظمة توضح ما يحدث بعد إرسال الرسالة',
@@ -839,10 +839,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-scope-request',
     type: 'image',
-    src: '/images/projects/nemora.png',
-    sourceUrl: '/images/projects/nemora.png',
+    src: '/images/projects/nemora.webp',
+    sourceUrl: '/images/projects/nemora.webp',
     licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/projects/nemora.png',
+    licenseUrl: '/images/projects/nemora.webp',
     usedForRoutes: ['/contact/scope-request'],
     alt: {
       ar: 'واجهة مشروع تستخدم لتوضيح طلب النطاق والتقدير المبدئي',
@@ -863,6 +863,123 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
     },
   },
 ];
+
+const generatedImagePaths = [
+  '/images/projects/nemora-dashboard.jpg',
+  '/images/projects/nemora-lessons.jpg',
+  '/images/projects/nemora-student.jpg',
+  '/images/projects/nemora-analytics.jpg',
+  '/images/projects/nemora-demo.jpg',
+  '/images/projects/commerce-dashboard.jpg',
+  '/images/projects/commerce-inventory.jpg',
+  '/images/projects/commerce-reports.jpg',
+  '/images/projects/crm-dashboard.jpg',
+  '/images/projects/crm-pipeline.jpg',
+  '/images/projects/crm-reports.jpg',
+  '/images/projects/fintech-wallet.jpg',
+  '/images/projects/fintech-transfer.jpg',
+  '/images/projects/fintech-security.jpg',
+  '/images/projects/healthcare-dashboard.jpg',
+  '/images/projects/healthcare-consultation.jpg',
+  '/images/projects/healthcare-records.jpg',
+  '/images/projects/realtor-3d-tour.jpg',
+  '/images/projects/realtor-map.jpg',
+  '/images/projects/realtor-listing.jpg',
+  '/images/projects/logistics-map.jpg',
+  '/images/projects/logistics-dashboard.jpg',
+  '/images/projects/logistics-tracking.jpg',
+  '/images/projects/social-feed.jpg',
+  '/images/projects/social-community.jpg',
+  '/images/projects/social-events.jpg',
+  '/images/projects/analytics-dashboard.jpg',
+  '/images/projects/analytics-predictions.jpg',
+  '/images/projects/analytics-reports.jpg',
+  '/images/projects/smartcity-map.jpg',
+  '/images/projects/smartcity-traffic.jpg',
+  '/images/projects/smartcity-energy.jpg',
+  '/images/blog/scalable-platforms.jpg',
+  '/images/blog/microservices.jpg',
+  '/images/blog/database.jpg',
+  '/images/blog/security-first.jpg',
+  '/images/blog/oauth.jpg',
+  '/images/blog/ux-design.jpg',
+  '/images/blog/design-systems.jpg',
+  '/images/blog/ai-integration.jpg',
+  '/images/blog/vector-db.jpg',
+  '/images/blog/remote-culture.jpg',
+  '/images/blog/hiring.jpg',
+  '/images/blog/cost-optimization.jpg',
+  '/images/blog/terraform.jpg',
+  '/images/blog/kubernetes.jpg',
+  '/images/blog/helm.jpg',
+  '/images/blog/blockchain.jpg',
+  '/images/blog/defi.jpg',
+  '/images/blog/ar-vr.jpg',
+  '/images/blog/metaverse.jpg',
+  '/images/blog/graphql.jpg',
+  '/images/blog/federated.jpg',
+  '/images/blog/testing.jpg',
+  '/images/blog/ci-cd.jpg',
+  '/images/blog/database-design.jpg',
+  '/images/blog/polyglot.jpg',
+  '/images/blog/frontend-perf.jpg',
+  '/images/blog/react-perf.jpg',
+  '/images/blog/microservices-migration.jpg',
+  '/images/blog/ddd.jpg',
+  '/images/blog/ml-production.jpg',
+  '/images/blog/llm.jpg',
+  '/images/team/ali.jpg',
+  '/images/team/fatima.jpg',
+  '/images/team/mohammad.jpg',
+  '/images/team/sarah.jpg',
+  '/images/testimonials/ahmed.jpg',
+  '/images/testimonials/sarah.jpg',
+  '/images/testimonials/mahmoud.jpg',
+  '/images/testimonials/layla.jpg',
+  '/images/testimonials/ali.jpg',
+  '/images/testimonials/janna.jpg',
+  '/images/testimonials/noor.jpg',
+  '/images/testimonials/mohammad.jpg',
+  '/images/testimonials/fatima.jpg',
+  '/images/testimonials/khaled.jpg',
+  '/images/seo-analysis.jpg',
+  '/images/seo-technical.jpg',
+  '/images/seo-content.jpg',
+  '/images/research.jpg',
+  '/images/design.jpg',
+  '/images/testing.jpg',
+  '/images/WhatsApp Image 2026-02-01 at 8.47.19 PM.jpeg',
+  '/images/WhatsApp Image 2025-07-25 at 17.40.56_6dae988c.jpg',
+  '/images/WhatsApp Image 2026-02-15 at 05.05.18 (3).jpeg',
+  ...Array.from(
+    { length: 120 },
+    (_, index) => `/images/generated/subpage-visual-${String(index + 1).padStart(3, '0')}.jpg`,
+  ),
+];
+
+const generatedIdFromPath = (src: string) =>
+  `generated-${src
+    .replace(/^\/images\//, '')
+    .replace(/\.[^.]+$/, '')
+    .replace(/[^a-z0-9]+/gi, '-')
+    .replace(/^-|-$/g, '')
+    .toLowerCase()}`;
+
+enrichmentMediaAssets.push(
+  ...generatedImagePaths.map((src) => ({
+    id: generatedIdFromPath(src),
+    type: 'image' as const,
+    src,
+    sourceUrl: src,
+    licenseName: 'Notaq generated local asset',
+    licenseUrl: src,
+    usedForRoutes: ['subpages'],
+    alt: {
+      ar: 'صورة محلية متنوعة لصفحة فرعية داخل موقع نُطق',
+      en: 'A reviewed local visual supporting the context of a Notaq subpage',
+    },
+  })),
+);
 
 export const enrichmentMediaById = enrichmentMediaAssets.reduce(
   (accumulator, asset) => {

@@ -48,8 +48,8 @@ const EnhancedAboutPageComponent = () => {
             </h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
               {isArabic
-                ? 'نقدم حلولاً متكاملة تغطي جميع احتياجاتك الرقمية'
-                : 'We offer comprehensive solutions for all your digital needs'}
+                ? 'حلول رقمية توضح شركتك وتسهّل قرار التواصل على زوارها'
+                : 'Digital solutions that clarify your company and make contact easier for visitors'}
             </p>
           </div>
 
@@ -89,15 +89,15 @@ const EnhancedAboutPageComponent = () => {
           className="surface-card rounded-2xl p-8 md:p-12 text-center max-w-4xl mx-auto"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            {isArabic ? 'هل أنت مستعد للبدء؟' : 'Ready to Get Started?'}
+            {isArabic ? 'هل تحتاج شركتك إلى خطوة رقمية أوضح؟' : 'Does your company need a clearer digital step?'}
           </h2>
           <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
             {isArabic
-              ? 'دعنا نتحدث عن كيفية مساعدتك في تحقيق أهدافك الرقمية.'
-              : 'Let\'s talk about how we can help you achieve your digital goals.'}
+              ? 'ناقش احتياج شركتك وحدد المسار المناسب قبل التصميم أو التنفيذ.'
+              : 'Discuss your company need and define the right track before design or build.'}
           </p>
           <Link className="btn-primary" to={localizePath('/contact')}>
-            {isArabic ? 'تواصل معنا' : 'Contact Us'}
+            {isArabic ? 'ناقش احتياج شركتك' : 'Discuss your company need'}
           </Link>
         </motion.div>
       </section>

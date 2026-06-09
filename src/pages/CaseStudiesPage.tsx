@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 import { clientJourney, deliveryArtifacts } from '../data/company';
 import PageImageShowcaseSection from '../components/PageImageShowcase';
 import { pageImageShowcases } from '../data/pageImageShowcases';
@@ -20,7 +21,7 @@ const caseStudies = [
     clientEn: 'Fashion Boutique Egypt',
     location: 'Cairo, Egypt',
     duration: '6 weeks',
-    imageUrl: '/images/Gemini_Generated_Image_rzfhaqrzfhaqrzfh.png',
+    imageUrl: '/images/projects/reeq-store.webp',
     challenge: {
       ar: 'كانت الشركة تعتمد بالكامل على المبيعات الفيزيائية وتفتقر إلى أي وجود رقمي قوي، مما أدى إلى انخفاض المبيعات وضياع الفرص السوقية الرقمية الكبرى.',
       en: 'The company relied solely on physical sales with minimal digital presence. They were losing market opportunities and facing declining revenue.'
@@ -133,7 +134,7 @@ const caseStudies = [
 const CaseStudyCard = ({ study, isArabic }: { study: typeof caseStudies[0]; isArabic: boolean }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'challenge' | 'solution' | 'timeline'>('overview');
   const [isFlipped, setIsFlipped] = useState(false);
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, isArabic ? 'ar' : 'en');
 
   return (
     <div className="grid gap-8 lg:gap-12 xl:gap-16 items-center md:grid-cols-2">
@@ -231,15 +232,15 @@ const CaseStudyCard = ({ study, isArabic }: { study: typeof caseStudies[0]; isAr
 
         {/* Custom Tabs Navigation */}
         <div className="flex border-b border-white/10 gap-4 text-xs font-semibold pb-1.5 overflow-x-auto">
-          {[
+          {([
             { id: 'overview', labelAr: 'النتائج والمؤشرات', labelEn: 'Metrics & Results' },
             { id: 'challenge', labelAr: 'التحدي الأصلي', labelEn: 'Challenge' },
             { id: 'solution', labelAr: 'طريقة الحل', labelEn: 'Solution' },
             { id: 'timeline', labelAr: 'خارطة الطريق', labelEn: 'Timeline' }
-          ].map(tab => (
+          ] as const).map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id)}
               className={`pb-2 border-b-2 transition-all relative ${
                 activeTab === tab.id 
                   ? 'border-cyan-400 text-cyan-300 font-bold' 
@@ -387,7 +388,7 @@ const CaseStudyCard = ({ study, isArabic }: { study: typeof caseStudies[0]; isAr
 const CaseStudiesPage = () => {
   const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
 
   usePageMetadata(getPageSeoByPath('/case-studies', lang));
 

@@ -91,10 +91,10 @@ export const contactFaqs: ContactFaqItem[] = [
     aEn: 'Yes. We structure the build so new pages, services, and content can be added later without unnecessary friction.',
   },
   {
-    qAr: 'هل أستطيع التواصل مباشرة عبر واتساب؟',
-    qEn: 'Can I reach out directly on WhatsApp?',
-    aAr: 'بالتأكيد. إذا كنت تفضل النقاش السريع بدل الفورم فمسار واتساب متاح كقناة مباشرة لبدء الحديث.',
-    aEn: 'Absolutely. If you prefer a faster conversation than the form, WhatsApp is available as a direct channel.',
+    qAr: 'هل يمكن بدء نقاش احتياج الشركة عبر واتساب؟',
+    qEn: 'Can a company start the discussion on WhatsApp?',
+    aAr: 'بالتأكيد. واتساب متاح كقناة مباشرة لتوضيح احتياج الشركة بسرعة قبل ترتيب الخطوة التالية.',
+    aEn: 'Absolutely. WhatsApp is available as a direct channel to clarify the company need quickly before arranging the next step.',
   },
   {
     qAr: 'كيف يعمل الموقع مع الأجهزة المختلفة؟',
@@ -115,10 +115,10 @@ export const contactFaqs: ContactFaqItem[] = [
     aEn: 'Yes. Every site comes with SSL encryption (HTTPS) and follows security best practices to protect your data and customers.',
   },
   {
-    qAr: 'هل يمكنك مساعدتي في تحسين تصنيفي في محركات البحث؟',
-    qEn: 'Can you help improve my search engine ranking?',
-    aAr: 'نعم. نبني المواقع مع مراعاة معايير SEO من البداية، وننصحك بأفضل الممارسات لكل صفحة والمحتوى والكلمات المفتاحية.',
-    aEn: 'Yes. We build sites with SEO best practices from day one and advise on optimizing content, keywords, and page structure.',
+    qAr: 'هل يمكن تحسين ظهور موقع الشركة في محركات البحث؟',
+    qEn: 'Can the company website improve its search visibility?',
+    aAr: 'نعم. يتم بناء الموقع مع مراعاة معايير SEO من البداية، مع توجيه واضح للمحتوى والكلمات المفتاحية وبنية الصفحات.',
+    aEn: 'Yes. The website is built with SEO best practices from day one, with clear guidance for content, keywords, and page structure.',
   },
   {
     qAr: 'هل يوجد دعم بعد إطلاق الموقع؟',
@@ -127,10 +127,10 @@ export const contactFaqs: ContactFaqItem[] = [
     aEn: 'Yes. We define follow-up based on the scope and company need, with a clear post-handoff support path.',
   },
   {
-    qAr: 'هل أحتاج إلى معرفة تقنية للعمل مع فريقك؟',
-    qEn: 'Do I need technical knowledge to work with you?',
-    aAr: 'لا. نتولى جميع الجوانب التقنية. كل ما نحتاجه منك هو توضيح احتياجاتك والمحتوى والأفكار. نشرح كل خطوة بطريقة واضحة.',
-    aEn: 'No. We handle all the technical details. We just need your content, ideas, and feedback at key checkpoints. We explain everything clearly.',
+    qAr: 'هل تحتاج الشركة إلى معرفة تقنية قبل البدء؟',
+    qEn: 'Does the company need technical knowledge before starting?',
+    aAr: 'لا. يتم توضيح كل خطوة بلغة مفهومة لصاحب القرار، مع التركيز على احتياج الشركة والمحتوى والنتائج المطلوبة.',
+    aEn: 'No. Every step is explained in decision-maker language, with the focus on company needs, content, and required outcomes.',
   },
   {
     qAr: 'هل تقدمون خدمات التسويق الرقمي أيضًا؟',
@@ -145,10 +145,10 @@ export const contactFaqs: ContactFaqItem[] = [
     aEn: 'Yes. The first step is a quick review of the current site to decide whether improving the UX, speed, and interface is enough, or whether a cleaner rebuild is the better path.',
   },
   {
-    qAr: 'هل تحتاج إلى تجهيز كل المحتوى قبل البداية؟',
-    qEn: 'Do I need to prepare all the content before we start?',
-    aAr: 'ليس بالضرورة. يمكننا البدء بمحتوى مبدئي أو نقاط أساسية، ثم ننظم الصفحات والرسائل الرئيسية معك قبل الصياغة النهائية.',
-    aEn: 'Not necessarily. We can start with rough content or key talking points, then shape the page structure and messaging with you before finalizing everything.',
+    qAr: 'هل يجب تجهيز كل محتوى الشركة قبل البداية؟',
+    qEn: 'Should all company content be ready before starting?',
+    aAr: 'ليس بالضرورة. يمكن البدء بنقاط أساسية عن الشركة والخدمات، ثم تنظيم الصفحات والرسائل قبل الصياغة النهائية.',
+    aEn: 'Not necessarily. The work can start with key points about the company and services, then shape the page structure and messaging before final copy.',
   },
   {
     qAr: 'هل يمكن تنفيذ الموقع بالعربية والإنجليزية؟',
@@ -163,10 +163,10 @@ export const contactFaqs: ContactFaqItem[] = [
     aEn: 'Payments are usually split into clear milestones tied to the project flow, so everything stays organized and easy to follow from kickoff to delivery.',
   },
   {
-    qAr: 'هل أستلم صلاحيات الموقع والملفات بعد التسليم؟',
-    qEn: 'Do I receive site access and assets after handoff?',
-    aAr: 'نعم. عند التسليم تحصل على الوصولات والملفات والمعلومات الأساسية المتعلقة بالموقع، بحيث تبقى الصورة واضحة لديك بعد الإطلاق.',
-    aEn: 'Yes. At handoff, you receive the key access details, files, and core site information so you stay fully informed after launch.',
+    qAr: 'هل تحصل الشركة على صلاحيات الموقع والملفات بعد التسليم؟',
+    qEn: 'Does the company receive site access and assets after handoff?',
+    aAr: 'نعم. عند التسليم تحصل الشركة على الوصولات والملفات والمعلومات الأساسية المتعلقة بالموقع حتى تبقى الإدارة واضحة بعد الإطلاق.',
+    aEn: 'Yes. At handoff, the company receives the key access details, files, and core site information so management stays clear after launch.',
   },
   {
     qAr: 'هل يمكن ربط الموقع بالنماذج والبريد أو أدوات إدارة العملاء؟',

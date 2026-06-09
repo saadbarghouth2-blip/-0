@@ -13,7 +13,7 @@ import {
   getLocalizedPath,
   getPathLanguage,
 } from '../lib/localizedPath';
-import { repairMojibake } from '../lib/repairText';
+import { clientFacingText } from '../lib/repairText';
 
 export type Language = 'ar' | 'en';
 
@@ -191,8 +191,8 @@ export const LanguageProvider = ({
   const t = useCallback(
     (key: string, fallback = '') => {
       const entry = resolveTranslation(key);
-      if (!entry) return repairMojibake(fallback);
-      return repairMojibake(entry[lang] ?? fallback);
+      if (!entry) return clientFacingText(fallback, lang);
+      return clientFacingText(entry[lang] ?? fallback, lang);
     },
     [lang],
   );

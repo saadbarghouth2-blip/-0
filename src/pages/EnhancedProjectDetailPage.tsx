@@ -84,11 +84,11 @@ const EnhancedProjectDetailPage = () => {
           </h2>
           <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
             {isArabic
-              ? 'فريقنا جاهز لمساعدتك في تحقيق أهدافك الرقمية. دعنا نتحدث عن احتياجاتك.'
-              : 'Our team is ready to help you achieve your digital goals. Let\'s talk about your needs.'}
+              ? 'تجربة مشابهة يمكن أن توضح عرض شركتك وتجعل قرار التواصل أسهل لزوارها.'
+              : 'A similar experience can clarify your company offer and make the decision to contact easier for visitors.'}
           </p>
           <Link className="btn-primary" to={localizePath('/contact')}>
-            {isArabic ? 'ابدأ الآن' : 'Get Started'}
+            {isArabic ? 'ناقش احتياج شركتك' : 'Discuss your company need'}
           </Link>
         </motion.div>
       </section>

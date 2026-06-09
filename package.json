@@ -9,6 +9,10 @@
     "build": "npm run optimize:images && tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && node scripts/prerender.mjs",
     "lint": "eslint .",
     "audit:media": "node scripts/audit-media-usage.mjs",
+    "audit:copy": "node scripts/audit-copy-duplicates.mjs",
+    "audit:audience": "node scripts/audit-audience-copy.mjs",
+    "audit:seo": "node scripts/audit-seo-output.mjs",
+    "audit:mobile": "node scripts/audit-mobile-layout.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

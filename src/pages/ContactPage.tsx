@@ -41,6 +41,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useIsMobile } from '../hooks/use-mobile';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { trackEvent } from '../lib/analytics';
+import { clientFacingText } from '../lib/repairText';
 
 const legalIssuerIcons = {
   registry: Building2,
@@ -202,6 +203,7 @@ const ContactSelect = ({
 }: ContactSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectedLabel = optionLabel(options, value, isArabic);
+  const displayLang = isArabic ? 'ar' : 'en';
   const inputId = `contact-select-${name}`;
 
   return (
@@ -219,7 +221,7 @@ const ContactSelect = ({
         type="button"
       >
         <span className={`min-w-0 flex-1 truncate text-sm font-semibold ${isArabic ? 'text-right' : 'text-left'}`}>
-          {selectedLabel}
+          {clientFacingText(selectedLabel, displayLang)}
         </span>
         <ChevronDown
           className={`h-4 w-4 shrink-0 text-cyan-200 transition-transform duration-200 ${
@@ -250,7 +252,7 @@ const ContactSelect = ({
                 }}
                 type="button"
               >
-                <span className="min-w-0 flex-1 truncate">{isArabic ? item.ar : item.en}</span>
+                <span className="min-w-0 flex-1 truncate">{clientFacingText(isArabic ? item.ar : item.en, displayLang)}</span>
                 <span
                   className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
                     isSelected
@@ -280,8 +282,8 @@ const ContactPage = () => {
 
   usePageMetadata(getPageSeoByPath('/contact', lang));
 
-  const content = useMemo(
-    () => ({
+  const content = useMemo(() => {
+    const rawContent = {
       heroKicker: isArabic ? 'تواصل احترافي مباشر' : 'Direct professional contact',
       heroTitle: isArabic
         ? 'رتّب احتياج شركتك الرقمي في خطوة واضحة'
@@ -327,10 +329,16 @@ const ContactPage = () => {
       statsKicker: isArabic ? 'مؤشرات ثقة' : 'Trust signals',
       promiseKicker: isArabic ? 'قبل أن تبدأ' : 'Before you start',
       promiseTitle: isArabic ? 'تواصل بسيط، لكن نتيجته أوضح' : 'Simple contact, clearer outcome',
-    }),
-    [isArabic],
-  );
+    };
 
+    return Object.fromEntries(
+      Object.entries(rawContent).map(([key, value]) => [key, clientFacingText(value, lang)]),
+    ) as typeof rawContent;
+  }, [isArabic, lang]);
+
+  const copy = (value: string) => clientFacingText(value, lang);
+  const copyLegacyPair = (ar: string, en: string) => copy(isArabic ? ar : en);
+  const copyPair = (value: { ar: string; en: string }) => copy(isArabic ? value.ar : value.en);
   const whatsappUrl = buildWhatsAppUrl(getDefaultWhatsAppMessage(lang));
   const faqDesktopCardClass = isArabic
     ? 'group relative h-full overflow-hidden rounded-[1.25rem] border border-white/8 bg-[linear-gradient(180deg,rgba(11,18,32,0.9),rgba(8,13,22,0.82))] p-4 text-right shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-400/22 md:p-5'
@@ -443,21 +451,21 @@ const ContactPage = () => {
           : `New Notaq website request - ${websiteTypeLabel} - ${formState.name}`,
         auto_reply_subject: isArabic
           ? 'وصلنا طلبك في نُطق'
-          : 'We received your request at Notaq',
+          : 'Notaq received your request',
         owner_kicker: isArabic ? 'طلب جديد من الموقع' : 'New website lead',
         owner_heading: isArabic ? 'وصل طلب جديد من صفحة التواصل' : 'A new contact request arrived',
         owner_intro: isArabic
           ? 'راجع تفاصيل العميل والاحتياج، ثم أرسل رداً عملياً يوضح الخطوة التالية.'
           : 'Review the client and project need, then reply with a practical next step.',
         auto_kicker: isArabic ? 'نُطق' : 'Notaq',
-        auto_heading: isArabic ? 'وصلنا طلبك بنجاح' : 'We received your request',
+        auto_heading: isArabic ? 'استلمت نُطق طلبك بنجاح' : 'Notaq received your request',
         auto_intro: isArabic
-          ? `شكرًا لتواصلك معنا يا ${formState.name}. وصلتنا تفاصيل الاحتياج وسنراجعها قبل العودة بخطوة واضحة.`
-          : `Thanks for reaching out, ${formState.name}. We received your company need and will review it before coming back with a clear next step.`,
+          ? `شكرًا لتواصلك مع نُطق يا ${formState.name}. وصلت تفاصيل الاحتياج وستتم مراجعتها قبل العودة بخطوة واضحة.`
+          : `Thanks for reaching out to Notaq, ${formState.name}. The company need was received and will be reviewed before a clear next step is sent.`,
         next_title: isArabic ? 'ماذا يحدث الآن؟' : 'What happens next?',
         next_body: isArabic
           ? 'هنراجع الهدف، نوع الموقع، الجمهور، والأقسام المطلوبة. بعدها نرد عليك بأسئلة قليلة ومهمة أو اتجاه تنفيذي واضح.'
-          : 'We will review the goal, website type, audience, and needed sections. Then we will reply with a few important questions or a clear execution direction.',
+          : 'Notaq will review the goal, website type, audience, and needed sections, then reply with important questions or a clear execution direction.',
         footer_note: isArabic
           ? 'لو حابب تضيف أي تفاصيل، تقدر ترد على نفس الإيميل.'
           : 'If you want to add more details, you can reply to this email.',
@@ -536,8 +544,8 @@ const ContactPage = () => {
         description={content.heroDescription}
         kicker={content.heroKicker}
         metrics={socialProofStats.map((item) => ({
-          value: isArabic ? item.valueAr : item.valueEn,
-          label: isArabic ? item.labelAr : item.labelEn,
+          value: copyLegacyPair(item.valueAr, item.valueEn),
+          label: copyLegacyPair(item.labelAr, item.labelEn),
         }))}
         primaryAction={{
           external: true,
@@ -663,9 +671,9 @@ const ContactPage = () => {
                         0{index + 1}
                       </span>
                       <div>
-                        <p className="text-sm font-bold text-white">{isArabic ? step.titleAr : step.titleEn}</p>
+                        <p className="text-sm font-bold text-white">{copyLegacyPair(step.titleAr, step.titleEn)}</p>
                         <p className="mt-1 text-xs leading-5 text-slate-500">
-                          {isArabic ? step.descAr : step.descEn}
+                          {copyLegacyPair(step.descAr, step.descEn)}
                         </p>
                       </div>
                     </motion.div>
@@ -701,8 +709,8 @@ const ContactPage = () => {
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-300/10 text-cyan-300 transition-colors group-hover:bg-cyan-300 group-hover:text-slate-950">
                   <item.icon className="h-5 w-5" />
                 </div>
-                <h3 className="font-display text-lg font-bold text-white">{isArabic ? item.titleAr : item.titleEn}</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-400">{isArabic ? item.descAr : item.descEn}</p>
+                <h3 className="font-display text-lg font-bold text-white">{copyLegacyPair(item.titleAr, item.titleEn)}</h3>
+                <p className="mt-2 text-sm leading-7 text-slate-400">{copyLegacyPair(item.descAr, item.descEn)}</p>
               </motion.div>
             ))}
           </div>
@@ -773,12 +781,12 @@ const ContactPage = () => {
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
-                              {isArabic ? item.label : item.englishLabel}
+                              {copyLegacyPair(item.label, item.englishLabel)}
                             </p>
                             <span className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-emerald-300/15 bg-emerald-300/[0.06] px-2.5 py-1 text-[11px] font-bold text-emerald-100/85">
                               <IssuerIcon className="h-3.5 w-3.5 shrink-0" />
                               <span className="truncate">
-                                {isArabic ? item.issuerLabel : item.englishIssuerLabel}
+                                {copyLegacyPair(item.issuerLabel, item.englishIssuerLabel)}
                               </span>
                             </span>
                           </div>
@@ -815,10 +823,10 @@ const ContactPage = () => {
                     </p>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300 md:hidden">0{index + 1}</p>
                     <h3 className="mt-2 font-display text-lg font-semibold text-white">
-                      {isArabic ? step.titleAr : step.titleEn}
+                      {copyLegacyPair(step.titleAr, step.titleEn)}
                     </h3>
                     <p className="mt-2 text-sm leading-7 text-slate-400">
-                      {isArabic ? step.descAr : step.descEn}
+                      {copyLegacyPair(step.descAr, step.descEn)}
                     </p>
                   </motion.div>
                 ))}
@@ -972,7 +980,7 @@ const ContactPage = () => {
                         type="checkbox"
                         value={item.key}
                       />
-                      <span>{isArabic ? item.ar : item.en}</span>
+                      <span>{copyPair(item)}</span>
                     </label>
                   ))}
                 </div>
@@ -1080,10 +1088,10 @@ const ContactPage = () => {
                 </div>
                 <div>
                   <p className="font-display text-xl font-bold text-white">
-                    {isArabic ? item.valueAr : item.valueEn}
+                    {copyLegacyPair(item.valueAr, item.valueEn)}
                   </p>
                   <p className="text-sm leading-7 text-slate-400">
-                    {isArabic ? item.labelAr : item.labelEn}
+                    {copyLegacyPair(item.labelAr, item.labelEn)}
                   </p>
                 </div>
               </motion.div>
@@ -1101,7 +1109,7 @@ const ContactPage = () => {
               <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-400 md:text-base md:leading-8">
                 {isArabic
                   ? 'لا تحتاج تجهيز كل شيء. اكتب ما تعرفه عن شركتك والهدف، وسنساعدك على ترتيب الباقي.'
-                  : 'You do not need everything prepared. Share what you know about the company and goal, and we will help organize the rest.'}
+                  : 'Everything does not need to be prepared in advance. Share what is known about the company and goal, and Notaq will help organize the rest.'}
               </p>
             </div>
             <a
@@ -1143,10 +1151,10 @@ const ContactPage = () => {
                   </span>
                   <div className="min-w-0">
                     <p className="break-words text-[0.96rem] font-semibold leading-6 text-white">
-                      {isArabic ? faq.qAr : faq.qEn}
+                      {copyLegacyPair(faq.qAr, faq.qEn)}
                     </p>
                     <p className="mt-2 text-sm leading-6 text-slate-400">
-                      {isArabic ? faq.aAr : faq.aEn}
+                      {copyLegacyPair(faq.aAr, faq.aEn)}
                     </p>
                   </div>
                 </div>

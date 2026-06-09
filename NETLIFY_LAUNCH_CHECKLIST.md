@@ -7,16 +7,16 @@
 - Production branch: your main deployment branch
 
 ## 2. Environment Variables
-- `VITE_SITE_URL=https://www.نطق.site`
-- `VITE_SITE_TECHNICAL_URL=https://www.xn--2gbwk.site`
+- `VITE_SITE_URL=https://xn--2gbwk.site`
+- `VITE_SITE_TECHNICAL_URL=https://xn--2gbwk.site`
 - `VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX`
 - `VITE_WHATSAPP_NUMBER=201507631264`
 
 ## 3. Domain Setup in Netlify
-- Add `www.نطق.site` as the primary domain.
-- Add `نطق.site` as the secondary/apex domain.
-- Netlify should redirect the apex to `www` after the domain is assigned.
-- If a dashboard refuses Arabic domains, use the technical form: `www.xn--2gbwk.site` and `xn--2gbwk.site`.
+- Add `نطق.site` as the primary domain.
+- Add `www.نطق.site` as a secondary domain that redirects to the primary domain.
+- Netlify should redirect `www` to the apex after the domain is assigned.
+- If a dashboard refuses Arabic domains, use the technical form: `xn--2gbwk.site` and `www.xn--2gbwk.site`.
 
 ## 4. DNS in Hostinger
 - `@` record:
@@ -44,7 +44,7 @@
 - Add a Domain property for `نطق.site`.
 - If the interface requires ASCII, use `xn--2gbwk.site`.
 - Submit:
-  - `https://www.نطق.site/sitemap.xml`
+  - `https://نطق.site/sitemap.xml`
 
 ## 8. Final Checks
 - Confirm direct route loading works:

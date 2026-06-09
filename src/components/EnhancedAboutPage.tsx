@@ -6,7 +6,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
-import { localizedText } from '../lib/repairText';
+import { clientFacingText, localizedText } from '../lib/repairText';
 
 interface TeamMember {
   name: { ar: string; en: string };
@@ -68,7 +68,7 @@ export const EnhancedAboutPage: React.FC<EnhancedAboutPageProps> = ({
   const { lang } = useLanguage();
   const isArabic = lang === 'ar';
 
-  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
+  const text = (value: { ar: string; en: string }) => clientFacingText(localizedText(value, lang), lang);
 
   return (
     <motion.section

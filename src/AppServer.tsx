@@ -19,6 +19,16 @@ import TestimonialsPage from './pages/TestimonialsPage';
 import CaseStudiesPage from './pages/CaseStudiesPage';
 import StatsDashboardPage from './pages/StatsDashboardPage';
 import GalleryPage from './pages/GalleryPage';
+import PricingPage from './pages/PricingPage';
+import FAQPage from './pages/FAQPage';
+import TeamPage from './pages/TeamPage';
+import ProcessPage from './pages/ProcessPage';
+import CareersPage from './pages/CareersPage';
+import EnhancedAboutPageComponent from './pages/EnhancedAboutPageComponent';
+import EnhancedProjectDetailPage from './pages/EnhancedProjectDetailPage';
+import EnhancedBlogDetailPage from './pages/EnhancedBlogDetailPage';
+import SubServicesPage from './pages/SubServicesPage';
+import SubPagesPortalPage from './pages/SubPagesPortalPage';
 
 const ScrollToTop = () => {
   useLocation();
@@ -64,14 +74,18 @@ function AppServer() {
           <Route index element={<HomePage />} />
           <Route path="home/:slug" element={<DetailPage />} />
           <Route path="about" element={<AboutPage />} />
+          <Route path="about/company" element={<EnhancedAboutPageComponent />} />
           <Route path="about/:slug" element={<DetailPage />} />
           <Route path="services" element={<ServicesPage />} />
           <Route path="services/:slug" element={<ServiceDetailEnhancedPage />} />
+          <Route path="sub-services" element={<SubServicesPage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="projects/:slug" element={<ProjectDetailPage />} />
+          <Route path="projects/enhanced/:slug" element={<EnhancedProjectDetailPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/category/:slug" element={<BlogCategoryPage />} />
           <Route path="blog/:slug" element={<BlogDetailPage />} />
+          <Route path="blog/enhanced/:slug" element={<EnhancedBlogDetailPage />} />
           <Route path="testimonials" element={<TestimonialsPage />} />
           <Route path="testimonials/:slug" element={<DetailPage />} />
           <Route path="contact" element={<ContactPage />} />
@@ -80,20 +94,30 @@ function AppServer() {
           <Route path="case-studies" element={<CaseStudiesPage />} />
           <Route path="stats" element={<StatsDashboardPage />} />
           <Route path="gallery" element={<GalleryPage />} />
+          <Route path="pricing" element={<PricingPage />} />
+          <Route path="faq" element={<FAQPage />} />
+          <Route path="team" element={<TeamPage />} />
+          <Route path="process" element={<ProcessPage />} />
+          <Route path="careers" element={<CareersPage />} />
+          <Route path="sub-pages-portal" element={<SubPagesPortalPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
         <Route path="en" element={<SiteLayout />}>
           <Route index element={<HomePage />} />
           <Route path="home/:slug" element={<DetailPage />} />
           <Route path="about" element={<AboutPage />} />
+          <Route path="about/company" element={<EnhancedAboutPageComponent />} />
           <Route path="about/:slug" element={<DetailPage />} />
           <Route path="services" element={<ServicesPage />} />
           <Route path="services/:slug" element={<ServiceDetailEnhancedPage />} />
+          <Route path="sub-services" element={<SubServicesPage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="projects/:slug" element={<ProjectDetailPage />} />
+          <Route path="projects/enhanced/:slug" element={<EnhancedProjectDetailPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/category/:slug" element={<BlogCategoryPage />} />
           <Route path="blog/:slug" element={<BlogDetailPage />} />
+          <Route path="blog/enhanced/:slug" element={<EnhancedBlogDetailPage />} />
           <Route path="testimonials" element={<TestimonialsPage />} />
           <Route path="testimonials/:slug" element={<DetailPage />} />
           <Route path="contact" element={<ContactPage />} />
@@ -102,6 +126,12 @@ function AppServer() {
           <Route path="case-studies" element={<CaseStudiesPage />} />
           <Route path="stats" element={<StatsDashboardPage />} />
           <Route path="gallery" element={<GalleryPage />} />
+          <Route path="pricing" element={<PricingPage />} />
+          <Route path="faq" element={<FAQPage />} />
+          <Route path="team" element={<TeamPage />} />
+          <Route path="process" element={<ProcessPage />} />
+          <Route path="careers" element={<CareersPage />} />
+          <Route path="sub-pages-portal" element={<SubPagesPortalPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

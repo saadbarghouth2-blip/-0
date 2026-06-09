@@ -4,13 +4,19 @@ publish = "dist"
 
 [[redirects]]
 from = "http://xn--2gbwk.site/*"
-to = "https://www.xn--2gbwk.site/:splat"
+to = "https://xn--2gbwk.site/:splat"
 status = 301
 force = true
 
 [[redirects]]
-from = "https://xn--2gbwk.site/*"
-to = "https://www.xn--2gbwk.site/:splat"
+from = "http://www.xn--2gbwk.site/*"
+to = "https://xn--2gbwk.site/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "https://www.xn--2gbwk.site/*"
+to = "https://xn--2gbwk.site/:splat"
 status = 301
 force = true
 

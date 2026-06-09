@@ -128,7 +128,7 @@ export const localImages = {
   },
   projectVisual: {
     id: 'project-visual',
-    src: image('Gemini_Generated_Image_rzfhaqrzfhaqrzfh.png'),
+    src: projectImage('tech-startup-landing.webp'),
     altAr: 'صورة مشروع رقمية لعرض النتائج',
     altEn: 'Digital project visual for presenting outcomes',
     usage: 'project',
@@ -152,7 +152,7 @@ export const localImages = {
   },
   officeReception: {
     id: 'office-reception',
-    src: image('WhatsApp Image 2026-02-15 at 2.31.19 AM (1).jpeg'),
+    src: image('generated/subpage-visual-103.jpg'),
     altAr: 'لقطة حضور وهوية داخل مساحة عمل',
     altEn: 'Presence and identity moment inside a workspace',
     usage: 'proof',
@@ -160,7 +160,7 @@ export const localImages = {
   },
   officeWide: {
     id: 'office-wide',
-    src: image('WhatsApp Image 2026-02-15 at 2.31.19 AM.jpeg'),
+    src: image('generated/subpage-visual-104.jpg'),
     altAr: 'لقطة أفقية من مساحة عمل وهوية بصرية',
     altEn: 'Wide workspace and visual identity moment',
     usage: 'proof',
@@ -176,7 +176,7 @@ export const localImages = {
   },
   presentationHall: {
     id: 'presentation-hall',
-    src: image('WhatsApp Image 2026-02-15 at 05.05.18 (2).jpeg'),
+    src: image('generated/subpage-visual-101.jpg'),
     altAr: 'عرض تقديمي أمام حضور داخل قاعة',
     altEn: 'Presentation in front of an audience inside a hall',
     usage: 'article',
@@ -192,7 +192,7 @@ export const localImages = {
   },
   teamSession: {
     id: 'team-session',
-    src: image('WhatsApp Image 2026-02-15 at 05.05.18 (4).jpeg'),
+    src: image('generated/subpage-visual-102.jpg'),
     altAr: 'فريق يناقش تفاصيل مشروع داخل غرفة عمل',
     altEn: 'Team discussing digital requirements inside a work room',
     usage: 'contact',

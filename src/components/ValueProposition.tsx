@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { TrendingUp, Users, Award, Zap, Shield, Lightbulb, ArrowUpRight, Target } from 'lucide-react';
+import { ArrowUpRight, TrendingUp } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
-import { localizedText } from '../lib/repairText';
+import { clientFacingText, localizedText } from '../lib/repairText';
 
 interface ValuePoint {
   title: { ar: string; en: string };
@@ -31,7 +31,7 @@ export const ValueProposition: React.FC<ValuePropositionProps> = ({
   const { lang } = useLanguage();
   const isArabic = lang === 'ar';
 
-  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
+  const text = (value: { ar: string; en: string }) => clientFacingText(localizedText(value, lang), lang);
 
   return (
     <motion.section

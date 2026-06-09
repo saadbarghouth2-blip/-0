@@ -58,7 +58,7 @@ import HeroMediaBackdrop from '../components/HeroMediaBackdrop';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
-import { localizedText } from '../lib/repairText';
+import { clientFacingText, localizedText } from '../lib/repairText';
 import type { PageExperienceConfig } from '../data/pageVariations';
 
 const detailPagesByPrefix: Array<{ prefix: string; pages: DetailPageContent[] }> = [
@@ -747,7 +747,7 @@ const DetailPage = () => {
   const { lang, localizePath } = useLanguage();
   const shouldReduceMotion = useReducedMotion() ?? false;
   const isArabic = lang === 'ar';
-  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
+  const text = (value: { ar: string; en: string }) => clientFacingText(localizedText(value, lang), lang);
   const page = findDetailPage(location.pathname, slug);
 
   usePageMetadata(getPageSeoByPath(location.pathname, lang));
@@ -886,7 +886,7 @@ const DetailPage = () => {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <div className="relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[calc(100svh-3.75rem)] w-screen items-end overflow-hidden px-4 pb-7 pt-20 sm:px-6 md:min-h-[calc(100svh-4.35rem)] md:px-10 md:pb-10 md:pt-[7.5rem] lg:px-14">
+        <div className="relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[30rem] w-screen items-end overflow-hidden px-3 pb-5 pt-12 sm:min-h-[34rem] sm:px-6 sm:pb-7 sm:pt-20 md:min-h-[42rem] md:px-10 md:pb-10 md:pt-[7.5rem] lg:min-h-[46rem] lg:px-14">
           <HeroMediaBackdrop fallbackMedia={detailHeroFallbackMedia} isArabic={isArabic} media={detailHeroMedia} />
 
           <div className={heroGridClass}>

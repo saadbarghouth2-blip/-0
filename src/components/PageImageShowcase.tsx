@@ -73,17 +73,17 @@ const PageImageShowcaseSection = ({ showcase }: PageImageShowcaseProps) => {
       <div className="relative grid gap-3 md:grid-cols-[1.15fr_0.85fr] md:items-end lg:block lg:min-h-[500px]">
         {renderImage(
           primaryImage,
-          'h-[220px] w-full rounded-[1rem] object-contain p-2.5 md:h-[340px] md:rounded-[1.45rem] lg:h-[430px]',
+          'h-[220px] w-full rounded-[1rem] object-cover md:h-[340px] md:rounded-[1.45rem] lg:h-[430px]',
           'lg:w-[78%]',
         )}
         {renderImage(
           secondaryImage,
-          'h-[200px] w-full rounded-[1rem] object-contain p-2.5 md:h-[270px] md:rounded-[1.45rem] lg:h-[280px]',
+          'h-[200px] w-full rounded-[1rem] object-cover md:h-[270px] md:rounded-[1.45rem] lg:h-[280px]',
           'lg:absolute lg:bottom-0 lg:end-0 lg:w-[48%]',
         )}
         {renderImage(
           tertiaryImage,
-          'h-[180px] w-full rounded-[1rem] object-contain p-2.5 md:h-[230px] md:rounded-[1.45rem] lg:h-[220px]',
+          'h-[180px] w-full rounded-[1rem] object-cover md:h-[230px] md:rounded-[1.45rem] lg:h-[220px]',
           'lg:absolute lg:bottom-8 lg:start-6 lg:w-[38%]',
         )}
       </div>
@@ -96,11 +96,11 @@ const PageImageShowcaseSection = ({ showcase }: PageImageShowcaseProps) => {
       <div className="relative grid gap-3 md:grid-cols-2 lg:grid-cols-1">
         {renderImage(
           primaryImage,
-          'h-[220px] w-full rounded-[1rem] object-contain p-2.5 md:h-[350px] md:rounded-[1.45rem]',
+          'h-[220px] w-full rounded-[1rem] object-cover md:h-[350px] md:rounded-[1.45rem]',
         )}
         {renderImage(
           secondaryImage,
-          'h-[200px] w-full rounded-[1rem] object-contain p-2.5 md:h-[285px] md:rounded-[1.45rem]',
+          'h-[200px] w-full rounded-[1rem] object-cover md:h-[285px] md:rounded-[1.45rem]',
           'lg:ms-10 lg:-mt-10',
         )}
       </div>

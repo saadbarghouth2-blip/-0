@@ -17,6 +17,7 @@ import {
   portfolioProfile,
   projects,
   services,
+  visibleProjects,
   type PortfolioProject,
 } from '../data/portfolio';
 import type { Language } from '../hooks/useLanguage';
@@ -138,7 +139,7 @@ const createHomeSeo = (lang: Language): PageSeoInput => {
 
 const createAboutSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
-  const title = isArabic ? 'من نحن | نُطق' : 'About Notaq';
+  const title = isArabic ? 'من نحن | نُطق' : 'About Notaq Agency';
   const description = isArabic
     ? 'تعرّف على نُطق، وكالة رقمية من القاهرة تبني مواقع الشركات وصفحات الخدمات والتجارب الرقمية التي تجمع بين الوضوح، الثقة، والأداء.'
     : 'Meet Notaq, a Cairo-based digital agency focused on company websites, service pages, and digital experiences built for clarity and trust.';
@@ -224,7 +225,7 @@ const createProjectsSeo = (lang: Language): PageSeoInput => {
       createWebPageSchema('/projects', lang, title, description, 'CollectionPage'),
       createListSchema(
         isArabic ? 'مشاريع نُطق' : 'Notaq projects',
-        projects.map((project) => ({
+        visibleProjects.map((project) => ({
           name: isArabic ? project.title : project.englishTitle ?? project.title,
           url: getLocalizedAbsoluteUrl(`/projects/${project.slug}`, lang),
           description: isArabic
@@ -510,7 +511,13 @@ const findBlogCategoryByPath = (path: string) => {
 const createBlogCategorySeo = (category: BlogCategoryPageContent, lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
   const title = isArabic ? `${category.label.ar} | مدونة نُطق` : `${category.label.en} | Notaq Blog`;
-  const description = isArabic ? category.description.ar : category.description.en;
+  const rawDescription = isArabic ? category.description.ar : category.description.en;
+  const description =
+    rawDescription.length >= 50
+      ? rawDescription
+      : isArabic
+        ? `${rawDescription} مع مقالات تساعد صاحب الشركة على فهم القرار الرقمي المناسب قبل التنفيذ.`
+        : `${rawDescription} with practical articles for business owners choosing the right digital direction.`;
   const path = `/blog/category/${category.slug}`;
 
   return {
@@ -690,14 +697,156 @@ export const getProjectPageSeo = (
   };
 };
 
+const createStaticBusinessPageSeo = (
+  path: string,
+  lang: Language,
+  titleAr: string,
+  titleEn: string,
+  descriptionAr: string,
+  descriptionEn: string,
+  keywordsAr: string[],
+  keywordsEn: string[],
+  pageType = 'WebPage',
+): PageSeoInput => {
+  const isArabic = lang === 'ar';
+  const title = isArabic ? titleAr : titleEn;
+  const description = isArabic ? descriptionAr : descriptionEn;
+
+  return {
+    title,
+    description,
+    path,
+    lang,
+    keywords: isArabic ? keywordsAr : keywordsEn,
+    structuredData: [
+      createWebPageSchema(path, lang, title, description, pageType),
+      buildBreadcrumbSchema(
+        [
+          { name: isArabic ? 'الرئيسية' : 'Home', path: '/' },
+          { name: title, path },
+        ],
+        lang,
+      ),
+    ],
+  };
+};
+
+const createCompanySeo = (lang: Language): PageSeoInput =>
+  createStaticBusinessPageSeo(
+    '/about/company',
+    lang,
+    'شركة نُطق | وكالة رقمية في مصر والخليج',
+    'Notaq Company | Digital agency for Egypt and the Gulf',
+    'تعرف على شركة نُطق كوكالة رقمية تساعد شركتك على بناء موقع أو تجربة رقمية أو صفحة خدمة واضحة وسريعة ومهيأة للظهور.',
+    'Learn about Notaq as a digital agency helping your company build clear, fast, SEO-ready websites, service pages, and digital experiences.',
+    ['شركة نطق', 'وكالة رقمية', 'تصميم مواقع شركات', 'مصر', 'الخليج'],
+    ['Notaq company', 'digital agency Egypt', 'Gulf web agency', 'company websites'],
+    'AboutPage',
+  );
+
+const createPricingSeo = (lang: Language): PageSeoInput =>
+  createStaticBusinessPageSeo(
+    '/pricing',
+    lang,
+    'تسعير نُطق | خطط مواقع وخدمات رقمية',
+    'Notaq Pricing | Website and digital service plans',
+    'راجع مسارات تسعير نُطق لاختيار الخطة الأنسب لشركتك عند بناء موقع شركة أو صفحة خدمة أو متجر إلكتروني أو تجربة رقمية.',
+    'Review Notaq pricing paths to choose the right plan for your company website, service page, e-commerce store, or digital experience.',
+    ['تسعير تصميم مواقع', 'خطط مواقع شركات', 'أسعار متجر إلكتروني', 'نطق'],
+    ['website pricing Egypt', 'company website plans', 'e-commerce pricing', 'Notaq pricing'],
+  );
+
+const createFaqSeo = (lang: Language): PageSeoInput =>
+  createStaticBusinessPageSeo(
+    '/faq',
+    lang,
+    'أسئلة نُطق | إجابات قبل قرار التواصل',
+    'Notaq FAQ | Answers before the decision to contact',
+    'إجابات واضحة على أسئلة صاحب الشركة قبل بدء تنفيذ موقع أو خدمة رقمية، من النطاق والتكلفة إلى المحتوى والمدة والدعم.',
+    'Clear answers for business owners before starting a website or digital service, covering scope, cost, content, timelines, and support.',
+    ['أسئلة تصميم مواقع', 'أسئلة قبل تنفيذ موقع', 'خدمات نطق', 'SEO'],
+    ['website FAQ', 'web design questions', 'digital agency FAQ', 'SEO-ready websites'],
+    'FAQPage',
+  );
+
+const createTeamSeo = (lang: Language): PageSeoInput =>
+  createStaticBusinessPageSeo(
+    '/team',
+    lang,
+    'فريق نُطق | تصميم وتطوير وتجربة رقمية',
+    'Notaq Team | Design, development, and digital experience',
+    'تعرف على فريق نُطق الذي يساعد شركتك على تحويل المحتوى والخدمة إلى موقع واضح وتجربة رقمية أسرع وأسهل في التواصل.',
+    'Meet the Notaq team helping your company turn services and content into clear websites and faster digital experiences that support contact decisions.',
+    ['فريق تصميم مواقع', 'فريق تطوير مواقع', 'وكالة رقمية مصر', 'نطق'],
+    ['web design team', 'website development team', 'digital agency Cairo', 'Notaq team'],
+  );
+
+const createProcessSeo = (lang: Language): PageSeoInput =>
+  createStaticBusinessPageSeo(
+    '/process',
+    lang,
+    'طريقة عمل نُطق | من احتياج الشركة إلى إطلاق واضح',
+    'Notaq Process | From company need to clear launch',
+    'اكتشف طريقة عمل نُطق من فهم احتياج شركتك إلى التخطيط والتصميم والتنفيذ والمراجعة حتى تظهر التجربة الرقمية بوضوح.',
+    'Explore Notaq process from understanding your company need to planning, design, development, review, and clear digital launch.',
+    ['طريقة عمل تصميم موقع', 'مراحل تنفيذ موقع', 'تخطيط موقع شركة', 'نطق'],
+    ['website process', 'web design workflow', 'company website launch', 'Notaq process'],
+  );
+
+const createCareersSeo = (lang: Language): PageSeoInput =>
+  createStaticBusinessPageSeo(
+    '/careers',
+    lang,
+    'الانضمام إلى نُطق | فرص عمل في التصميم والتطوير',
+    'Notaq Careers | Design and development opportunities',
+    'اكتشف فرص الانضمام إلى نُطق لفريق يهتم بتصميم وتطوير مواقع وتجارب رقمية واضحة تخدم شركات في مصر والخليج.',
+    'Explore opportunities to join Notaq, a team focused on designing and developing clear digital experiences for companies in Egypt and the Gulf.',
+    ['وظائف تصميم مواقع', 'وظائف تطوير مواقع', 'فرص عمل وكالة رقمية', 'نطق'],
+    ['web design careers', 'frontend careers Egypt', 'digital agency careers', 'Notaq careers'],
+  );
+
+const createSubServicesSeo = (lang: Language): PageSeoInput =>
+  createStaticBusinessPageSeo(
+    '/sub-services',
+    lang,
+    'مسارات خدمات نُطق | اختر الأنسب لشركتك',
+    'Notaq Service Paths | Choose the right track for your company',
+    'استعرض مسارات خدمات نُطق بطريقة مختصرة تساعد صاحب الشركة على اختيار الخدمة الأنسب لموقعه أو متجره أو تجربته الرقمية.',
+    'Browse Notaq service paths in a focused way that helps business owners choose the right service for a website, store, or digital experience.',
+    ['خدمات نطق', 'مسارات خدمات', 'تصميم مواقع شركات', 'متاجر إلكترونية'],
+    ['Notaq services', 'service paths', 'company website services', 'e-commerce services'],
+    'CollectionPage',
+  );
+
+const createSubPagesPortalSeo = (lang: Language): PageSeoInput =>
+  createStaticBusinessPageSeo(
+    '/sub-pages-portal',
+    lang,
+    'بوابة الصفحات الفرعية | نُطق',
+    'Sub Pages Portal | Notaq',
+    'بوابة مختصرة تجمع الصفحات الفرعية المهمة في نُطق حتى يصل صاحب الشركة سريعًا إلى القسم المناسب لقراره.',
+    'A focused portal collecting Notaq sub pages so business owners can quickly reach the section that supports their decision.',
+    ['بوابة صفحات نطق', 'صفحات فرعية', 'خدمات ومشاريع ومدونة نطق'],
+    ['Notaq sub pages', 'service portal', 'project and blog portal'],
+    'CollectionPage',
+  );
+
 const staticSeoFactories = {
   '/': createHomeSeo,
   '/about': createAboutSeo,
+  '/about/company': createCompanySeo,
   '/services': createServicesSeo,
   '/projects': createProjectsSeo,
   '/blog': createBlogSeo,
   '/testimonials': createTestimonialsSeo,
   '/contact': createContactSeo,
+  '/pricing': createPricingSeo,
+  '/faq': createFaqSeo,
+  '/team': createTeamSeo,
+  '/process': createProcessSeo,
+  '/careers': createCareersSeo,
+  '/sub-services': createSubServicesSeo,
+  '/sub-pages-portal': createSubPagesPortalSeo,
   '/case-studies': createCaseStudiesSeo,
   '/stats': createStatsSeo,
   '/gallery': createGallerySeo,
@@ -786,6 +935,8 @@ const basePrerenderRoutes: Array<
   { path: '/team', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/process', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/careers', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/sub-services', priority: 0.75, changeFrequency: 'monthly' },
+  { path: '/sub-pages-portal', priority: 0.7, changeFrequency: 'monthly' },
   ...allDetailRoutes.map((path) => ({
     path,
     priority: 0.65,

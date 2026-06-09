@@ -1,19 +1,19 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ArrowUpLeft, BarChart3, Building2, LayoutGrid, List, Search, SlidersHorizontal, Sparkles, Star, Tag, X } from 'lucide-react';
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { ArrowLeft, ArrowRight, ArrowUpLeft, BarChart3, Building2, LayoutGrid, List, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
+import { useRef, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import ProjectCard from '../components/ProjectCard';
 import EditorialImageBreak from '../components/EditorialImageBreak';
 import PageHero from '../components/PageHero';
 import PageImageShowcaseSection from '../components/PageImageShowcase';
-import { projects } from '../data/portfolio';
+import { visibleProjects } from '../data/portfolio';
 import { pageImageShowcases } from '../data/pageImageShowcases';
 import { servicePackages, trustSignals } from '../data/company';
 import { useLanguage } from '../hooks/useLanguage';
-import { useIsMobile } from '../hooks/use-mobile';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 import { cn } from '../lib/utils';
 
 // Helper to paginate items
@@ -27,9 +27,8 @@ const paginateItems = <T,>(items: T[], pageSize: number) => {
 
 const ProjectsPage = () => {
   const { lang, localizePath } = useLanguage();
-  const isMobile = useIsMobile();
   const isArabic = lang === 'ar';
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
 
   // States
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,7 +58,7 @@ const ProjectsPage = () => {
   // Extract all categories and tech stacks from project list for filters
   const categories = useMemo(() => {
     const list = new Set<string>();
-    projects.forEach(p => {
+    visibleProjects.forEach(p => {
       if (p.category) list.add(p.category);
     });
     return ['All', ...Array.from(list)];
@@ -67,7 +66,7 @@ const ProjectsPage = () => {
 
   const technologies = useMemo(() => {
     const list = new Set<string>();
-    projects.forEach(p => {
+    visibleProjects.forEach(p => {
       if (p.techStack) p.techStack.forEach(t => list.add(t));
     });
     return ['All', ...Array.from(list).slice(0, 8)]; // top 8 tech tags
@@ -75,11 +74,10 @@ const ProjectsPage = () => {
 
   // Filter project logic
   const filteredProjects = useMemo(() => {
-    return projects.filter(project => {
+    return visibleProjects.filter(project => {
       const title = isArabic ? project.title : project.englishTitle ?? project.title;
       const excerpt = isArabic ? project.excerpt : project.englishExcerpt ?? project.excerpt;
-      const category = isArabic ? project.category : project.englishCategory ?? project.category;
-      
+
       const matchesSearch = 
         title.toLowerCase().includes(searchQuery.toLowerCase()) || 
         excerpt.toLowerCase().includes(searchQuery.toLowerCase());
@@ -99,7 +97,7 @@ const ProjectsPage = () => {
 
   // Featured Spotlight Project (Take the first project or one with high rating/complexity)
   const spotlightProject = useMemo(() => {
-    return projects[0]; // main highlighted project
+    return visibleProjects[0]; // main highlighted project
   }, []);
 
   // Paginated filtered projects
@@ -109,7 +107,7 @@ const ProjectsPage = () => {
   }, [filteredProjects]);
 
   const totalPages = paginatedPages.length;
-  const visibleProjects = paginatedPages[currentPage] ?? paginatedPages[0] ?? [];
+  const currentProjects = paginatedPages[currentPage] ?? paginatedPages[0] ?? [];
   const canGoPrev = currentPage > 0;
   const canGoNext = currentPage < totalPages - 1;
 
@@ -134,7 +132,7 @@ const ProjectsPage = () => {
         description={copy.description}
         kicker={copy.kicker}
         metrics={[
-          { value: `${projects.length}+`, label: isArabic ? 'مشاريع حقيقية منفذة' : 'live projects built' },
+          { value: `${visibleProjects.length}+`, label: isArabic ? 'مشاريع حقيقية منفذة' : 'live projects built' },
           { value: `${servicePackages.length}`, label: isArabic ? 'تخصصات الخدمة' : 'service packages' },
           { value: `${trustSignals.length}+`, label: isArabic ? 'دلائل كفاءة وثقة' : 'trust indicators' },
         ]}
@@ -375,7 +373,7 @@ const ProjectsPage = () => {
 
           {/* Project List / Grid Rendering */}
           <div className="min-h-[400px]">
-            {visibleProjects.length > 0 ? (
+            {currentProjects.length > 0 ? (
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`${currentPage}-${viewMode}`}
@@ -389,7 +387,7 @@ const ProjectsPage = () => {
                       : "space-y-4 md:space-y-6 max-w-4xl mx-auto"
                   )}
                 >
-                  {visibleProjects.map((project, index) => (
+                  {currentProjects.map((project, index) => (
                     <motion.div
                       key={project.slug}
                       initial={{ opacity: 0, y: 15 }}

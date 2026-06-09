@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 import { cn } from '../lib/utils';
 
 const faqList = [
@@ -49,7 +50,7 @@ const faqList = [
 const FAQPage = () => {
   const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
 
   // States
   const [searchQuery, setSearchQuery] = useState('');

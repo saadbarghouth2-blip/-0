@@ -1,14 +1,11 @@
 import {
-  Users,
   TrendingUp,
   Award,
   Zap,
-  Target,
   CheckCircle,
   BarChart3,
   Clock,
   Lightbulb,
-  Globe,
   Sparkles,
   Heart,
   Briefcase,
@@ -17,25 +14,18 @@ import {
   Database,
   Palette,
   Search,
-  ShoppingCart,
-  Smartphone,
-  Cloud,
-  Brain,
-  Wrench,
-  ArrowRight,
   BookOpen,
   Code,
   PieChart,
-  TrendingDown,
   Layers,
   Filter,
   Map,
-  Compass,
   FileText,
   MessageSquare,
   ThumbsUp,
   Play,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 // ==================== SERVICES SUBSECTIONS ====================
 export interface ServiceSubPage {
@@ -43,9 +33,9 @@ export interface ServiceSubPage {
   slug: string;
   title: { ar: string; en: string };
   description: { ar: string; en: string };
-  icon: any;
+  icon: LucideIcon;
   type: 'journey' | 'faq' | 'guide' | 'comparison' | 'cases' | 'specs' | 'tips' | 'survey' | 'tool' | 'webinar';
-  content: any;
+  content: Record<string, unknown>;
   relatedServices?: string[];
 }
 
@@ -55,8 +45,8 @@ export const servicesSubPages: Record<string, ServiceSubPage> = {
     slug: 'services-journey',
     title: { ar: 'رحلة اختيار الخدمة', en: 'Service Selection Journey' },
     description: {
-      ar: 'رحلة تفاعلية لاختيار الخدمة المناسبة لاحتياجاتك',
-      en: 'Interactive journey to select the right service for your needs',
+      ar: 'رحلة تفاعلية لاختيار المسار الأنسب لشركتك',
+      en: 'Interactive journey to select the right track for your company',
     },
     icon: Map,
     type: 'journey',
@@ -64,8 +54,8 @@ export const servicesSubPages: Record<string, ServiceSubPage> = {
       steps: [
         {
           step: 1,
-          title: { ar: 'فهم احتياجاتك', en: 'Understand Your Needs' },
-          description: { ar: 'ما هي المشكلة التي تواجهها؟', en: 'What problem are you facing?' },
+          title: { ar: 'فهم احتياج الشركة', en: 'Understand the Company Need' },
+          description: { ar: 'ما التحدي الذي تريد الشركة حله؟', en: 'What challenge should the company solve?' },
           options: [
             { label: { ar: 'تصميم، UX، واجهة مستخدم', en: 'Design, UX, User Interface' }, icon: Palette },
             { label: { ar: 'تطوير، كود، تطبيقات', en: 'Development, Code, Apps' }, icon: Code },
@@ -76,12 +66,12 @@ export const servicesSubPages: Record<string, ServiceSubPage> = {
         {
           step: 2,
           title: { ar: 'اختر الفئة', en: 'Choose Category' },
-          description: { ar: 'أي فئة تناسب احتياجاتك؟', en: 'Which category matches your needs?' },
+          description: { ar: 'أي فئة تناسب احتياج الشركة؟', en: 'Which category matches the company need?' },
         },
         {
           step: 3,
           title: { ar: 'اختر الخدمة', en: 'Select Service' },
-          description: { ar: 'أي خدمة محددة تريد؟', en: 'Which specific service do you want?' },
+          description: { ar: 'أي خدمة تخدم قرار الشركة الآن؟', en: 'Which specific service supports the company decision now?' },
         },
         {
           step: 4,
@@ -153,7 +143,7 @@ export const servicesSubPages: Record<string, ServiceSubPage> = {
       chapters: [
         {
           chapter: 1,
-          title: { ar: 'الفصل الأول: تقييم احتياجاتك', en: 'Chapter 1: Assessing Your Needs' },
+          title: { ar: 'الفصل الأول: تقييم احتياج الشركة', en: 'Chapter 1: Assessing the Company Need' },
           sections: [
             { title: 'ما هي مشكلتك؟', readTime: '5 دقائق' },
             { title: 'ما هو ميزانيتك؟', readTime: '3 دقائق' },
@@ -273,8 +263,8 @@ export const servicesSubPages: Record<string, ServiceSubPage> = {
       tips: [
         {
           number: 1,
-          title: { ar: 'ابدأ بتقييم احتياجاتك', en: 'Start by assessing your needs' },
-          description: { ar: 'لا تختار خدمة حتى تفهم احتياجاتك تماماً', en: 'Don\'t choose a service until you fully understand your needs' },
+          title: { ar: 'ابدأ بتقييم احتياج الشركة', en: 'Start by assessing the company need' },
+          description: { ar: 'لا تختار خدمة قبل فهم الهدف التجاري والقرار المطلوب بوضوح', en: 'Do not choose a service before the business goal and required decision are clear' },
           importance: 'حرج جداً',
           readTime: '3 دقائق',
         },
@@ -298,9 +288,9 @@ export interface ProjectSubPage {
   slug: string;
   title: { ar: string; en: string };
   description: { ar: string; en: string };
-  icon: any;
+  icon: LucideIcon;
   type: string;
-  content: any;
+  content: Record<string, unknown>;
 }
 
 export const projectsSubPages: Record<string, ProjectSubPage> = {
@@ -475,9 +465,9 @@ export interface BlogSubPage {
   slug: string;
   title: { ar: string; en: string };
   description: { ar: string; en: string };
-  icon: any;
+  icon: LucideIcon;
   type: string;
-  content: any;
+  content: Record<string, unknown>;
 }
 
 export const blogSubPages: Record<string, BlogSubPage> = {
@@ -652,9 +642,9 @@ export interface TeamSubPage {
   slug: string;
   title: { ar: string; en: string };
   description: { ar: string; en: string };
-  icon: any;
+  icon: LucideIcon;
   type: string;
-  content: any;
+  content: Record<string, unknown>;
 }
 
 export const teamSubPages: Record<string, TeamSubPage> = {
@@ -790,9 +780,9 @@ export interface PricingSubPage {
   slug: string;
   title: { ar: string; en: string };
   description: { ar: string; en: string };
-  icon: any;
+  icon: LucideIcon;
   type: string;
-  content: any;
+  content: Record<string, unknown>;
 }
 
 export const pricingSubPages: Record<string, PricingSubPage> = {
@@ -847,8 +837,8 @@ export const pricingSubPages: Record<string, PricingSubPage> = {
     slug: 'pricing-custom',
     title: { ar: 'خطط مخصصة', en: 'Custom Plans' },
     description: {
-      ar: 'احصل على خطة مخصصة حسب احتياجاتك',
-      en: 'Get a custom plan tailored to your needs',
+      ar: 'احصل على خطة مخصصة حسب احتياج شركتك',
+      en: 'Get a custom plan tailored to your company need',
     },
     icon: Sparkles,
     type: 'custom',

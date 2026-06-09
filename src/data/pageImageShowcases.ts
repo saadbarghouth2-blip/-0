@@ -144,8 +144,8 @@ export const pageImageShowcases = {
     variant: 'band',
     kickerAr: 'قبل أن تبدأ التواصل',
     kickerEn: 'Before you contact',
-    titleAr: 'اعرف ما الذي سيحدث بعد رسالتك حتى تبدأ بثقة',
-    titleEn: 'Know what happens after your message so you can start with confidence.',
+    titleAr: 'اعرف كيف تتحول رسالة شركتك إلى خطوة تنفيذ واضحة',
+    titleEn: 'See how your company message becomes a clear execution step.',
     descriptionAr:
       'صفحة التواصل ليست فورم فقط. صاحب القرار يحتاج أن يعرف كيف تبدأ الخطوة التالية، وما المعلومات التي تساعد على فهم احتياج الشركة بسرعة. الصورتان هنا تهدئان الصفحة وتدعمان الكلام بدل الزحمة.',
     descriptionEn:
@@ -168,7 +168,7 @@ export const pageImageShowcases = {
       'A gallery is stronger when it selects meaningful moments instead of throwing everything at once. These two visuals carry the overall feel while keeping the page focused and easy to continue.',
     images: [
       showcaseImage(localImages.galleryHero),
-      showcaseImage(localImages.interfaceScene),
+      showcaseImage(localImages.cloudSync),
     ],
   },
   caseStudies: {

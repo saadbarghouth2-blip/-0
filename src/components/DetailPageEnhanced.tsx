@@ -13,7 +13,7 @@ import HeroMediaBackdrop from './HeroMediaBackdrop';
 import { enrichmentMediaById } from '../data/enrichmentMedia';
 import { getPageEnrichment } from '../data/pageEnrichment';
 import { useLanguage } from '../hooks/useLanguage';
-import { localizedText } from '../lib/repairText';
+import { clientFacingText, localizedText } from '../lib/repairText';
 
 interface DetailSection {
   title: { ar: string; en: string };
@@ -94,7 +94,7 @@ const DetailPageEnhanced: React.FC<DetailPageEnhancedProps> = ({ page, isLoading
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  const text = (value: { ar: string; en: string }) => localizedText(value, lang);
+  const text = (value: { ar: string; en: string }) => clientFacingText(localizedText(value, lang), lang);
   const enrichment = page ? getPageEnrichment(`${page.parentPath}/${page.slug}`) : undefined;
   const heroFallbackMedia = enrichment
     ? enrichmentMediaById[enrichment.heroMediaId]
@@ -145,7 +145,7 @@ const DetailPageEnhanced: React.FC<DetailPageEnhancedProps> = ({ page, isLoading
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[calc(100svh-7rem)] w-screen items-end overflow-hidden px-4 pb-7 pt-20 sm:px-6 md:min-h-[calc(100svh-7.8rem)] md:px-10 md:pb-10 md:pt-[7.5rem] lg:px-14"
+          className="relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[30rem] w-screen items-end overflow-hidden px-3 pb-5 pt-12 sm:min-h-[34rem] sm:px-6 sm:pb-7 sm:pt-20 md:min-h-[42rem] md:px-10 md:pb-10 md:pt-[7.5rem] lg:min-h-[46rem] lg:px-14"
         >
           <HeroMediaBackdrop fallbackMedia={heroFallbackMedia} isArabic={isArabic} media={heroMedia} />
           <div className={heroGridClass}>

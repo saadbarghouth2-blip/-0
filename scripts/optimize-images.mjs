@@ -14,7 +14,7 @@ const assetTransforms = [
     format: 'webp',
   },
   {
-    input: ['public', 'images', 'WhatsApp Image 2026-02-15 at 2.31.19 AM (1).jpeg'],
+    input: ['public', 'images', 'ChatGPT Image Apr 8, 2026, 11_23_42 AM.png'],
     output: ['public', 'images', 'workspace-team.webp'],
     width: 1400,
     format: 'webp',

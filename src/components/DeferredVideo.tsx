@@ -25,7 +25,7 @@ const DeferredVideo = ({
     }
 
     if (typeof IntersectionObserver === 'undefined') {
-      setShouldLoad(true);
+      window.setTimeout(() => setShouldLoad(true), 0);
       return;
     }
 

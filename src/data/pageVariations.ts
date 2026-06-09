@@ -642,22 +642,26 @@ const routeMediaPools = {
 
 const getRouteVariety = (path: string) => {
   const slug = path.split('/').pop() ?? path;
-  if (path.startsWith('/home/')) return { group: routeMediaPools.home, index: itemIndex(routeMediaPools.home.order, slug) };
-  if (path.startsWith('/about/')) return { group: routeMediaPools.about, index: itemIndex(routeMediaPools.about.order, slug) };
-  if (path.startsWith('/services/')) return { group: routeMediaPools.services, index: itemIndex(routeMediaPools.services.order, slug) };
-  if (path.startsWith('/testimonials/')) return { group: routeMediaPools.testimonials, index: itemIndex(routeMediaPools.testimonials.order, slug) };
-  if (path.startsWith('/contact/')) return { group: routeMediaPools.contact, index: itemIndex(routeMediaPools.contact.order, slug) };
+  if (path.startsWith('/home/')) return { group: routeMediaPools.home, index: itemIndex(routeMediaPools.home.order, slug), imageOffset: 0, firstVideoId: 'home-interface' };
+  if (path.startsWith('/about/')) return { group: routeMediaPools.about, index: itemIndex(routeMediaPools.about.order, slug), imageOffset: 24, firstVideoId: 'about-team-review' };
+  if (path.startsWith('/services/')) return { group: routeMediaPools.services, index: itemIndex(routeMediaPools.services.order, slug), imageOffset: 48, firstVideoId: 'services-code-build' };
+  if (path.startsWith('/testimonials/')) return { group: routeMediaPools.testimonials, index: itemIndex(routeMediaPools.testimonials.order, slug), imageOffset: 88, firstVideoId: 'testimonials-client-call' };
+  if (path.startsWith('/contact/')) return { group: routeMediaPools.contact, index: itemIndex(routeMediaPools.contact.order, slug), imageOffset: 108, firstVideoId: 'contact-organizing-tasks' };
   return null;
 };
+
+const generatedSubpageMediaId = (zeroBasedIndex: number) =>
+  `generated-generated-subpage-visual-${String((zeroBasedIndex % 120) + 1).padStart(3, '0')}`;
 
 const enforceRouteVariety = (path: string, variation: PageVariationConfig): PageVariationConfig => {
   const variety = getRouteVariety(path);
   if (!variety) return variation;
 
-  const { group, index } = variety;
-  const heroMediaId = group.images[index % group.images.length];
-  const storyMediaId = group.images[(index + 3) % group.images.length];
-  const videoMediaId = group.videos[index % group.videos.length];
+  const { imageOffset, index, firstVideoId } = variety;
+  const heroMediaId = generatedSubpageMediaId(imageOffset + index * 3);
+  const storyMediaId = generatedSubpageMediaId(imageOffset + index * 3 + 1);
+  const videoMediaId =
+    index === 0 ? firstVideoId : generatedSubpageMediaId(imageOffset + index * 3 + 2);
 
   return {
     ...variation,

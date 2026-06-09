@@ -8,6 +8,7 @@ import { pageImageShowcases } from '../data/pageImageShowcases';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 // Extended portfolio items with rich metadata (tools, ratings, dates, sizes for masonry)
 const portfolioItems = [
@@ -33,7 +34,7 @@ const portfolioItems = [
     titleAr: 'نظام واجهة لوحة التحكم',
     category: 'SaaS',
     categoryAr: 'أنظمة سحابية',
-    image: '/images/projects/tech-startup-landing.webp',
+    image: '/images/projects/grand-egyptian-museum-new.webp',
     description: 'Enterprise dashboard with advanced charts and analytics widget system.',
     descriptionAr: 'لوحة تحكم للمؤسسات مع رسومات بيانية متقدمة ونظام مربعات ذكي.',
     tools: ['Next.js', 'Framer Motion', 'd3.js'],
@@ -48,7 +49,7 @@ const portfolioItems = [
     titleAr: 'منصة تعليمية متقدمة',
     category: 'Education',
     categoryAr: 'تعليم وتدريب',
-    image: '/images/projects/smart-educational-maps.webp',
+    image: '/images/projects/geoinformatics.webp',
     description: 'Interactive learning maps platform supporting 50K+ secondary students.',
     descriptionAr: 'خرائط تعليمية تفاعلية تخدم أكثر من 50 ألف طالب في المرحلة الثانوية.',
     tools: ['TypeScript', 'WebGL', 'Node.js'],
@@ -261,7 +262,7 @@ const BeforeAfterSlider = () => {
 const Gallery = () => {
   const { lang } = useLanguage();
   const isArabic = lang === 'ar';
-  const text = (arabic: string, english: string) => (isArabic ? arabic : english);
+  const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
 
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);

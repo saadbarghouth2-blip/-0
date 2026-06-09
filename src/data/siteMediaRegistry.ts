@@ -12,8 +12,15 @@ export interface SiteMediaRegistryItem {
     en: string;
   };
   usage: string;
-  source: 'local' | 'pexels';
+  source: 'local' | 'pexels' | 'unsplash';
 }
+
+const sourceFromLicense = (licenseName?: string): SiteMediaRegistryItem['source'] => {
+  const normalized = licenseName?.toLowerCase() ?? '';
+  if (normalized.includes('unsplash')) return 'unsplash';
+  if (normalized.includes('pexels')) return 'pexels';
+  return 'local';
+};
 
 const fromLocalImage = (asset: LocalImageAsset): SiteMediaRegistryItem => ({
   id: asset.id,
@@ -33,7 +40,7 @@ const fromEnrichment = (asset: EnrichmentMediaAsset): SiteMediaRegistryItem => (
   kind: asset.type,
   alt: asset.alt,
   usage: asset.usedForRoutes.join(', '),
-  source: 'pexels',
+  source: sourceFromLicense(asset.licenseName),
 });
 
 export const siteMediaRegistry: SiteMediaRegistryItem[] = [

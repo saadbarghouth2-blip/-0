@@ -16,12 +16,13 @@ import {
   BarChart3,
   Target,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 export interface SubServiceCase {
   id: string;
   title: { ar: string; en: string };
   description: { ar: string; en: string };
-  results: Array<{ metric: string; value: string; icon: any }>;
+  results: Array<{ metric: string; value: string; icon: LucideIcon }>;
   client: { name: string; industry: string; logo?: string };
   duration: string;
   technologies: string[];
@@ -49,12 +50,12 @@ export interface SubServiceComparison {
 export interface SubServiceDetail {
   id: string;
   slug: string;
-  icon: any;
+  icon: LucideIcon;
   title: { ar: string; en: string };
   shortDescription: { ar: string; en: string };
   longDescription: { ar: string; en: string };
-  benefits: Array<{ icon: any; title: { ar: string; en: string }; description: { ar: string; en: string } }>;
-  features: Array<{ icon: any; title: { ar: string; en: string }; description: { ar: string; en: string } }>;
+  benefits: Array<{ icon: LucideIcon; title: { ar: string; en: string }; description: { ar: string; en: string } }>;
+  features: Array<{ icon: LucideIcon; title: { ar: string; en: string }; description: { ar: string; en: string } }>;
   caseStudies: SubServiceCase[];
   team: SubServiceTeamMember[];
   pricingTiers: SubServiceComparison[];
@@ -82,8 +83,8 @@ export const subServicesData: Record<string, SubServiceDetail> = {
       en: 'Beautiful and user-friendly interface design that increases conversions',
     },
     longDescription: {
-      ar: 'نحن نخصص التصاميم لاحتياجاتك الفريدة مع اتباع أفضل ممارسات UX/UI العالمية. كل بكسل مصمم بعناية لتحسين تجربة المستخدم وزيادة الرضا والولاء.',
-      en: 'We customize designs for your unique needs following global UX/UI best practices. Every pixel is carefully designed to improve user experience and increase satisfaction and loyalty.',
+      ar: 'تصاميم مخصصة لطبيعة شركتك وزوارها مع اتباع أفضل ممارسات UX/UI العالمية. كل بكسل يخدم وضوح التجربة وقرار التواصل.',
+      en: 'Designs are tailored to your company and visitors while following global UX/UI best practices. Every pixel supports experience clarity and the decision to contact.',
     },
     benefits: [
       {
@@ -463,12 +464,12 @@ export const subServicesData: Record<string, SubServiceDetail> = {
     icon: ShoppingCart,
     title: { ar: 'تطوير التجارة الإلكترونية', en: 'E-Commerce Development' },
     shortDescription: {
-      ar: 'متاجر إلكترونية عملاقة تبيع الملايين شهرياً',
-      en: 'Giant e-commerce stores selling millions monthly',
+      ar: 'متاجر إلكترونية واضحة تساعد الزائر على الشراء بثقة',
+      en: 'Clear e-commerce stores that help visitors buy with confidence',
     },
     longDescription: {
-      ar: 'نحن بناء متاجر إلكترونية يكسبون الملايين. من المتجر الصغير إلى الشركات الضخمة. نعرف كل شيء عن بيع الأشياء أونلاين.',
-      en: 'We build e-commerce stores that make millions. From small stores to huge companies. We know everything about selling online.',
+      ar: 'متجر شركتك يحتاج رحلة شراء منظمة: منتجات واضحة، سلة سهلة، دفع مطمئن، ورسائل تقلل التردد قبل إتمام الطلب.',
+      en: 'Your company store needs an organized buying journey: clear products, an easy cart, reassuring checkout, and messages that reduce hesitation before purchase.',
     },
     benefits: [
       {
@@ -1420,8 +1421,8 @@ export const subServicesData: Record<string, SubServiceDetail> = {
       {
         question: { ar: 'هل يمكن استخدام GitHub Actions بدل Jenkins؟', en: 'Can we use GitHub Actions instead of Jenkins?' },
         answer: {
-          ar: 'نعم، نحن ندعم أدوات CI/CD متعددة حسب احتياجاتك',
-          en: 'Yes, we support multiple CI/CD tools based on your needs',
+          ar: 'نعم، يمكن اختيار أدوات CI/CD المناسبة لبنية الشركة وطريقة تشغيل فريقها.',
+          en: 'Yes, the CI/CD tools can be selected around the company architecture and team workflow.',
         },
       },
     ],

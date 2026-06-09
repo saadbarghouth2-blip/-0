@@ -4,8 +4,6 @@ import SiteLayout from './components/SiteLayout';
 import { useLanguage } from './hooks/useLanguage';
 import { usePageMetadata } from './hooks/usePageMetadata';
 import { getPageSeoByPath } from './lib/pageSeo';
-import SubServicesPage from './pages/SubServicesPage';
-import SubPagesPortalPage from './pages/SubPagesPortalPage';
 import {
   AboutPage,
   EnhancedAboutPageComponent,
@@ -31,6 +29,8 @@ import {
   TeamPage,
   ProcessPage,
   CareersPage,
+  SubServicesPage,
+  SubPagesPortalPage,
 } from './lib/pageLoaders';
 
 const ScrollToTop = () => {

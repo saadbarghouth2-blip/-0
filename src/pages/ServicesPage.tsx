@@ -32,6 +32,7 @@ import { serviceFamilies, serviceLibrary } from '../data/serviceLibrary';
 import { pageImageShowcases } from '../data/pageImageShowcases';
 import { illustrationAssets } from '../lib/illustrationAssets';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 const serviceIcons = [Building2, Layers3, BriefcaseBusiness, BrainCircuit];
 
@@ -235,7 +236,7 @@ const ServicesPage = () => {
     ? 'flex flex-row-reverse items-start gap-3'
     : 'flex items-start gap-3';
   const faqAnswerClass = 'mt-2.5 text-[0.88rem] leading-6 text-slate-400 md:text-[0.95rem] md:leading-7';
-  const content = {
+  const rawContent = {
     title: isArabic ? 'خدمات نُطق' : 'Notaq Services',
     description: isArabic
       ? 'اختر خدمة رقمية تساعد شركتك على عرض قيمتها بوضوح، وبناء ثقة أسرع مع الزائر، وتحويل الاهتمام إلى طلب تواصل أو شراء.'
@@ -269,6 +270,12 @@ const ServicesPage = () => {
     faqTitle: isArabic ? 'أسئلة شائعة حول التنفيذ والحلول المتاحة' : 'Common questions about delivery and available solutions',
     faqCta: isArabic ? 'هل تحتاج إجابة أدق؟ تواصل معنا' : 'Need a more specific answer? Contact us',
   };
+  const content = Object.fromEntries(
+    Object.entries(rawContent).map(([key, value]) => [key, clientFacingText(value, lang)]),
+  ) as typeof rawContent;
+  const copy = (value: string) => clientFacingText(value, lang);
+  const copyPair = (value: { ar: string; en: string }) => copy(isArabic ? value.ar : value.en);
+  const copyLegacyPair = (ar: string, en: string) => copy(isArabic ? ar : en);
 
   const renderServiceDepthCard = (item: ServiceDepthItem, index: number) => (
     <motion.div
@@ -302,10 +309,10 @@ const ServicesPage = () => {
             <item.icon className="h-7 w-7 md:h-10 md:w-10" />
           </div>
           <h3 className="mb-4 font-display text-[1.9rem] font-bold tracking-wide text-white drop-shadow-lg md:mb-6 md:text-5xl">
-            {isArabic ? item.titleAr : item.titleEn}
+            {copyLegacyPair(item.titleAr, item.titleEn)}
           </h3>
           <p className="text-base font-medium leading-8 text-slate-300 md:text-2xl md:leading-10">
-            {isArabic ? item.descriptionAr : item.descriptionEn}
+            {copyLegacyPair(item.descriptionAr, item.descriptionEn)}
           </p>
           <motion.div
             animate={item.imageMode === 'contain' ? { y: [0, -6, 0] } : undefined}
@@ -342,11 +349,11 @@ const ServicesPage = () => {
           : index === 2
             ? 'md:col-span-1 md:row-span-1 bg-[#06090f]/60'
             : 'md:col-span-3 md:row-span-1 bg-gradient-to-r from-violet-900/10 to-cyan-900/10';
-    const title = isArabic ? service.title : service.englishTitle ?? service.title;
-    const description = isArabic
+    const title = copy(isArabic ? service.title : service.englishTitle ?? service.title);
+    const description = copy(isArabic
       ? service.description
-      : service.englishDescription ?? service.description;
-    const bullets = isArabic ? service.bullets : service.englishBullets ?? service.bullets;
+      : service.englishDescription ?? service.description);
+    const bullets = (isArabic ? service.bullets : service.englishBullets ?? service.bullets).map(copy);
 
     return (
       <motion.div
@@ -401,7 +408,7 @@ const ServicesPage = () => {
         <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent" />
         <div className="flex items-start justify-between gap-3">
           <span className="inline-flex max-w-full rounded-full border border-white/10 bg-white/8 px-3 py-1 text-[0.72rem] font-semibold text-cyan-100 backdrop-blur-md">
-            {family ? (isArabic ? family.label.ar : family.label.en) : service.familyId}
+            {family ? copyPair(family.label) : service.familyId}
           </span>
           <span className="shrink-0 font-display text-sm font-bold text-white/35">
             {String(index + 1).padStart(2, '0')}
@@ -410,13 +417,13 @@ const ServicesPage = () => {
 
         <div className="mt-4 min-w-0">
           <p className="text-[10px] font-semibold text-cyan-200">
-            {isArabic ? service.eyebrow.ar : service.eyebrow.en}
+            {copyPair(service.eyebrow)}
           </p>
           <h3 className="mt-2 break-words font-display text-[1.08rem] font-bold leading-7 text-white md:text-[1.25rem] md:leading-8">
-            {isArabic ? service.title.ar : service.title.en}
+            {copyPair(service.title)}
           </h3>
           <p className="mt-2 text-[11px] leading-6 text-slate-300 md:mt-3 md:text-sm">
-            {isArabic ? service.summary.ar : service.summary.en}
+            {copyPair(service.summary)}
           </p>
         </div>
 
@@ -425,7 +432,7 @@ const ServicesPage = () => {
             {isArabic ? 'أفضل استخدام' : 'Best fit'}
           </p>
           <p className="mt-1 md:mt-2 text-[10px] md:text-xs leading-5 md:leading-6 text-slate-300">
-            {isArabic ? service.bestFor.ar : service.bestFor.en}
+            {copyPair(service.bestFor)}
           </p>
         </div>
 
@@ -433,7 +440,7 @@ const ServicesPage = () => {
           {service.deliverables.slice(0, 2).map((item) => (
             <li key={item.en} className="flex items-start gap-1.5 text-[10px] md:text-xs leading-5 md:leading-6 text-slate-300">
               <CheckCircle className="mt-0.5 md:mt-1 h-3.5 md:h-4 w-3.5 md:w-4 shrink-0 text-cyan-300" />
-              <span className="min-w-0 break-words">{isArabic ? item.ar : item.en}</span>
+              <span className="min-w-0 break-words">{copyPair(item)}</span>
             </li>
           ))}
         </ul>
@@ -456,11 +463,11 @@ const ServicesPage = () => {
           0{index + 1}
         </span>
         <h3 className="font-display text-[1.05rem] font-bold text-white transition-colors group-hover:text-cyan-300 md:text-2xl">
-          {isArabic ? step.title : step.englishTitle ?? step.title}
+          {copy(isArabic ? step.title : step.englishTitle ?? step.title)}
         </h3>
       </div>
       <p className={processDescriptionClass}>
-        {isArabic ? step.description : step.englishDescription ?? step.description}
+        {copy(isArabic ? step.description : step.englishDescription ?? step.description)}
       </p>
     </div>
   );
@@ -480,10 +487,10 @@ const ServicesPage = () => {
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="break-words text-[0.98rem] font-semibold leading-6 text-white md:text-[1.02rem] md:leading-7">
-            {isArabic ? item.questionAr : item.questionEn}
+            {copyLegacyPair(item.questionAr, item.questionEn)}
           </h3>
           <p className={faqAnswerClass}>
-            {isArabic ? item.answerAr : item.answerEn}
+            {copyLegacyPair(item.answerAr, item.answerEn)}
           </p>
         </div>
       </div>
@@ -597,7 +604,7 @@ const ServicesPage = () => {
                         : 'border-white/10 bg-white/[0.04] text-slate-300 hover:border-white/20 hover:text-white'
                     }`}
                   >
-                    {isArabic ? family.label.ar : family.label.en}
+                    {copyPair(family.label)}
                   </button>
                 ))}
               </div>
@@ -618,8 +625,8 @@ const ServicesPage = () => {
                         : 'All services'
                       : activeFamilyDetails
                         ? isArabic
-                          ? activeFamilyDetails.label.ar
-                          : activeFamilyDetails.label.en
+                          ? copyPair(activeFamilyDetails.label)
+                          : copyPair(activeFamilyDetails.label)
                         : ''}
                   </p>
                   <p className="text-xs text-slate-400">
@@ -629,8 +636,8 @@ const ServicesPage = () => {
                         : 'complete view'
                       : activeFamilyDetails
                         ? isArabic
-                          ? activeFamilyDetails.description.ar
-                          : activeFamilyDetails.description.en
+                          ? copyPair(activeFamilyDetails.description)
+                          : copyPair(activeFamilyDetails.description)
                         : ''}
                   </p>
                 </div>
@@ -679,10 +686,10 @@ const ServicesPage = () => {
                         {isArabic ? 'مسار خدمة' : 'Service Track'} 0{index + 1}
                       </p>
                       <h3 className="mt-3 font-display text-2xl font-bold text-white md:text-3xl">
-                        {isArabic ? pack.name.ar : pack.name.en}
+                        {copyPair(pack.name)}
                       </h3>
                       <p className="mt-3 text-sm leading-7 text-slate-300">
-                        {isArabic ? pack.promise.ar : pack.promise.en}
+                        {copyPair(pack.promise)}
                       </p>
                     </div>
                     <div className="rounded-[1.25rem] border border-white/8 bg-[#06090f]/45 p-4">
@@ -693,7 +700,7 @@ const ServicesPage = () => {
                         {pack.deliverables.map((deliverable) => (
                           <div key={deliverable.en} className="flex items-start gap-2 text-sm leading-6 text-slate-300">
                             <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
-                            <span>{isArabic ? deliverable.ar : deliverable.en}</span>
+                            <span>{copyPair(deliverable)}</span>
                           </div>
                         ))}
                       </div>
@@ -780,8 +787,8 @@ const ServicesPage = () => {
                     transition={{ delay: index * 0.07 }}
                     className="rounded-[1.25rem] border border-white/8 bg-white/[0.035] p-4"
                   >
-                    <h3 className="font-display text-lg font-bold text-white">{isArabic ? artifact.title.ar : artifact.title.en}</h3>
-                    <p className="mt-2 text-sm leading-7 text-slate-400">{isArabic ? artifact.description.ar : artifact.description.en}</p>
+                    <h3 className="font-display text-lg font-bold text-white">{copyPair(artifact.title)}</h3>
+                    <p className="mt-2 text-sm leading-7 text-slate-400">{copyPair(artifact.description)}</p>
                   </motion.div>
                 ))}
               </div>
@@ -796,11 +803,11 @@ const ServicesPage = () => {
                 {industryUseCases.map((item) => (
                   <div key={item.sector.en} className="rounded-[1.25rem] border border-white/8 bg-[#06090f]/45 p-4">
                     <div className="flex items-start justify-between gap-4">
-                      <h3 className="font-display text-base font-bold text-cyan-100">{isArabic ? item.sector.ar : item.sector.en}</h3>
+                      <h3 className="font-display text-base font-bold text-cyan-100">{copyPair(item.sector)}</h3>
                       <span className="rounded-full bg-cyan-400/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-cyan-200">Fit</span>
                     </div>
-                    <p className="mt-2 text-xs leading-6 text-slate-500">{isArabic ? item.need.ar : item.need.en}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">{isArabic ? item.solution.ar : item.solution.en}</p>
+                    <p className="mt-2 text-xs leading-6 text-slate-500">{copyPair(item.need)}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">{copyPair(item.solution)}</p>
                   </div>
                 ))}
               </div>
@@ -824,7 +831,7 @@ const ServicesPage = () => {
                   <p className={`mb-2 font-display text-4xl font-bold md:text-5xl ${index === 0 ? 'text-transparent bg-clip-text bg-gradient-to-b from-cyan-200 to-cyan-500' : index === 1 ? 'text-transparent bg-clip-text bg-gradient-to-b from-violet-200 to-violet-500' : 'text-white'}`}>
                     {item.value}
                   </p>
-                  <p className="text-slate-300 font-medium">{isArabic ? item.labelAr : item.labelEn}</p>
+                  <p className="text-slate-300 font-medium">{copyLegacyPair(item.labelAr, item.labelEn)}</p>
                   <p className="text-xs text-slate-500 mt-1 uppercase tracking-widest">{item.sub}</p>
                 </div>
               ))}
@@ -896,9 +903,9 @@ const ServicesPage = () => {
                   </div>
                 <div>
                   <h3 className="font-display text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
-                    {isArabic ? item.titleAr : item.titleEn}
+                    {copyLegacyPair(item.titleAr, item.titleEn)}
                   </h3>
-                  <p className="text-slate-400 text-sm leading-7">{isArabic ? item.descAr : item.descEn}</p>
+                  <p className="text-slate-400 text-sm leading-7">{copyLegacyPair(item.descAr, item.descEn)}</p>
                 </div>
               </motion.div>
             ))}

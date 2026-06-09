@@ -267,7 +267,7 @@ export const buildOrganizationSchema = (lang: Language): JsonLdObject => ({
   '@type': 'LocalBusiness',
   '@id': `${SITE_URL}#organization`,
   name: SITE_NAME_AR,
-  alternateName: SITE_ALTERNATE_NAME,
+  alternateName: [SITE_ALTERNATE_NAME, 'نطق.site', 'xn--2gbwk.site'],
   url: SITE_URL,
   description: getSiteDescription(lang),
   email: ORGANIZATION_INFO.email,
@@ -300,11 +300,16 @@ export const buildWebsiteSchema = (lang: Language): JsonLdObject => ({
   '@type': 'WebSite',
   '@id': `${SITE_URL}#website`,
   name: SITE_NAME,
-  alternateName: SITE_ALTERNATE_NAME,
+  alternateName: [SITE_ALTERNATE_NAME, 'نطق.site', 'xn--2gbwk.site'],
   url: SITE_URL,
   inLanguage: lang,
   publisher: {
     '@id': `${SITE_URL}#organization`,
+  },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
   },
 });
 

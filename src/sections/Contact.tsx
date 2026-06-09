@@ -36,14 +36,14 @@ const Contact = () => {
     {
       icon: Mail,
       label: 'البريد الإلكتروني',
-      value: 'hello@notaq.dev',
-      href: 'mailto:hello@notaq.dev',
+      value: 'info@xn--2gbwk.site',
+      href: 'mailto:info@xn--2gbwk.site',
     },
     {
       icon: Phone,
       label: 'الهاتف',
-      value: '+20 123 456 789',
-      href: 'tel:+20123456789',
+      value: '+20 150 763 1264',
+      href: 'tel:+201507631264',
     },
     {
       icon: MapPin,

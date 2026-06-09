@@ -81,11 +81,11 @@ const EnhancedBlogDetailPage = () => {
           </h2>
           <p className="text-slate-400 mb-8 max-w-2xl mx-auto">
             {isArabic
-              ? 'تحدث معنا عن احتياجاتك وكيفية مساعدتك على تحقيق أهدافك.'
-              : 'Talk to us about your needs and how we can help you achieve your goals.'}
+              ? 'حوّل الفكرة إلى خطوة أوضح لموقع شركتك أو صفحة خدمتها أو تجربتها الرقمية.'
+              : 'Turn the idea into a clearer step for your company website, service page, or digital experience.'}
           </p>
           <Link className="btn-primary" to={localizePath('/contact')}>
-            {isArabic ? 'ابدأ محادثة' : 'Start Conversation'}
+            {isArabic ? 'ناقش احتياج شركتك' : 'Discuss your company need'}
           </Link>
         </motion.div>
       </section>

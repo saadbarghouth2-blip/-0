@@ -32,6 +32,7 @@ import { enrichmentMediaById } from '../data/enrichmentMedia';
 import { pageImageShowcases } from '../data/pageImageShowcases';
 import { illustrationAssets } from '../lib/illustrationAssets';
 import { getPageSeoByPath } from '../lib/pageSeo';
+import { clientFacingText } from '../lib/repairText';
 
 const motivations = [
   { icon: Flame, ar: 'الشغف بالصنعة', en: 'Craft passion', arDesc: 'حب حقيقي لما نبنيه.', enDesc: 'A real love for the work we build.' },
@@ -161,7 +162,7 @@ const AboutPage = () => {
   const mobileValuesGridStyle = {
     gridTemplateColumns: 'repeat(auto-fit, minmax(11.5rem, 1fr))',
   } as const;
-  const content = {
+  const rawContent = {
     title: isArabic ? 'من نحن' : 'About us',
     description: isArabic ? 'تعرف على فريق نُطق ورؤيتنا' : 'Meet the Notaq team and our vision.',
     heroKicker: isArabic ? 'رحلة نُطق الرقمية' : 'The Notaq Journey',
@@ -170,7 +171,7 @@ const AboutPage = () => {
     heroBody: isArabic
       ? 'احصل على تجربة لا تكتفي بواجهة جذابة، بل تجعل علامتك تتحول من حضور رقمي عادي إلى منصة أقوى في سوقها.'
       : 'Get an experience that goes beyond an attractive interface and moves your brand from an ordinary digital presence into a stronger market position.',
-    heroCta: isArabic ? 'ابدأ رحلتك معنا الآن' : 'Start your journey with us',
+    heroCta: isArabic ? 'ناقش احتياج شركتك' : 'Discuss your company need',
     precisionTitle: isArabic ? 'الشغف بالدقة' : 'Precision-minded craft',
     precisionBody: isArabic ? 'سترى الابتكار في إطار عمل منهجي وواضح، لا في وعود عامة.' : 'You see innovation through a methodical and intentional approach, not generic promises.',
     mission: isArabic ? 'مهمتنا' : 'Our mission',
@@ -203,6 +204,11 @@ const AboutPage = () => {
       ? 'نظل قريبين من المشروع بعد الإطلاق للمتابعة والتحسين.'
       : 'We stay close after launch for support, follow-up, and refinement.',
   };
+  const content = Object.fromEntries(
+    Object.entries(rawContent).map(([key, value]) => [key, clientFacingText(value, lang)]),
+  ) as typeof rawContent;
+  const copy = (value: string) => clientFacingText(value, lang);
+  const copyLegacyPair = (ar: string, en: string) => copy(isArabic ? ar : en);
 
   const renderMotivationCard = (item: (typeof motivations)[number], index: number) => (
     <motion.div
@@ -216,10 +222,10 @@ const AboutPage = () => {
         <item.icon className="h-5 w-5 text-slate-400 transition-colors group-hover:text-cyan-400 md:h-6 md:w-6" />
       </div>
       <p className="mb-1.5 text-[0.88rem] font-bold leading-5 text-white transition-colors group-hover:text-cyan-300 md:mb-2 md:text-sm">
-        {isArabic ? item.ar : item.en}
+        {copyLegacyPair(item.ar, item.en)}
       </p>
       <p className="text-[11px] leading-5 text-slate-500 md:text-xs md:leading-5">
-        {isArabic ? item.arDesc : item.enDesc}
+        {copyLegacyPair(item.arDesc, item.enDesc)}
       </p>
     </motion.div>
   );
@@ -238,10 +244,10 @@ const AboutPage = () => {
           {item.tag}
         </span>
         <h4 className="mb-2 font-display text-[1rem] font-bold leading-6 text-white transition-colors group-hover:text-cyan-300 md:mb-3 md:text-xl">
-          {isArabic ? item.ar : item.en}
+          {copyLegacyPair(item.ar, item.en)}
         </h4>
         <p className="text-[12px] leading-5 text-slate-400 md:text-sm md:leading-7">
-          {isArabic ? item.arDesc : item.enDesc}
+          {copyLegacyPair(item.arDesc, item.enDesc)}
         </p>
       </div>
     </motion.div>
@@ -258,10 +264,10 @@ const AboutPage = () => {
           PHASE 0{index + 1}
         </span>
         <h3 className="font-display text-[1rem] font-bold leading-6 text-white">
-          {isArabic ? step.ar : step.en}
+          {copyLegacyPair(step.ar, step.en)}
         </h3>
         <p className="mt-1.5 text-[12px] leading-5 text-slate-400">
-          {isArabic ? step.arDesc : step.enDesc}
+          {copyLegacyPair(step.arDesc, step.enDesc)}
         </p>
       </div>
       <div
@@ -305,7 +311,7 @@ const AboutPage = () => {
               {item.num}
             </p>
             <p className="mt-2 text-[11px] font-medium leading-5 text-slate-400">
-              {isArabic ? item.ar : item.en}
+              {copyLegacyPair(item.ar, item.en)}
             </p>
             {isSupportCard ? (
               <p className="mt-2 max-w-[18rem] text-[11px] leading-5 text-slate-500">
@@ -459,7 +465,7 @@ const AboutPage = () => {
               className="glass-card relative overflow-hidden rounded-[1.3rem] border border-white/10 bg-gradient-to-br from-cyan-950/80 to-violet-950/80 p-4 group md:rounded-[3rem] md:p-14"
             >
               <div className="absolute inset-0 opacity-[0.25] pointer-events-none">
-                <img src="/images/notaq-logo-lockup.png" className="w-full h-full object-contain p-6 mix-blend-soft-light" alt="Vision Back" />
+                <img src="/images/notaq-logo-lockup.webp" className="w-full h-full object-contain p-6 mix-blend-soft-light" alt="Vision Back" />
               </div>
               <div className="absolute -left-8 -bottom-8 h-28 w-28 rounded-full bg-violet-400/20 blur-3xl md:h-48 md:w-48" />
               <p className="relative z-10 mb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-violet-400 md:mb-6 md:text-xs md:tracking-widest">Our Vision</p>
@@ -574,8 +580,8 @@ const AboutPage = () => {
                       <div className={nodeClass} />
                       <motion.div initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-100px' }} className={textBlockClass}>
                         <span className="mb-2 block text-sm font-bold tracking-widest text-cyan-400 md:text-lg">PHASE 0{idx + 1}</span>
-                        <h3 className="mb-3 font-display text-xl font-bold text-white md:mb-4 md:text-4xl">{isArabic ? step.ar : step.en}</h3>
-                        <p className="text-sm leading-7 text-slate-400 md:text-xl md:leading-9">{isArabic ? step.arDesc : step.enDesc}</p>
+                        <h3 className="mb-3 font-display text-xl font-bold text-white md:mb-4 md:text-4xl">{copyLegacyPair(step.ar, step.en)}</h3>
+                        <p className="text-sm leading-7 text-slate-400 md:text-xl md:leading-9">{copyLegacyPair(step.arDesc, step.enDesc)}</p>
                       </motion.div>
                       <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-100px' }} className={mediaBlockClass}>
                         <div className="relative h-[240px] overflow-hidden rounded-[1.8rem] border-[2px] border-white/10 glass-card shadow-2xl group md:h-[300px] md:rounded-[2.5rem]">
@@ -733,9 +739,9 @@ const AboutPage = () => {
                   <item.icon className="h-5 w-5 text-slate-400 transition-colors group-hover:text-cyan-300" />
                 </div>
                 <div className="mb-2 flex items-baseline gap-2">
-                  <h3 className="font-display text-[1rem] font-bold text-white transition-colors group-hover:text-cyan-300">{isArabic ? item.ar : item.en}</h3>
+                  <h3 className="font-display text-[1rem] font-bold text-white transition-colors group-hover:text-cyan-300">{copyLegacyPair(item.ar, item.en)}</h3>
                 </div>
-                <p className="text-[12px] leading-6 text-slate-400">{isArabic ? item.arDesc : item.enDesc}</p>
+                <p className="text-[12px] leading-6 text-slate-400">{copyLegacyPair(item.arDesc, item.enDesc)}</p>
               </motion.div>
             ))}
           </div>
@@ -754,10 +760,10 @@ const AboutPage = () => {
                     <item.icon className="h-7 w-7 text-slate-400 transition-colors group-hover:text-cyan-300" />
                   </div>
                   <div className="mb-4 flex items-baseline gap-3">
-                    <h3 className="font-display text-2xl font-bold text-white transition-colors group-hover:text-cyan-300">{isArabic ? item.ar : item.en}</h3>
+                    <h3 className="font-display text-2xl font-bold text-white transition-colors group-hover:text-cyan-300">{copyLegacyPair(item.ar, item.en)}</h3>
                     <span className="text-sm font-mono text-slate-600">{item.en}</span>
                   </div>
-                <p className="text-sm leading-8 text-slate-400">{isArabic ? item.arDesc : item.enDesc}</p>
+                <p className="text-sm leading-8 text-slate-400">{copyLegacyPair(item.arDesc, item.enDesc)}</p>
               </motion.div>
             ))}
           </div>
@@ -782,7 +788,7 @@ const AboutPage = () => {
                   <item.icon className="h-6 w-6 md:h-7 md:w-7" />
                 </div>
                 <p className="font-display text-2xl font-black text-white drop-shadow-lg transition-colors group-hover:text-cyan-300 md:text-6xl">{item.num}</p>
-                <p className="text-center text-[11px] font-medium leading-5 text-slate-500 md:text-sm">{isArabic ? item.ar : item.en}</p>
+                <p className="text-center text-[11px] font-medium leading-5 text-slate-500 md:text-sm">{copyLegacyPair(item.ar, item.en)}</p>
               </motion.div>
             ))}
           </div>
