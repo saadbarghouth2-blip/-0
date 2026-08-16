@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpLeft, ExternalLink, Sparkles } from 'lucide-react';
+import { ArrowUpLeft, ExternalLink } from 'lucide-react';
 import type { KeyboardEventHandler } from 'react';
 
 import type { PortfolioProject } from '../data/portfolio';
@@ -98,18 +98,11 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
       <div className="relative z-0 overflow-hidden">
         <div className={`absolute inset-0 z-10 bg-gradient-to-br ${project.accent} opacity-50 mix-blend-overlay`} />
 
-        {isLatest ? (
-          <span className="absolute start-3 top-3 z-30 inline-flex items-center gap-1.5 rounded-full border border-cyan-200/30 bg-[#041117]/90 px-2.5 py-1 text-[10px] font-black text-cyan-100 shadow-lg backdrop-blur-md md:start-4 md:top-4 md:px-3 md:py-1.5 md:text-xs">
-            <Sparkles className="h-3 w-3" />
-            {isArabic ? 'أحدث أعمالنا' : 'Latest work'}
-          </span>
-        ) : null}
-
         <motion.div className="h-full w-full" transition={{ duration: 0.8, ease: 'easeOut' }}>
           <ProjectImage
             alt={projectTitle}
             className={`w-full object-cover transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-1 ${
-              compact ? 'h-36 sm:h-48 md:h-56' : 'h-40 sm:h-52 md:h-64'
+              compact ? 'h-28 sm:h-36 md:h-44' : 'h-36 sm:h-44 md:h-56'
             }`}
             fallbackSrc={project.thumbnailImage}
             fallbacks={project.screenshots}
@@ -119,12 +112,12 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
         </motion.div>
 
         {!isMobile && previewShots.length > 0 ? (
-          <div className="absolute inset-x-0 bottom-0 z-20 flex translate-y-4 gap-2 overflow-hidden border-t border-white/5 bg-gradient-to-t from-[#06090f]/90 via-[#06090f]/50 to-transparent p-4 transition-transform duration-500 group-hover:translate-y-0">
+          <div className="absolute inset-x-0 bottom-0 z-20 flex translate-y-4 gap-2 overflow-hidden border-t border-white/5 bg-gradient-to-t from-[#06090f]/90 via-[#06090f]/50 to-transparent p-3 transition-transform duration-500 group-hover:translate-y-0">
             {previewShots.map((shot, index) => (
               <motion.div
                 key={`${project.slug}-preview-${index}`}
                 whileHover={{ scale: 1.1 }}
-                className="image-ring h-14 flex-1 overflow-hidden rounded-xl border border-white/10 shadow-lg"
+                className="image-ring h-11 flex-1 overflow-hidden rounded-xl border border-white/10 shadow-lg"
               >
                 <ProjectImage
                   alt={`${projectTitle} preview ${index + 1}`}
@@ -140,13 +133,13 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
         ) : null}
       </div>
 
-      <div className="relative z-20 flex flex-1 flex-col p-2.5 md:p-7">
+      <div className="relative z-20 flex flex-1 flex-col p-2.5 md:p-5">
         <div className="flex items-start justify-between gap-2 md:gap-4">
           <div className="min-w-0">
             <span className="pill border-cyan-400/20 bg-cyan-400/5 text-cyan-200 transition-colors duration-300 group-hover:bg-cyan-400/10 text-[10px] md:text-sm">
               {projectCategory}
             </span>
-            <h3 className="mt-2 md:mt-3 font-display text-xs md:text-2xl font-semibold text-white transition-colors duration-300 group-hover:text-cyan-300 md:mt-5 line-clamp-2 md:line-clamp-none">
+            <h3 className="mt-2 md:mt-3 font-display text-xs md:text-xl font-semibold text-white transition-colors duration-300 group-hover:text-cyan-300 line-clamp-2 md:line-clamp-none">
               {projectTitle}
             </h3>
             {projectVariantLabel ? (
@@ -176,7 +169,7 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
           </motion.a>
         </div>
 
-        <p className="mt-1.5 md:mt-3 text-[11px] md:text-sm leading-4 md:leading-6 text-slate-400 opacity-80 transition-opacity duration-300 group-hover:opacity-100 md:mt-5 md:leading-8 line-clamp-2 md:line-clamp-none">
+        <p className="mt-1.5 md:mt-3 text-[11px] md:text-sm leading-4 md:leading-6 text-slate-400 opacity-80 transition-opacity duration-300 group-hover:opacity-100 line-clamp-2">
           {projectExcerpt}
         </p>
 
@@ -191,7 +184,7 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
           ))}
         </div>
 
-        <div className="mt-3 md:mt-5 flex flex-col gap-2 md:gap-3 border-t border-white/10 pt-2 md:pt-3.5 sm:flex-row sm:items-center sm:justify-between md:mt-8 md:gap-4 md:pt-5">
+        <div className="mt-3 md:mt-5 flex flex-col gap-2 md:gap-3 border-t border-white/10 pt-2 md:pt-3.5 sm:flex-row sm:items-center sm:justify-between md:gap-4">
           <div className="hidden md:block">
             <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500">Focus</p>
             <p className="mt-1.5 text-xs font-medium leading-5 text-slate-300 md:mt-2 md:text-sm md:leading-6">

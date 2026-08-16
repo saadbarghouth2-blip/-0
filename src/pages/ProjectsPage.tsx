@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { Search, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -129,13 +128,13 @@ const ProjectsPage = () => {
 
         <div className="pt-3 md:pt-5">
           {filteredProjects.length ? (
-            <motion.div layout className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 2xl:grid-cols-5">
               {filteredProjects.map((project) => (
-                <motion.div key={project.slug} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+                <div key={project.slug}>
                   <ProjectCard compact linkMode="live" project={project} />
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           ) : (
             <div className="rounded-3xl border border-white/10 bg-white/[0.025] px-5 py-16 text-center">
               <Search className="mx-auto h-8 w-8 text-slate-600" />
