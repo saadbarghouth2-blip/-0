@@ -15,7 +15,7 @@ import { contactFaqs } from '../data/contactPageContent';
 import {
   findProjectBySlug,
   portfolioProfile,
-  projects,
+  publishedProjects,
   services,
   visibleProjects,
   type PortfolioProject,
@@ -208,10 +208,10 @@ const createServicesSeo = (lang: Language): PageSeoInput => {
 
 const createProjectsSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
-  const title = isArabic ? 'أعمال نُطق | مشاريع ومواقع ودراسات حالة' : 'Notaq Work and Case Studies';
+  const title = isArabic ? 'سابقة أعمال شركة نُطق | مشاريع مواقع وتطبيقات حية' : 'Notaq Portfolio | Live Websites and Digital Products';
   const description = isArabic
-    ? 'تصفّح أعمال نُطق ودراسات الحالة لمواقع الشركات، المتاجر الإلكترونية، والمنتجات الرقمية المنفذة لقطاعات مختلفة.'
-    : 'Browse Notaq work and case studies across company websites, e-commerce, and digital products delivered for different industries.';
+    ? 'نماذج منشورة من أعمال شركة نُطق في تصميم المواقع، المتاجر الإلكترونية، الخرائط، الأنظمة التعليمية، ولوحات التحكم، مع إمكانية فتح المشاريع الحية مباشرة.'
+    : 'Explore public Notaq portfolio samples across websites, e-commerce stores, maps, learning systems, and dashboards with direct access to live projects.';
 
   return {
     title,
@@ -219,8 +219,8 @@ const createProjectsSeo = (lang: Language): PageSeoInput => {
     path: '/projects',
     lang,
     keywords: isArabic
-      ? ['أعمال نُطق', 'دراسة حالة', 'مشاريع مواقع', 'متاجر إلكترونية', 'نماذج أعمال']
-      : ['case studies', 'portfolio', 'web projects', 'e-commerce projects', 'Notaq work'],
+      ? ['سابقة أعمال نُطق', 'مشاريع مواقع حية', 'تصميم مواقع', 'متاجر إلكترونية', 'نماذج أعمال']
+      : ['Notaq portfolio', 'live websites', 'web design projects', 'e-commerce projects', 'digital products'],
     structuredData: [
       createWebPageSchema('/projects', lang, title, description, 'CollectionPage'),
       createListSchema(
@@ -942,7 +942,7 @@ const basePrerenderRoutes: Array<
     priority: 0.65,
     changeFrequency: 'monthly' as const,
   })),
-  ...projects.map((project) => ({
+  ...publishedProjects.map((project) => ({
     path: `/projects/${project.slug}`,
     priority: 0.7,
     changeFrequency: 'monthly' as const,

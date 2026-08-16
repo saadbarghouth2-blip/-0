@@ -1,533 +1,150 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, ArrowUpLeft, BarChart3, Building2, LayoutGrid, List, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
-import { useRef, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Search, ShieldCheck, Sparkles, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 import ProjectCard from '../components/ProjectCard';
-import EditorialImageBreak from '../components/EditorialImageBreak';
-import PageHero from '../components/PageHero';
-import PageImageShowcaseSection from '../components/PageImageShowcase';
-import { establishedVisibleProjects, latestShowcaseProjects, visibleProjects } from '../data/portfolio';
-import { pageImageShowcases } from '../data/pageImageShowcases';
-import { servicePackages, trustSignals } from '../data/company';
+import { visibleProjects } from '../data/portfolio';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
 import { getPageSeoByPath } from '../lib/pageSeo';
 import { clientFacingText } from '../lib/repairText';
-import { cn } from '../lib/utils';
-
-// Helper to paginate items
-const paginateItems = <T,>(items: T[], pageSize: number) => {
-  const pages: T[][] = [];
-  for (let index = 0; index < items.length; index += pageSize) {
-    pages.push(items.slice(index, index + pageSize));
-  }
-  return pages;
-};
 
 const ProjectsPage = () => {
-  const { lang, localizePath } = useLanguage();
+  const { lang } = useLanguage();
   const isArabic = lang === 'ar';
   const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
-
-  // States
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedTech, setSelectedTech] = useState('All');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [currentPage, setCurrentPage] = useState(0);
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-
-  const gridRef = useRef<HTMLDivElement | null>(null);
-
-  const copy = {
-    kicker: lang === 'ar' ? 'نماذج تنفيذ حقيقية ومشاريع حية' : 'Real project examples & live sites',
-    title: lang === 'ar'
-      ? 'مشاريع حية توضّح مستوى الأداء والسرعة والجودة التي تحصل عليها'
-      : 'Live work that shows the level of speed, performance, and details you expect',
-    description: lang === 'ar'
-      ? 'أعمالنا تجيب عن تساؤلات أصحاب القرار: هل الواجهة سريعة؟ هل التصميم يعكس هوية العميل؟ استكشف مشاريعنا المفتوحة التي تخدم آلاف المستخدمين يومياً.'
-      : 'Our portfolio answers the hard questions: Is the interface fast? Does the design fit the identity? Explore our live applications that serve thousands of users daily.',
-    previous: lang === 'ar' ? 'السابق' : 'Previous',
-    next: lang === 'ar' ? 'التالي' : 'Next',
-    goToPage: lang === 'ar' ? 'اذهب إلى الصفحة' : 'Go to page',
-  };
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   usePageMetadata(getPageSeoByPath('/projects', lang));
 
-  // Extract all categories and tech stacks from project list for filters
+  const orderedProjects = useMemo(
+    () => [...visibleProjects].sort((left, right) => Number(right.showcaseGroup === 'latest') - Number(left.showcaseGroup === 'latest')),
+    [],
+  );
+
   const categories = useMemo(() => {
-    const list = new Set<string>();
-    establishedVisibleProjects.forEach(p => {
-      if (p.category) list.add(p.category);
+    const values = new Map<string, string>();
+    orderedProjects.forEach((project) => {
+      values.set(project.category, isArabic ? project.category : project.englishCategory ?? project.category);
     });
-    return ['All', ...Array.from(list)];
-  }, []);
+    return [...values.entries()];
+  }, [isArabic, orderedProjects]);
 
-  const technologies = useMemo(() => {
-    const list = new Set<string>();
-    establishedVisibleProjects.forEach(p => {
-      if (p.techStack) p.techStack.forEach(t => list.add(t));
-    });
-    return ['All', ...Array.from(list).slice(0, 8)]; // top 8 tech tags
-  }, []);
-
-  // Filter project logic
   const filteredProjects = useMemo(() => {
-    return establishedVisibleProjects.filter(project => {
+    const normalizedQuery = searchQuery.trim().toLocaleLowerCase(isArabic ? 'ar' : 'en');
+
+    return orderedProjects.filter((project) => {
       const title = isArabic ? project.title : project.englishTitle ?? project.title;
       const excerpt = isArabic ? project.excerpt : project.englishExcerpt ?? project.excerpt;
+      const searchableText = `${title} ${excerpt} ${project.category} ${project.englishCategory ?? ''} ${project.techStack.join(' ')}`.toLocaleLowerCase(isArabic ? 'ar' : 'en');
+      const matchesSearch = !normalizedQuery || searchableText.includes(normalizedQuery);
+      const matchesCategory = selectedCategory === 'all' || project.category === selectedCategory;
 
-      const matchesSearch = 
-        title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-
-      const matchesCategory = 
-        selectedCategory === 'All' || 
-        project.category === selectedCategory || 
-        project.englishCategory === selectedCategory;
-
-      const matchesTech = 
-        selectedTech === 'All' || 
-        (project.techStack && project.techStack.includes(selectedTech));
-
-      return matchesSearch && matchesCategory && matchesTech;
+      return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory, selectedTech, isArabic]);
-
-  // Featured Spotlight Project (Take the first project or one with high rating/complexity)
-  const spotlightProject = useMemo(() => {
-    return latestShowcaseProjects[0] ?? visibleProjects[0];
-  }, []);
-
-  // Paginated filtered projects
-  const PAGE_SIZE = 6;
-  const paginatedPages = useMemo(() => {
-    return paginateItems(filteredProjects, PAGE_SIZE);
-  }, [filteredProjects]);
-
-  const totalPages = paginatedPages.length;
-  const currentProjects = paginatedPages[currentPage] ?? paginatedPages[0] ?? [];
-  const canGoPrev = currentPage > 0;
-  const canGoNext = currentPage < totalPages - 1;
-
-  const goToPage = (pageIndex: number) => {
-    setCurrentPage(Math.max(0, Math.min(pageIndex, totalPages - 1)));
-    gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const PrevIcon = isArabic ? ArrowRight : ArrowLeft;
-  const NextIcon = isArabic ? ArrowLeft : ArrowRight;
-  const pageNumberFormatter = new Intl.NumberFormat(isArabic ? 'ar-EG' : 'en-US');
+  }, [isArabic, orderedProjects, searchQuery, selectedCategory]);
 
   return (
-    <section className="relative overflow-x-hidden pb-24 pt-10 md:min-h-screen md:pt-16">
-      {/* Background decoration */}
-      <div className="pointer-events-none absolute inset-0 z-[-1] overflow-hidden">
-        <div className="mobile-ornament absolute left-[-8%] top-12 h-[24rem] w-[24rem] rounded-full bg-cyan-500/10 blur-[120px]" />
-        <div className="mobile-ornament absolute bottom-[-8%] right-[-10%] h-[28rem] w-[28rem] rounded-full bg-violet-500/10 blur-[130px]" />
-      </div>
+    <section className="relative min-h-screen overflow-x-hidden pb-16 pt-16 md:pb-24 md:pt-24">
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] bg-[radial-gradient(circle_at_top_right,rgba(45,212,191,0.15),transparent_38%),radial-gradient(circle_at_top_left,rgba(139,92,246,0.12),transparent_34%)]" />
 
-      <PageHero
-        description={copy.description}
-        kicker={copy.kicker}
-        metrics={[
-          { value: `${visibleProjects.length}+`, label: isArabic ? 'مشاريع حقيقية منفذة' : 'live projects built' },
-          { value: `${servicePackages.length}`, label: isArabic ? 'تخصصات الخدمة' : 'service packages' },
-          { value: `${trustSignals.length}+`, label: isArabic ? 'دلائل كفاءة وثقة' : 'trust indicators' },
-        ]}
-        primaryAction={{ label: isArabic ? 'ابدأ تصميم مشروعك' : 'Start your project brief', to: localizePath('/contact/brief') }}
-        profileId="projects"
-        secondaryAction={{ label: isArabic ? 'عرض دراسات الحالة' : 'Explore case studies', to: localizePath('/case-studies') }}
-        title={copy.title}
-      />
-
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
-
-        <nav aria-label={text('التنقل بين مجموعات المشاريع', 'Project collection navigation')} className="sticky top-16 z-30 mt-5 flex items-center justify-center md:top-20">
-          <div className="inline-flex max-w-full gap-1.5 overflow-x-auto rounded-2xl border border-white/10 bg-[#061018]/90 p-1.5 shadow-[0_18px_60px_-35px_rgba(45,212,191,0.8)] backdrop-blur-xl">
-            <a className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl bg-cyan-300 px-3.5 py-2 text-xs font-black text-[#031014] transition-transform hover:-translate-y-0.5 md:px-5 md:text-sm" href="#latest-projects">
-              <Sparkles className="h-3.5 w-3.5" />
-              {text('الأحدث والمميز', 'Latest & signature')}
-              <span className="rounded-full bg-black/10 px-1.5 py-0.5 text-[10px]">{latestShowcaseProjects.length}</span>
-            </a>
-            <a className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold text-slate-300 transition-colors hover:bg-white/10 hover:text-white md:px-5 md:text-sm" href="#all-projects">
-              <LayoutGrid className="h-3.5 w-3.5" />
-              {text('معرض الأعمال الكامل', 'Full project archive')}
-              <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px]">{establishedVisibleProjects.length}</span>
-            </a>
-          </div>
-        </nav>
-        
-        {/* Spotlight Featured Banner */}
-        {spotlightProject && searchQuery === '' && selectedCategory === 'All' && selectedTech === 'All' && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12 md:mb-16 mt-6 md:mt-8 rounded-xl md:rounded-[2.5rem] border border-cyan-400/20 bg-gradient-to-r from-cyan-950/20 to-violet-950/20 p-4 md:p-10 relative overflow-hidden"
-          >
-            <div className="absolute right-0 top-0 w-80 h-80 bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />
-            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-4 md:gap-8 items-center">
-              <div className="space-y-2 md:space-y-4">
-                <span className="inline-flex items-center gap-1.5 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 text-[11px] md:text-xs font-bold">
-                  <Sparkles className="h-3 w-3 md:h-3.5 md:w-3.5" />
-                  {text('مشروع متميز مُميّز', 'Featured Spotlight Project')}
-                </span>
-                <h2 className="font-display text-lg md:text-4xl font-bold text-white">
-                  {text(spotlightProject.title, spotlightProject.englishTitle ?? spotlightProject.title)}
-                </h2>
-                <p className="text-slate-300 text-xs md:text-base leading-relaxed">
-                  {text(spotlightProject.excerpt, spotlightProject.englishExcerpt ?? spotlightProject.excerpt)}
-                </p>
-                <div className="flex flex-wrap gap-1.5 md:gap-2 pt-1 md:pt-2">
-                  {spotlightProject.techStack.slice(0, 4).map(tech => (
-                    <span key={tech} className="bg-white/5 border border-white/10 text-slate-300 px-2.5 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-semibold">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="pt-2 md:pt-4">
-                  <a
-                    href={spotlightProject.liveUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-primary inline-flex items-center gap-2 text-xs md:text-sm shadow-[0_0_20px_rgba(45,212,191,0.3)]"
-                  >
-                    {text('استكشف التفاصيل', 'Explore details')}
-                    <ArrowUpLeft className="h-3 w-3 md:h-4 md:w-4" />
-                  </a>
-                </div>
-              </div>
-              <div className="relative aspect-[16/10] md:aspect-[16/10] rounded-lg md:rounded-2xl overflow-hidden border border-white/10 group shadow-2xl hidden md:block">
-                <img 
-                  src={spotlightProject.coverImage} 
-                  alt={spotlightProject.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Latest client-ready collection */}
-        <section id="latest-projects" aria-labelledby="latest-projects-title" className="relative mt-10 scroll-mt-32 overflow-hidden rounded-[1.5rem] border border-cyan-300/25 bg-[linear-gradient(145deg,rgba(8,35,45,0.82),rgba(6,9,15,0.94)_42%,rgba(27,16,46,0.86))] p-4 shadow-[0_40px_130px_-70px_rgba(45,212,191,0.85)] md:mt-14 md:rounded-[2.8rem] md:p-8 lg:p-10">
-          <div className="pointer-events-none absolute -end-20 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-[100px]" />
-          <div className="pointer-events-none absolute -bottom-28 -start-16 h-72 w-72 rounded-full bg-violet-500/15 blur-[110px]" />
-
-          <div className="relative mb-6 flex flex-col gap-4 border-b border-white/10 pb-6 md:mb-8 md:flex-row md:items-end md:justify-between md:pb-8">
-            <div className="max-w-3xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-[11px] font-black text-cyan-100 md:text-xs">
+      <div className="mx-auto max-w-[92rem] px-3 sm:px-5 lg:px-8">
+        <header className="grid gap-4 border-b border-white/10 pb-5 md:grid-cols-[1fr_auto] md:items-end md:gap-8 md:pb-7">
+          <div className="max-w-4xl">
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-[10px] font-black text-cyan-100 md:text-xs">
                 <Sparkles className="h-3.5 w-3.5" />
-                {text('مجموعة جديدة ومميزة', 'New signature collection')}
+                {text('نماذج مختارة متاحة للنشر', 'Selected work available to share')}
               </span>
-              <h2 id="latest-projects-title" className="mt-4 font-display text-2xl font-black text-white md:text-4xl">
-                {text('أحدث المشاريع المختارة — جاهزة للعرض الحي', 'Latest selected projects — ready to explore live')}
-              </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300 md:text-base md:leading-8">
-                {text('مجموعة مستقلة من أحدث تجاربنا الرقمية. اضغط على أي بطاقة لفتح الموقع الحقيقي فورًا في نافذة جديدة.', 'A distinct collection of our newest digital experiences. Select any card to open the real website instantly in a new tab.')}
-              </p>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-300/20 bg-violet-400/10 px-3 py-1.5 text-[10px] font-bold text-violet-100 md:text-xs">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                {text('الخصوصية المهنية جزء من عملنا', 'Professional privacy is part of our work')}
+              </span>
             </div>
-            <div className="inline-flex w-fit items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
-              <span className="font-display text-3xl font-black text-cyan-300">{latestShowcaseProjects.length}</span>
-              <span className="whitespace-pre-line text-xs font-bold leading-5 text-slate-300">{text('مشروعًا حيًا\nمختارًا', 'curated live\nprojects')}</span>
-            </div>
+
+            <h1 className="mt-3 font-display text-2xl font-black leading-tight text-white sm:text-3xl md:mt-4 md:text-5xl">
+              {text('مشاريع حية يمكنك استكشافها مباشرةً', 'Live projects ready to explore')}
+            </h1>
+            <p className="mt-2 max-w-3xl text-xs leading-6 text-slate-400 sm:text-sm md:mt-3 md:text-base md:leading-8">
+              {text(
+                'هنا نعرض النماذج التي يمكن مشاركتها علنًا. بعض التجارب الأخرى تبقى ضمن نطاق الخصوصية المهنية، بينما تعكس هذه المجموعة تنوع التنفيذ وجودة التفاصيل.',
+                'This gallery includes work cleared for public sharing. Other collaborations remain professionally private, while these examples reflect the range and quality of our delivery.',
+              )}
+            </p>
           </div>
 
-          <div className="relative grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-            {latestShowcaseProjects.map((project, index) => (
-              <motion.div
-                key={project.slug}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.45, delay: Math.min(index * 0.04, 0.24) }}
+          <div className="relative w-full md:w-80">
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+            <input
+              aria-label={text('البحث في المشاريع', 'Search projects')}
+              className="min-h-12 w-full rounded-2xl border border-white/10 bg-[#07111c]/88 pe-10 ps-10 text-sm text-white outline-none transition focus:border-cyan-300/45 focus:ring-2 focus:ring-cyan-300/10"
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder={text('ابحث باسم المشروع أو المجال', 'Search by project or field')}
+              type="search"
+              value={searchQuery}
+            />
+            {searchQuery ? (
+              <button
+                aria-label={text('مسح البحث', 'Clear search')}
+                className="absolute end-2.5 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 transition hover:bg-white/10 hover:text-white"
+                onClick={() => setSearchQuery('')}
+                type="button"
               >
-                <ProjectCard emphasis="latest" linkMode="live" project={project} />
-              </motion.div>
+                <X className="h-4 w-4" />
+              </button>
+            ) : null}
+          </div>
+        </header>
+
+        <div className="sticky top-[3.55rem] z-30 -mx-3 border-b border-white/8 bg-[#06090f]/92 px-3 py-2.5 backdrop-blur-xl sm:-mx-5 sm:px-5 md:top-[4.4rem] lg:-mx-8 lg:px-8">
+          <div aria-label={text('تصفية المشاريع حسب المجال', 'Filter projects by category')} className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <button
+              className={`min-h-9 shrink-0 rounded-full border px-3.5 text-[11px] font-black transition md:text-xs ${
+                selectedCategory === 'all'
+                  ? 'border-cyan-300 bg-cyan-300 text-[#031014]'
+                  : 'border-white/10 bg-white/[0.04] text-slate-300 hover:border-cyan-300/30 hover:text-white'
+              }`}
+              onClick={() => setSelectedCategory('all')}
+              type="button"
+            >
+              {text('كل المشاريع', 'All projects')}
+            </button>
+            {categories.map(([category, label]) => (
+              <button
+                className={`min-h-9 shrink-0 rounded-full border px-3.5 text-[11px] font-bold transition md:text-xs ${
+                  selectedCategory === category
+                    ? 'border-cyan-300 bg-cyan-300 text-[#031014]'
+                    : 'border-white/10 bg-white/[0.04] text-slate-300 hover:border-cyan-300/30 hover:text-white'
+                }`}
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                type="button"
+              >
+                {label}
+              </button>
             ))}
           </div>
-        </section>
-
-        {/* Corporate Trust Info */}
-        <div className="mt-10 grid gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="rounded-[1.7rem] border border-white/10 bg-gradient-to-br from-cyan-400/8 via-white/[0.03] to-emerald-400/8 p-5 md:rounded-[2.2rem] md:p-7"
-          >
-            <div className="mb-5 flex items-center gap-3">
-              <div className="rounded-2xl bg-cyan-400/10 p-3 text-cyan-300">
-                <BarChart3 className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-200/80">
-                  {isArabic ? 'كيف نهندس أعمالنا البرمجية؟' : 'How we engineer code'}
-                </p>
-                <h2 className="mt-1 font-display text-xl font-bold text-white md:text-2xl">
-                  {isArabic ? 'بناء نظام مكونات مرن ونظيف قابل لإعادة الاستخدام' : 'Clean reusable component architectures'}
-                </h2>
-              </div>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-3 text-xs">
-              {servicePackages.map((pack) => (
-                <div key={pack.name.en} className="rounded-[1.15rem] border border-white/8 bg-[#06090f]/45 p-4 flex flex-col justify-between">
-                  <p className="font-display text-sm font-bold text-white mb-2">{isArabic ? pack.name.ar : pack.name.en}</p>
-                  <p className="text-slate-500 leading-normal">{isArabic ? pack.bestFor.ar : pack.bestFor.en}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.08 }}
-            className="rounded-[1.7rem] border border-white/10 bg-white/[0.035] p-5 md:rounded-[2.2rem] md:p-7 flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center gap-3 mb-5">
-                <div className="rounded-2xl bg-amber-300/10 p-3 text-amber-200">
-                  <Building2 className="h-5 w-5" />
-                </div>
-                <h2 className="font-display text-xl font-bold text-white md:text-2xl">
-                  {isArabic ? 'مؤشرات الكفاءة البرمجية' : 'Engineering Trust Signals'}
-                </h2>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {trustSignals.slice(0, 4).map((signal) => (
-                  <div key={signal.label.en} className="rounded-[1rem] border border-white/8 bg-[#06090f]/45 p-3">
-                    <p className="text-xs font-bold text-cyan-200">{signal.value}</p>
-                    <p className="mt-1 text-[10px] leading-relaxed text-slate-500">{isArabic ? signal.label.ar : signal.label.en}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <Link className="btn-secondary mt-5 w-full text-xs font-bold text-center" to={localizePath('/case-studies')}>
-              {isArabic ? 'قراءة دراسات الحالة المتعمقة' : 'Read case studies'}
-            </Link>
-          </motion.div>
         </div>
 
-        <EditorialImageBreak imageId="brand-hero" variant="proof" className="mt-8" />
-        <PageImageShowcaseSection showcase={pageImageShowcases.projects} />
-
-        {/* Dynamic Search & Search Bar Panel */}
-        <div id="all-projects" ref={gridRef} className="mt-12 scroll-mt-32 border-t border-white/10 pt-10 md:mt-16">
-          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-2xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-violet-300/20 bg-violet-400/10 px-3 py-1.5 text-[11px] font-black text-violet-200">
-                <LayoutGrid className="h-3.5 w-3.5" />
-                {text('أرشيف المشاريع', 'Project archive')}
-              </span>
-              <h2 className="mt-4 font-display text-2xl font-black text-white md:text-4xl">
-                {text('كل مشاريعنا السابقة في مكان واحد', 'The complete project collection in one place')}
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-slate-400 md:text-base">
-                {text('استكشف بقية الأعمال باستخدام البحث والتصنيفات، واضغط على أي مشروع لفتح نسخته الحية مباشرة.', 'Explore the rest of the portfolio with search and filters, then select any project to open its live version directly.')}
-              </p>
-            </div>
-            <div className="w-fit rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300">
-              <span className="me-2 text-2xl font-black text-violet-300">{establishedVisibleProjects.length}</span>
-              {text('مشروعًا إضافيًا', 'additional projects')}
-            </div>
-          </div>
-          
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-            
-            {/* Left: View Mode Toggle & Counter */}
-            <div className="flex items-center gap-4">
-              <span className="text-xs text-slate-400 font-semibold bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
-                {text(`${filteredProjects.length} مشروع مطابق`, `${filteredProjects.length} matching projects`)}
-              </span>
-
-              {/* Grid / List Mode */}
-              <div className="flex bg-white/5 p-1 rounded-xl border border-white/10 text-slate-400">
-                <button 
-                  onClick={() => setViewMode('grid')}
-                  className={cn("p-1.5 rounded-lg transition-colors", viewMode === 'grid' && "bg-cyan-400 text-black shadow")}
-                >
-                  <LayoutGrid className="h-4 w-4" />
-                </button>
-                <button 
-                  onClick={() => setViewMode('list')}
-                  className={cn("p-1.5 rounded-lg transition-colors", viewMode === 'list' && "bg-cyan-400 text-black shadow")}
-                >
-                  <List className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Right: Search Input & Toggle Filters button */}
-            <div className="flex items-center gap-3">
-              <div className="relative flex-grow md:w-64">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <input 
-                  type="text" 
-                  value={searchQuery}
-                  onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(0); }}
-                  placeholder={text('ابحث باسم المشروع...', 'Search by project...')}
-                  className="w-full bg-[#06090f]/50 border border-white/10 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
-                />
-                {searchQuery && (
-                  <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white">
-                    <X className="h-3 w-3" />
-                  </button>
-                )}
-              </div>
-
-              <button 
-                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                className={cn(
-                  "p-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-colors",
-                  showAdvancedFilters ? "bg-cyan-500/10 border-cyan-400 text-cyan-300" : "bg-white/5 border-white/10 text-slate-400 hover:text-white"
-                )}
-              >
-                <SlidersHorizontal className="h-4 w-4" />
-                <span className="hidden sm:inline">{text('فلاتر متقدمة', 'Filters')}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Advanced Filters Drawer/Box */}
-          <AnimatePresence>
-            {showAdvancedFilters && (
-              <motion.div 
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden border border-white/10 bg-white/[0.01] rounded-2xl p-5 mb-8 text-xs space-y-5"
-              >
-                {/* Category Tags */}
-                <div>
-                  <span className="text-[10px] text-slate-500 font-bold block uppercase tracking-wider mb-2.5">{text('تصفية بالقسم', 'Filter by category')}</span>
-                  <div className="flex flex-wrap gap-2">
-                    {categories.map(cat => (
-                      <button
-                        key={cat}
-                        onClick={() => { setSelectedCategory(cat); setCurrentPage(0); }}
-                        className={cn(
-                          "px-3 py-1.5 rounded-full border transition-all font-semibold",
-                          selectedCategory === cat 
-                            ? "bg-cyan-400 text-black border-cyan-400" 
-                            : "bg-white/5 border-white/5 text-slate-400 hover:text-white"
-                        )}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Tech Tags */}
-                <div>
-                  <span className="text-[10px] text-slate-500 font-bold block uppercase tracking-wider mb-2.5">{text('تصفية بلغة البرمجة / البيئة', 'Filter by technology stack')}</span>
-                  <div className="flex flex-wrap gap-2">
-                    {technologies.map(tech => (
-                      <button
-                        key={tech}
-                        onClick={() => { setSelectedTech(tech); setCurrentPage(0); }}
-                        className={cn(
-                          "px-3 py-1.5 rounded-full border transition-all font-semibold",
-                          selectedTech === tech 
-                            ? "bg-cyan-400 text-black border-cyan-400" 
-                            : "bg-white/5 border-white/5 text-slate-400 hover:text-white"
-                        )}
-                      >
-                        {tech}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Project List / Grid Rendering */}
-          <div className="min-h-[400px]">
-            {currentProjects.length > 0 ? (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`${currentPage}-${viewMode}`}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.25 }}
-                  className={cn(
-                    viewMode === 'grid' 
-                      ? "grid gap-3 md:gap-6 grid-cols-2 md:grid-cols-2 lg:grid-cols-3" 
-                      : "space-y-4 md:space-y-6 max-w-4xl mx-auto"
-                  )}
-                >
-                  {currentProjects.map((project, index) => (
-                    <motion.div
-                      key={project.slug}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <ProjectCard linkMode="live" project={project} compact={viewMode === 'list'} />
-                    </motion.div>
-                  ))}
+        <div className="pt-3 md:pt-5">
+          {filteredProjects.length ? (
+            <motion.div layout className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+              {filteredProjects.map((project) => (
+                <motion.div key={project.slug} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+                  <ProjectCard compact linkMode="live" project={project} />
                 </motion.div>
-              </AnimatePresence>
-            ) : (
-              <div className="text-center py-20 bg-white/[0.01] border border-white/5 rounded-3xl">
-                <SlidersHorizontal className="h-10 w-10 text-slate-600 mx-auto mb-4" />
-                <h4 className="font-display text-base font-bold text-white mb-1">{text('لا توجد نتائج مطابقة', 'No matching results')}</h4>
-                <p className="text-xs text-slate-500">{text('يرجى تعديل الفلاتر أو إدخال مصطلح بحث آخر.', 'Try adjusting filters or changing search query.')}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Pagination Controls */}
-          {totalPages > 1 ? (
-            <div className="mt-12 flex items-center justify-between gap-3 rounded-[1.2rem] border border-white/8 bg-white/[0.03] px-3 py-3 md:px-4">
-              <button
-                aria-label={copy.previous}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/[0.06] disabled:cursor-not-allowed disabled:opacity-35"
-                disabled={!canGoPrev}
-                onClick={() => goToPage(currentPage - 1)}
-                type="button"
-              >
-                <PrevIcon className="h-4 w-4" />
-                <span className="hidden sm:inline">{copy.previous}</span>
-              </button>
-
-              <div className="flex min-w-0 flex-1 items-center justify-center gap-2">
-                {paginatedPages.map((_, pageIndex) => (
-                  <button
-                    aria-current={currentPage === pageIndex ? 'page' : undefined}
-                    aria-label={`${copy.goToPage} ${pageIndex + 1}`}
-                    className={cn(
-                      'inline-flex h-10 min-w-10 items-center justify-center rounded-full border px-3 text-sm font-semibold transition-all',
-                      currentPage === pageIndex
-                        ? 'border-cyan-300 bg-cyan-300 text-slate-950 shadow-[0_0_20px_rgba(103,232,249,0.2)]'
-                        : 'border-white/10 bg-white/[0.03] text-white hover:border-white/20 hover:bg-white/[0.06]',
-                    )}
-                    key={`project-page-${pageIndex}`}
-                    onClick={() => goToPage(pageIndex)}
-                    type="button"
-                  >
-                    {pageNumberFormatter.format(pageIndex + 1)}
-                  </button>
-                ))}
-              </div>
-
-              <button
-                aria-label={copy.next}
-                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/[0.06] disabled:cursor-not-allowed disabled:opacity-35"
-                disabled={!canGoNext}
-                onClick={() => goToPage(currentPage + 1)}
-                type="button"
-              >
-                <span className="hidden sm:inline">{copy.next}</span>
-                <NextIcon className="h-4 w-4" />
+              ))}
+            </motion.div>
+          ) : (
+            <div className="rounded-3xl border border-white/10 bg-white/[0.025] px-5 py-16 text-center">
+              <Search className="mx-auto h-8 w-8 text-slate-600" />
+              <h2 className="mt-4 font-display text-xl font-bold text-white">{text('لا توجد نتائج مطابقة', 'No matching projects')}</h2>
+              <button className="mt-4 rounded-full bg-cyan-300 px-5 py-2 text-sm font-black text-[#031014]" onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }} type="button">
+                {text('عرض كل المشاريع', 'Show all projects')}
               </button>
             </div>
-          ) : null}
+          )}
         </div>
       </div>
     </section>

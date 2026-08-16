@@ -1321,7 +1321,22 @@ export const projects: PortfolioProject[] = [
   }),
 ];
 
-export const featuredProjects = projects.filter((project) => project.featured);
+const unavailableProjectSlugs = new Set([
+  'elite-catering',
+  'qasr-tayiba',
+  'world-cup-2026',
+  'kids-geo-dashboard-netlify',
+  'interactive-learning-journey-netlify',
+  'smart-educational-maps',
+  'smart-quran',
+  'global-consulting-firm',
+  'international-ecommerce-platform',
+  'notaq',
+]);
+
+export const publishedProjects = projects.filter((project) => !unavailableProjectSlugs.has(project.slug));
+
+export const featuredProjects = publishedProjects.filter((project) => project.featured);
 
 const projectOrderIndex = new Map(projects.map((project, index) => [project.slug, index]));
 
@@ -1335,7 +1350,7 @@ const compareProjects = (left: PortfolioProject, right: PortfolioProject) => {
   return (projectOrderIndex.get(left.slug) ?? 0) - (projectOrderIndex.get(right.slug) ?? 0);
 };
 
-export const projectsByFamily = projects.reduce<Record<string, PortfolioProject[]>>((groups, project) => {
+export const projectsByFamily = publishedProjects.reduce<Record<string, PortfolioProject[]>>((groups, project) => {
   if (!project.familyKey) {
     return groups;
   }
@@ -1352,9 +1367,9 @@ export const projectsByFamily = projects.reduce<Record<string, PortfolioProject[
 
 export const projectFamilyLeads = Object.values(projectsByFamily).map((group) => group[0]);
 
-export const standaloneProjects = projects.filter((project) => !project.familyKey);
+export const standaloneProjects = publishedProjects.filter((project) => !project.familyKey);
 
-export const visibleProjects = projects.filter((project) => !project.familyKey || project.isPrimaryVariant);
+export const visibleProjects = publishedProjects.filter((project) => !project.familyKey || project.isPrimaryVariant);
 
 export const latestShowcaseProjects = visibleProjects.filter((project) => project.showcaseGroup === 'latest');
 
@@ -1371,4 +1386,4 @@ export const getProjectAlternates = (project: PortfolioProject) => {
 };
 
 export const findProjectBySlug = (slug: string) =>
-  projects.find((project) => project.slug === slug);
+  publishedProjects.find((project) => project.slug === slug);

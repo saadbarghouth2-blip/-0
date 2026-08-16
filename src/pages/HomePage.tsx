@@ -1057,7 +1057,7 @@ const HomePage = () => {
             <Link
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-cyan-300 px-3 text-center text-xs font-black text-[#031014] transition-transform hover:-translate-y-0.5 md:px-5 md:text-sm"
               onPointerDown={() => void preloadPath(localizePath('/projects'))}
-              to={`${localizePath('/projects')}#all-projects`}
+              to={localizePath('/projects')}
             >
               {text('كل الأعمال السابقة', 'All previous work')}
               <ArrowUpLeft className="h-4 w-4" />
@@ -1065,7 +1065,7 @@ const HomePage = () => {
             <Link
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/[0.05] px-3 text-center text-xs font-bold text-white transition-colors hover:bg-white/10 md:px-5 md:text-sm"
               onPointerDown={() => void preloadPath(localizePath('/projects'))}
-              to={`${localizePath('/projects')}#latest-projects`}
+              to={localizePath('/projects')}
             >
               {text('أحدث المشاريع', 'Latest projects')}
               <Sparkles className="h-4 w-4 text-cyan-200" />
@@ -1078,7 +1078,7 @@ const HomePage = () => {
         aria-label={text('افتح صفحة الأعمال السابقة', 'Open previous work page')}
         className="fixed inset-x-3 bottom-3 z-40 flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-cyan-100/25 bg-cyan-300 px-4 text-sm font-black text-[#031014] shadow-[0_18px_55px_-18px_rgba(45,212,191,0.95)] md:hidden"
         onPointerDown={() => void preloadPath(localizePath('/projects'))}
-        to={`${localizePath('/projects')}#all-projects`}
+        to={localizePath('/projects')}
       >
         <Layers3 className="h-4 w-4" />
         {text('شاهد سابقة أعمالنا', 'View previous work')}
@@ -1570,7 +1570,7 @@ const HomePage = () => {
             {mobileShowcaseProjects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
-            <Link className="btn-primary mt-1 inline-flex min-h-12 items-center justify-center gap-2" to={`${localizePath('/projects')}#all-projects`}>
+            <Link className="btn-primary mt-1 inline-flex min-h-12 items-center justify-center gap-2" to={localizePath('/projects')}>
               {text('عرض كل الأعمال السابقة', 'View all previous work')}
               <ArrowUpLeft className="h-4 w-4" />
             </Link>

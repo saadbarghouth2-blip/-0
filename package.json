@@ -13,6 +13,7 @@
     "audit:copy": "node scripts/audit-copy-duplicates.mjs",
     "audit:audience": "node scripts/audit-audience-copy.mjs",
     "audit:seo": "node scripts/audit-seo-output.mjs",
+    "audit:links": "node scripts/audit-links.mjs",
     "audit:mobile": "node scripts/audit-mobile-layout.mjs",
     "preview": "vite preview"
   },
