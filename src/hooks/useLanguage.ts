@@ -31,7 +31,7 @@ const translations: TranslationDictionary = {
     home: { ar: 'الرئيسية', en: 'Home' },
     about: { ar: 'من نحن', en: 'About' },
     services: { ar: 'خدماتنا', en: 'Services' },
-    projects: { ar: 'أعمالنا', en: 'Projects' },
+    projects: { ar: 'سابقة أعمالنا', en: 'Our Work' },
     blog: { ar: 'المدونة', en: 'Blog' },
     testimonials: { ar: 'آراء العملاء', en: 'Testimonials' },
     contact: { ar: 'تواصل معنا', en: 'Contact' },

@@ -1179,7 +1179,7 @@ export const navGroups: NavGroup[] = [
   {
     id: 'projects',
     labelKey: 'nav.projects',
-    fallbackLabel: { ar: 'أعمالنا', en: 'Projects' },
+    fallbackLabel: { ar: 'سابقة أعمالنا', en: 'Our Work' },
     description: { ar: 'شاهد الأعمال من أكثر من زاوية: مشاريع، قصص، معرض، وأرقام.', en: 'Explore work through projects, stories, gallery, and numbers.' },
     mainTo: '/projects',
     cta: { ar: 'كل الأعمال', en: 'All work' },

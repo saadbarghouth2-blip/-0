@@ -75,6 +75,7 @@ export interface PortfolioProject {
   englishVariantLabel?: string;
   isPrimaryVariant?: boolean;
   featured?: boolean;
+  showcaseGroup?: 'latest';
 }
 
 type ScreenshotVariant = 'desktop' | 'tablet' | 'mobile';
@@ -345,7 +346,154 @@ export const processSteps: ProcessItem[] = [
   },
 ];
 
+interface LatestProjectSeed {
+  slug: string;
+  title: string;
+  englishTitle: string;
+  category: string;
+  englishCategory: string;
+  excerpt: string;
+  englishExcerpt: string;
+  liveUrl: string;
+  accent: string;
+  techStack: string[];
+  focus: string[];
+}
+
+const latestProjectSeeds: LatestProjectSeed[] = [
+  {
+    slug: 'arcgis-modelbuilder-final-exam', title: 'الاختبار النهائي لـ ArcGIS ModelBuilder', englishTitle: 'ArcGIS ModelBuilder Final Exam',
+    category: 'تعليم وتقييم GIS', englishCategory: 'GIS Assessment',
+    excerpt: 'اختبار مهني تفاعلي يضم 20 سؤالًا في التحليل المكاني باستخدام ModelBuilder مع تصحيح ونتائج فورية.',
+    englishExcerpt: 'A professional 20-question GIS spatial analysis assessment with instant grading and results.',
+    liveUrl: 'https://arcgis-modelbuilder-final-exam.ai.studio/',
+    accent: 'from-emerald-400/30 via-cyan-500/10 to-blue-500/20',
+    techStack: ['ArcGIS', 'ModelBuilder', 'Interactive Assessment'], focus: ['تقييم مهني', 'نتائج فورية', 'تحليل مكاني'],
+  },
+  {
+    slug: 'albakhira-hall', title: 'قاعة البخيرة', englishTitle: 'Albakhira Hall',
+    category: 'مواقع أعمال', englishCategory: 'Business Website',
+    excerpt: 'واجهة تعريفية راقية تعرض القاعة وخدماتها وتسهّل على العميل استكشاف التجربة والحجز.',
+    englishExcerpt: 'A polished venue website that presents the hall, its services, and a clear path to booking.',
+    liveUrl: 'https://albakhira-hall.vercel.app/',
+    accent: 'from-amber-400/30 via-orange-500/10 to-rose-500/20',
+    techStack: ['React', 'Responsive UI', 'Vercel'], focus: ['عرض بصري راقٍ', 'وضوح الخدمات', 'سهولة التواصل'],
+  },
+  {
+    slug: 'albakhira-social-media', title: 'البخيرة سوشيال ميديا', englishTitle: 'Albakhira Social Media',
+    category: 'منصات رقمية', englishCategory: 'Digital Platform',
+    excerpt: 'تجربة رقمية حديثة لتنظيم وعرض محتوى التواصل الاجتماعي بصورة جذابة وسريعة.',
+    englishExcerpt: 'A modern digital experience for presenting and organizing social media content with clarity.',
+    liveUrl: 'https://albakhira-social-media.vercel.app/',
+    accent: 'from-fuchsia-500/30 via-violet-500/10 to-cyan-400/20',
+    techStack: ['React', 'Social UI', 'Vercel'], focus: ['حضور رقمي', 'تجربة تفاعلية', 'هوية بصرية'],
+  },
+  {
+    slug: 'academy-live', title: 'الأكاديمية لايف', englishTitle: 'Academy Live',
+    category: 'تعليم إلكتروني', englishCategory: 'E-learning',
+    excerpt: 'منصة تعليمية حية تجمع المحتوى والدروس والتفاعل في رحلة تعلم واضحة وسهلة.',
+    englishExcerpt: 'A live academy experience that brings lessons, content, and engagement into one clear journey.',
+    liveUrl: 'https://academy-live.vercel.app/',
+    accent: 'from-blue-500/30 via-indigo-500/10 to-cyan-400/20',
+    techStack: ['React', 'Learning UX', 'Vercel'], focus: ['تعلم تفاعلي', 'سهولة التصفح', 'تنظيم المحتوى'],
+  },
+  {
+    slug: 'elite-manage', title: 'إيليت مانج', englishTitle: 'Elite Manage',
+    category: 'أنظمة إدارة', englishCategory: 'Management System',
+    excerpt: 'نظام إدارة احترافي يقدّم المعلومات والإجراءات اليومية داخل واجهة عملية ومنظمة.',
+    englishExcerpt: 'A professional management system that keeps daily information and actions organized and accessible.',
+    liveUrl: 'https://elite-mange.vercel.app/',
+    accent: 'from-emerald-400/30 via-teal-500/10 to-cyan-400/20',
+    techStack: ['Dashboard', 'Management UX', 'Vercel'], focus: ['إدارة واضحة', 'سرعة الوصول', 'واجهة عملية'],
+  },
+  {
+    slug: 'elite-one', title: 'إيليت ون', englishTitle: 'Elite One',
+    category: 'مواقع أعمال', englishCategory: 'Business Website',
+    excerpt: 'موقع أعمال بهوية فاخرة يقدّم العلامة وخدماتها بثقة وانطباع بصري قوي.',
+    englishExcerpt: 'A premium business website that presents the brand and services with confidence and visual impact.',
+    liveUrl: 'https://elite-one-blush.vercel.app/',
+    accent: 'from-rose-400/30 via-pink-500/10 to-violet-500/20',
+    techStack: ['React', 'Premium UI', 'Vercel'], focus: ['هوية فاخرة', 'عرض الخدمات', 'تحويل الزائر'],
+  },
+  {
+    slug: 'empire-store', title: 'إمباير ستور', englishTitle: 'Empire Store',
+    category: 'متاجر إلكترونية', englishCategory: 'E-commerce',
+    excerpt: 'متجر إلكتروني عصري يبرز المنتجات ويجعل رحلة التصفح والشراء أكثر سلاسة.',
+    englishExcerpt: 'A modern storefront that highlights products and makes browsing and buying feel effortless.',
+    liveUrl: 'https://empire-store-pearl.vercel.app/',
+    accent: 'from-yellow-400/30 via-amber-500/10 to-orange-500/20',
+    techStack: ['E-commerce', 'Product UX', 'Vercel'], focus: ['عرض المنتجات', 'سهولة الشراء', 'تجربة سريعة'],
+  },
+  {
+    slug: 'ai-service-studio', title: 'استوديو الخدمات الذكية', englishTitle: 'AI Service Studio',
+    category: 'ذكاء اصطناعي', englishCategory: 'AI Experience',
+    excerpt: 'تجربة خدمات مدعومة بالذكاء الاصطناعي بواجهة مباشرة تساعد المستخدم على الوصول للنتيجة بسرعة.',
+    englishExcerpt: 'An AI-powered service experience designed to move users from intent to useful results quickly.',
+    liveUrl: 'https://service-4321.ai.studio/',
+    accent: 'from-violet-500/30 via-blue-500/10 to-cyan-400/20',
+    techStack: ['AI Studio', 'Interactive UX', 'Cloud'], focus: ['تفاعل ذكي', 'وضوح النتيجة', 'سهولة الاستخدام'],
+  },
+  {
+    slug: 'cloud-service-platform', title: 'منصة الخدمات السحابية', englishTitle: 'Cloud Service Platform',
+    category: 'تطبيقات سحابية', englishCategory: 'Cloud Application',
+    excerpt: 'تطبيق سحابي سريع يقدّم الخدمة داخل تجربة مرنة ومتجاوبة على مختلف الأجهزة.',
+    englishExcerpt: 'A fast cloud application delivering a flexible, responsive service experience across devices.',
+    liveUrl: 'https://service-339591511497.europe-west3.run.app/',
+    accent: 'from-sky-400/30 via-blue-500/10 to-indigo-500/20',
+    techStack: ['Cloud Run', 'Web App', 'Responsive'], focus: ['أداء سحابي', 'مرونة الاستخدام', 'تجاوب كامل'],
+  },
+  {
+    slug: 'cloud-service-offer', title: 'تجربة العرض الخاص', englishTitle: 'Special Offer Experience',
+    category: 'صفحات تحويل', englishCategory: 'Conversion Experience',
+    excerpt: 'نسخة مخصصة لعرض ترويجي تقود العميل مباشرةً إلى تفاصيل العرض والخطوة التالية.',
+    englishExcerpt: 'A focused promotional variation that guides visitors directly to the offer and next action.',
+    liveUrl: 'https://service-339591511497.europe-west3.run.app/?offer=1',
+    accent: 'from-lime-400/30 via-emerald-500/10 to-cyan-400/20',
+    techStack: ['Landing Flow', 'Cloud Run', 'Conversion UX'], focus: ['عرض مباشر', 'دعوة واضحة', 'رحلة قصيرة'],
+  },
+  {
+    slug: 'map-kids', title: 'خرائط الأطفال', englishTitle: 'Map Kids',
+    category: 'تعليم تفاعلي', englishCategory: 'Interactive Learning',
+    excerpt: 'تجربة تعليمية مرحة تساعد الأطفال على الاستكشاف والتعلم باستخدام الخرائط والتفاعل البصري.',
+    englishExcerpt: 'A playful learning experience that helps children explore and learn through maps and visual interaction.',
+    liveUrl: 'https://map-kids-theta.vercel.app/',
+    accent: 'from-cyan-400/30 via-green-400/10 to-yellow-400/20',
+    techStack: ['Interactive Maps', 'Kids UX', 'Vercel'], focus: ['تعلم باللعب', 'خرائط تفاعلية', 'واجهة للأطفال'],
+  },
+  {
+    slug: 'teba-store', title: 'طيبة ستور', englishTitle: 'Teba Store',
+    category: 'متاجر إلكترونية', englishCategory: 'E-commerce',
+    excerpt: 'واجهة متجر واضحة وسريعة تنظّم المنتجات وتمنح العميل تجربة تصفح مريحة ومباشرة.',
+    englishExcerpt: 'A clear, fast storefront that organizes products into a comfortable and direct shopping experience.',
+    liveUrl: 'https://teba-store.vercel.app/',
+    accent: 'from-teal-400/30 via-emerald-500/10 to-amber-400/20',
+    techStack: ['E-commerce', 'Responsive UI', 'Vercel'], focus: ['تنظيم المنتجات', 'تصفح سريع', 'تجربة شراء'],
+  },
+];
+
+const latestProjects = latestProjectSeeds.map((project) =>
+  buildProject({
+    ...project,
+    summary: project.excerpt,
+    englishSummary: project.englishExcerpt,
+    challenge: 'تحويل فكرة المشروع إلى تجربة رقمية واضحة وسريعة تمنح العميل ثقة من أول زيارة.',
+    englishChallenge: 'Turning the project idea into a clear, fast digital experience that builds trust from the first visit.',
+    approach: 'تم بناء واجهة متجاوبة مع تنظيم المحتوى حول احتياج المستخدم وأهم خطوة تالية.',
+    englishApproach: 'A responsive interface was built around user intent, content clarity, and the most important next action.',
+    outcome: 'تجربة حية جاهزة للعرض، سهلة الاستكشاف، وتعمل بكفاءة على الهاتف والكمبيوتر.',
+    englishOutcome: 'A live, presentation-ready experience that is easy to explore across mobile and desktop.',
+    audience: 'العملاء والمستخدمون المستهدفون', englishAudience: 'Clients and target users',
+    projectType: project.category, englishProjectType: project.englishCategory,
+    role: 'تصميم وتطوير التجربة الرقمية', englishRole: 'Digital experience design and development',
+    deliverables: ['واجهة متجاوبة', 'تجربة استخدام واضحة', 'إطلاق حي'],
+    experience: ['سرعة', 'وضوح', 'سهولة الوصول'],
+    featured: true,
+    showcaseGroup: 'latest',
+  }),
+);
+
 export const projects: PortfolioProject[] = [
+  ...latestProjects,
   buildProject({
     slug: 'nemora',
     title: 'Nemora',
@@ -1207,6 +1355,10 @@ export const projectFamilyLeads = Object.values(projectsByFamily).map((group) =>
 export const standaloneProjects = projects.filter((project) => !project.familyKey);
 
 export const visibleProjects = projects.filter((project) => !project.familyKey || project.isPrimaryVariant);
+
+export const latestShowcaseProjects = visibleProjects.filter((project) => project.showcaseGroup === 'latest');
+
+export const establishedVisibleProjects = visibleProjects.filter((project) => project.showcaseGroup !== 'latest');
 
 export const featuredVisibleProjects = visibleProjects.filter((project) => project.featured);
 

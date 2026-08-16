@@ -7,7 +7,7 @@ import ProjectCard from '../components/ProjectCard';
 import EditorialImageBreak from '../components/EditorialImageBreak';
 import PageHero from '../components/PageHero';
 import PageImageShowcaseSection from '../components/PageImageShowcase';
-import { visibleProjects } from '../data/portfolio';
+import { establishedVisibleProjects, latestShowcaseProjects, visibleProjects } from '../data/portfolio';
 import { pageImageShowcases } from '../data/pageImageShowcases';
 import { servicePackages, trustSignals } from '../data/company';
 import { useLanguage } from '../hooks/useLanguage';
@@ -58,7 +58,7 @@ const ProjectsPage = () => {
   // Extract all categories and tech stacks from project list for filters
   const categories = useMemo(() => {
     const list = new Set<string>();
-    visibleProjects.forEach(p => {
+    establishedVisibleProjects.forEach(p => {
       if (p.category) list.add(p.category);
     });
     return ['All', ...Array.from(list)];
@@ -66,7 +66,7 @@ const ProjectsPage = () => {
 
   const technologies = useMemo(() => {
     const list = new Set<string>();
-    visibleProjects.forEach(p => {
+    establishedVisibleProjects.forEach(p => {
       if (p.techStack) p.techStack.forEach(t => list.add(t));
     });
     return ['All', ...Array.from(list).slice(0, 8)]; // top 8 tech tags
@@ -74,7 +74,7 @@ const ProjectsPage = () => {
 
   // Filter project logic
   const filteredProjects = useMemo(() => {
-    return visibleProjects.filter(project => {
+    return establishedVisibleProjects.filter(project => {
       const title = isArabic ? project.title : project.englishTitle ?? project.title;
       const excerpt = isArabic ? project.excerpt : project.englishExcerpt ?? project.excerpt;
 
@@ -97,7 +97,7 @@ const ProjectsPage = () => {
 
   // Featured Spotlight Project (Take the first project or one with high rating/complexity)
   const spotlightProject = useMemo(() => {
-    return visibleProjects[0]; // main highlighted project
+    return latestShowcaseProjects[0] ?? visibleProjects[0];
   }, []);
 
   // Paginated filtered projects
@@ -143,6 +143,21 @@ const ProjectsPage = () => {
       />
 
       <div className="mx-auto max-w-7xl px-4 md:px-8">
+
+        <nav aria-label={text('التنقل بين مجموعات المشاريع', 'Project collection navigation')} className="sticky top-16 z-30 mt-5 flex items-center justify-center md:top-20">
+          <div className="inline-flex max-w-full gap-1.5 overflow-x-auto rounded-2xl border border-white/10 bg-[#061018]/90 p-1.5 shadow-[0_18px_60px_-35px_rgba(45,212,191,0.8)] backdrop-blur-xl">
+            <a className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl bg-cyan-300 px-3.5 py-2 text-xs font-black text-[#031014] transition-transform hover:-translate-y-0.5 md:px-5 md:text-sm" href="#latest-projects">
+              <Sparkles className="h-3.5 w-3.5" />
+              {text('الأحدث والمميز', 'Latest & signature')}
+              <span className="rounded-full bg-black/10 px-1.5 py-0.5 text-[10px]">{latestShowcaseProjects.length}</span>
+            </a>
+            <a className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold text-slate-300 transition-colors hover:bg-white/10 hover:text-white md:px-5 md:text-sm" href="#all-projects">
+              <LayoutGrid className="h-3.5 w-3.5" />
+              {text('معرض الأعمال الكامل', 'Full project archive')}
+              <span className="rounded-full bg-white/10 px-1.5 py-0.5 text-[10px]">{establishedVisibleProjects.length}</span>
+            </a>
+          </div>
+        </nav>
         
         {/* Spotlight Featured Banner */}
         {spotlightProject && searchQuery === '' && selectedCategory === 'All' && selectedTech === 'All' && (
@@ -172,13 +187,15 @@ const ProjectsPage = () => {
                   ))}
                 </div>
                 <div className="pt-2 md:pt-4">
-                  <Link 
-                    to={localizePath(`/projects/${spotlightProject.slug}`)} 
+                  <a
+                    href={spotlightProject.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
                     className="btn-primary inline-flex items-center gap-2 text-xs md:text-sm shadow-[0_0_20px_rgba(45,212,191,0.3)]"
                   >
                     {text('استكشف التفاصيل', 'Explore details')}
                     <ArrowUpLeft className="h-3 w-3 md:h-4 md:w-4" />
-                  </Link>
+                  </a>
                 </div>
               </div>
               <div className="relative aspect-[16/10] md:aspect-[16/10] rounded-lg md:rounded-2xl overflow-hidden border border-white/10 group shadow-2xl hidden md:block">
@@ -192,6 +209,45 @@ const ProjectsPage = () => {
             </div>
           </motion.div>
         )}
+
+        {/* Latest client-ready collection */}
+        <section id="latest-projects" aria-labelledby="latest-projects-title" className="relative mt-10 scroll-mt-32 overflow-hidden rounded-[1.5rem] border border-cyan-300/25 bg-[linear-gradient(145deg,rgba(8,35,45,0.82),rgba(6,9,15,0.94)_42%,rgba(27,16,46,0.86))] p-4 shadow-[0_40px_130px_-70px_rgba(45,212,191,0.85)] md:mt-14 md:rounded-[2.8rem] md:p-8 lg:p-10">
+          <div className="pointer-events-none absolute -end-20 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-[100px]" />
+          <div className="pointer-events-none absolute -bottom-28 -start-16 h-72 w-72 rounded-full bg-violet-500/15 blur-[110px]" />
+
+          <div className="relative mb-6 flex flex-col gap-4 border-b border-white/10 pb-6 md:mb-8 md:flex-row md:items-end md:justify-between md:pb-8">
+            <div className="max-w-3xl">
+              <span className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-[11px] font-black text-cyan-100 md:text-xs">
+                <Sparkles className="h-3.5 w-3.5" />
+                {text('مجموعة جديدة ومميزة', 'New signature collection')}
+              </span>
+              <h2 id="latest-projects-title" className="mt-4 font-display text-2xl font-black text-white md:text-4xl">
+                {text('أحدث المشاريع المختارة — جاهزة للعرض الحي', 'Latest selected projects — ready to explore live')}
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300 md:text-base md:leading-8">
+                {text('مجموعة مستقلة من أحدث تجاربنا الرقمية. اضغط على أي بطاقة لفتح الموقع الحقيقي فورًا في نافذة جديدة.', 'A distinct collection of our newest digital experiences. Select any card to open the real website instantly in a new tab.')}
+              </p>
+            </div>
+            <div className="inline-flex w-fit items-center gap-3 rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
+              <span className="font-display text-3xl font-black text-cyan-300">{latestShowcaseProjects.length}</span>
+              <span className="whitespace-pre-line text-xs font-bold leading-5 text-slate-300">{text('مشروعًا حيًا\nمختارًا', 'curated live\nprojects')}</span>
+            </div>
+          </div>
+
+          <div className="relative grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+            {latestShowcaseProjects.map((project, index) => (
+              <motion.div
+                key={project.slug}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.45, delay: Math.min(index * 0.04, 0.24) }}
+              >
+                <ProjectCard emphasis="latest" linkMode="live" project={project} />
+              </motion.div>
+            ))}
+          </div>
+        </section>
 
         {/* Corporate Trust Info */}
         <div className="mt-10 grid gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch">
@@ -259,7 +315,25 @@ const ProjectsPage = () => {
         <PageImageShowcaseSection showcase={pageImageShowcases.projects} />
 
         {/* Dynamic Search & Search Bar Panel */}
-        <div ref={gridRef} className="mt-12 md:mt-16 border-t border-white/10 pt-10">
+        <div id="all-projects" ref={gridRef} className="mt-12 scroll-mt-32 border-t border-white/10 pt-10 md:mt-16">
+          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <span className="inline-flex items-center gap-2 rounded-full border border-violet-300/20 bg-violet-400/10 px-3 py-1.5 text-[11px] font-black text-violet-200">
+                <LayoutGrid className="h-3.5 w-3.5" />
+                {text('أرشيف المشاريع', 'Project archive')}
+              </span>
+              <h2 className="mt-4 font-display text-2xl font-black text-white md:text-4xl">
+                {text('كل مشاريعنا السابقة في مكان واحد', 'The complete project collection in one place')}
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-400 md:text-base">
+                {text('استكشف بقية الأعمال باستخدام البحث والتصنيفات، واضغط على أي مشروع لفتح نسخته الحية مباشرة.', 'Explore the rest of the portfolio with search and filters, then select any project to open its live version directly.')}
+              </p>
+            </div>
+            <div className="w-fit rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300">
+              <span className="me-2 text-2xl font-black text-violet-300">{establishedVisibleProjects.length}</span>
+              {text('مشروعًا إضافيًا', 'additional projects')}
+            </div>
+          </div>
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
             

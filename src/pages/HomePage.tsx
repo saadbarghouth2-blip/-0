@@ -56,6 +56,7 @@ import { enrichmentMediaById } from '../data/enrichmentMedia';
 import { illustrationAssets } from '../lib/illustrationAssets';
 import { getPageSeoByPath } from '../lib/pageSeo';
 import { clientFacingText } from '../lib/repairText';
+import { preloadPath } from '../lib/pageLoaders';
 
 const AnimatedCounter = ({ value, duration = 2500 }: { value: string; duration?: number }) => {
   const [count, setCount] = useState(0);
@@ -616,6 +617,13 @@ const HomePage = () => {
   usePageMetadata(getPageSeoByPath('/', lang));
 
   useEffect(() => {
+    const canTrackPointer = window.matchMedia('(pointer: fine) and (min-width: 1024px)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!canTrackPointer || prefersReducedMotion) {
+      return undefined;
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
        const x = (e.clientX / window.innerWidth - 0.5) * 60;
        const y = (e.clientY / window.innerHeight - 0.5) * 60;
@@ -629,6 +637,9 @@ const HomePage = () => {
 
   useEffect(() => {
     const autoplay = window.setInterval(() => {
+      if (document.hidden) {
+        return;
+      }
       setMobileTestimonialIndex((current) => (current + 1) % homeTestimonials.length);
     }, 4500);
 
@@ -638,6 +649,7 @@ const HomePage = () => {
   }, []);
 
   const showcaseProjects = featuredVisibleProjects.slice(0, 6);
+  const mobileShowcaseProjects = featuredVisibleProjects.slice(0, 4);
   const mobileTestimonial = homeTestimonials[mobileTestimonialIndex] ?? homeTestimonials[0];
   const TestimonialPrevIcon = isArabic ? ArrowRight : ArrowLeft;
   const TestimonialNextIcon = isArabic ? ArrowLeft : ArrowRight;
@@ -801,7 +813,7 @@ const HomePage = () => {
   );
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative pb-16 md:pb-0">
       
       {/* FLOATING PARALLAX IMAGES (Global details) - Hidden on Mobile */}
       <motion.img 
@@ -918,7 +930,11 @@ const HomePage = () => {
             </motion.div>
 
             <motion.div variants={staggerItem} className="flex flex-col gap-2.5 pt-2 sm:flex-row sm:flex-wrap md:gap-4 md:pt-4">
-              <Link className="btn-primary group w-full shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_40px_rgba(45,212,191,0.5)] sm:w-auto" to={localizePath('/projects')}>
+              <Link
+                className="btn-primary group w-full shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_40px_rgba(45,212,191,0.5)] sm:w-auto"
+                onPointerDown={() => void preloadPath(localizePath('/projects'))}
+                to={localizePath('/projects')}
+              >
                 <span className="relative z-10 flex items-center gap-2">
                   {text('استكشف مشاريعنا', 'Explore Projects')}
                   <motion.span animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
@@ -1018,6 +1034,56 @@ const HomePage = () => {
           </motion.div>
         </div>
       </motion.section>
+
+      <section aria-label={text('وصول سريع إلى الأعمال السابقة', 'Quick access to previous work')} className="section-shell relative z-20 -mt-2 pb-3 md:-mt-8 md:pb-6">
+        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[1.35rem] border border-cyan-300/25 bg-[linear-gradient(120deg,rgba(13,37,48,0.96),rgba(6,9,15,0.97)_55%,rgba(35,20,57,0.94))] shadow-[0_28px_90px_-48px_rgba(45,212,191,0.9)] md:grid-cols-[1fr_auto] md:items-center md:rounded-[2rem]">
+          <div className="flex items-start gap-3 p-4 md:items-center md:gap-5 md:p-6">
+            <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-cyan-200/20 bg-cyan-300/10 text-cyan-200 md:h-14 md:w-14">
+              <Layers3 className="h-5 w-5 md:h-6 md:w-6" />
+            </div>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-cyan-200/80 md:text-xs">
+                {text('الدليل قبل القرار', 'Proof before the decision')}
+              </p>
+              <h2 className="mt-1.5 font-display text-lg font-black leading-7 text-white md:text-2xl">
+                {text('شاهد سابقة أعمالنا والمواقع الحية بنفسك', 'Explore our previous work and live websites')}
+              </h2>
+              <p className="mt-1 text-xs leading-6 text-slate-400 md:text-sm">
+                {text('مشاريع حقيقية يمكنك فتحها وتجربتها مباشرةً قبل التواصل معنا.', 'Open and experience real projects directly before contacting Notaq.')}
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-2 border-t border-white/10 p-3 md:flex md:border-s md:border-t-0 md:p-5">
+            <Link
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-cyan-300 px-3 text-center text-xs font-black text-[#031014] transition-transform hover:-translate-y-0.5 md:px-5 md:text-sm"
+              onPointerDown={() => void preloadPath(localizePath('/projects'))}
+              to={`${localizePath('/projects')}#all-projects`}
+            >
+              {text('كل الأعمال السابقة', 'All previous work')}
+              <ArrowUpLeft className="h-4 w-4" />
+            </Link>
+            <Link
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/[0.05] px-3 text-center text-xs font-bold text-white transition-colors hover:bg-white/10 md:px-5 md:text-sm"
+              onPointerDown={() => void preloadPath(localizePath('/projects'))}
+              to={`${localizePath('/projects')}#latest-projects`}
+            >
+              {text('أحدث المشاريع', 'Latest projects')}
+              <Sparkles className="h-4 w-4 text-cyan-200" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <Link
+        aria-label={text('افتح صفحة الأعمال السابقة', 'Open previous work page')}
+        className="fixed inset-x-3 bottom-3 z-40 flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-cyan-100/25 bg-cyan-300 px-4 text-sm font-black text-[#031014] shadow-[0_18px_55px_-18px_rgba(45,212,191,0.95)] md:hidden"
+        onPointerDown={() => void preloadPath(localizePath('/projects'))}
+        to={`${localizePath('/projects')}#all-projects`}
+      >
+        <Layers3 className="h-4 w-4" />
+        {text('شاهد سابقة أعمالنا', 'View previous work')}
+        <ArrowUpLeft className="h-4 w-4" />
+      </Link>
 
       {/* NEW Infinite Marquee Visual Break */}
       <section className="relative overflow-hidden border-y border-white/5 bg-[#06090f] py-8 md:py-10">
@@ -1501,9 +1567,13 @@ const HomePage = () => {
           </div>
 
           <div className="grid gap-4 md:hidden">
-            {showcaseProjects.map((project) => (
+            {mobileShowcaseProjects.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
+            <Link className="btn-primary mt-1 inline-flex min-h-12 items-center justify-center gap-2" to={`${localizePath('/projects')}#all-projects`}>
+              {text('عرض كل الأعمال السابقة', 'View all previous work')}
+              <ArrowUpLeft className="h-4 w-4" />
+            </Link>
           </div>
           <div className="hidden gap-12 md:grid md:grid-cols-2 xl:grid-cols-3">
             {showcaseProjects.map((project, idx) => (

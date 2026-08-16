@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpLeft, ExternalLink } from 'lucide-react';
+import { ArrowUpLeft, ExternalLink, Sparkles } from 'lucide-react';
 import type { KeyboardEventHandler } from 'react';
 
 import type { PortfolioProject } from '../data/portfolio';
@@ -13,9 +13,10 @@ interface ProjectCardProps {
   project: PortfolioProject;
   compact?: boolean;
   linkMode?: 'detail' | 'live';
+  emphasis?: 'default' | 'latest';
 }
 
-const ProjectCard = ({ project, compact = false, linkMode = 'detail' }: ProjectCardProps) => {
+const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis = 'default' }: ProjectCardProps) => {
   const { lang, localizePath } = useLanguage();
   const isMobile = useIsMobile();
   const isArabic = lang === 'ar';
@@ -27,13 +28,15 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail' }: ProjectC
     : project.englishVariantLabel ?? project.variantLabel;
   const visitLabel = isArabic ? `زيارة ${project.title}` : `Visit ${project.englishTitle ?? project.title}`;
   const projectPath = localizePath(`/projects/${project.slug}`);
-  const primaryHref = linkMode === 'live' ? project.liveUrl : projectPath;
+  const opensLive = linkMode === 'live' || project.showcaseGroup === 'latest';
+  const isLatest = emphasis === 'latest' || project.showcaseGroup === 'latest';
+  const primaryHref = opensLive ? project.liveUrl : projectPath;
   const previewShots = (project.screenshots ?? [])
     .filter((shot) => shot !== project.coverImage)
     .slice(0, compact ? 2 : isMobile ? 2 : 3);
 
   const prefetchProjectPage = () => {
-    if (linkMode === 'live') {
+    if (opensLive) {
       return;
     }
 
@@ -54,7 +57,7 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail' }: ProjectC
   };
 
   const openPrimaryAction = () => {
-    if (linkMode === 'live') {
+    if (opensLive) {
       trackPortfolioOpen('card', 'live');
       window.open(project.liveUrl, '_blank', 'noopener,noreferrer');
       return;
@@ -82,7 +85,11 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail' }: ProjectC
       onKeyDown={handleKeyDown}
       onMouseEnter={prefetchProjectPage}
       onPointerDown={prefetchProjectPage}
-      className="surface-card group relative flex cursor-pointer flex-col overflow-hidden rounded-lg md:rounded-[2rem] glass-card transition-all duration-500 hover:border-cyan-400/40 hover:shadow-[0_40px_100px_-30px_rgba(45,212,191,0.3)] md:h-full"
+      className={`surface-card group relative flex cursor-pointer flex-col overflow-hidden rounded-lg md:rounded-[2rem] glass-card transition-all duration-500 md:h-full ${
+        isLatest
+          ? 'border-cyan-300/35 bg-gradient-to-b from-cyan-400/[0.09] via-[#07131b]/95 to-[#06090f] shadow-[0_24px_80px_-45px_rgba(45,212,191,0.9)] hover:border-cyan-300/70 hover:shadow-[0_38px_100px_-35px_rgba(45,212,191,0.52)]'
+          : 'hover:border-cyan-400/40 hover:shadow-[0_40px_100px_-30px_rgba(45,212,191,0.3)]'
+      }`}
       role="link"
       tabIndex={0}
     >
@@ -90,6 +97,13 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail' }: ProjectC
 
       <div className="relative z-0 overflow-hidden">
         <div className={`absolute inset-0 z-10 bg-gradient-to-br ${project.accent} opacity-50 mix-blend-overlay`} />
+
+        {isLatest ? (
+          <span className="absolute start-3 top-3 z-30 inline-flex items-center gap-1.5 rounded-full border border-cyan-200/30 bg-[#041117]/90 px-2.5 py-1 text-[10px] font-black text-cyan-100 shadow-lg backdrop-blur-md md:start-4 md:top-4 md:px-3 md:py-1.5 md:text-xs">
+            <Sparkles className="h-3 w-3" />
+            {isArabic ? 'أحدث أعمالنا' : 'Latest work'}
+          </span>
+        ) : null}
 
         <motion.div className="h-full w-full" transition={{ duration: 0.8, ease: 'easeOut' }}>
           <ProjectImage
@@ -190,12 +204,12 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail' }: ProjectC
             href={primaryHref}
             onClick={(event) => {
               event.stopPropagation();
-              trackPortfolioOpen('cta', linkMode === 'live' ? 'live' : 'detail');
+              trackPortfolioOpen('cta', opensLive ? 'live' : 'detail');
             }}
-            rel={linkMode === 'live' ? 'noreferrer' : undefined}
-            target={linkMode === 'live' ? '_blank' : undefined}
+            rel={opensLive ? 'noreferrer' : undefined}
+            target={opensLive ? '_blank' : undefined}
           >
-            {linkMode === 'live'
+            {opensLive
               ? isArabic
                 ? 'افتح'
                 : 'Open'

@@ -1059,6 +1059,19 @@ html[data-theme='light'] main .absolute :is(.text-slate-300, .text-slate-400, .t
   transform: translateY(0) scale(0.98);
 }
 
+.site-nav-trigger-projects {
+  border: 1px solid rgba(103, 232, 249, 0.24);
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.16), rgba(139, 92, 246, 0.1));
+  color: #ecfeff;
+  box-shadow: 0 10px 28px -22px rgba(45, 212, 191, 0.95);
+}
+
+.site-nav-trigger-projects:hover,
+.site-nav-trigger-projects.site-nav-trigger-active {
+  border-color: rgba(103, 232, 249, 0.42);
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.24), rgba(139, 92, 246, 0.15));
+}
+
 .site-dropdown {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;

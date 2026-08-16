@@ -674,6 +674,7 @@ const SiteLayout = () => {
                     onMouseEnter={() => prefetchRoute(group.localizedMainTo)}
                     className={joinClasses(
                       'site-nav-trigger',
+                      group.id === 'projects' && 'site-nav-trigger-projects',
                       (isActive || isOpen) && 'site-nav-trigger-active',
                     )}
                   >
