@@ -252,7 +252,7 @@ export const portfolioProfile = {
     },
     {
       label: 'GitHub Repository',
-      href: 'https://github.com/saadbarghouth2-blip/-0',
+      href: 'https://github.com/saadbarghouth2-blip',
       icon: 'github',
     },
     {
