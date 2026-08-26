@@ -341,14 +341,7 @@ const ServicesPage = () => {
 
   const renderCoreServiceCard = (service: (typeof services)[number], index: number) => {
     const Icon = serviceIcons[index];
-    const gridClass =
-      index === 0
-        ? 'md:col-span-2 md:row-span-2 bg-gradient-to-br from-[#0b1220]/80 to-[#101b2f]/80'
-        : index === 1
-          ? 'md:col-span-1 md:row-span-1 bg-[#06090f]/60'
-          : index === 2
-            ? 'md:col-span-1 md:row-span-1 bg-[#06090f]/60'
-            : 'md:col-span-3 md:row-span-1 bg-gradient-to-r from-violet-900/10 to-cyan-900/10';
+    const gridClass = 'bg-[#06090f]/60';
     const title = copy(isArabic ? service.title : service.englishTitle ?? service.title);
     const description = copy(isArabic
       ? service.description
@@ -365,26 +358,20 @@ const ServicesPage = () => {
       >
         <div className="pointer-events-none absolute -inset-10 z-0 rounded-full bg-cyan-400/20 opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100" />
 
-        {index === 0 ? (
-          <div className="pointer-events-none absolute bottom-0 right-0 z-0 h-2/3 w-2/3 overflow-hidden rounded-tl-[100%] border-l-2 border-t-2 border-white/10 opacity-20 mix-blend-screen transition-opacity duration-700 group-hover:opacity-40">
-            <img src="/images/Coding.gif" className="h-full w-full object-cover" alt="Coding" />
-          </div>
-        ) : null}
-
         <div className="relative z-10">
           <div className="inline-flex rounded-2xl border border-white/10 bg-white/5 p-2.5 text-cyan-300 drop-shadow-[0_0_15px_rgba(45,212,191,0.5)] md:p-4">
             <Icon className="h-6 w-6 md:h-8 md:w-8" />
           </div>
-          <h3 className={`mt-4 font-display font-semibold text-white ${index === 0 ? 'text-[1.5rem] md:text-5xl' : 'text-[1.1rem] md:text-2xl'}`}>
+          <h3 className="mt-4 font-display text-[1.1rem] font-semibold text-white md:text-2xl">
             {title}
           </h3>
-          <p className={`mt-2.5 leading-6 text-slate-400 md:mt-4 ${index === 0 ? 'max-w-lg text-sm md:text-lg md:leading-relaxed' : 'text-sm'}`}>
+          <p className="mt-2.5 text-sm leading-6 text-slate-400 md:mt-4 md:leading-7">
             {description}
           </p>
         </div>
 
         <div className="relative z-10 mt-4 flex w-full flex-wrap gap-1.5 md:mt-8 md:gap-2">
-          {bullets.slice(0, index === 0 ? 3 : 2).map((bullet) => (
+          {bullets.slice(0, 2).map((bullet) => (
             <span key={bullet} className="pill border-white/10 bg-white/5 text-slate-300 backdrop-blur-md">
               {bullet}
             </span>
@@ -563,7 +550,7 @@ const ServicesPage = () => {
           <div className="mt-6 md:mt-8 grid gap-3 md:gap-4 md:hidden">
             {services.map((service, index) => renderCoreServiceCard(service, index))}
           </div>
-          <div className="mt-8 hidden auto-rows-auto grid-cols-1 gap-4 md:mt-10 md:grid md:grid-cols-3 md:gap-5">
+          <div className="mt-8 hidden auto-rows-auto grid-cols-1 gap-4 md:mt-10 md:grid md:grid-cols-2 md:gap-5">
             {services.map((service, index) => renderCoreServiceCard(service, index))}
           </div>
         </div>

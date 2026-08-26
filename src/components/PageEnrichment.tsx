@@ -192,10 +192,12 @@ const ComparisonGrid = ({
 const VideoFeatureBlock = ({
   content,
   video,
+  poster,
   lang,
 }: {
   content: PageEnrichmentContent;
   video: EnrichmentMediaAsset;
+  poster: EnrichmentMediaAsset;
   lang: Language;
 }) => (
   <motion.section
@@ -212,16 +214,17 @@ const VideoFeatureBlock = ({
             <DeferredVideo
               aria-label={getCopy(video.alt, lang)}
               autoPlay
-              className="aspect-video w-full object-cover opacity-90"
+              className="aspect-video w-full object-cover"
               loop
               muted
               playsInline
+              poster={poster.src}
               src={video.src}
             />
           ) : (
             <ProjectImage
               alt={getCopy(video.alt, lang)}
-              className="aspect-video w-full object-cover opacity-90"
+              className="aspect-video w-full object-cover"
               src={video.src}
             />
           )}
@@ -418,8 +421,20 @@ const PageEnrichment = () => {
   const { lang, localizePath } = useLanguage();
   const isMobile = useIsMobile();
   const normalizedPath = location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+  const supportedRootRoutes = new Set([
+    '/',
+    '/about',
+    '/services',
+    '/projects',
+    '/case-studies',
+    '/gallery',
+    '/stats',
+    '/blog',
+    '/testimonials',
+    '/contact',
+  ]);
 
-  if (/^\/services\/[^/]+\/?$/.test(normalizedPath)) {
+  if (!supportedRootRoutes.has(normalizedPath.replace(/\/$/, '') || '/')) {
     return null;
   }
 
@@ -431,9 +446,8 @@ const PageEnrichment = () => {
 
   const heroMedia = enrichmentMediaById[content.heroMediaId];
   const storyMedia = enrichmentMediaById[content.storyMediaId];
-  const video = enrichmentMediaById[content.videoMediaId];
 
-  if (!heroMedia || !storyMedia || !video) {
+  if (!heroMedia || !storyMedia) {
     return null;
   }
 
@@ -451,10 +465,8 @@ const PageEnrichment = () => {
 
   return (
     <div className="page-enrichment" aria-label={lang === 'ar' ? 'تفاصيل إضافية مقنعة' : 'Additional persuasive details'}>
-      <RichPageSection content={content} lang={lang} media={heroMedia} />
       <MediaStoryBlock content={content} lang={lang} media={storyMedia} />
       <ComparisonGrid lang={lang} problems={content.problems} solutions={content.solutions} />
-      <VideoFeatureBlock content={content} lang={lang} video={video} />
       <DeepFAQ content={content} lang={lang} />
       <FinalCta content={content} lang={lang} to={localizePath('/contact')} />
     </div>

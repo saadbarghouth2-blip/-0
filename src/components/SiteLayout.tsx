@@ -383,8 +383,8 @@ const SiteLayout = () => {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.dataset.theme = 'dark';
-    root.classList.add('dark');
+    root.dataset.theme = 'light';
+    root.classList.remove('dark');
     window.localStorage.removeItem('notaq-theme');
   }, []);
 
@@ -662,9 +662,18 @@ const SiteLayout = () => {
                       const shell = event.currentTarget.closest('.site-nav-shell');
                       const shellRect = shell?.getBoundingClientRect();
                       const triggerRect = event.currentTarget.getBoundingClientRect();
-                      setDesktopDropdownLeft(
-                        shellRect ? triggerRect.left + triggerRect.width / 2 - shellRect.left : null,
-                      );
+                      const dropdownWidth = group.id === 'services'
+                        ? Math.min(window.innerWidth - 32, 544)
+                        : Math.min(window.innerWidth - 32, 196);
+                      const dropdownHalf = dropdownWidth / 2;
+                      const triggerCenter = shellRect ? triggerRect.left + triggerRect.width / 2 - shellRect.left : null;
+                      const minLeft = dropdownHalf + 8;
+                      const maxLeft = shellRect ? shellRect.width - dropdownHalf - 8 : minLeft;
+                      const boundedLeft = triggerCenter === null
+                        ? null
+                        : Math.min(Math.max(triggerCenter, minLeft), Math.max(minLeft, maxLeft));
+
+                      setDesktopDropdownLeft(boundedLeft);
                       if (group.id === 'services' && !desktopActiveServiceFamilyId) {
                         setDesktopActiveServiceFamilyId(localizedServiceFamilies[0]?.id ?? null);
                       }
@@ -674,7 +683,6 @@ const SiteLayout = () => {
                     onMouseEnter={() => prefetchRoute(group.localizedMainTo)}
                     className={joinClasses(
                       'site-nav-trigger',
-                      group.id === 'projects' && 'site-nav-trigger-projects',
                       (isActive || isOpen) && 'site-nav-trigger-active',
                     )}
                   >
@@ -695,7 +703,7 @@ const SiteLayout = () => {
                   className={joinClasses(
                     'site-dropdown absolute left-0 top-[calc(100%+0.35rem)] z-50 hidden -translate-x-1/2 overflow-hidden md:block',
                     activeNavGroup.id === 'services'
-                      ? 'site-services-mega w-[min(76vw,42rem)] p-1'
+                      ? 'site-services-mega w-[min(calc(100vw-2rem),34rem)] p-1'
                       : 'w-[min(12.25rem,calc(100vw-2rem))] p-0.5',
                   )}
                   style={{ left: desktopDropdownLeft ?? undefined }}
@@ -719,8 +727,8 @@ const SiteLayout = () => {
                           </Link>
                         </div>
 
-                        <div className="grid min-h-[18rem] gap-2 md:grid-cols-[13.5rem_minmax(0,1fr)]">
-                          <div className="site-services-mega-scroll max-h-[20rem] overflow-y-auto rounded-[0.9rem] border border-white/8 bg-[#050b14]/70 p-1.5">
+                        <div className="grid h-[min(21rem,calc(100dvh-8rem))] min-h-0 gap-2 md:grid-cols-[9.5rem_minmax(0,1fr)]">
+                          <div className="site-services-mega-scroll min-h-0 overflow-y-auto rounded-[0.9rem] border border-white/8 bg-[#050b14]/70 p-1.5">
                             {localizedServiceFamilies.map((family) => {
                               const isFamilyActive = desktopActiveServiceFamily?.id === family.id;
 
@@ -751,11 +759,11 @@ const SiteLayout = () => {
                             })}
                           </div>
 
-                          <div className="relative overflow-hidden rounded-[0.95rem] border border-white/9 bg-[#07111c]/78 p-2.5">
+                          <div className="relative flex min-h-0 flex-col overflow-hidden rounded-[0.95rem] border border-white/9 bg-[#07111c]/78 p-2.5">
                             {desktopActiveServiceFamily ? (
                               <>
                                 <div className={`pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-br ${desktopActiveServiceFamily.accent}`} />
-                                <div className="relative">
+                                <div className="relative flex min-h-0 flex-1 flex-col">
                                   <div className="mb-2">
                                     <h3 className="truncate text-sm font-bold text-white">
                                       {getLocalizedText(desktopActiveServiceFamily.label)}
@@ -765,7 +773,7 @@ const SiteLayout = () => {
                                     </p>
                                   </div>
 
-                                  <div className="grid max-h-[15rem] gap-1.5 overflow-y-auto pr-1">
+                                  <div className="grid min-h-0 flex-1 gap-1.5 overflow-y-auto pr-1">
                                     {desktopActiveServiceFamily.services.map((service) => (
                                       <Link
                                         key={service.slug}
@@ -795,7 +803,7 @@ const SiteLayout = () => {
                         </div>
 
                         {additionalServiceItems.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-1.5 border-t border-white/8 pt-2">
+                          <div className="mt-2 hidden flex-wrap gap-1.5 border-t border-white/8 pt-2">
                             {additionalServiceItems.slice(0, 4).map((item, itemIndex) => (
                               <Link
                                 key={`additional-service-${item.to}-${itemIndex}`}

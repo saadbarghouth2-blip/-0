@@ -1,5 +1,14 @@
 import { motion } from 'framer-motion';
-import { ArrowUpLeft, ExternalLink } from 'lucide-react';
+import {
+  ArrowUpLeft,
+  BrainCircuit,
+  Cloud,
+  GraduationCap,
+  LayoutDashboard,
+  Map,
+  ShoppingBag,
+  Sparkles,
+} from 'lucide-react';
 import type { KeyboardEventHandler } from 'react';
 
 import type { PortfolioProject } from '../data/portfolio';
@@ -23,30 +32,33 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
   const projectTitle = isArabic ? project.title : project.englishTitle ?? project.title;
   const projectExcerpt = isArabic ? project.excerpt : project.englishExcerpt ?? project.excerpt;
   const projectCategory = isArabic ? project.category : project.englishCategory ?? project.category;
-  const projectVariantLabel = isArabic
-    ? project.variantLabel
-    : project.englishVariantLabel ?? project.variantLabel;
-  const visitLabel = isArabic ? `زيارة ${project.title}` : `Visit ${project.englishTitle ?? project.title}`;
   const projectPath = localizePath(`/projects/${project.slug}`);
   const opensLive = linkMode === 'live' || project.showcaseGroup === 'latest';
   const isLatest = emphasis === 'latest' || project.showcaseGroup === 'latest';
   const primaryHref = opensLive ? project.liveUrl : projectPath;
-  const previewShots = (project.screenshots ?? [])
-    .filter((shot) => shot !== project.coverImage)
-    .slice(0, compact ? 2 : isMobile ? 2 : 3);
+  const hasLocalCover = project.coverImage.startsWith('/images/');
+  const categoryKey = (project.englishCategory ?? '').toLowerCase();
+  const CoverIcon = categoryKey.includes('gis') || categoryKey.includes('map')
+    ? Map
+    : categoryKey.includes('learn') || categoryKey.includes('assessment') || categoryKey.includes('education')
+      ? GraduationCap
+      : categoryKey.includes('commerce') || categoryKey.includes('store')
+        ? ShoppingBag
+        : categoryKey.includes('ai')
+          ? BrainCircuit
+          : categoryKey.includes('cloud')
+            ? Cloud
+            : categoryKey.includes('management') || categoryKey.includes('dashboard')
+              ? LayoutDashboard
+              : Sparkles;
 
   const prefetchProjectPage = () => {
-    if (opensLive) {
-      return;
+    if (!opensLive) {
+      void preloadPath(projectPath);
     }
-
-    void preloadPath(projectPath);
   };
 
-  const trackPortfolioOpen = (
-    action: 'card' | 'live_icon' | 'cta',
-    destination: 'detail' | 'live',
-  ) => {
+  const trackPortfolioOpen = (action: 'card' | 'cta', destination: 'detail' | 'live') => {
     trackEvent('portfolio_open', {
       action,
       destination,
@@ -76,124 +88,76 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
 
   return (
     <motion.article
-      initial={isMobile ? false : { opacity: 0, y: 40 }}
-      {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.2 } } : {})}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={isMobile ? undefined : { y: -10, scale: 1.02 }}
+      initial={isMobile ? false : { opacity: 0, y: 24 }}
+      {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 } } : {})}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={isMobile ? undefined : { y: -5 }}
       onClick={openPrimaryAction}
       onFocusCapture={prefetchProjectPage}
       onKeyDown={handleKeyDown}
       onMouseEnter={prefetchProjectPage}
       onPointerDown={prefetchProjectPage}
-      className={`surface-card group relative flex cursor-pointer flex-col overflow-hidden rounded-lg md:rounded-[2rem] glass-card transition-all duration-500 md:h-full ${
+      className={`project-card group relative flex cursor-pointer flex-col overflow-hidden rounded-lg border bg-[#0b1420] transition-all duration-300 md:h-full ${
         isLatest
-          ? 'border-cyan-300/35 bg-gradient-to-b from-cyan-400/[0.09] via-[#07131b]/95 to-[#06090f] shadow-[0_24px_80px_-45px_rgba(45,212,191,0.9)] hover:border-cyan-300/70 hover:shadow-[0_38px_100px_-35px_rgba(45,212,191,0.52)]'
-          : 'hover:border-cyan-400/40 hover:shadow-[0_40px_100px_-30px_rgba(45,212,191,0.3)]'
+          ? 'border-cyan-300/30 shadow-[0_20px_55px_-42px_rgba(45,212,191,0.8)] hover:border-cyan-300/55'
+          : 'border-white/10 shadow-[0_18px_48px_-38px_rgba(0,0,0,0.95)] hover:border-white/20'
       }`}
       role="link"
       tabIndex={0}
     >
-      <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-cyan-500/0 via-transparent to-violet-500/0 transition-colors duration-700 group-hover:from-cyan-500/10 group-hover:to-violet-500/10" />
-
-      <div className="relative z-0 overflow-hidden">
-        <div className={`absolute inset-0 z-10 bg-gradient-to-br ${project.accent} opacity-50 mix-blend-overlay`} />
-
-        <motion.div className="h-full w-full" transition={{ duration: 0.8, ease: 'easeOut' }}>
-          <ProjectImage
-            alt={projectTitle}
-            className={`w-full object-cover transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-1 ${
-              compact ? 'h-28 sm:h-36 md:h-44' : 'h-36 sm:h-44 md:h-56'
-            }`}
-            fallbackSrc={project.thumbnailImage}
-            fallbacks={project.screenshots}
-            loading="lazy"
-            src={project.coverImage}
-          />
-        </motion.div>
-
-        {!isMobile && previewShots.length > 0 ? (
-          <div className="absolute inset-x-0 bottom-0 z-20 flex translate-y-4 gap-2 overflow-hidden border-t border-white/5 bg-gradient-to-t from-[#06090f]/90 via-[#06090f]/50 to-transparent p-3 transition-transform duration-500 group-hover:translate-y-0">
-            {previewShots.map((shot, index) => (
-              <motion.div
-                key={`${project.slug}-preview-${index}`}
-                whileHover={{ scale: 1.1 }}
-                className="image-ring h-11 flex-1 overflow-hidden rounded-xl border border-white/10 shadow-lg"
-              >
-                <ProjectImage
-                  alt={`${projectTitle} preview ${index + 1}`}
-                  className="h-full w-full object-cover"
-                  fallbackSrc={project.coverImage}
-                  fallbacks={project.screenshots}
-                  loading="lazy"
-                  src={shot}
-                />
-              </motion.div>
-            ))}
-          </div>
-        ) : null}
+      <div className="relative overflow-hidden border-b border-white/10 bg-[#050a12]">
+        <div className={`project-card-media relative overflow-hidden ${compact ? 'aspect-[16/11]' : 'aspect-[16/10]'}`}>
+          {hasLocalCover ? (
+            <ProjectImage
+              alt={projectTitle}
+              className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+              fallbackSrc={project.thumbnailImage}
+              fallbacks={project.screenshots}
+              loading="lazy"
+              src={project.coverImage}
+            />
+          ) : (
+            <>
+              <ProjectImage
+                alt=""
+                className="absolute inset-0 h-full w-full scale-105 object-cover object-top opacity-60 saturate-125 transition-transform duration-500 group-hover:scale-[1.08]"
+                fallbackSrc={project.thumbnailImage}
+                fallbacks={project.screenshots}
+                loading="lazy"
+                src={project.coverImage}
+              />
+              <div className={`absolute inset-0 bg-gradient-to-br ${project.accent}`} />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:30px_30px]" />
+              <div className="absolute inset-0 bg-slate-950/35" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+                <span className="inline-flex h-14 w-14 items-center justify-center rounded-lg border border-white/15 bg-[#07111c]/65 text-cyan-100 shadow-xl backdrop-blur-sm md:h-16 md:w-16">
+                  <CoverIcon className="h-7 w-7 md:h-8 md:w-8" />
+                </span>
+                <strong className="mt-3 line-clamp-2 max-w-[90%] font-display text-lg font-black leading-snug text-white drop-shadow-lg md:text-2xl">
+                  {projectTitle}
+                </strong>
+              </div>
+            </>
+          )}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0b1420]/45 to-transparent" />
+        </div>
       </div>
 
-      <div className="relative z-20 flex flex-1 flex-col p-2.5 md:p-5">
-        <div className="flex items-start justify-between gap-2 md:gap-4">
-          <div className="min-w-0">
-            <span className="pill border-cyan-400/20 bg-cyan-400/5 text-cyan-200 transition-colors duration-300 group-hover:bg-cyan-400/10 text-[10px] md:text-sm">
-              {projectCategory}
-            </span>
-            <h3 className="mt-2 md:mt-3 font-display text-xs md:text-xl font-semibold text-white transition-colors duration-300 group-hover:text-cyan-300 line-clamp-2 md:line-clamp-none">
-              {projectTitle}
-            </h3>
-            {projectVariantLabel ? (
-              <p className="mt-1 md:mt-2 text-[9px] md:text-xs uppercase tracking-[0.15em] md:tracking-[0.2em] text-slate-500">
-                {projectVariantLabel}
-              </p>
-            ) : null}
-            <p className="mt-0.5 md:mt-1 hidden text-[9px] md:text-xs uppercase tracking-widest text-slate-500 md:block">
-              {isArabic ? project.englishTitle : project.title}
-            </p>
-          </div>
+      <div className="flex flex-1 flex-col p-4 md:p-5">
+        <span className="text-[11px] font-bold text-cyan-200/80 md:text-xs">
+          {projectCategory}
+        </span>
+        <h3 className="mt-1.5 line-clamp-2 font-display text-lg font-black leading-snug text-white transition-colors duration-300 group-hover:text-cyan-100 md:text-xl">
+          {projectTitle}
+        </h3>
 
-          <motion.a
-            aria-label={visitLabel}
-            whileHover={{ scale: 1.15, rotate: 15 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex h-7 w-7 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white shadow-lg transition-colors hover:border-cyan-400/50 hover:bg-cyan-400/10 hover:text-cyan-300"
-            href={project.liveUrl}
-            onClick={(event) => {
-              event.stopPropagation();
-              trackPortfolioOpen('live_icon', 'live');
-            }}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <ExternalLink className="h-3.5 w-3.5 md:h-5 md:w-5" />
-          </motion.a>
-        </div>
-
-        <p className="mt-1.5 md:mt-3 text-[11px] md:text-sm leading-4 md:leading-6 text-slate-400 opacity-80 transition-opacity duration-300 group-hover:opacity-100 line-clamp-2">
+        <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-slate-400 transition-colors duration-300 group-hover:text-slate-300 md:text-sm">
           {projectExcerpt}
         </p>
 
-        <div className="mt-2 md:mt-4 flex flex-wrap gap-1 md:gap-2">
-          {project.techStack.slice(0, 2).map((item) => (
-            <span
-              key={item}
-              className="rounded-full border border-white/5 bg-white/5 px-1.5 md:px-2.5 py-0.5 md:py-1 text-[9px] md:text-xs text-slate-300 transition-colors duration-300 group-hover:border-white/10"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-3 md:mt-5 flex flex-col gap-2 md:gap-3 border-t border-white/10 pt-2 md:pt-3.5 sm:flex-row sm:items-center sm:justify-between md:gap-4">
-          <div className="hidden md:block">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500">Focus</p>
-            <p className="mt-1.5 text-xs font-medium leading-5 text-slate-300 md:mt-2 md:text-sm md:leading-6">
-              {project.focus.join(' / ')}
-            </p>
-          </div>
-
+        <div className="mt-auto pt-4">
           <a
-            className="group/btn inline-flex items-center gap-1 md:gap-2 self-start text-xs md:text-sm font-medium text-white transition-colors hover:text-cyan-400"
+            className="group/btn inline-flex min-h-9 items-center gap-2 text-xs font-bold text-white transition-colors hover:text-cyan-200 md:text-sm"
             href={primaryHref}
             onClick={(event) => {
               event.stopPropagation();
@@ -202,14 +166,8 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
             rel={opensLive ? 'noreferrer' : undefined}
             target={opensLive ? '_blank' : undefined}
           >
-            {opensLive
-              ? isArabic
-                ? 'افتح'
-                : 'Open'
-              : isArabic
-                ? 'صفحة'
-                : 'Page'}
-            <ArrowUpLeft className="h-3 w-3 md:h-4 md:w-4 transition-transform duration-300 group-hover/btn:-translate-x-1 group-hover/btn:-translate-y-1" />
+            {opensLive ? (isArabic ? 'فتح المشروع' : 'Open project') : isArabic ? 'عرض المشروع' : 'View project'}
+            <ArrowUpLeft className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-x-1 group-hover/btn:-translate-y-1" />
           </a>
         </div>
       </div>

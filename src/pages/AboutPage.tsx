@@ -105,7 +105,6 @@ const timelineSteps: TimelineStep[] = [
     enDesc: 'We introduce motion and visual layers to create impact without losing clarity.',
     img: illustrationAssets.designer.src,
     imgAlt: illustrationAssets.designer.alt,
-    imgPoster: illustrationAssets.designerPoster.src,
     mediaMode: 'contain',
   },
   {
@@ -443,9 +442,6 @@ const AboutPage = () => {
               {...(!isMobile ? { whileInView: { opacity: 1, x: 0 }, viewport: { once: true } } : {})}
               className="relative overflow-hidden rounded-[1.3rem] bg-white p-4 text-[#06090f] group md:rounded-[3rem] md:p-14"
             >
-              <div className="absolute inset-0 opacity-[0.1] mix-blend-multiply pointer-events-none">
-                <img src="/images/notaq_hero_branding.png" className="w-full h-full object-cover grayscale" alt="Mission Context" />
-              </div>
               <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-cyan-400/20 blur-3xl md:h-48 md:w-48" />
               <p className="relative z-10 mb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-slate-500 md:mb-6 md:text-xs md:tracking-widest">Our Mission</p>
               <h3 className="relative z-10 mb-2 font-display text-[1.15rem] font-black leading-tight text-[#06090f] md:mb-6 md:text-4xl">{content.mission}</h3>
@@ -464,9 +460,6 @@ const AboutPage = () => {
               transition={{ delay: 0.1 }}
               className="glass-card relative overflow-hidden rounded-[1.3rem] border border-white/10 bg-gradient-to-br from-cyan-950/80 to-violet-950/80 p-4 group md:rounded-[3rem] md:p-14"
             >
-              <div className="absolute inset-0 opacity-[0.25] pointer-events-none">
-                <img src="/images/notaq-logo-lockup.webp" className="w-full h-full object-contain p-6 mix-blend-soft-light" alt="Vision Back" />
-              </div>
               <div className="absolute -left-8 -bottom-8 h-28 w-28 rounded-full bg-violet-400/20 blur-3xl md:h-48 md:w-48" />
               <p className="relative z-10 mb-2 text-[9px] font-mono uppercase tracking-[0.18em] text-violet-400 md:mb-6 md:text-xs md:tracking-widest">Our Vision</p>
               <h3 className="relative z-10 mb-2 font-display text-[1.15rem] font-black leading-tight text-white md:mb-6 md:text-4xl">{content.vision}</h3>

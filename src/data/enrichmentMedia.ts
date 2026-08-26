@@ -813,10 +813,10 @@ export const enrichmentMediaAssets: EnrichmentMediaAsset[] = [
   {
     id: 'detail-meeting-prep',
     type: 'image',
-    src: '/images/workspace-team.webp',
-    sourceUrl: '/images/workspace-team.webp',
-    licenseName: 'Notaq internal asset',
-    licenseUrl: '/images/workspace-team.webp',
+    src: '/media/enrichment/subpage-contact-brief-unsplash.jpg',
+    sourceUrl: 'https://unsplash.com/',
+    licenseName: 'Unsplash License',
+    licenseUrl: 'https://unsplash.com/license',
     usedForRoutes: ['/contact/meeting-prep'],
     alt: {
       ar: 'مشهد تحضير لمكالمة أولى ومراجعة أهداف المشروع',

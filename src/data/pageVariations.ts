@@ -642,26 +642,30 @@ const routeMediaPools = {
 
 const getRouteVariety = (path: string) => {
   const slug = path.split('/').pop() ?? path;
-  if (path.startsWith('/home/')) return { group: routeMediaPools.home, index: itemIndex(routeMediaPools.home.order, slug), imageOffset: 0, firstVideoId: 'home-interface' };
-  if (path.startsWith('/about/')) return { group: routeMediaPools.about, index: itemIndex(routeMediaPools.about.order, slug), imageOffset: 24, firstVideoId: 'about-team-review' };
-  if (path.startsWith('/services/')) return { group: routeMediaPools.services, index: itemIndex(routeMediaPools.services.order, slug), imageOffset: 48, firstVideoId: 'services-code-build' };
-  if (path.startsWith('/testimonials/')) return { group: routeMediaPools.testimonials, index: itemIndex(routeMediaPools.testimonials.order, slug), imageOffset: 88, firstVideoId: 'testimonials-client-call' };
-  if (path.startsWith('/contact/')) return { group: routeMediaPools.contact, index: itemIndex(routeMediaPools.contact.order, slug), imageOffset: 108, firstVideoId: 'contact-organizing-tasks' };
+  if (path.startsWith('/home/')) return { group: routeMediaPools.home, index: itemIndex(routeMediaPools.home.order, slug), firstVideoId: 'home-interface' };
+  if (path.startsWith('/about/')) return { group: routeMediaPools.about, index: itemIndex(routeMediaPools.about.order, slug), firstVideoId: 'about-team-review' };
+  if (path.startsWith('/services/')) return { group: routeMediaPools.services, index: itemIndex(routeMediaPools.services.order, slug), firstVideoId: 'services-code-build' };
+  if (path.startsWith('/testimonials/')) return { group: routeMediaPools.testimonials, index: itemIndex(routeMediaPools.testimonials.order, slug), firstVideoId: 'testimonials-client-call' };
+  if (path.startsWith('/contact/')) return { group: routeMediaPools.contact, index: itemIndex(routeMediaPools.contact.order, slug), firstVideoId: 'contact-organizing-tasks' };
   return null;
 };
-
-const generatedSubpageMediaId = (zeroBasedIndex: number) =>
-  `generated-generated-subpage-visual-${String((zeroBasedIndex % 120) + 1).padStart(3, '0')}`;
 
 const enforceRouteVariety = (path: string, variation: PageVariationConfig): PageVariationConfig => {
   const variety = getRouteVariety(path);
   if (!variety) return variation;
 
-  const { imageOffset, index, firstVideoId } = variety;
-  const heroMediaId = generatedSubpageMediaId(imageOffset + index * 3);
-  const storyMediaId = generatedSubpageMediaId(imageOffset + index * 3 + 1);
-  const videoMediaId =
-    index === 0 ? firstVideoId : generatedSubpageMediaId(imageOffset + index * 3 + 2);
+  const { group, index, firstVideoId } = variety;
+  const heroMediaId = group.images[index % group.images.length];
+  const storyOffset = Math.max(1, Math.ceil(group.images.length / 2));
+  let storyMediaId = group.images[(index + storyOffset) % group.images.length];
+
+  if (storyMediaId === heroMediaId) {
+    storyMediaId = group.images[(index + 1) % group.images.length];
+  }
+
+  const videoMediaId = index === 0
+    ? firstVideoId
+    : group.videos[index % group.videos.length];
 
   return {
     ...variation,

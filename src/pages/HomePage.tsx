@@ -611,8 +611,6 @@ const HomePage = () => {
 
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const floatImageY1 = useTransform(scrollYProgress, [0, 1], [0, -300]);
-  const floatImageY2 = useTransform(scrollYProgress, [0, 1], [0, 200]);
 
   usePageMetadata(getPageSeoByPath('/', lang));
 
@@ -815,18 +813,6 @@ const HomePage = () => {
   return (
     <div ref={containerRef} className="relative pb-16 md:pb-0">
       
-      {/* FLOATING PARALLAX IMAGES (Global details) - Hidden on Mobile */}
-      <motion.img 
-         style={{ y: floatImageY1 }} 
-         src="/images/ChatGPT%20Image%20Apr%208%2C%202026%2C%2011_23_42%20AM.png" 
-         className="absolute right-[-10%] top-[25%] w-[350px] rounded-3xl opacity-[0.08] mix-blend-screen pointer-events-none z-[-1] blur-[2px] transform rotate-12 hidden lg:block"
-      />
-      <motion.img 
-         style={{ y: floatImageY2 }} 
-         src="/images/workspace-team.webp" 
-         className="absolute left-[-5%] top-[60%] w-[400px] rounded-[3rem] opacity-[0.06] mix-blend-screen pointer-events-none z-[-1] blur-md transform -rotate-12 hidden lg:block"
-      />
-
       <motion.section 
         style={{ y: heroY, opacity: heroOpacity }}
         id="hero" 
@@ -842,7 +828,7 @@ const HomePage = () => {
               src="/images/hero-background.webp"
               fetchPriority="high"
               loading="eager"
-              className="w-full h-full object-cover opacity-30 blur-[2px]"
+              className="h-full w-full object-cover opacity-50"
               alt="Background Office"
             />
           </motion.div>
@@ -858,7 +844,7 @@ const HomePage = () => {
           style={{ x: orb2X, y: orb2Y }}
           className="hero-orb left-[5%] top-[40%] h-[500px] w-[500px] bg-violet-600/15" />
 
-        <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-8 md:gap-8 lg:gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="theme-on-media relative z-10 mx-auto grid w-full max-w-full items-center gap-8 overflow-hidden md:max-w-7xl md:gap-8 md:overflow-visible lg:gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
@@ -871,7 +857,7 @@ const HomePage = () => {
                   src="/images/hero-mobile-overlay.webp"
                   loading="eager"
                   alt=""
-                  className="h-full w-full scale-110 object-cover opacity-20 mix-blend-screen"
+                  className="h-full w-full scale-105 object-cover opacity-35 mix-blend-screen"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#06090f]/25 via-[#06090f]/82 to-[#06090f]" />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.16),transparent_48%)]" />
@@ -1036,7 +1022,7 @@ const HomePage = () => {
       </motion.section>
 
       <section aria-label={text('وصول سريع إلى الأعمال السابقة', 'Quick access to previous work')} className="section-shell relative z-20 -mt-2 pb-3 md:-mt-8 md:pb-6">
-        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-[1.35rem] border border-cyan-300/25 bg-[linear-gradient(120deg,rgba(13,37,48,0.96),rgba(6,9,15,0.97)_55%,rgba(35,20,57,0.94))] shadow-[0_28px_90px_-48px_rgba(45,212,191,0.9)] md:grid-cols-[1fr_auto] md:items-center md:rounded-[2rem]">
+        <div className="home-work-cta mx-auto grid max-w-7xl overflow-hidden rounded-[1.35rem] border border-cyan-300/25 bg-[linear-gradient(120deg,rgba(13,37,48,0.96),rgba(6,9,15,0.97)_55%,rgba(35,20,57,0.94))] shadow-[0_28px_90px_-48px_rgba(45,212,191,0.9)] md:grid-cols-[1fr_auto] md:items-center md:rounded-[2rem]">
           <div className="flex items-start gap-3 p-4 md:items-center md:gap-5 md:p-6">
             <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-cyan-200/20 bg-cyan-300/10 text-cyan-200 md:h-14 md:w-14">
               <Layers3 className="h-5 w-5 md:h-6 md:w-6" />
@@ -1086,7 +1072,7 @@ const HomePage = () => {
       </Link>
 
       {/* NEW Infinite Marquee Visual Break */}
-      <section className="relative overflow-hidden border-y border-white/5 bg-[#06090f] py-8 md:py-10">
+      <section className="home-marquee relative overflow-hidden border-y border-white/5 bg-[#06090f] py-8 md:py-10">
         <div className="section-shell md:hidden">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-3 text-center">
             <span className="pill border-white/10 bg-white/[0.03] text-cyan-100">
@@ -1191,7 +1177,7 @@ const HomePage = () => {
             initial={{ scale: 1.1, y: -50 }}
             whileInView={{ scale: 1.05, y: 0 }}
             transition={{ duration: 2, ease: "easeOut" }}
-              src={enrichmentMediaById['home-story-strategy'].src} 
+              src={enrichmentMediaById['client-workshop'].src}
             alt="Agency Developers Working" 
             className="w-full h-full object-cover"
           />
@@ -1602,8 +1588,8 @@ const HomePage = () => {
         >
           {/* Detailed Image/Video Content for Contact Section */}
           <div className="absolute inset-0 z-0">
-             <img src={premiumDashboardImg} alt="Premium dashboard" className="w-full h-full object-cover opacity-20 mix-blend-screen scale-110" />
-             <div className="absolute inset-0 bg-gradient-to-tr from-[#06090f]/95 via-[#06090f]/80 to-cyan-900/40" />
+             <img src={premiumDashboardImg} alt="Premium dashboard" className="h-full w-full scale-105 object-cover opacity-45" />
+             <div className="absolute inset-0 bg-gradient-to-tr from-[#06090f]/88 via-[#06090f]/68 to-cyan-900/32" />
           </div>
 
           <div className="mobile-ornament absolute top-0 right-0 h-[600px] w-[600px] rounded-full bg-cyan-500/30 blur-[150px] -mr-[300px] -mt-[300px] mix-blend-screen pointer-events-none animate-pulse" />

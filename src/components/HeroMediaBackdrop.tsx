@@ -15,7 +15,7 @@ const HeroMediaBackdrop = ({ media, fallbackMedia, isArabic }: HeroMediaBackdrop
   const mediaAlt = isArabic ? media.alt.ar : media.alt.en;
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden">
+    <div className="hero-media-backdrop absolute inset-0 z-0 overflow-hidden">
       <motion.img
         alt={fallbackAlt}
         animate={{ scale: 1.04 }}

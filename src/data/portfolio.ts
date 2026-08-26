@@ -87,7 +87,7 @@ const screenshotOf = (url: string, variant: ScreenshotVariant = 'desktop') => {
     mobile: 900,
   };
 
-  return `https://image.thum.io/get/width/${widths[variant]}/noanimate/${url}`;
+  return `https://image.thum.io/get/width/${widths[variant]}/crop/750/maxAge/24/noanimate/${url}`;
 };
 
 const defaultScreenshotsFor = (url: string) => [
@@ -492,12 +492,12 @@ const latestProjects = latestProjectSeeds.map((project) =>
   }),
 );
 
-export const projects: PortfolioProject[] = [
+const projectEntries: PortfolioProject[] = [
   ...latestProjects,
   buildProject({
     slug: 'nemora',
-    title: 'Nemora',
-    englishTitle: 'Custom Printed Apparel',
+    title: 'نيمورا للملابس المطبوعة',
+    englishTitle: 'Nemora Printed Apparel',
     category: 'E-commerce',
     excerpt:
       'متجر رقمي لبراند ملابس مطبوعة يركز على إبراز الهوية، وضوح المنتج، وصناعة واجهة بيع تبدو حديثة ومريحة.',
@@ -549,7 +549,7 @@ export const projects: PortfolioProject[] = [
   }),
   buildProject({
     slug: 'geoinformatics',
-    title: 'GeoInformatics',
+    title: 'جيو إنفورماتكس',
     englishTitle: 'GeoInformatics',
     category: 'GIS',
     excerpt:
@@ -856,8 +856,8 @@ export const projects: PortfolioProject[] = [
   }),
   buildProject({
     slug: 'kids-geo-dashboard',
-    title: 'Kids Geo Dashboard',
-    englishTitle: 'Dashboard Ana Map',
+    title: 'لوحة تعلم الجغرافيا للأطفال',
+    englishTitle: 'Kids Geo Learning Dashboard',
     category: 'Education',
     excerpt:
       'بوابة تعلم جغرافية تعرض الوحدات التعليمية والمهام في قالب منظّم يميل إلى المنتج التعليمي أكثر من لوحة الإدارة التقليدية.',
@@ -920,8 +920,8 @@ export const projects: PortfolioProject[] = [
   }),
   buildProject({
     slug: 'kids-geo-quiz-dashboard-v6',
-    title: 'Kids Geo Quiz Dashboard V6',
-    englishTitle: 'Version 6',
+    title: 'اختبارات الجغرافيا للأطفال - إصدار 6',
+    englishTitle: 'Kids Geo Quiz Dashboard V6',
     category: 'Education',
     excerpt:
       'إصدار يركز على جانب الاختبارات داخل التجربة التعليمية الجغرافية مع واجهات مناسبة للمنافسة والتقييم.',
@@ -948,8 +948,8 @@ export const projects: PortfolioProject[] = [
   }),
   buildProject({
     slug: 'kids-geo-quiz-dashboard-v12',
-    title: 'Kids Geo Quiz Dashboard V12',
-    englishTitle: 'Version 12',
+    title: 'اختبارات الجغرافيا للأطفال - إصدار 12',
+    englishTitle: 'Kids Geo Quiz Dashboard V12',
     category: 'Education',
     excerpt:
       'نسخة أنضج من لوحة الاختبارات الجغرافية، تظهر تطور الهيكل البصري والقدرة على الوصول إلى منتج أكثر اكتمالًا.',
@@ -1007,8 +1007,8 @@ export const projects: PortfolioProject[] = [
   }),
   buildProject({
     slug: 'kids-geo-quiz-dashboard',
-    title: 'Kids Geo Quiz Dashboard',
-    englishTitle: 'Quiz Dashboard',
+    title: 'لوحة اختبارات الجغرافيا للأطفال',
+    englishTitle: 'Kids Geo Quiz Dashboard',
     category: 'Education',
     excerpt:
       'واجهة تقييم جغرافي تجمع بين الاختبارات والتنظيم البصري في نسخة مختصرة وفعّالة للعرض.',
@@ -1144,8 +1144,8 @@ export const projects: PortfolioProject[] = [
   }),
   buildProject({
     slug: 'worklog',
-    title: 'WorkLog',
-    englishTitle: 'Time Care Log',
+    title: 'وورك لوج لتتبع ساعات العمل',
+    englishTitle: 'WorkLog Time Tracker',
     category: 'Productivity',
     excerpt:
       'تجربة تثبيت وعرض أولي لتطبيق تتبع ساعات العمل، مصممة كصفحة PWA خفيفة توضّح فكرة المنتج بسرعة.',
@@ -1177,7 +1177,7 @@ export const projects: PortfolioProject[] = [
   }),
   buildProject({
     slug: 'ask-saad',
-    title: 'Ask Saad',
+    title: 'اسأل سعد',
     englishTitle: 'GIS Knowledge Assistant',
     category: 'AI',
     excerpt:
@@ -1320,6 +1320,53 @@ export const projects: PortfolioProject[] = [
     featured: true,
   }),
 ];
+
+const projectNameOverrides: Record<string, Pick<PortfolioProject, 'title' | 'englishTitle'>> = {
+  'arcgis-modelbuilder-final-exam': { title: 'اختبار ArcGIS ModelBuilder النهائي', englishTitle: 'ArcGIS ModelBuilder Final Assessment' },
+  'albakhira-hall': { title: 'قاعة البخيرة للمناسبات', englishTitle: 'Albakhira Events Hall' },
+  'albakhira-social-media': { title: 'منصة البخيرة للمحتوى الرقمي', englishTitle: 'Albakhira Digital Content Platform' },
+  'academy-live': { title: 'أكاديمية لايف التعليمية', englishTitle: 'Academy Live Learning Platform' },
+  'elite-manage': { title: 'إيليت لإدارة الأعمال', englishTitle: 'Elite Business Management' },
+  'elite-one': { title: 'إيليت ون', englishTitle: 'Elite One' },
+  'empire-store': { title: 'متجر إمباير', englishTitle: 'Empire Store' },
+  'ai-service-studio': { title: 'استوديو الخدمات بالذكاء الاصطناعي', englishTitle: 'AI Services Studio' },
+  'cloud-service-platform': { title: 'منصة الخدمات السحابية', englishTitle: 'Cloud Services Platform' },
+  'cloud-service-offer': { title: 'صفحة العرض الخاص', englishTitle: 'Special Offer Landing Page' },
+  'map-kids': { title: 'خرائط الأطفال التفاعلية', englishTitle: 'Interactive Maps for Kids' },
+  'teba-store': { title: 'متجر طيبة', englishTitle: 'Teba Store' },
+  nemora: { title: 'نيمورا للملابس المطبوعة', englishTitle: 'Nemora Printed Apparel' },
+  'grand-egyptian-museum-new': { title: 'المتحف المصري الكبير', englishTitle: 'Grand Egyptian Museum Experience' },
+  geoinformatics: { title: 'جيو إنفورماتكس GIS', englishTitle: 'GeoInformatics GIS' },
+  'elite-catering': { title: 'إيليت كاترينج للحفلات', englishTitle: 'Elite Catering Events' },
+  'qasr-tayiba': { title: 'قصر طيبة للمناسبات', englishTitle: 'Qasr Tayiba Events' },
+  'reeq-store': { title: 'متجر ريق للمياه', englishTitle: 'Reeq Water Store' },
+  'mahrous-esraa': { title: 'مكتب محروس وإسراء للمحاماة', englishTitle: 'Mahrous & Esraa Law Office' },
+  'world-cup-2026': { title: 'دليل كأس العالم 2026', englishTitle: 'World Cup 2026 Guide' },
+  'kunuz-misr-interactive-maps': { title: 'خرائط كنوز مصر التفاعلية', englishTitle: 'Kunuz Misr Interactive Maps' },
+  'ana-map-grade-five': { title: 'أنا خريطة - الصف الخامس', englishTitle: 'Ana Map - Grade 5' },
+  'kunuz-misr-kids-platform': { title: 'منصة كنوز مصر للأطفال', englishTitle: 'Kunuz Misr Kids Platform' },
+  'kids-geo-dashboard': { title: 'لوحة تعلم الجغرافيا للأطفال', englishTitle: 'Kids Geography Learning Dashboard' },
+  'kids-geo-dashboard-netlify': { title: 'لوحة جغرافيا الأطفال - نسخة نتليفاي', englishTitle: 'Kids Geography Dashboard - Netlify Edition' },
+  'kids-geo-quiz-dashboard-v6': { title: 'اختبارات الجغرافيا للأطفال - الإصدار السادس', englishTitle: 'Kids Geography Quiz - Version 6' },
+  'kids-geo-quiz-dashboard-v12': { title: 'اختبارات الجغرافيا للأطفال - الإصدار الثاني عشر', englishTitle: 'Kids Geography Quiz - Version 12' },
+  'interactive-learning-journey': { title: 'رحلة التعلم التفاعلية', englishTitle: 'Interactive Learning Journey' },
+  'kids-geo-quiz-dashboard': { title: 'لوحة اختبارات الجغرافيا للأطفال', englishTitle: 'Kids Geography Quiz Dashboard' },
+  'kids-learning-by-map': { title: 'تعلم الجغرافيا بالخريطة للأطفال', englishTitle: 'Kids Geography Learning by Map' },
+  'interactive-learning-journey-netlify': { title: 'رحلة التعلم التفاعلية - نسخة نتليفاي', englishTitle: 'Interactive Learning Journey - Netlify Edition' },
+  'smart-educational-maps': { title: 'الخرائط التعليمية الذكية', englishTitle: 'Smart Educational Maps' },
+  'smart-quran': { title: 'المصحف الذكي التفاعلي', englishTitle: 'Interactive Smart Quran' },
+  worklog: { title: 'وورك لوج - تتبع وقت العمل', englishTitle: 'WorkLog Time Tracker' },
+  'ask-saad': { title: 'اسأل سعد - مساعد GIS الذكي', englishTitle: 'Ask Saad - GIS Assistant' },
+  'global-consulting-firm': { title: 'نموذج شركة استشارات عالمية', englishTitle: 'Global Consulting Firm Concept' },
+  'international-ecommerce-platform': { title: 'منصة تجارة إلكترونية دولية', englishTitle: 'International E-commerce Platform' },
+  'tech-startup-landing': { title: 'صفحة هبوط لشركة تقنية ناشئة', englishTitle: 'Technology Startup Landing Page' },
+  notaq: { title: 'نُطق لحلول النطق والصوت', englishTitle: 'Notaq Speech & Voice Solutions' },
+};
+
+export const projects: PortfolioProject[] = projectEntries.map((project) => ({
+  ...project,
+  ...projectNameOverrides[project.slug],
+}));
 
 const unavailableProjectSlugs = new Set([
   'elite-catering',
