@@ -152,7 +152,7 @@ export const localImages = {
   },
   officeReception: {
     id: 'office-reception',
-    src: image('generated/subpage-visual-103.jpg'),
+    src: '/media/route-heroes/pexels-18999270.webp',
     altAr: 'لقطة حضور وهوية داخل مساحة عمل',
     altEn: 'Presence and identity moment inside a workspace',
     usage: 'proof',
@@ -160,7 +160,7 @@ export const localImages = {
   },
   officeWide: {
     id: 'office-wide',
-    src: image('generated/subpage-visual-104.jpg'),
+    src: '/media/route-heroes/pexels-4872033.webp',
     altAr: 'لقطة أفقية من مساحة عمل وهوية بصرية',
     altEn: 'Wide workspace and visual identity moment',
     usage: 'proof',
@@ -176,7 +176,7 @@ export const localImages = {
   },
   presentationHall: {
     id: 'presentation-hall',
-    src: image('generated/subpage-visual-101.jpg'),
+    src: '/media/route-heroes/pexels-29284274.webp',
     altAr: 'عرض تقديمي أمام حضور داخل قاعة',
     altEn: 'Presentation in front of an audience inside a hall',
     usage: 'article',
@@ -192,7 +192,7 @@ export const localImages = {
   },
   teamSession: {
     id: 'team-session',
-    src: image('generated/subpage-visual-102.jpg'),
+    src: '/media/route-heroes/pexels-34221175.webp',
     altAr: 'فريق يناقش تفاصيل مشروع داخل غرفة عمل',
     altEn: 'Team discussing digital requirements inside a work room',
     usage: 'contact',

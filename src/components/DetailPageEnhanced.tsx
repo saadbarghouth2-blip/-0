@@ -99,9 +99,7 @@ const DetailPageEnhanced: React.FC<DetailPageEnhancedProps> = ({ page, isLoading
   const heroFallbackMedia = enrichment
     ? enrichmentMediaById[enrichment.heroMediaId]
     : enrichmentMediaById['services-hero-product'];
-  const heroMedia = enrichment
-    ? enrichmentMediaById[enrichment.videoMediaId] ?? heroFallbackMedia
-    : enrichmentMediaById['services-code-build'];
+  const heroMedia = heroFallbackMedia;
   const heroComposition = enrichment?.heroComposition ?? 'text-right';
   const heroGridClass =
     heroComposition === 'centered'

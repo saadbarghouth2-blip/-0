@@ -15,9 +15,6 @@ import MobileSectionPager from '../components/MobileSectionPager';
 import PageImageShowcaseSection from '../components/PageImageShowcase';
 import ProjectCard from '../components/ProjectCard';
 import ProjectImage from '../components/ProjectImage';
-import HeroMediaBackdrop from '../components/HeroMediaBackdrop';
-import { enrichmentMediaById } from '../data/enrichmentMedia';
-import { getPageEnrichment } from '../data/pageEnrichment';
 import { findProjectBySlug, getProjectAlternates, visibleProjects } from '../data/portfolio';
 import { pageImageShowcases } from '../data/pageImageShowcases';
 import { useLanguage } from '../hooks/useLanguage';
@@ -84,13 +81,6 @@ const ProjectDetailPage = () => {
   const experience = project.experience;
   const gallery = [...new Set([project.coverImage, ...(project.screenshots ?? [])])];
   const alternateProjects = getProjectAlternates(project);
-  const projectEnrichment = getPageEnrichment(`/projects/${project.slug}`);
-  const heroFallbackMedia = projectEnrichment
-    ? enrichmentMediaById[projectEnrichment.heroMediaId]
-    : enrichmentMediaById['projects-hero-review'];
-  const heroMedia = projectEnrichment
-    ? enrichmentMediaById[projectEnrichment.videoMediaId] ?? heroFallbackMedia
-    : enrichmentMediaById['projects-interface-scroll'];
   const relatedProjects = visibleProjects
     .filter((item) => item.slug !== project.slug && item.familyKey !== project.familyKey)
     .slice(0, 3);
@@ -127,7 +117,17 @@ const ProjectDetailPage = () => {
     <section className="relative overflow-hidden pb-20 md:pb-28">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <div className="relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[calc(100svh-3.75rem)] w-screen items-end overflow-hidden px-4 pb-7 pt-20 sm:px-6 md:min-h-[calc(100svh-4.35rem)] md:px-10 md:pb-10 md:pt-[7.5rem] lg:px-14">
-          <HeroMediaBackdrop fallbackMedia={heroFallbackMedia} isArabic={isArabic} media={heroMedia} />
+          <div className="hero-media-backdrop absolute inset-0 z-0 overflow-hidden">
+            <ProjectImage
+              alt={title}
+              className="h-full w-full scale-[1.03] object-cover saturate-[1.08] contrast-[1.04]"
+              fallbackSrc={project.screenshots?.[0]}
+              loading="eager"
+              src={project.coverImage}
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#03060b]/58 via-[#06090f]/34 to-[#06090f]/94" />
+            <div className={`pointer-events-none absolute inset-0 ${isArabic ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-[#03191c]/90 via-[#06090f]/60 to-[#06090f]/32`} />
+          </div>
           <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div className="space-y-5 md:space-y-6">
             <p className="section-kicker border-cyan-300/35 bg-[#06151c]/62 text-cyan-50 shadow-[0_18px_55px_-36px_rgba(45,212,191,0.8)] backdrop-blur-2xl">

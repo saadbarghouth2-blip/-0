@@ -43,7 +43,7 @@ const PageImageShowcaseSection = ({ showcase }: PageImageShowcaseProps) => {
         transition={{ duration: 0.45 }}
         viewport={{ once: true, amount: 0.25 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        className={`group overflow-hidden rounded-[1.35rem] border border-white/10 bg-[radial-gradient(circle_at_50%_15%,rgba(34,211,238,0.12),rgba(255,255,255,0.045)_44%,rgba(2,6,23,0.52))] p-2 shadow-[0_30px_80px_-55px_rgba(0,0,0,0.95)] backdrop-blur md:rounded-[2rem] ${wrapperClassName}`}
+        className={`group overflow-hidden rounded-lg border border-slate-200 bg-white p-1.5 shadow-sm ${wrapperClassName}`}
       >
         <ProjectImage
           alt={imageAlt(image)}
@@ -68,42 +68,32 @@ const PageImageShowcaseSection = ({ showcase }: PageImageShowcaseProps) => {
   );
 
   const featureImages = (
-    <div className="relative">
-      <div className="absolute -inset-4 rounded-[2.5rem] bg-cyan-300/5 blur-2xl" aria-hidden="true" />
-      <div className="relative grid gap-3 md:grid-cols-[1.15fr_0.85fr] md:items-end lg:block lg:min-h-[500px]">
+    <div className="grid gap-3 sm:grid-cols-2">
         {renderImage(
           primaryImage,
-          'h-[220px] w-full rounded-[1rem] object-cover md:h-[340px] md:rounded-[1.45rem] lg:h-[430px]',
-          'lg:w-[78%]',
+          'h-[220px] w-full rounded-md object-cover sm:h-[300px]',
         )}
         {renderImage(
           secondaryImage,
-          'h-[200px] w-full rounded-[1rem] object-cover md:h-[270px] md:rounded-[1.45rem] lg:h-[280px]',
-          'lg:absolute lg:bottom-0 lg:end-0 lg:w-[48%]',
+          'h-[220px] w-full rounded-md object-cover sm:h-[300px]',
         )}
         {renderImage(
           tertiaryImage,
-          'h-[180px] w-full rounded-[1rem] object-cover md:h-[230px] md:rounded-[1.45rem] lg:h-[220px]',
-          'lg:absolute lg:bottom-8 lg:start-6 lg:w-[38%]',
+          'h-[220px] w-full rounded-md object-cover sm:col-span-2 sm:h-[280px]',
         )}
-      </div>
     </div>
   );
 
   const compactImages = (
-    <div className="relative">
-      <div className="absolute -inset-4 rounded-[2.5rem] bg-teal-300/5 blur-2xl" aria-hidden="true" />
-      <div className="relative grid gap-3 md:grid-cols-2 lg:grid-cols-1">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
         {renderImage(
           primaryImage,
-          'h-[220px] w-full rounded-[1rem] object-cover md:h-[350px] md:rounded-[1.45rem]',
+          'h-[220px] w-full rounded-md object-cover sm:h-[300px] lg:h-[320px]',
         )}
         {renderImage(
           secondaryImage,
-          'h-[200px] w-full rounded-[1rem] object-cover md:h-[285px] md:rounded-[1.45rem]',
-          'lg:ms-10 lg:-mt-10',
+          'h-[220px] w-full rounded-md object-cover sm:h-[300px] lg:h-[260px]',
         )}
-      </div>
     </div>
   );
 

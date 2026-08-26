@@ -1,3 +1,5 @@
+import { routeHeroPhotoIds } from './routeHeroMedia';
+
 export type EnrichmentMediaType = 'image' | 'video';
 
 export interface EnrichmentMediaAsset {
@@ -956,6 +958,22 @@ const generatedImagePaths = [
     (_, index) => `/images/generated/subpage-visual-${String(index + 1).padStart(3, '0')}.jpg`,
   ),
 ];
+
+enrichmentMediaAssets.push(
+  ...routeHeroPhotoIds.map((photoId) => ({
+    id: `route-hero-pexels-${photoId}`,
+    type: 'image' as const,
+    src: `/media/route-heroes/pexels-${photoId}.webp`,
+    sourceUrl: `https://www.pexels.com/photo/${photoId}/`,
+    licenseName: 'Pexels License',
+    licenseUrl: pexelsLicenseUrl,
+    usedForRoutes: ['unique-subpage-hero'],
+    alt: {
+      ar: 'مشهد عمل رقمي واضح يدعم موضوع الصفحة',
+      en: 'A clear digital work scene supporting this page topic',
+    },
+  })),
+);
 
 const generatedIdFromPath = (src: string) =>
   `generated-${src

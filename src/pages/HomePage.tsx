@@ -815,7 +815,7 @@ const HomePage = () => {
       <motion.section 
         style={{ y: heroY, opacity: heroOpacity }}
         id="hero" 
-        className="section-shell relative flex min-h-[auto] items-center overflow-x-hidden pb-8 pt-3 md:min-h-[95vh] md:overflow-visible md:pb-24 md:pt-[120px]"
+        className="home-hero section-shell relative flex min-h-[auto] items-center overflow-hidden pb-8 pt-3 md:min-h-[88vh] md:pb-20 md:pt-[104px]"
       >
         {/* Cinematic Background */}
         <div className="absolute inset-0 z-0 overflow-hidden rounded-b-[2.2rem] md:rounded-b-[4rem]">
@@ -827,12 +827,12 @@ const HomePage = () => {
               src="/images/hero-background.webp"
               fetchPriority="high"
               loading="eager"
-              className="h-full w-full object-cover opacity-50"
+              className="h-full w-full object-cover opacity-70"
               alt="Background Office"
             />
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#06090f]/80 via-[#06090f]/60 to-[#06090f] pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#06090f_100%)] opacity-70 pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,14,24,0.9),rgba(5,14,24,0.72)_48%,rgba(5,14,24,0.88))] pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07111c]/35 via-transparent to-[#07111c]/90 pointer-events-none" />
         </div>
 
         {/* Dynamic Glowing Orbs */}
@@ -843,14 +843,18 @@ const HomePage = () => {
           style={{ x: orb2X, y: orb2Y }}
           className="hero-orb left-[5%] top-[40%] h-[500px] w-[500px] bg-violet-600/15" />
 
-        <div className="theme-on-media relative z-10 mx-auto grid w-full max-w-full items-center gap-8 overflow-hidden md:max-w-7xl md:gap-8 md:overflow-visible lg:gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="theme-on-media relative z-10 mx-auto grid w-full max-w-[76rem] items-center gap-6 md:gap-8">
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
             animate="show"
             className="relative space-y-5 md:space-y-8"
           >
-            <motion.div variants={staggerItem} className="relative space-y-4 overflow-hidden rounded-[1.65rem] border border-white/10 bg-[#09111a]/72 p-4 shadow-[0_24px_70px_-32px_rgba(0,0,0,0.95)] backdrop-blur-xl sm:p-5 md:space-y-5 lg:overflow-visible lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+            <motion.div
+              variants={staggerItem}
+              className="home-hero-copy relative space-y-4 overflow-hidden rounded-lg border border-white/15 p-4 shadow-[0_24px_70px_-32px_rgba(0,0,0,0.95)] backdrop-blur-md sm:p-6 md:space-y-5 lg:p-8"
+              style={{ backgroundColor: 'rgba(7, 17, 28, 0.9)' }}
+            >
               <div className="absolute inset-0 lg:hidden">
                 <img
                   src="/images/hero-mobile-overlay.webp"
@@ -871,12 +875,12 @@ const HomePage = () => {
               </motion.div>
 
               <div className="space-y-3 md:space-y-4">
-                <h1 className="font-display text-[1.55rem] font-semibold leading-[1.08] text-white sm:text-[2.3rem] md:text-5xl lg:text-7xl xl:text-[5.5rem]">
+                <h1 className="font-display text-[1.8rem] font-bold leading-[1.12] text-white sm:text-[2.5rem] md:text-5xl lg:text-6xl xl:text-7xl">
                   <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">Notaq</span>
                   <span className="mx-1.5 text-white/20 sm:mx-2 md:mx-3">|</span>
                   <span className="text-gradient animate-float inline-block pb-2">{text('نُطق', 'Notaq')}</span>
                 </h1>
-                <p className="font-display text-[0.95rem] font-medium text-cyan-100/90 sm:text-[1.45rem] md:text-5xl">
+                <p className="font-display text-base font-semibold leading-relaxed text-cyan-100/90 sm:text-xl md:text-3xl">
                   {text('وكالة تصميم وتطوير', 'Creative Development Agency')}
                 </p>
               </div>
@@ -956,7 +960,7 @@ const HomePage = () => {
             initial={{ opacity: 0, scale: 0.8, rotateY: 30 }}
             animate={{ opacity: 1, scale: 1, rotateY: 0 }}
             transition={{ duration: 1.2, type: "spring", bounce: 0.3 }}
-            className="relative mx-auto mt-1 hidden w-full max-w-[320px] sm:max-w-[420px] md:max-w-[520px] lg:mt-0 lg:block perspective-none lg:perspective-[1000px]"
+            className="hidden"
           >
             <motion.div
               animate={{ y: [0, -15, 0], rotateZ: [0, 1, 0, -1, 0] }}
@@ -965,13 +969,13 @@ const HomePage = () => {
             >
               <div className="absolute inset-x-6 top-6 hidden h-[260px] items-center justify-center rounded-[2rem] bg-cyan-600/20 blur-2xl animate-pulse sm:flex md:inset-x-4 md:top-8 md:h-[460px] md:rounded-[3.5rem] md:rotate-[4deg]" />
               
-              <div className="surface-card-strong relative overflow-hidden rounded-[1.7rem] border-[1px] border-white/20 p-4 glass-card md:rounded-[3.5rem] md:p-10">
+              <div className="home-hero-feature-card relative overflow-hidden rounded-lg border border-white/20 bg-[#07111c]/88 p-4 shadow-[0_32px_80px_-36px_rgba(0,0,0,0.9)] backdrop-blur-md md:p-8">
                 {/* Embedded animated backdrop in 3D card */}
                 <div className="absolute inset-0 z-0 overflow-hidden">
                   <img
                     src={illustrationAssets.multiDeviceSync.src}
                     alt={illustrationAssets.multiDeviceSync.alt}
-                    className="h-full w-full object-cover opacity-20 mix-blend-screen saturate-75"
+                    className="h-full w-full object-cover opacity-28 saturate-75"
                   />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.18),transparent_45%)]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#06090f] via-[#06090f]/45 to-transparent" />
@@ -1170,19 +1174,18 @@ const HomePage = () => {
       </section>
 
       {/* Agency Developers Break Section (Generated Image + Interactive Blob) */}
-      <section className="relative flex min-h-[420px] h-[64vh] w-full items-center justify-center overflow-hidden sm:h-[62vh] md:h-[70vh]">
+      <section className="home-team-section relative flex min-h-[430px] h-[62vh] w-full items-center justify-center overflow-hidden md:h-[68vh]">
         <div className="absolute inset-0 z-0">
           <motion.img 
-            initial={{ scale: 1.1, y: -50 }}
-            whileInView={{ scale: 1.05, y: 0 }}
-            transition={{ duration: 2, ease: "easeOut" }}
-              src={enrichmentMediaById['client-workshop'].src}
+            initial={{ scale: 1.04 }}
+            whileInView={{ scale: 1 }}
+            transition={{ duration: 1.4, ease: "easeOut" }}
+            src={enrichmentMediaById['team-planning'].src}
             alt="Agency Developers Working" 
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-x-0 bottom-0 py-32 bg-gradient-to-t from-[#06090f] to-transparent" />
-          <div className="absolute inset-x-0 top-0 py-32 bg-gradient-to-b from-[#06090f] to-transparent" />
-          <div className="absolute inset-0 bg-cyan-950/40 mix-blend-overlay" />
+          <div className="absolute inset-0 bg-[#07111c]/62" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07111c]/30 via-transparent to-[#07111c]/68" />
         </div>
         
         <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6">
@@ -1190,14 +1193,13 @@ const HomePage = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="glass-card relative inline-block overflow-hidden rounded-[2.2rem] border-white/20 p-5 shadow-[0_0_150px_rgba(45,212,191,0.2)] backdrop-blur-xl group sm:p-7 md:rounded-[4rem] md:p-16"
+            className="home-team-message theme-on-media relative mx-auto max-w-5xl px-2 py-8"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-violet-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            <h2 className="relative z-10 mb-4 flex flex-col items-center gap-3 font-display text-2xl font-bold text-white drop-shadow-xl sm:text-3xl md:mb-6 md:gap-4 md:text-7xl">
-              <span className="inline-block w-fit rounded-full bg-cyan-400 px-3 py-1.5 text-sm font-bold tracking-wide text-slate-900 md:px-6 md:py-2 md:text-2xl">WE DELIVER</span>
+            <h2 className="mb-4 flex flex-col items-center gap-4 font-display text-3xl font-black leading-tight text-white drop-shadow-[0_8px_28px_rgba(0,0,0,0.8)] sm:text-4xl md:mb-6 md:text-6xl">
+              <span className="inline-block w-fit rounded-md border border-white/25 bg-[#07111c]/80 px-4 py-2 text-xs font-bold text-cyan-100 backdrop-blur-sm md:text-sm">WE DELIVER</span>
               {text('فريق عمل متخصص بالكامل', 'A fully specialized team')}
             </h2>
-            <p className="relative z-10 text-base font-medium text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 to-cyan-50 sm:text-xl md:text-4xl">
+            <p className="mx-auto max-w-3xl text-base font-semibold leading-8 text-slate-100 drop-shadow-[0_4px_18px_rgba(0,0,0,0.9)] sm:text-xl md:text-2xl md:leading-10">
               {text('كل تفصيلة مدروسة لتوضيح شركتك أمام زوارها', 'Every detail is designed to clarify your company for its visitors')}
             </p>
           </motion.div>

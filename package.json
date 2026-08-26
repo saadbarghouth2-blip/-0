@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "optimize:images": "node scripts/optimize-images.mjs",
+    "import:route-media": "node scripts/import-route-heroes.mjs",
     "build": "npm run optimize:images && tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && node scripts/prerender.mjs",
     "lint": "eslint .",
     "audit:media": "node scripts/audit-media-usage.mjs",
+    "audit:route-media": "node scripts/audit-route-media.mjs",
     "audit:integrity": "node scripts/audit-media-integrity.mjs",
     "audit:copy": "node scripts/audit-copy-duplicates.mjs",
     "audit:audience": "node scripts/audit-audience-copy.mjs",

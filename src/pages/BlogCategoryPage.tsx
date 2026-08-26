@@ -79,9 +79,7 @@ const BlogCategoryPage = () => {
   const heroFallbackMedia = enrichment
     ? enrichmentMediaById[enrichment.heroMediaId]
     : enrichmentMediaById['blog-hero-writing'];
-  const heroMedia = enrichment
-    ? enrichmentMediaById[enrichment.videoMediaId] ?? heroFallbackMedia
-    : enrichmentMediaById['blog-writing'];
+  const heroMedia = heroFallbackMedia;
   const ToneIcon = tone.icon;
   const matchers = category.categoryMatchers.map(normalize);
   const posts = blogPosts.filter((post) => {

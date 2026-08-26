@@ -1,4 +1,5 @@
 import { serviceLibrary } from './serviceLibrary';
+import { routeHeroMediaIds } from './routeHeroMedia';
 
 export type VariationLayout =
   | 'narrative'
@@ -595,16 +596,15 @@ const pageExperienceForIndex = (index: number): PageExperienceConfig => ({
 
 const routeMediaPools = {
   home: {
+    offset: 0,
     order: ['visitor-journey', 'pre-project-questions', 'homepage-blueprint', 'trust-layers', 'conversion-path', 'mobile-first-journey'],
-    images: ['detail-cinematic-home', 'detail-proof-interface', 'detail-conversion-path', 'detail-mobile-flow', 'detail-blueprint-board', 'home-story-strategy'],
-    videos: ['home-interface', 'projects-interface-scroll', 'digital-workflow', 'contact-organizing-tasks', 'about-team-review', 'services-code-build'],
   },
   about: {
+    offset: 6,
     order: ['story', 'method', 'culture', 'quality-system', 'collaboration-style', 'tools-and-standards', 'why-notaq', 'brand-clarity', 'execution-quality', 'client-journey', 'content-thinking', 'technical-standards'],
-    images: ['client-workshop', 'subpage-method-workshop', 'subpage-brand-board', 'detail-quality-workspace', 'detail-collaboration-room', 'detail-standards-stack', 'detail-brand-system', 'about-hero-team', 'about-story-notes', 'team-planning', 'strategy-board', 'subpage-editorial-research'],
-    videos: ['about-team-review', 'digital-workflow', 'contact-organizing-tasks', 'testimonials-client-call', 'services-code-build', 'home-interface', 'blog-writing'],
   },
   services: {
+    offset: 18,
     order: [
       'company-websites', 'ecommerce', 'custom-systems', 'ai-products', 'service-audit', 'service-bundles',
       'launch-readiness', 'support-maintenance', 'integration-map', 'growth-roadmap', 'seo', 'ui-ux',
@@ -614,66 +614,64 @@ const routeMediaPools = {
       'content-strategy', 'copywriting', 'conversion-pages', 'design-systems', 'motion-interactions',
       'chatbot-interfaces', 'automation-flows', 'prompt-workflows', 'speed-optimization', 'launch-audit',
     ],
-    images: [
-      'detail-presence-interface', 'detail-commerce-store', 'detail-dashboard-mockup', 'detail-ai-product',
-      'detail-audit-board', 'detail-bundles-map', 'detail-launch-checklist', 'detail-support-loop',
-      'detail-integration-map', 'detail-growth-roadmap', 'subpage-service-interface', 'subpage-commerce-analytics',
-      'subpage-systems-dashboard', 'subpage-ai-workflow', 'subpage-content-writing', 'subpage-standards-desk',
-      'product-build', 'strategy-board', 'team-planning', 'projects-story-mockup', 'projects-hero-review',
-      'blog-hero-writing', 'blog-story-research', 'services-hero-product', 'services-story-code',
-      'contact-story-brief', 'subpage-contact-brief', 'subpage-project-review', 'detail-before-after',
-      'detail-proof-library', 'detail-scope-request', 'detail-response-process', 'detail-meeting-prep',
-      'home-hero-workshop', 'home-story-strategy', 'about-hero-team', 'about-story-notes',
-      'testimonials-hero-client', 'testimonials-story-handshake', 'contact-hero-message',
-    ],
-    videos: ['services-code-build', 'digital-workflow', 'home-interface', 'projects-interface-scroll', 'blog-writing', 'contact-organizing-tasks', 'about-team-review', 'testimonials-client-call'],
   },
   testimonials: {
+    offset: 56,
     order: ['trust-stories', 'questions-before-deciding', 'result-types', 'client-before-after', 'review-audit', 'proof-library', 'outcomes-proof', 'objections-handled', 'process-feedback', 'trust-library'],
-    images: ['testimonials-hero-client', 'testimonials-story-handshake', 'detail-proof-interface', 'detail-before-after', 'detail-review-audit', 'detail-proof-library', 'subpage-proof-meeting', 'projects-story-mockup', 'client-workshop', 'subpage-project-review'],
-    videos: ['testimonials-client-call', 'about-team-review', 'contact-organizing-tasks', 'projects-interface-scroll', 'digital-workflow', 'home-interface', 'services-code-build', 'blog-writing'],
   },
   contact: {
+    offset: 66,
     order: ['direct', 'project-readiness', 'meeting-prep', 'response-process', 'scope-request', 'pricing', 'timeline', 'before-contact', 'decision-questions'],
-    images: ['contact-hero-message', 'detail-contact-ready', 'detail-meeting-prep', 'detail-response-process', 'detail-scope-request', 'contact-story-brief', 'subpage-contact-brief', 'client-workshop', 'strategy-board'],
-    videos: ['contact-organizing-tasks', 'blog-writing', 'about-team-review', 'digital-workflow', 'home-interface', 'projects-interface-scroll', 'services-code-build', 'testimonials-client-call'],
   },
 } as const;
 
 const getRouteVariety = (path: string) => {
   const slug = path.split('/').pop() ?? path;
-  if (path.startsWith('/home/')) return { group: routeMediaPools.home, index: itemIndex(routeMediaPools.home.order, slug), firstVideoId: 'home-interface' };
-  if (path.startsWith('/about/')) return { group: routeMediaPools.about, index: itemIndex(routeMediaPools.about.order, slug), firstVideoId: 'about-team-review' };
-  if (path.startsWith('/services/')) return { group: routeMediaPools.services, index: itemIndex(routeMediaPools.services.order, slug), firstVideoId: 'services-code-build' };
-  if (path.startsWith('/testimonials/')) return { group: routeMediaPools.testimonials, index: itemIndex(routeMediaPools.testimonials.order, slug), firstVideoId: 'testimonials-client-call' };
-  if (path.startsWith('/contact/')) return { group: routeMediaPools.contact, index: itemIndex(routeMediaPools.contact.order, slug), firstVideoId: 'contact-organizing-tasks' };
+  if (path.startsWith('/home/')) return { group: routeMediaPools.home, index: itemIndex(routeMediaPools.home.order, slug) };
+  if (path.startsWith('/about/')) return { group: routeMediaPools.about, index: itemIndex(routeMediaPools.about.order, slug) };
+  if (path.startsWith('/services/')) return { group: routeMediaPools.services, index: itemIndex(routeMediaPools.services.order, slug) };
+  if (path.startsWith('/testimonials/')) return { group: routeMediaPools.testimonials, index: itemIndex(routeMediaPools.testimonials.order, slug) };
+  if (path.startsWith('/contact/')) return { group: routeMediaPools.contact, index: itemIndex(routeMediaPools.contact.order, slug) };
   return null;
+};
+
+const blogCategoryHeroIndexes: Record<string, number> = {
+  'ux-ui': 75,
+  seo: 76,
+  ecommerce: 77,
+  websites: 78,
+  ai: 79,
+  'content-strategy': 80,
+  'launch-guides': 81,
 };
 
 const enforceRouteVariety = (path: string, variation: PageVariationConfig): PageVariationConfig => {
   const variety = getRouteVariety(path);
-  if (!variety) return variation;
+  if (!variety) {
+    if (path.startsWith('/blog/category/')) {
+      const slug = path.split('/').pop() ?? '';
+      const heroMediaId = routeHeroMediaIds[blogCategoryHeroIndexes[slug] ?? 82];
+      return {
+        ...variation,
+        heroMediaId,
+        storyMediaId: heroMediaId,
+        videoMediaId: heroMediaId,
+      };
+    }
 
-  const { group, index, firstVideoId } = variety;
-  const heroMediaId = group.images[index % group.images.length];
-  const storyOffset = Math.max(1, Math.ceil(group.images.length / 2));
-  let storyMediaId = group.images[(index + storyOffset) % group.images.length];
-
-  if (storyMediaId === heroMediaId) {
-    storyMediaId = group.images[(index + 1) % group.images.length];
+    return variation;
   }
 
-  const videoMediaId = index === 0
-    ? firstVideoId
-    : group.videos[index % group.videos.length];
+  const { group, index } = variety;
+  const heroMediaId = routeHeroMediaIds[group.offset + index];
 
   return {
     ...variation,
     heroComposition: heroCompositions[index % heroCompositions.length],
     sectionOrder: sectionOrders[index % sectionOrders.length],
     heroMediaId,
-    storyMediaId,
-    videoMediaId,
+    storyMediaId: heroMediaId,
+    videoMediaId: heroMediaId,
     pageExperience: pageExperienceForIndex(index),
   };
 };

@@ -35,7 +35,7 @@ const interactiveHover = {
   transition: { duration: 0.28, ease: 'easeOut' },
 } satisfies TargetAndTransition;
 
-const RichPageSection = ({
+export const RichPageSection = ({
   content,
   media,
   lang,
@@ -189,7 +189,7 @@ const ComparisonGrid = ({
   </motion.section>
 );
 
-const VideoFeatureBlock = ({
+export const VideoFeatureBlock = ({
   content,
   video,
   poster,

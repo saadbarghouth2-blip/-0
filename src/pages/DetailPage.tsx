@@ -322,15 +322,10 @@ const getExperienceClass = (experience: PageExperienceConfig) =>
 const DetailStoryPanel = ({
   experience,
   isArabic,
-  media,
   page,
   shouldReduceMotion,
   text,
-}: WorldBlockProps & {
-  experience: PageExperienceConfig;
-  media: typeof enrichmentMediaById[keyof typeof enrichmentMediaById];
-}) => {
-  const isGallery = experience.mediaRole === 'galleryStrip';
+}: WorldBlockProps & { experience: PageExperienceConfig }) => {
   const isDashboard = experience.heroStyle === 'dashboard' || experience.contentRhythm === 'dashboardGrid';
   const isEditorial = experience.heroStyle === 'editorial' || experience.contentRhythm === 'magazine';
 
@@ -339,30 +334,8 @@ const DetailStoryPanel = ({
       initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}
-      className={`detail-story-panel overflow-hidden rounded-[1.65rem] border border-white/10 bg-white/[0.035] md:rounded-[2.25rem] ${
-        isEditorial ? 'md:grid md:grid-cols-[0.75fr_1.25fr]' : 'lg:grid lg:grid-cols-[1.05fr_0.95fr]'
-      }`}
+      className="detail-story-panel overflow-hidden rounded-[1.65rem] border border-white/10 bg-white/[0.035] md:rounded-[2.25rem]"
     >
-      <div className={`relative min-h-[18rem] overflow-hidden ${isEditorial ? 'md:order-2' : ''}`}>
-        <img
-          alt={text(media.alt)}
-          className="h-full min-h-[18rem] w-full object-cover"
-          loading="lazy"
-          src={media.src}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#06090f]/75 via-[#06090f]/10 to-transparent" />
-        {isGallery && (
-          <div className="absolute inset-x-4 bottom-4 grid grid-cols-3 gap-2">
-            {page.metrics?.slice(0, 3).map((metric) => (
-              <div key={metric.value} className="rounded-2xl border border-white/15 bg-black/35 p-3 backdrop-blur-xl">
-                <p className="font-display text-xl font-black text-cyan-200">{metric.value}</p>
-                <p className="mt-1 text-[10px] leading-4 text-slate-200">{text(metric.label)}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
       <div className="p-5 md:p-7 lg:p-8">
         <p className="section-kicker mb-5">
           {isDashboard ? <Grid className="h-4 w-4" /> : isEditorial ? <BookOpen className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
@@ -779,10 +752,7 @@ const DetailPage = () => {
     ? enrichmentMediaById[detailHeroContent.heroMediaId]
     : enrichmentMediaById['team-planning'];
   const detailHeroMedia = detailHeroContent
-    ? enrichmentMediaById[detailHeroContent.videoMediaId] ?? detailHeroFallbackMedia
-    : enrichmentMediaById['digital-workflow'];
-  const detailStoryMedia = detailHeroContent
-    ? enrichmentMediaById[detailHeroContent.storyMediaId] ?? detailHeroFallbackMedia
+    ? detailHeroFallbackMedia
     : enrichmentMediaById['team-planning'];
   const pageExperience = detailHeroContent?.pageExperience ?? defaultPageExperience;
   const experienceClass = getExperienceClass(pageExperience);
@@ -956,7 +926,6 @@ const DetailPage = () => {
             <DetailStoryPanel
               experience={pageExperience}
               isArabic={isArabic}
-              media={detailStoryMedia}
               page={displayPage}
               shouldReduceMotion={shouldReduceMotion}
               text={text}

@@ -19,7 +19,7 @@ const HeroMediaBackdrop = ({ media, fallbackMedia, isArabic }: HeroMediaBackdrop
       <motion.img
         alt={fallbackAlt}
         animate={{ scale: 1.04 }}
-        className="h-full w-full scale-[1.04] object-cover opacity-82 saturate-[1.02]"
+        className="h-full w-full scale-[1.04] object-cover opacity-100 saturate-[1.08] contrast-[1.04]"
         fetchPriority="high"
         initial={{ scale: 1.12 }}
         loading="eager"
@@ -31,7 +31,7 @@ const HeroMediaBackdrop = ({ media, fallbackMedia, isArabic }: HeroMediaBackdrop
         <motion.video
           aria-label={mediaAlt}
           autoPlay
-          className="absolute inset-0 h-full w-full scale-[1.04] object-cover opacity-80 saturate-[1.02]"
+          className="absolute inset-0 h-full w-full scale-[1.04] object-cover opacity-100 saturate-[1.08] contrast-[1.04]"
           initial={{ scale: 1.1 }}
           animate={{ scale: 1.04 }}
           loop
@@ -42,15 +42,14 @@ const HeroMediaBackdrop = ({ media, fallbackMedia, isArabic }: HeroMediaBackdrop
         />
       ) : null}
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#03060b]/72 via-[#06090f]/34 to-[#06090f]/96" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#03060b]/55 via-[#06090f]/28 to-[#06090f]/92" />
       <div
         className={`pointer-events-none absolute inset-0 ${
           isArabic
-            ? 'bg-gradient-to-l from-[#031f22]/76 via-[#06090f]/42 to-[#06090f]/82'
-            : 'bg-gradient-to-r from-[#031f22]/76 via-[#06090f]/42 to-[#06090f]/82'
+            ? 'bg-gradient-to-l from-[#03191c]/90 via-[#06090f]/58 to-[#06090f]/34'
+            : 'bg-gradient-to-r from-[#03191c]/90 via-[#06090f]/58 to-[#06090f]/34'
         }`}
       />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_74%_24%,rgba(45,212,191,0.24),transparent_36%),radial-gradient(circle_at_16%_72%,rgba(124,58,237,0.18),transparent_38%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#06090f] to-transparent md:h-56" />
     </div>
   );

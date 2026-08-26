@@ -101,7 +101,10 @@ const videoTestimonials = [
     videoUrl: enrichmentMediaById['about-team-review'].src,
     duration: '1:45'
   }
-];
+].slice(0, 1).map((video) => ({
+  ...video,
+  videoUrl: enrichmentMediaById['home-interface'].src,
+}));
 
 const TestimonialsPage = () => {
   const { lang, localizePath } = useLanguage();

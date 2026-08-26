@@ -2439,3 +2439,83 @@ html[data-theme='light'] main .hero-media-backdrop ~ .relative :is(
     box-shadow: 0 10px 26px -24px rgba(30, 50, 66, 0.42) !important;
   }
 }
+
+/* Home hero has its own dark media treatment inside the light site. */
+html[data-theme='light'] .home-hero .home-hero-copy,
+html[data-theme='light'] .home-hero .home-hero-feature-card {
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  background-color: rgba(7, 17, 28, 0.88) !important;
+  background-image: none !important;
+  box-shadow: 0 28px 72px -38px rgba(0, 0, 0, 0.9) !important;
+}
+
+html[data-theme='light'] main #hero .home-hero-copy {
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  background: rgba(7, 17, 28, 0.9) !important;
+}
+
+html[data-theme='light'] main #hero .home-hero-copy :is(h1, h2, h3, p, span) {
+  color: #ffffff !important;
+}
+
+html[data-theme='light'] main #hero .home-hero-copy .text-gradient {
+  color: #67e8f9 !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor;
+}
+
+html[data-theme='light'] main #hero .home-hero-copy .btn-secondary {
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  background: rgba(7, 17, 28, 0.86) !important;
+  color: #ffffff !important;
+}
+
+html[data-theme='light'] .home-hero :is(.home-hero-copy, .home-hero-feature-card) :is(
+  h1,
+  h2,
+  h3,
+  .text-white,
+  .text-slate-50,
+  .text-slate-100,
+  .text-slate-200
+) {
+  color: #ffffff !important;
+}
+
+html[data-theme='light'] .home-hero :is(.home-hero-copy, .home-hero-feature-card) :is(
+  .text-slate-300,
+  .text-slate-400,
+  .text-slate-500
+) {
+  color: #d5e0e7 !important;
+}
+
+html[data-theme='light'] .home-hero .home-hero-copy .section-kicker {
+  border-color: rgba(103, 232, 221, 0.35) !important;
+  background: rgba(6, 78, 73, 0.62) !important;
+  color: #ecfeff !important;
+}
+
+html[data-theme='light'] .home-team-section {
+  background: #07111c !important;
+}
+
+html[data-theme='light'] .home-team-message {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-theme='light'] .home-team-message :is(h2, p, .text-white, .text-slate-100) {
+  color: #ffffff !important;
+}
+
+@media (max-width: 767px) {
+  .home-hero-copy {
+    backdrop-filter: blur(10px);
+  }
+
+  .home-team-section {
+    min-height: 28rem;
+  }
+}
