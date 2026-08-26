@@ -295,7 +295,7 @@ const ServicesPage = () => {
           <motion.img
             alt={item.imageAlt ?? item.titleEn}
             animate={item.imageMode === 'contain' ? { y: [0, -8, 0], scale: [1, 1.03, 1] } : undefined}
-            className={`h-full w-full ${item.imageMode === 'contain' ? 'object-contain p-10 opacity-95 drop-shadow-[0_25px_45px_rgba(45,212,191,0.18)]' : 'object-cover opacity-40 mix-blend-screen scale-110'}`}
+            className={`h-full w-full ${item.imageMode === 'contain' ? 'object-contain p-10 opacity-95 drop-shadow-[0_25px_45px_rgba(45,212,191,0.18)]' : 'scale-105 object-cover opacity-80 saturate-105'}`}
             src={item.image}
             transition={item.imageMode === 'contain' ? { duration: 6.8, repeat: Infinity, ease: 'easeInOut' } : undefined}
           />
@@ -841,7 +841,7 @@ const ServicesPage = () => {
               initial={isMobile ? false : { opacity: 0, y: 24 }}
               {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
               transition={{ delay: 0.2 }}
-              className="hidden justify-center lg:mt-10 lg:flex lg:justify-end"
+              className="hidden"
             >
               <motion.div
                 animate={{ y: [0, -6, 0] }}

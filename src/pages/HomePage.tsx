@@ -652,7 +652,6 @@ const HomePage = () => {
   const TestimonialPrevIcon = isArabic ? ArrowRight : ArrowLeft;
   const TestimonialNextIcon = isArabic ? ArrowLeft : ArrowRight;
 
-  const abstractTechImg = encodeURI('/images/Gemini_Generated_Image_qr1zi5qr1zi5qr1z.png');
   const premiumDashboardImg = encodeURI('/images/Gemini_Generated_Image_uigh61uigh61uigh.png');
 
   const parallaxX = useTransform(mouseX, (x) => x * -1.5);
@@ -1376,18 +1375,6 @@ const HomePage = () => {
 
       {/* SERVICES SECTION */}
       <section id="services" className="section-shell py-16 md:py-32 relative overflow-hidden">
-        {/* Abstract Background for services */}
-        <div className="absolute inset-0 z-0 opacity-15">
-          <motion.img 
-             initial={{ scale: 1.1 }}
-             whileInView={{ scale: 1 }}
-             transition={{ duration: 5 }}
-             src={abstractTechImg} 
-             alt="Abstract 3D Shapes" 
-             className="w-full h-full object-cover mix-blend-screen scale-125"
-          />
-        </div>
-        
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="mb-12 flex flex-col gap-6 md:mb-16 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
             <div className="rounded-[2rem] border border-white/10 bg-[#06090f]/50 p-5 shadow-2xl backdrop-blur-md md:p-8 lg:max-w-2xl lg:rounded-[2.5rem]">

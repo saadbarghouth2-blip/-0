@@ -2240,6 +2240,21 @@ html[data-theme='light'] .project-card > :first-child {
   border-bottom-color: var(--light-border) !important;
 }
 
+html[data-theme='light'] .project-card > .flex-1 {
+  background: #ffffff;
+}
+
+html[data-theme='light'] .project-card .group\/btn {
+  border-color: #a7d8d2 !important;
+  background: #e8f6f4 !important;
+  color: #0b665f !important;
+}
+
+html[data-theme='light'] .project-card .group\/btn:hover {
+  border-color: #69b8ae !important;
+  background: #d8efec !important;
+}
+
 html[data-theme='light'] .projects-page header {
   border-bottom-color: var(--light-border-strong) !important;
 }
@@ -2294,6 +2309,45 @@ html[data-theme='light'] main :is(.text-cyan-100, .text-cyan-200, .text-cyan-300
 
 html[data-theme='light'] main :is(.text-slate-500, .text-slate-600) {
   color: var(--light-muted) !important;
+}
+
+html[data-theme='light'] main :is(
+  .text-white\/20,
+  .text-white\/30,
+  .text-white\/40,
+  .text-cyan-100\/80,
+  .text-cyan-200\/80,
+  .text-cyan-200\/85
+):not(.absolute):not(.theme-on-media *) {
+  color: var(--light-muted) !important;
+}
+
+html[data-theme='light'] main :is(.theme-on-media, .media-lift, .project-card-media) :is(
+  .text-white\/20,
+  .text-white\/30,
+  .text-white\/40
+) {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+main :is(.project-card-media, .media-lift, .hero-media-backdrop) {
+  isolation: isolate;
+}
+
+main :is(.project-card-media, .media-lift) > :is(img, video),
+main :is(.project-card-media, .media-lift) [role='img'] {
+  display: block;
+  min-height: 100%;
+  object-position: center top;
+}
+
+main video {
+  max-width: 100%;
+}
+
+.page-enrichment :is(.surface-card, .surface-card-strong) > :is(img, video) {
+  border: 1px solid var(--light-border);
+  background: #dfe9ee;
 }
 
 html[data-theme='light'] footer {

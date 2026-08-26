@@ -97,15 +97,15 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
       onKeyDown={handleKeyDown}
       onMouseEnter={prefetchProjectPage}
       onPointerDown={prefetchProjectPage}
-      className={`project-card group relative flex cursor-pointer flex-col overflow-hidden rounded-lg border bg-[#0b1420] transition-all duration-300 md:h-full ${
+      className={`project-card group relative flex cursor-pointer flex-col overflow-hidden rounded-lg border bg-white transition-all duration-300 md:h-full ${
         isLatest
-          ? 'border-cyan-300/30 shadow-[0_20px_55px_-42px_rgba(45,212,191,0.8)] hover:border-cyan-300/55'
-          : 'border-white/10 shadow-[0_18px_48px_-38px_rgba(0,0,0,0.95)] hover:border-white/20'
+          ? 'border-teal-300 shadow-[0_20px_55px_-42px_rgba(13,148,136,0.55)] hover:border-teal-500'
+          : 'border-slate-300 shadow-[0_18px_48px_-38px_rgba(30,41,59,0.45)] hover:border-slate-400'
       }`}
       role="link"
       tabIndex={0}
     >
-      <div className="relative overflow-hidden border-b border-white/10 bg-[#050a12]">
+      <div className="theme-on-media relative overflow-hidden border-b border-slate-300 bg-[#07111c]">
         <div className={`project-card-media relative overflow-hidden ${compact ? 'aspect-[16/11]' : 'aspect-[16/10]'}`}>
           {hasLocalCover ? (
             <ProjectImage
@@ -139,25 +139,25 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
               </div>
             </>
           )}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0b1420]/45 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#07111c]/55 to-transparent" />
         </div>
       </div>
 
       <div className="flex flex-1 flex-col p-4 md:p-5">
-        <span className="text-[11px] font-bold text-cyan-200/80 md:text-xs">
+        <span className="text-[11px] font-bold text-teal-700 md:text-xs">
           {projectCategory}
         </span>
-        <h3 className="mt-1.5 line-clamp-2 font-display text-lg font-black leading-snug text-white transition-colors duration-300 group-hover:text-cyan-100 md:text-xl">
+        <h3 className="mt-1.5 line-clamp-2 font-display text-lg font-black leading-snug text-slate-950 transition-colors duration-300 group-hover:text-teal-800 md:text-xl">
           {projectTitle}
         </h3>
 
-        <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-slate-400 transition-colors duration-300 group-hover:text-slate-300 md:text-sm">
+        <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-slate-600 transition-colors duration-300 group-hover:text-slate-700 md:text-sm">
           {projectExcerpt}
         </p>
 
         <div className="mt-auto pt-4">
           <a
-            className="group/btn inline-flex min-h-9 items-center gap-2 text-xs font-bold text-white transition-colors hover:text-cyan-200 md:text-sm"
+            className="group/btn inline-flex min-h-10 items-center gap-2 rounded-md border border-teal-200 bg-teal-50 px-3 text-xs font-bold text-teal-800 transition-colors hover:border-teal-300 hover:bg-teal-100 md:text-sm"
             href={primaryHref}
             onClick={(event) => {
               event.stopPropagation();
