@@ -2,17 +2,13 @@ import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import {
   ArrowUpLeft,
-  Building2,
   ChevronDown,
   Facebook,
   Github,
-  Landmark,
   Linkedin,
   Mail,
   Menu,
   Phone,
-  ReceiptText,
-  MapPinned,
   X,
   Youtube,
 } from 'lucide-react';
@@ -32,13 +28,6 @@ const socialIcons = {
   github: Github,
   linkedin: Linkedin,
   youtube: Youtube,
-};
-
-const legalIssuerIcons = {
-  registry: Building2,
-  tax: Landmark,
-  'tax-file': ReceiptText,
-  address: MapPinned,
 };
 
 const joinClasses = (...classes: Array<string | false | null | undefined>) =>
@@ -273,7 +262,6 @@ const SiteLayout = () => {
       : 'Get a website, service page, or digital experience that helps your company show up clearly and build trust faster with the right visitors.',
   );
   const footerQuickLinksLabel = lang === 'ar' ? 'روابط سريعة' : 'Quick links';
-  const footerContactLabel = lang === 'ar' ? 'تواصل مباشر' : 'Direct contact';
   const footerSocialLabel = lang === 'ar' ? 'تابع نُطق' : 'Follow Notaq';
   const footerCopyright =
     lang === 'ar'
@@ -1263,7 +1251,7 @@ const SiteLayout = () => {
 
         <div className="section-shell relative z-10">
           <div className="rounded-[1.65rem] border border-white/8 bg-[linear-gradient(145deg,rgba(255,255,255,0.045),rgba(255,255,255,0.012))] p-5 shadow-[0_30px_90px_-60px_rgba(0,0,0,0.95)] md:rounded-[2.1rem] md:p-7 lg:p-8">
-            <div className="grid gap-7 md:gap-8 lg:grid-cols-[0.95fr_1.35fr_0.9fr]">
+            <div className="grid gap-7 md:gap-8 lg:grid-cols-[0.9fr_1.35fr_0.65fr]">
               <div className="text-center lg:text-start">
                 <Link to={localizedHomePath} className="inline-flex max-w-full items-center gap-3 sm:gap-4">
                   <BrandLogo
@@ -1304,18 +1292,18 @@ const SiteLayout = () => {
                 </div>
               </div>
 
-              <div className="rounded-[1.25rem] border border-white/8 bg-black/18 p-3.5 text-center lg:text-start">
-                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/[0.045] px-3.5 py-2 text-sm font-semibold text-cyan-50">
-                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.7)]" />
+              <div className="rounded-lg border border-white/15 bg-white/[0.045] p-4 text-center lg:text-start">
+                <div className="inline-flex items-center gap-2 border-b-2 border-cyan-300 pb-2 text-sm font-bold text-white">
+                  <span className="h-2 w-2 rounded-full bg-cyan-300" />
                   {footerQuickLinksLabel}
                 </div>
-                <div className="mt-4 grid grid-cols-2 gap-2 text-start text-xs text-slate-300 sm:grid-cols-3">
+                <div className="mt-4 grid grid-cols-2 gap-2 text-start text-sm text-slate-100 sm:grid-cols-3">
                   {footerLinks.map((item) => (
                     <Link
                       key={item.to}
                       to={localizePath(item.to)}
                       title={item.description}
-                      className="group flex min-h-[2.65rem] items-center justify-between gap-2 rounded-xl border border-white/8 bg-white/[0.025] px-2.5 py-2 font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300/35 hover:bg-cyan-300/[0.055] hover:text-white"
+                      className="group flex min-h-[2.75rem] items-center justify-between gap-2 rounded-md border border-white/15 bg-white/[0.055] px-3 py-2 font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300/60 hover:bg-cyan-300/10"
                     >
                       <span className="min-w-0 truncate leading-5">{item.label}</span>
                       <ArrowUpLeft className="h-3 w-3 shrink-0 text-cyan-300 transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -1325,7 +1313,7 @@ const SiteLayout = () => {
               </div>
 
               <div className="text-center lg:text-start">
-                <p className="text-sm font-semibold tracking-[0.2em] text-slate-500">
+                <p className="text-sm font-bold text-white">
                   {footerSocialLabel}
                 </p>
                 <div className="mt-5 flex flex-wrap justify-center gap-3 lg:justify-start">
@@ -1334,7 +1322,7 @@ const SiteLayout = () => {
                     return (
                       <a
                         key={social.label}
-                        className="rounded-full border border-white/10 bg-white/[0.03] p-2.5 text-slate-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-400/50 hover:bg-cyan-500/10 hover:text-white"
+                        className="rounded-full border border-white/20 bg-white/[0.06] p-2.5 text-slate-100 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300 hover:bg-cyan-500/15 hover:text-white"
                         href={social.href}
                         target="_blank"
                         rel="noreferrer"
@@ -1345,52 +1333,6 @@ const SiteLayout = () => {
                   })}
                 </div>
 
-                <div className="mt-6 rounded-[1.3rem] border border-white/10 bg-white/[0.03] p-4 text-sm text-slate-400 md:rounded-[1.5rem]">
-                  <p className="text-xs font-semibold tracking-[0.2em] text-slate-500">
-                    {footerContactLabel}
-                  </p>
-                  <p className="mt-3 text-sm leading-7 text-slate-200 md:text-base">
-                    {lang === 'ar' ? portfolioProfile.location : portfolioProfile.locationEn}
-                  </p>
-                  <p className="mt-2 text-sm leading-7 md:text-base">
-                    {lang === 'ar'
-                      ? 'جاهزون لمناقشة موقع شركة، صفحة خدمة، أو تجربة رقمية أوضح.'
-                      : 'Ready to discuss a company website, service page, or a clearer digital experience.'}
-                  </p>
-                </div>
-
-                <div className="mt-4 rounded-[1.15rem] border border-emerald-300/14 bg-emerald-300/[0.045] p-3.5 text-sm text-slate-400 md:rounded-[1.35rem]">
-                  <p className="text-xs font-semibold tracking-[0.18em] text-emerald-200/80">
-                    {lang === 'ar' ? 'بيانات التوثيق' : 'Verification details'}
-                  </p>
-                  <div className="mt-3 grid gap-1.5">
-                    {portfolioProfile.legalDocumentation.map((item) => {
-                      const IssuerIcon = legalIssuerIcons[item.issuerMark];
-
-                      return (
-                        <div
-                          key={item.value}
-                          className="rounded-[0.8rem] border border-white/7 bg-black/15 px-2.5 py-2"
-                        >
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <p className="text-[11px] font-semibold text-slate-500">
-                              {lang === 'ar' ? item.label : item.englishLabel}
-                            </p>
-                            <span className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-emerald-300/15 bg-emerald-300/[0.055] px-2 py-1 text-[10px] font-bold text-emerald-100/85">
-                              <IssuerIcon className="h-3 w-3 shrink-0" />
-                              <span className="truncate">
-                                {lang === 'ar' ? item.issuerLabel : item.englishIssuerLabel}
-                              </span>
-                            </span>
-                          </div>
-                          <p className="mt-1 break-all text-sm font-bold text-slate-100" dir="ltr">
-                            {item.value}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
               </div>
             </div>
 

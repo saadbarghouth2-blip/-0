@@ -9,7 +9,6 @@ import {
   BadgeCheck,
   BrainCircuit,
   Building2,
-  Code2,
   Globe2,
   Layers3,
   Mail,
@@ -53,7 +52,6 @@ import {
 import { featuredHomeTestimonials } from '../data/testimonials';
 import { pageImageShowcases } from '../data/pageImageShowcases';
 import { enrichmentMediaById } from '../data/enrichmentMedia';
-import { illustrationAssets } from '../lib/illustrationAssets';
 import { getPageSeoByPath } from '../lib/pageSeo';
 import { clientFacingText } from '../lib/repairText';
 import { preloadPath } from '../lib/pageLoaders';
@@ -103,12 +101,6 @@ const sectors = [
   { ar: 'حلول GIS والخرائط', en: 'GIS and mapping solutions' },
   { ar: 'لوحات التحكم والأنظمة الخاصة', en: 'Dashboards and custom systems' },
   { ar: 'منتجات الذكاء الاصطناعي', en: 'AI-driven products' },
-];
-
-const technicalHighlights = [
-  { icon: Globe2, titleAr: 'تجارب مستخدم لا تُنسى', titleEn: 'Memorable user experiences', delay: 0.2 },
-  { icon: Layers3, titleAr: 'بنية تحتية مرنة وقابلة للتوسع', titleEn: 'Scalable technical foundations', delay: 0.4 },
-  { icon: BrainCircuit, titleAr: 'أداء فائق ونتائج مباشرة', titleEn: 'Fast performance with measurable results', delay: 0.6 },
 ];
 
 const comparisonRows = [
@@ -656,10 +648,6 @@ const HomePage = () => {
 
   const parallaxX = useTransform(mouseX, (x) => x * -1.5);
   const parallaxY = useTransform(mouseY, (y) => y * -1.5);
-  const orb1X = useTransform(mouseX, (x) => x * 2);
-  const orb1Y = useTransform(mouseY, (y) => y * 2);
-  const orb2X = useTransform(mouseX, (x) => x * -2);
-  const orb2Y = useTransform(mouseY, (y) => y * -1);
 
   const renderHomeServiceCard = (service: (typeof services)[number], index: number) => {
     const Icon = serviceIcons[index] || Rocket;
@@ -815,7 +803,7 @@ const HomePage = () => {
       <motion.section 
         style={{ y: heroY, opacity: heroOpacity }}
         id="hero" 
-        className="home-hero section-shell relative flex min-h-[auto] items-center overflow-hidden pb-8 pt-3 md:min-h-[88vh] md:pb-20 md:pt-[104px]"
+        className="home-hero section-shell relative flex min-h-[calc(100svh-60px)] items-center overflow-hidden pb-10 pt-8 md:min-h-[calc(100svh-88px)] md:pb-16 md:pt-16"
       >
         {/* Cinematic Background */}
         <div className="absolute inset-0 z-0 overflow-hidden rounded-b-[2.2rem] md:rounded-b-[4rem]">
@@ -831,85 +819,42 @@ const HomePage = () => {
               alt="Background Office"
             />
           </motion.div>
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,14,24,0.9),rgba(5,14,24,0.72)_48%,rgba(5,14,24,0.88))] pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#07111c]/35 via-transparent to-[#07111c]/90 pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,12,20,0.52),rgba(4,12,20,0.7)_48%,rgba(4,12,20,0.97))] pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07111c]/20 via-transparent to-[#07111c]/95 pointer-events-none" />
         </div>
 
-        {/* Dynamic Glowing Orbs */}
-        <motion.div 
-          style={{ x: orb1X, y: orb1Y }}
-          className="hero-orb right-[5%] top-[10%] h-[400px] w-[400px] bg-cyan-400/15" />
-        <motion.div 
-          style={{ x: orb2X, y: orb2Y }}
-          className="hero-orb left-[5%] top-[40%] h-[500px] w-[500px] bg-violet-600/15" />
-
-        <div className="theme-on-media relative z-10 mx-auto grid w-full max-w-[76rem] items-center gap-6 md:gap-8">
+        <div className="theme-on-media relative z-10 mx-auto grid w-full max-w-[82rem] items-center gap-6 md:gap-8">
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
             animate="show"
-            className="relative space-y-5 md:space-y-8"
+            className="relative max-w-[48rem] space-y-5 md:space-y-7"
           >
             <motion.div
               variants={staggerItem}
-              className="home-hero-copy relative space-y-4 overflow-hidden rounded-lg border border-white/15 p-4 shadow-[0_24px_70px_-32px_rgba(0,0,0,0.95)] backdrop-blur-md sm:p-6 md:space-y-5 lg:p-8"
-              style={{ backgroundColor: 'rgba(7, 17, 28, 0.9)' }}
+              className="home-hero-copy relative space-y-4 border-s-4 border-cyan-300 py-2 ps-5 sm:ps-7 md:space-y-5 md:py-4"
             >
-              <div className="absolute inset-0 lg:hidden">
-                <img
-                  src="/images/hero-mobile-overlay.webp"
-                  loading="eager"
-                  alt=""
-                  className="h-full w-full scale-105 object-cover opacity-35 mix-blend-screen"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#06090f]/25 via-[#06090f]/82 to-[#06090f]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.16),transparent_48%)]" />
-              </div>
               <div className="relative z-10 space-y-4 md:space-y-5">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="section-kicker inline-flex max-w-max items-center border-cyan-400/30 bg-cyan-900/40 px-3 py-2 text-[0.62rem] tracking-[0.14em] text-cyan-50 shadow-[0_0_15px_rgba(45,212,191,0.2)] sm:px-4 sm:text-[0.72rem]"
+                className="section-kicker inline-flex max-w-max items-center border-cyan-300/40 bg-[#082a32]/90 px-3 py-2 text-[0.68rem] font-bold text-cyan-50 sm:px-4 sm:text-xs"
               >
                 <Sparkles className={`${isArabic ? 'ml-2' : 'mr-2'} inline h-3.5 w-3.5 text-cyan-300`} />
                 {text('تصميم تجارب رقمية مميزة', 'Crafting Premium Digital Experiences')}
               </motion.div>
 
               <div className="space-y-3 md:space-y-4">
-                <h1 className="font-display text-[1.8rem] font-bold leading-[1.12] text-white sm:text-[2.5rem] md:text-5xl lg:text-6xl xl:text-7xl">
+                <h1 className="font-display text-[2.35rem] font-black leading-[1.08] text-white sm:text-[3.2rem] md:text-6xl lg:text-7xl">
                   <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">Notaq</span>
                   <span className="mx-1.5 text-white/20 sm:mx-2 md:mx-3">|</span>
                   <span className="text-gradient animate-float inline-block pb-2">{text('نُطق', 'Notaq')}</span>
                 </h1>
-                <p className="font-display text-base font-semibold leading-relaxed text-cyan-100/90 sm:text-xl md:text-3xl">
-                  {text('وكالة تصميم وتطوير', 'Creative Development Agency')}
+                <p className="font-display text-lg font-bold leading-relaxed text-cyan-100 sm:text-2xl md:text-3xl">
+                  {text('نصمم حضورًا رقميًا يليق بشركتك', 'Digital experiences worthy of your business')}
                 </p>
               </div>
 
-              {/* Meaning Badge */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6, duration: 0.6 }}
-                className="inline-flex w-full items-center sm:w-auto"
-              >
-                <div className="flex w-full flex-wrap items-center justify-between gap-2 rounded-[1.15rem] border border-white/10 bg-white/[0.04] px-3.5 py-2.5 backdrop-blur-md sm:w-auto sm:justify-start sm:rounded-2xl sm:px-4">
-                  <span className="font-display text-base font-black text-transparent bg-clip-text bg-gradient-to-l from-cyan-300 to-teal-400 sm:text-lg">
-                    {text('نُطق', 'Notaq')}
-                  </span>
-                  <motion.span
-                    animate={{ x: [-3, 3, -3] }}
-                    transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut" }}
-                    className="text-sm text-cyan-400"
-                  >
-                    {text('←', '→')}
-                  </motion.span>
-                  <span className="text-[13px] font-medium leading-6 tracking-wide text-slate-300 sm:text-sm">
-                    {text('ابدأ بطريق رقمي أقوى', 'Start with a stronger digital path')}
-                  </span>
-                </div>
-              </motion.div>
-
-              <p className="mt-3 max-w-xl text-[0.93rem] font-medium leading-7 text-slate-300 md:mt-6 md:text-xl md:leading-9">
+              <p className="max-w-2xl text-base font-medium leading-8 text-slate-100 md:text-xl md:leading-9">
                 {text(
                   'احصل على موقع أو صفحة خدمة أو تجربة رقمية تخدم شركتك في مصر والخليج برسالة أوضح وثقة أعلى.',
                   'Get a website, service page, or digital experience for your business across Egypt and the Gulf with clearer positioning and stronger trust.',
@@ -918,7 +863,7 @@ const HomePage = () => {
               </div>
             </motion.div>
 
-            <motion.div variants={staggerItem} className="flex flex-col gap-2.5 pt-2 sm:flex-row sm:flex-wrap md:gap-4 md:pt-4">
+            <motion.div variants={staggerItem} className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:gap-4">
               <Link
                 className="btn-primary group w-full shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_40px_rgba(45,212,191,0.5)] sm:w-auto"
                 onPointerDown={() => void preloadPath(localizePath('/projects'))}
@@ -937,15 +882,11 @@ const HomePage = () => {
               </Link>
             </motion.div>
 
-            <motion.div variants={staggerItem} className="grid grid-cols-2 mobile-2-cols gap-3 pt-5 sm:grid-cols-2 sm:gap-4 md:pt-8 lg:grid-cols-4 lg:gap-6">
+            <motion.div variants={staggerItem} className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/20 bg-white/20 sm:grid-cols-4">
               {portfolioProfile.stats.map((stat, index) => (
                 <div
                   key={stat.englishLabel ?? stat.label}
-                  className={`cursor-pointer rounded-[1.15rem] border border-white/8 bg-white/[0.03] p-3.5 transition-transform hover:-translate-y-1 sm:rounded-[1.25rem] sm:p-4 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 ${
-                    isArabic
-                      ? 'text-right lg:border-l lg:border-white/10 lg:pl-4 lg:pr-6'
-                      : 'text-left lg:border-r lg:border-white/10 lg:pr-4 lg:pl-6'
-                  }`}
+                  className={`bg-[#07111c]/90 p-3.5 backdrop-blur-md transition-colors hover:bg-[#0a1b28] sm:p-4 ${isArabic ? 'text-right' : 'text-left'}`}
                 >
                   <p className="font-display text-[1.9rem] font-bold text-transparent bg-clip-text bg-gradient-to-l from-cyan-300 to-violet-400 sm:text-[2.2rem] md:text-4xl">
                     <AnimatedCounter value={stat.value} duration={2000 + (index * 500)} />
@@ -956,71 +897,6 @@ const HomePage = () => {
             </motion.div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, rotateY: 30 }}
-            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-            transition={{ duration: 1.2, type: "spring", bounce: 0.3 }}
-            className="hidden"
-          >
-            <motion.div
-              animate={{ y: [0, -15, 0], rotateZ: [0, 1, 0, -1, 0] }}
-              transition={{ duration: 8, ease: 'easeInOut', repeat: Infinity }}
-              className="relative lg:transform-style-3d shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)]"
-            >
-              <div className="absolute inset-x-6 top-6 hidden h-[260px] items-center justify-center rounded-[2rem] bg-cyan-600/20 blur-2xl animate-pulse sm:flex md:inset-x-4 md:top-8 md:h-[460px] md:rounded-[3.5rem] md:rotate-[4deg]" />
-              
-              <div className="home-hero-feature-card relative overflow-hidden rounded-lg border border-white/20 bg-[#07111c]/88 p-4 shadow-[0_32px_80px_-36px_rgba(0,0,0,0.9)] backdrop-blur-md md:p-8">
-                {/* Embedded animated backdrop in 3D card */}
-                <div className="absolute inset-0 z-0 overflow-hidden">
-                  <img
-                    src={illustrationAssets.multiDeviceSync.src}
-                    alt={illustrationAssets.multiDeviceSync.alt}
-                    className="h-full w-full object-cover opacity-28 saturate-75"
-                  />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.18),transparent_45%)]" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#06090f] via-[#06090f]/45 to-transparent" />
-                </div>
-
-                <div className="relative z-10 space-y-5 md:space-y-10">
-                  <div className="space-y-3 text-center md:space-y-4">
-                    <motion.div 
-                      whileHover={{ scale: 1.1, rotate: 180 }}
-                      transition={{ duration: 0.5 }}
-                      className="mx-auto flex h-14 w-14 items-center justify-center rounded-[1.1rem] bg-gradient-to-br from-cyan-400/90 to-violet-600/90 backdrop-blur-md shadow-[0_20px_50px_-10px_rgba(45,212,191,0.6)] sm:h-20 sm:w-20 md:h-24 md:w-24 md:rounded-[2rem]"
-                    >
-                      <Code2 className="h-6 w-6 text-white sm:h-8 sm:w-8 md:h-10 md:w-10" />
-                    </motion.div>
-                    <div>
-                      <h2 className="mt-3 font-display text-[1.35rem] font-bold tracking-wide text-white drop-shadow-md md:mt-6 md:text-4xl">
-                        {text('التميز التقني', 'Technical excellence')}
-                      </h2>
-                      <p className="mt-1.5 text-[13px] font-medium text-cyan-300 drop-shadow-sm sm:text-base md:text-lg">
-                        {text('تنفيذ بريميوم', 'Premium execution')}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid gap-3 md:gap-4">
-                    {technicalHighlights.map((item) => (
-                      <motion.div
-                        key={item.titleEn}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: item.delay, duration: 0.5 }}
-                        whileHover={{ scale: 1.03, x: -5, backgroundColor: "rgba(255,255,255,0.15)" }}
-                        className="flex cursor-pointer items-center gap-2.5 rounded-[1.1rem] border border-white/10 bg-[#06090f]/60 p-3 transition-colors shadow-[0_10px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl md:gap-4 md:rounded-2xl md:p-4"
-                      >
-                        <div className="rounded-xl bg-cyan-400/20 p-2.5 text-cyan-300 shadow-[0_0_15px_rgba(45,212,191,0.4)] md:p-3">
-                          <item.icon className="h-4.5 w-4.5 md:h-5 md:w-5" />
-                        </div>
-                        <p className="text-sm font-bold leading-6 text-white sm:text-base md:text-lg">{text(item.titleAr, item.titleEn)}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
         </div>
       </motion.section>
 

@@ -2443,15 +2443,15 @@ html[data-theme='light'] main .hero-media-backdrop ~ .relative :is(
 /* Home hero has its own dark media treatment inside the light site. */
 html[data-theme='light'] .home-hero .home-hero-copy,
 html[data-theme='light'] .home-hero .home-hero-feature-card {
-  border-color: rgba(255, 255, 255, 0.22) !important;
-  background-color: rgba(7, 17, 28, 0.88) !important;
+  border-color: #67e8f9 !important;
+  background-color: transparent !important;
   background-image: none !important;
-  box-shadow: 0 28px 72px -38px rgba(0, 0, 0, 0.9) !important;
+  box-shadow: none !important;
 }
 
 html[data-theme='light'] main #hero .home-hero-copy {
-  border-color: rgba(255, 255, 255, 0.24) !important;
-  background: rgba(7, 17, 28, 0.9) !important;
+  border-color: #67e8f9 !important;
+  background: transparent !important;
 }
 
 html[data-theme='light'] main #hero .home-hero-copy :is(h1, h2, h3, p, span) {
