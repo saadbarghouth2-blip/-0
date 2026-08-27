@@ -886,12 +886,12 @@ const HomePage = () => {
               {portfolioProfile.stats.map((stat, index) => (
                 <div
                   key={stat.englishLabel ?? stat.label}
-                  className={`bg-[#07111c]/90 p-3.5 backdrop-blur-md transition-colors hover:bg-[#0a1b28] sm:p-4 ${isArabic ? 'text-right' : 'text-left'}`}
+                  className={`home-hero-stat p-3.5 transition-colors sm:p-4 ${isArabic ? 'text-right' : 'text-left'}`}
                 >
-                  <p className="font-display text-[1.9rem] font-bold text-transparent bg-clip-text bg-gradient-to-l from-cyan-300 to-violet-400 sm:text-[2.2rem] md:text-4xl">
+                  <p className="home-hero-stat-value font-display text-[1.9rem] font-bold sm:text-[2.2rem] md:text-4xl">
                     <AnimatedCounter value={stat.value} duration={2000 + (index * 500)} />
                   </p>
-                  <p className="mt-1 text-[13px] font-medium text-slate-400 sm:text-sm">{text(stat.label, stat.englishLabel ?? stat.label)}</p>
+                  <p className="home-hero-stat-label mt-1 text-[13px] font-semibold sm:text-sm">{text(stat.label, stat.englishLabel ?? stat.label)}</p>
                 </div>
               ))}
             </motion.div>

@@ -1279,11 +1279,16 @@ html[data-theme='light'] .site-nav-trigger-active {
 }
 
 html[data-theme='light'] .site-dropdown {
-  box-shadow: 0 20px 52px -34px rgba(15, 23, 42, 0.35);
+  border-color: #cbd5e1;
+  background: #ffffff;
+  box-shadow: 0 22px 55px -28px rgba(15, 23, 42, 0.45);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 html[data-theme='light'] .site-dropdown-link {
-  color: #475569;
+  color: #334155;
+  font-weight: 700;
 }
 
 html[data-theme='light'] .site-dropdown-link:hover,
@@ -1293,6 +1298,11 @@ html[data-theme='light'] .site-mobile-menu-button:hover,
 html[data-theme='light'] .site-phone-button:hover {
   background: rgba(20, 184, 166, 0.12);
   color: #0f172a;
+}
+
+html[data-theme='light'] .site-dropdown-link-main {
+  border-bottom: 1px solid #bae6e8;
+  background: #e6f7f7;
 }
 
 html[data-theme='light'] .site-dropdown-divider {
@@ -2494,6 +2504,28 @@ html[data-theme='light'] .home-hero .home-hero-copy .section-kicker {
   border-color: rgba(103, 232, 221, 0.35) !important;
   background: rgba(6, 78, 73, 0.62) !important;
   color: #ecfeff !important;
+}
+
+html[data-theme='light'] main #hero .home-hero-stat,
+main #hero .home-hero-stat {
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  background: rgba(7, 17, 28, 0.94) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme='light'] main #hero .home-hero-stat:hover,
+main #hero .home-hero-stat:hover {
+  background: rgba(10, 29, 42, 0.98) !important;
+}
+
+html[data-theme='light'] main #hero .home-hero-stat-value,
+main #hero .home-hero-stat-value {
+  color: #67e8f9 !important;
+}
+
+html[data-theme='light'] main #hero .home-hero-stat-label,
+main #hero .home-hero-stat-label {
+  color: #e2e8f0 !important;
 }
 
 html[data-theme='light'] .home-team-section {
