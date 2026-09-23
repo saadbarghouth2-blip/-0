@@ -331,8 +331,8 @@ const ContactPage = () => {
   const copyPair = (value: { ar: string; en: string }) => copy(isArabic ? value.ar : value.en);
   const whatsappUrl = buildWhatsAppUrl(getDefaultWhatsAppMessage(lang));
   const faqDesktopCardClass = isArabic
-    ? 'contact-faq-card group relative h-full overflow-hidden rounded-[1.25rem] border border-cyan-300/25 bg-[linear-gradient(180deg,#0b1725_0%,#07111c_100%)] p-4 text-right shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-300/55 md:p-5'
-    : 'contact-faq-card group relative h-full overflow-hidden rounded-[1.25rem] border border-cyan-300/25 bg-[linear-gradient(180deg,#0b1725_0%,#07111c_100%)] p-4 text-left shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-300/55 md:p-5';
+    ? 'contact-faq-card contact-readable-card group relative h-full overflow-hidden rounded-[1.25rem] border p-4 text-right shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors md:p-5'
+    : 'contact-faq-card contact-readable-card group relative h-full overflow-hidden rounded-[1.25rem] border p-4 text-left shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors md:p-5';
 
   const contactCards = [
     {
@@ -1090,10 +1090,10 @@ const ContactPage = () => {
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div className="min-w-0">
-                    <p className="contact-faq-question break-words text-[0.96rem] font-semibold leading-6 text-white">
+                    <p className="contact-faq-question contact-readable-question break-words text-[0.96rem] font-semibold leading-6">
                       {copyLegacyPair(faq.qAr, faq.qEn)}
                     </p>
-                    <p className="contact-faq-answer mt-2 text-sm leading-6 text-slate-400">
+                    <p className="contact-faq-answer contact-readable-answer mt-2 text-sm leading-6">
                       {copyLegacyPair(faq.aAr, faq.aEn)}
                     </p>
                   </div>

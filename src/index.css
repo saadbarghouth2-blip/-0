@@ -3008,3 +3008,41 @@ html[data-theme='light'] main .contact-faq-section .contact-faq-number {
     animation: none !important;
   }
 }
+
+/* Final contact FAQ classic cards.
+   This block intentionally sits at the end of the stylesheet and targets only
+   the contact FAQ cards shown on /contact. The site has broad light-theme
+   utility remaps, so these selectors stay more specific than generic utilities. */
+html[data-theme='light'] body #root main .contact-faq-section .contact-readable-card,
+body #root main .contact-faq-section .contact-readable-card {
+  border-color: rgba(20, 184, 166, 0.26) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 253, 250, 0.82) 100%) !important;
+  box-shadow: 0 18px 42px -34px rgba(15, 23, 42, 0.5) !important;
+}
+
+html[data-theme='light'] body #root main .contact-faq-section .contact-readable-card:hover,
+body #root main .contact-faq-section .contact-readable-card:hover {
+  border-color: rgba(20, 184, 166, 0.5) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(236, 253, 245, 0.95) 100%) !important;
+  box-shadow: 0 22px 46px -32px rgba(13, 148, 136, 0.42) !important;
+}
+
+html[data-theme='light'] body #root main .contact-faq-section .contact-readable-card .contact-readable-question,
+body #root main .contact-faq-section .contact-readable-card .contact-readable-question {
+  color: #0f172a !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] body #root main .contact-faq-section .contact-readable-card .contact-readable-answer,
+body #root main .contact-faq-section .contact-readable-card .contact-readable-answer {
+  color: #334155 !important;
+}
+
+html[data-theme='light'] body #root main .contact-faq-section .contact-readable-card .contact-faq-number,
+body #root main .contact-faq-section .contact-readable-card .contact-faq-number {
+  border-color: rgba(20, 184, 166, 0.46) !important;
+  background: #ccfbf1 !important;
+  color: #0f766e !important;
+}
