@@ -2,20 +2,16 @@ import { motion } from 'framer-motion';
 import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import {
   ArrowUpLeft,
-  Building2,
   CheckCircle,
   Check,
   ChevronDown,
   Clock3,
   FileText,
-  Landmark,
   Loader2,
   Mail,
-  MapPinned,
   MapPin,
   MessageCircle,
   Phone,
-  ReceiptText,
   Rocket,
   Send,
   ShieldCheck,
@@ -43,12 +39,6 @@ import { usePageMetadata } from '../hooks/usePageMetadata';
 import { trackEvent } from '../lib/analytics';
 import { clientFacingText } from '../lib/repairText';
 
-const legalIssuerIcons = {
-  registry: Building2,
-  tax: Landmark,
-  'tax-file': ReceiptText,
-  address: MapPinned,
-};
 import { buildWhatsAppUrl, getDefaultWhatsAppMessage } from '../lib/contactLinks';
 import { CONTACT_EMAIL, isEmailJsConfigured, sendContactEmails } from '../lib/emailjsClient';
 import { illustrationAssets } from '../lib/illustrationAssets';
@@ -207,14 +197,14 @@ const ContactSelect = ({
   const inputId = `contact-select-${name}`;
 
   return (
-    <div className="relative space-y-2">
+    <div className="contrast-select relative space-y-2">
       <label className="block text-sm text-slate-300" htmlFor={inputId}>
         {label}
       </label>
       <input id={inputId} name={name} type="hidden" value={value} />
       <button
         aria-expanded={isOpen}
-        className={`group flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#06090f]/55 px-4 py-3 text-white outline-none transition-all hover:border-cyan-300/35 hover:bg-[#07131f]/85 focus:border-cyan-400/60 focus:bg-[#06090f]/80 focus:shadow-[0_0_0_4px_rgba(45,212,191,0.1)] ${
+        className={`contrast-select-trigger group flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#06090f]/55 px-4 py-3 text-white outline-none transition-all hover:border-cyan-300/35 hover:bg-[#07131f]/85 focus:border-cyan-400/60 focus:bg-[#06090f]/80 focus:shadow-[0_0_0_4px_rgba(45,212,191,0.1)] ${
           isOpen ? 'border-cyan-400/55 shadow-[0_0_0_4px_rgba(45,212,191,0.08)]' : ''
         }`}
         onClick={() => setIsOpen((current) => !current)}
@@ -231,7 +221,7 @@ const ContactSelect = ({
       </button>
       {isOpen ? (
         <div
-          className={`absolute z-40 mt-2 max-h-72 w-full overflow-auto rounded-2xl border border-cyan-300/20 bg-[#07111d]/98 p-1.5 shadow-[0_22px_70px_rgba(0,0,0,0.65)] backdrop-blur-xl ${
+          className={`contrast-select-menu absolute z-40 mt-2 max-h-72 w-full overflow-auto rounded-2xl border border-cyan-300/20 bg-[#07111d]/98 p-1.5 shadow-[0_22px_70px_rgba(0,0,0,0.65)] backdrop-blur-xl ${
             isArabic ? 'right-0 text-right' : 'left-0 text-left'
           }`}
           dir={isArabic ? 'rtl' : 'ltr'}
@@ -241,7 +231,7 @@ const ContactSelect = ({
             return (
               <button
                 key={item.key}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
+                className={`contrast-select-option flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
                   isSelected
                     ? 'bg-cyan-300/14 text-cyan-50'
                     : 'text-slate-300 hover:bg-white/[0.06] hover:text-white'
@@ -748,56 +738,6 @@ const ContactPage = () => {
                     </div>
                   </motion.a>
                 ))}
-              </div>
-            </div>
-
-            <div className="surface-card rounded-[1.8rem] border-emerald-300/14 bg-emerald-300/[0.035] p-5 md:rounded-[2.5rem] md:p-8">
-              <div className="flex items-start gap-3">
-                <div className="rounded-2xl bg-emerald-300/10 p-3 text-emerald-200">
-                  <ShieldCheck className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="section-kicker mb-3 border-emerald-300/25 bg-emerald-300/10 text-emerald-100">
-                    {isArabic ? 'بيانات التوثيق الأساسية' : 'Basic verification details'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-3">
-                {portfolioProfile.legalDocumentation.map((item, index) => {
-                  const IssuerIcon = legalIssuerIcons[item.issuerMark];
-
-                  return (
-                    <motion.div
-                      key={item.value}
-                      initial={isMobile ? false : { opacity: 0, y: 12 }}
-                      whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.25 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="rounded-[1.15rem] border border-white/8 bg-black/20 p-4"
-                    >
-                      <div className="flex items-start gap-3">
-                        <FileText className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
-                              {copyLegacyPair(item.label, item.englishLabel)}
-                            </p>
-                            <span className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-emerald-300/15 bg-emerald-300/[0.06] px-2.5 py-1 text-[11px] font-bold text-emerald-100/85">
-                              <IssuerIcon className="h-3.5 w-3.5 shrink-0" />
-                              <span className="truncate">
-                                {copyLegacyPair(item.issuerLabel, item.englishIssuerLabel)}
-                              </span>
-                            </span>
-                          </div>
-                          <p className="mt-2 break-all font-display text-lg font-black text-white" dir="ltr">
-                            {item.value}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
               </div>
             </div>
 

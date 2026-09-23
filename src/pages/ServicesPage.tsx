@@ -230,12 +230,12 @@ const ServicesPage = () => {
     ? 'grid w-full grid-cols-2 gap-5 text-center md:w-auto md:gap-12 md:pr-10 lg:grid-cols-3'
     : 'grid w-full grid-cols-2 gap-5 text-center md:w-auto md:gap-12 md:pl-10 lg:grid-cols-3';
   const faqCardClass = isArabic
-    ? 'group relative min-w-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(11,18,32,0.94),rgba(7,11,20,0.9))] p-4 text-right shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-cyan-400/30 hover:bg-[linear-gradient(180deg,rgba(13,23,40,0.96),rgba(8,13,24,0.92))] md:rounded-[1.7rem] md:p-5'
-    : 'group relative min-w-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(11,18,32,0.94),rgba(7,11,20,0.9))] p-4 text-left shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-cyan-400/30 hover:bg-[linear-gradient(180deg,rgba(13,23,40,0.96),rgba(8,13,24,0.92))] md:rounded-[1.7rem] md:p-5';
+    ? 'dark-faq-card group relative min-w-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(11,18,32,0.94),rgba(7,11,20,0.9))] p-4 text-right shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-cyan-400/30 hover:bg-[linear-gradient(180deg,rgba(13,23,40,0.96),rgba(8,13,24,0.92))] md:rounded-[1.7rem] md:p-5'
+    : 'dark-faq-card group relative min-w-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(11,18,32,0.94),rgba(7,11,20,0.9))] p-4 text-left shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-cyan-400/30 hover:bg-[linear-gradient(180deg,rgba(13,23,40,0.96),rgba(8,13,24,0.92))] md:rounded-[1.7rem] md:p-5';
   const faqCardRowClass = isArabic
     ? 'flex flex-row-reverse items-start gap-3'
     : 'flex items-start gap-3';
-  const faqAnswerClass = 'mt-2.5 text-[0.88rem] leading-6 text-slate-400 md:text-[0.95rem] md:leading-7';
+  const faqAnswerClass = 'dark-faq-answer mt-2.5 text-[0.88rem] leading-6 text-slate-400 md:text-[0.95rem] md:leading-7';
   const rawContent = {
     title: isArabic ? 'خدمات نُطق' : 'Notaq Services',
     description: isArabic
@@ -466,17 +466,24 @@ const ServicesPage = () => {
       {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.2 } } : {})}
       transition={{ duration: 0.35, delay: index * 0.04 }}
       className={faqCardClass}
+      style={{
+        background: 'linear-gradient(180deg, #0b1725 0%, #07111c 100%)',
+        borderColor: 'rgba(103, 232, 249, 0.28)',
+      }}
     >
       <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/35 to-transparent" />
       <div className={faqCardRowClass}>
-        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-cyan-400/20 bg-cyan-400/10 font-display text-[0.76rem] font-bold tracking-[0.18em] text-cyan-100">
+        <span
+          className="dark-faq-number inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-cyan-400/20 bg-cyan-400/10 font-display text-[0.76rem] font-bold tracking-[0.18em] text-cyan-100"
+          style={{ color: '#a5f3fc', borderColor: 'rgba(103, 232, 249, 0.68)', backgroundColor: 'rgba(8, 47, 73, 0.72)' }}
+        >
           {String(index + 1).padStart(2, '0')}
         </span>
         <div className="min-w-0 flex-1">
-          <h3 className="break-words text-[0.98rem] font-semibold leading-6 text-white md:text-[1.02rem] md:leading-7">
+          <h3 className="dark-faq-question break-words text-[0.98rem] font-semibold leading-6 text-white md:text-[1.02rem] md:leading-7" style={{ color: '#f8fafc' }}>
             {copyLegacyPair(item.questionAr, item.questionEn)}
           </h3>
-          <p className={faqAnswerClass}>
+          <p className={faqAnswerClass} style={{ color: '#cbd9e2' }}>
             {copyLegacyPair(item.answerAr, item.answerEn)}
           </p>
         </div>

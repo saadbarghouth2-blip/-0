@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import type { BlogPost } from '../data/blog';
 import { useLanguage } from '../hooks/useLanguage';
 import { useIsMobile } from '../hooks/use-mobile';
+import { cardLift, revealItem, revealTransition } from '../lib/motion';
 
 interface BlogPostCardProps {
   post: BlogPost;
@@ -30,7 +31,12 @@ const BlogPostCard = ({ post, variant = 'default' }: BlogPostCardProps) => {
 
   return (
     <motion.article
-      whileHover={isMobile ? undefined : { y: -8 }}
+      initial={isMobile ? false : 'hidden'}
+      whileInView={isMobile ? undefined : 'visible'}
+      viewport={{ once: true, amount: 0.15 }}
+      variants={revealItem}
+      transition={revealTransition}
+      whileHover={isMobile ? undefined : cardLift}
       className={`group overflow-hidden rounded-lg md:rounded-[2rem] border border-white/8 bg-white/[0.03] backdrop-blur-sm transition-colors hover:bg-white/[0.05] ${
         isCompact ? 'h-full' : ''
       }`}

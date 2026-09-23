@@ -2551,3 +2551,428 @@ html[data-theme='light'] .home-team-message :is(h2, p, .text-white, .text-slate-
     min-height: 28rem;
   }
 }
+
+/* Readable accents and clearly separated content on the default light theme. */
+html[data-theme='light'] main :is(
+  .text-red-300, .text-red-400, .text-rose-100, .text-rose-200, .text-rose-300, .text-rose-400
+):not(.theme-on-media *) {
+  color: #9f2335 !important;
+}
+
+html[data-theme='light'] main :is(
+  .text-green-300, .text-green-400, .text-emerald-100, .text-emerald-200,
+  .text-emerald-300, .text-emerald-400, .text-teal-200, .text-teal-300
+):not(.theme-on-media *) {
+  color: #116348 !important;
+}
+
+html[data-theme='light'] main :is(
+  .text-amber-100, .text-amber-200, .text-amber-300, .text-amber-400,
+  .text-yellow-200, .text-yellow-300, .text-orange-200, .text-orange-300
+):not(.theme-on-media *) {
+  color: #86510c !important;
+}
+
+html[data-theme='light'] main :is(.text-white\/40, .text-white\/50, .text-white\/60, .text-white\/70):not(.theme-on-media *) {
+  color: var(--light-copy) !important;
+}
+
+/* Tint the status chips rather than leaving pale lettering on near-white. */
+html[data-theme='light'] main :is(.bg-red-500\/20, .bg-red-500\/30, .bg-rose-500\/10, .bg-rose-500\/20):not(.theme-on-media *) {
+  background-color: #fce8eb !important;
+}
+
+html[data-theme='light'] main :is(.bg-green-500\/10, .bg-green-500\/20, .bg-green-500\/30, .bg-emerald-300\/10, .bg-emerald-500\/10):not(.theme-on-media *) {
+  background-color: #e0f3ea !important;
+}
+
+html[data-theme='light'] main :is(.bg-cyan-500\/5, .bg-cyan-500\/10, .bg-cyan-500\/20):not(.theme-on-media *) {
+  background-color: #e5f4f5 !important;
+}
+
+html[data-theme='light'] main :is(.bg-red-500\/20, .bg-red-500\/30):not(.theme-on-media *) {
+  border: 1px solid #eeb9c1;
+}
+
+html[data-theme='light'] main :is(.bg-green-500\/20, .bg-green-500\/30):not(.theme-on-media *) {
+  border: 1px solid #a5d9bc;
+}
+
+/* Preserve the original light-on-dark palette inside image and video heroes. */
+html[data-theme='light'] main :is(.theme-on-media, .hero-media-backdrop ~ .relative, #hero .home-hero-copy) :is(
+  .text-red-300, .text-red-400, .text-green-300, .text-green-400,
+  .text-emerald-100, .text-emerald-200, .text-emerald-300, .text-emerald-400,
+  .text-amber-200, .text-amber-300, .text-cyan-100, .text-cyan-200,
+  .text-cyan-300, .text-cyan-400, .text-teal-200, .text-teal-300
+) {
+  color: #a5f3fc !important;
+}
+
+html[data-theme='light'] main :is(.theme-on-media, .hero-media-backdrop ~ .relative) :is(.text-slate-500, .text-slate-600) {
+  color: #d1dee6 !important;
+}
+
+/* Service detail rows need a visible surface, not white on white. */
+html[data-theme='light'] main .service-detail-content :is(.grid, .space-y-3) > :is(.rounded-xl, .rounded-lg)[class*="border-white"]:not(.absolute) {
+  border-color: var(--light-border) !important;
+  background-color: var(--light-card) !important;
+  box-shadow: 0 8px 24px -22px rgba(30, 50, 66, 0.32);
+}
+
+html[data-theme='light'] main .service-detail-content :is(.grid, .space-y-3) > :is(.rounded-xl, .rounded-lg)[class*="border-cyan"]:not(.absolute) {
+  border-color: #a8ceca !important;
+  background-color: #eef8f6 !important;
+}
+
+/* Home page refinement: preserve the restrained palette while making adjacent cards
+   read as separate, tactile decisions instead of one large translucent surface. */
+.home-card {
+  border-color: rgba(148, 163, 184, 0.18);
+  box-shadow: 0 16px 38px -30px rgba(0, 0, 0, 0.78);
+}
+
+.home-card:is(:hover, :focus-within) {
+  border-color: rgba(103, 232, 249, 0.45);
+  box-shadow: 0 24px 48px -32px rgba(45, 212, 191, 0.34);
+}
+
+.home-card:focus-within,
+.contact-media-panel :is(a, button):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.contact-media-panel {
+  isolation: isolate;
+}
+
+.contact-media-panel::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: inherit;
+}
+
+.contact-copy-panel,
+.contact-why-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.contact-copy-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.07), transparent 48%);
+  pointer-events: none;
+}
+
+.contact-why-item {
+  min-height: 4.25rem;
+}
+
+.contact-media-panel .scroll-parallax-media {
+  transition: transform 900ms var(--motion-smooth), opacity 700ms ease;
+}
+
+.contact-media-panel:hover .scroll-parallax-media {
+  transform: scale(1.09);
+  opacity: 0.25;
+}
+
+/* Keep the contact decision stage dark and high-contrast even when the site uses
+   the optional light chrome. These rules intentionally win over broad theme fixes. */
+html[data-theme='light'] .contact-media-panel .contact-copy-panel,
+html[data-theme='light'] .contact-media-panel .contact-why-card {
+  background-color: rgba(6, 17, 28, 0.94) !important;
+  border-color: rgba(165, 243, 252, 0.3) !important;
+}
+
+html[data-theme='light'] .contact-media-panel .contact-why-item {
+  background-color: #0a1a28 !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  color: #fff !important;
+}
+
+html[data-theme='light'] .contact-media-panel .contact-why-item:hover {
+  background-color: #0d2333 !important;
+  border-color: rgba(103, 232, 249, 0.68) !important;
+}
+
+@media (min-width: 768px) {
+  #services .grid,
+  #projects .grid,
+  #process .grid {
+    column-gap: clamp(1.25rem, 2vw, 2.5rem);
+    row-gap: clamp(1.5rem, 2.4vw, 3rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-media-panel {
+    padding: 1rem;
+  }
+
+  .contact-copy-panel {
+    padding: 1.25rem;
+  }
+
+  .contact-why-item {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-media-panel .scroll-parallax-media {
+    transition: none;
+  }
+}
+
+/* Contrast guardrails for controls and disclosure content. These are explicit
+   component surfaces so palette-normalisation rules cannot turn text pale. */
+:is(input, textarea, select) {
+  color: #e8f1f5;
+}
+
+select option {
+  background: #07111c;
+  color: #f8fafc;
+}
+
+:is(button, input, textarea, select):disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.faq-card {
+  border-color: rgba(148, 163, 184, 0.3);
+  background: #091521;
+  box-shadow: 0 16px 34px -30px rgba(0, 0, 0, 0.88);
+}
+
+.faq-question {
+  background: #0b1a28;
+  color: #fff;
+}
+
+.faq-question :is(h1, h2, h3, h4, span) {
+  color: #fff;
+}
+
+.faq-answer {
+  background: #07131f;
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+.faq-answer > p {
+  color: #d9e5eb;
+}
+
+.faq-answer :is(.text-slate-500, .text-slate-400) {
+  color: #b7c7d2;
+}
+
+.faq-filter:focus-visible,
+.faq-card button:focus-visible,
+.brief-choice:focus-visible,
+.contrast-select :is(button, input):focus-visible {
+  outline: 2px solid #67e8f9;
+  outline-offset: 3px;
+}
+
+.contrast-select > label {
+  color: #d9e5eb;
+  font-weight: 600;
+}
+
+.contrast-select-trigger {
+  background: #081723 !important;
+  border-color: rgba(148, 163, 184, 0.38) !important;
+  color: #fff !important;
+}
+
+.contrast-select-trigger:hover,
+.contrast-select-trigger:focus-visible {
+  background: #0b2130 !important;
+  border-color: rgba(103, 232, 249, 0.72) !important;
+}
+
+.contrast-select-menu {
+  background: #07111c !important;
+  border-color: rgba(103, 232, 249, 0.45) !important;
+}
+
+.contrast-select-option {
+  color: #dceaf0 !important;
+}
+
+.contrast-select-option:hover,
+.contrast-select-option:focus-visible {
+  background: #123044 !important;
+  color: #fff !important;
+  outline: none;
+}
+
+.contrast-select-option:has(.bg-cyan-300) {
+  background: #164457 !important;
+  color: #fff !important;
+}
+
+.brief-choice {
+  color: #dceaf0;
+  border-color: rgba(148, 163, 184, 0.32);
+  background-color: #081622;
+}
+
+.brief-choice :is(h1, h2, h3, h4) {
+  color: #fff !important;
+}
+
+.brief-choice p,
+.brief-choice .text-slate-400 {
+  color: #c0d0d9 !important;
+}
+
+.brief-choice:hover {
+  border-color: rgba(103, 232, 249, 0.65) !important;
+  background-color: #0b2130 !important;
+}
+
+.brief-choice.bg-cyan-500\/10 {
+  background-color: #123b4a !important;
+  border-color: #67e8f9 !important;
+  color: #fff !important;
+}
+
+.brief-choice.bg-cyan-500\/10 :is(.text-cyan-300, .text-slate-400) {
+  color: #ecfeff !important;
+}
+
+html[data-theme='light'] :is(input, textarea, select) {
+  color: #0e1d30;
+}
+
+html[data-theme='light'] select option {
+  background: #fff;
+  color: #0e1d30;
+}
+
+html[data-theme='light'] .faq-card {
+  border-color: #9fb4bf !important;
+  background: #fff !important;
+  box-shadow: 0 16px 34px -30px rgba(30, 50, 66, 0.42);
+}
+
+html[data-theme='light'] .faq-question {
+  background: #e9f0f7 !important;
+  color: #0e1d30 !important;
+}
+
+html[data-theme='light'] .faq-question :is(h1, h2, h3, h4, span) {
+  color: #0e1d30 !important;
+}
+
+html[data-theme='light'] .faq-answer {
+  background: #fff !important;
+  border-color: #c4d2da !important;
+}
+
+html[data-theme='light'] .faq-answer > p,
+html[data-theme='light'] .faq-answer :is(.text-slate-500, .text-slate-400) {
+  color: #35495f !important;
+}
+
+/* Services FAQ intentionally remains a dark decision surface in either theme.
+   The generic light-theme text remapping previously forced its light text to
+   navy while the gradient card remained dark. Keep this selector more specific
+   and later than those broad remapping rules. */
+.dark-faq-card {
+  border-color: rgba(103, 232, 249, 0.28) !important;
+  background: linear-gradient(180deg, #0b1725 0%, #07111c 100%) !important;
+  box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.74);
+}
+
+.dark-faq-card:hover {
+  border-color: rgba(103, 232, 249, 0.58) !important;
+  background: linear-gradient(180deg, #0d1d2d 0%, #081521 100%) !important;
+}
+
+.dark-faq-question {
+  color: #f8fafc !important;
+  font-weight: 700;
+}
+
+.dark-faq-answer {
+  color: #cbd9e2 !important;
+}
+
+.dark-faq-number {
+  border-color: rgba(103, 232, 249, 0.68) !important;
+  background: rgba(8, 47, 73, 0.72) !important;
+  color: #a5f3fc !important;
+}
+
+.dark-faq-card:focus-within {
+  border-color: #67e8f9 !important;
+  box-shadow: var(--focus-ring), 0 18px 40px -28px rgba(0, 0, 0, 0.74);
+}
+
+html[data-theme='light'] main .dark-faq-card {
+  border-color: rgba(103, 232, 249, 0.34) !important;
+  background: linear-gradient(180deg, #0b1725 0%, #07111c 100%) !important;
+}
+
+html[data-theme='light'] main .dark-faq-card:hover {
+  background: linear-gradient(180deg, #0d1d2d 0%, #081521 100%) !important;
+}
+
+html[data-theme='light'] main .dark-faq-card .dark-faq-question {
+  color: #f8fafc !important;
+}
+
+html[data-theme='light'] main .dark-faq-card .dark-faq-answer {
+  color: #cbd9e2 !important;
+}
+
+html[data-theme='light'] main .dark-faq-card .dark-faq-number {
+  color: #a5f3fc !important;
+}
+
+/* Calm kinetic guardrails: ambient layers remain decorative and never move a
+   layout surface. Continuous motion is intentionally absent on touch screens. */
+@keyframes calm-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -10px, 0); }
+}
+
+.ambient-halo {
+  pointer-events: none;
+  animation: calm-float 11s ease-in-out infinite;
+  will-change: transform;
+}
+
+.interactive-card,
+.project-card {
+  transition: border-color 240ms ease, box-shadow 240ms ease, background-color 240ms ease;
+}
+
+@media (max-width: 767px) {
+  .ambient-halo,
+  .animate-float,
+  .hero-orb,
+  .mobile-ornament.animate-pulse {
+    animation: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-halo {
+    animation: none !important;
+  }
+}

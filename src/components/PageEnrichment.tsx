@@ -30,8 +30,7 @@ const sectionVariants = {
 };
 
 const interactiveHover = {
-  y: -8,
-  scale: 1.015,
+  y: -5,
   transition: { duration: 0.28, ease: 'easeOut' },
 } satisfies TargetAndTransition;
 
@@ -78,7 +77,7 @@ export const RichPageSection = ({
 
       <motion.div
         variants={itemVariants}
-        whileHover={{ y: -10, rotate: lang === 'ar' ? -0.7 : 0.7, scale: 1.01 }}
+        whileHover={{ y: -5 }}
         className="surface-card-strong media-lift motion-sheen overflow-hidden rounded-[1.8rem] p-2 md:rounded-[2.4rem]"
       >
         <ProjectImage
@@ -208,7 +207,7 @@ export const VideoFeatureBlock = ({
     className="section-shell kinetic-section py-7 md:py-12"
   >
     <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-      <motion.div variants={itemVariants} whileHover={{ y: -8, scale: 1.01 }} className="surface-card-strong media-lift motion-sheen overflow-hidden rounded-[1.35rem] p-2 md:rounded-[2.4rem]">
+      <motion.div variants={itemVariants} whileHover={{ y: -5 }} className="surface-card-strong media-lift motion-sheen overflow-hidden rounded-[1.35rem] p-2 md:rounded-[2.4rem]">
         <div className="relative overflow-hidden rounded-[1.45rem] bg-slate-950 md:rounded-[2rem]">
           {video.type === 'video' ? (
             <DeferredVideo
@@ -291,7 +290,7 @@ const FinalCta = ({ content, lang, to }: { content: PageEnrichmentContent; lang:
     variants={sectionVariants}
     className="section-shell kinetic-section pb-10 pt-7 md:pb-16 md:pt-10"
   >
-    <motion.div variants={itemVariants} whileHover={{ y: -8, scale: 1.01 }} className="surface-card-strong interactive-card motion-sheen mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 rounded-[1.35rem] p-5 md:rounded-[2.4rem] md:p-8 lg:flex-row lg:items-center">
+    <motion.div variants={itemVariants} whileHover={{ y: -5 }} className="surface-card-strong interactive-card motion-sheen mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 rounded-[1.35rem] p-5 md:rounded-[2.4rem] md:p-8 lg:flex-row lg:items-center">
       <div>
         <h3 className="font-display text-[1.55rem] font-semibold leading-tight text-white md:text-4xl">{getCopy(content.ctaTitle, lang)}</h3>
         <p className="mt-3 max-w-3xl text-sm leading-8 text-slate-400 md:text-base">{getCopy(content.ctaText, lang)}</p>

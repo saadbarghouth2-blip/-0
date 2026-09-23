@@ -16,6 +16,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useIsMobile } from '../hooks/use-mobile';
 import { trackEvent } from '../lib/analytics';
 import { preloadPath } from '../lib/pageLoaders';
+import { cardLift, revealItem, revealTransition } from '../lib/motion';
 import ProjectImage from './ProjectImage';
 
 interface ProjectCardProps {
@@ -88,10 +89,11 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
 
   return (
     <motion.article
-      initial={isMobile ? false : { opacity: 0, y: 24 }}
-      {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 } } : {})}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={isMobile ? undefined : { y: -5 }}
+      initial={isMobile ? false : 'hidden'}
+      {...(!isMobile ? { whileInView: 'visible', viewport: { once: true, amount: 0.18 } } : {})}
+      variants={revealItem}
+      transition={revealTransition}
+      whileHover={isMobile ? undefined : cardLift}
       onClick={openPrimaryAction}
       onFocusCapture={prefetchProjectPage}
       onKeyDown={handleKeyDown}

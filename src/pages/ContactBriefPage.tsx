@@ -196,7 +196,7 @@ const ContactBriefPage = () => {
                           <button
                             key={proj.id}
                             onClick={() => setProjectType(proj.id)}
-                            className={`p-4 text-right rounded-2xl border transition-all flex flex-col justify-between items-start gap-4 ${
+                            className={`brief-choice p-4 text-right rounded-2xl border transition-all flex flex-col justify-between items-start gap-4 ${
                               isSelected 
                                 ? 'bg-cyan-500/10 border-cyan-400 shadow-[0_0_20px_rgba(45,212,191,0.2)]'
                                 : 'bg-[#06090f]/40 border-white/10 hover:border-cyan-400/40'
@@ -236,7 +236,7 @@ const ContactBriefPage = () => {
                           <button
                             key={t.id}
                             onClick={() => setTimeline(t.id)}
-                            className={`w-full p-4 rounded-xl border text-right transition-all flex items-center justify-between ${
+                            className={`brief-choice w-full p-4 rounded-xl border text-right transition-all flex items-center justify-between ${
                               isSelected 
                                 ? 'bg-cyan-500/10 border-cyan-400 text-cyan-300' 
                                 : 'bg-[#06090f]/40 border-white/10 hover:border-cyan-400/40 text-slate-300'
@@ -271,7 +271,7 @@ const ContactBriefPage = () => {
                           <button
                             key={c.id}
                             onClick={() => toggleFeature(c.id)}
-                            className={`p-3.5 rounded-xl border text-right transition-all flex items-center gap-3 ${
+                            className={`brief-choice p-3.5 rounded-xl border text-right transition-all flex items-center gap-3 ${
                               isSelected 
                                 ? 'bg-cyan-500/10 border-cyan-400 text-cyan-300' 
                                 : 'bg-[#06090f]/40 border-white/10 hover:border-cyan-400/40 text-slate-300'

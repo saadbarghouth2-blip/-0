@@ -114,11 +114,11 @@ export const EnhancedFAQ: React.FC<EnhancedFAQProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="rounded-lg border border-slate-800 overflow-hidden"
+                className="faq-card rounded-lg border border-slate-800 overflow-hidden"
               >
                 {/* Question */}
                 <motion.div
-                  className="w-full p-6 text-left bg-slate-900/30 hover:bg-slate-900/50 transition-colors flex items-start justify-between gap-4 group"
+                  className="faq-question w-full p-6 text-left bg-slate-900/30 hover:bg-slate-900/50 transition-colors flex items-start justify-between gap-4 group"
                   whileHover={{ backgroundColor: 'rgb(15, 23, 42)' }}
                 >
                   <div className="flex items-start gap-4 flex-1">
@@ -135,7 +135,7 @@ export const EnhancedFAQ: React.FC<EnhancedFAQProps> = ({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-40px' }}
                   transition={{ duration: 0.25 }}
-                  className="bg-slate-900/20"
+                  className="faq-answer bg-slate-900/20"
                 >
                   <div className="p-6 pt-0 border-t border-slate-800">
                         <p className="text-slate-300 leading-relaxed mb-6">{text(item.answer)}</p>

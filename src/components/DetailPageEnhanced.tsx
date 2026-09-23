@@ -129,7 +129,7 @@ const DetailPageEnhanced: React.FC<DetailPageEnhancedProps> = ({ page, isLoading
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="relative overflow-hidden pb-20 pt-10 md:pb-28 md:pt-20"
+      className="service-detail-content relative overflow-hidden pb-20 pt-10 md:pb-28 md:pt-20"
     >
       {/* Animated background */}
       <div className="pointer-events-none absolute inset-0 z-[-1] overflow-hidden">
@@ -320,15 +320,15 @@ const DetailPageEnhanced: React.FC<DetailPageEnhancedProps> = ({ page, isLoading
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="text-xs bg-red-500/20 text-red-300 px-2 py-1 rounded">
+                    <p className="w-full min-w-0 rounded-lg bg-red-500/20 px-3 py-2 text-sm leading-7 text-red-300">
                       {text(item.before)}
-                    </div>
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-green-400" />
-                    <div className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded">
+                    <Zap className="h-4 w-4 shrink-0 text-green-400" />
+                    <p className="w-full min-w-0 rounded-lg bg-green-500/20 px-3 py-2 text-sm leading-7 text-green-300">
                       {text(item.after)}
-                    </div>
+                    </p>
                   </div>
                 </motion.div>
               ))}

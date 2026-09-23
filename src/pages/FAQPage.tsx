@@ -147,7 +147,7 @@ const FAQPage = () => {
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               className={cn(
-                "px-4 py-2 rounded-full text-xs font-bold transition-all border",
+                "faq-filter px-4 py-2 rounded-full text-xs font-bold transition-all border",
                 selectedCategory === cat 
                   ? "bg-cyan-500/10 border-cyan-400 text-cyan-300 font-bold" 
                   : "bg-white/5 border-white/5 text-slate-400 hover:border-cyan-400/50 hover:text-white"
@@ -168,13 +168,13 @@ const FAQPage = () => {
                 <motion.div
                   key={idx}
                   layout
-                  className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden"
+                  className="faq-card rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden"
                 >
-                  <div className="w-full p-5 text-right flex justify-between items-center text-xs font-bold text-white gap-4">
+                  <div className="faq-question w-full p-5 text-right flex justify-between items-center text-xs font-bold text-white gap-4">
                     <span className="font-display text-sm md:text-base leading-snug">{text(faq.qAr, faq.qEn)}</span>
                   </div>
 
-                  <div className="p-5 border-t border-white/5 bg-black/20 space-y-4">
+                  <div className="faq-answer p-5 border-t border-white/5 bg-black/20 space-y-4">
                     <p className="text-xs md:text-sm leading-relaxed text-slate-400 font-body">
                       {text(faq.aAr, faq.aEn)}
                     </p>

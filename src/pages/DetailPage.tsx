@@ -921,8 +921,8 @@ const DetailPage = () => {
           ))}
         </motion.div>
 
-        <div className="mt-10 grid gap-5">
-          <div className="grid gap-6">
+        <div className="detail-content mt-10 grid gap-5">
+          <div className="detail-content-main grid gap-6">
             <DetailStoryPanel
               experience={pageExperience}
               isArabic={isArabic}
@@ -942,7 +942,7 @@ const DetailPage = () => {
                   className="detail-overview-card rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 md:rounded-[2rem] md:p-7"
                 >
                   <div className="flex items-start gap-4">
-                    <span className="font-display text-3xl font-black text-white/10">0{index + 1}</span>
+                    <span className="detail-overview-number font-display text-3xl font-black">0{index + 1}</span>
                     <div>
                       <h2 className="font-display text-xl font-bold text-white md:text-2xl">{text(section.title)}</h2>
                       <p className="mt-3 text-sm leading-8 text-slate-400 md:text-base">{text(section.body)}</p>

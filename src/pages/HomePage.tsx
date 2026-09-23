@@ -660,7 +660,7 @@ const HomePage = () => {
         viewport={{ once: true, margin: "-50px" }}
         whileHover={{ y: -12 }}
         whileInView={{ opacity: 1, y: 0 }}
-        className="surface-card group relative cursor-pointer overflow-hidden rounded-[1.6rem] p-4 glass-card hover:shadow-[0_40px_80px_rgba(0,0,0,0.8)] md:rounded-[2.5rem] md:p-8"
+        className="surface-card home-card group relative cursor-pointer overflow-hidden rounded-[1.6rem] p-4 glass-card hover:shadow-[0_40px_80px_rgba(0,0,0,0.8)] md:rounded-[2.5rem] md:p-8"
       >
         <div className="absolute inset-0 z-0 bg-gradient-to-br from-cyan-500/0 via-violet-500/0 to-transparent transition-colors duration-700 group-hover:from-cyan-500/20 group-hover:via-violet-500/10" />
         <div className="relative z-10">
@@ -688,7 +688,7 @@ const HomePage = () => {
     animateOnView = true,
   ) => (
     <motion.div
-      className="surface-card-strong group relative flex flex-col gap-4 overflow-hidden rounded-[1.6rem] border border-white/8 p-4 glass-card md:rounded-[2.5rem] md:p-8 md:gap-6"
+      className="surface-card-strong home-card group relative flex flex-col gap-4 overflow-hidden rounded-[1.6rem] border border-white/8 p-4 glass-card md:rounded-[2.5rem] md:p-8 md:gap-6"
       animate={animateOnView ? undefined : { opacity: 1, y: 0 }}
       initial={animateOnView ? { opacity: 0, y: 40 } : false}
       key={`${item.nameEn}-${index}`}
@@ -729,7 +729,7 @@ const HomePage = () => {
 
   const renderIndustryCard = (industry: (typeof industries)[number], index: number) => (
     <motion.div
-      className="glass-card group flex cursor-default flex-col gap-2.5 rounded-[1.25rem] border border-white/8 p-3.5 transition-all duration-500 hover:border-cyan-400/30 hover:shadow-[0_20px_40px_rgba(45,212,191,0.1)] md:rounded-[2rem] md:p-6 md:gap-4"
+      className="glass-card home-card group flex cursor-default flex-col gap-2.5 rounded-[1.25rem] border border-white/8 p-3.5 transition-all duration-500 hover:border-cyan-400/30 hover:shadow-[0_20px_40px_rgba(45,212,191,0.1)] md:rounded-[2rem] md:p-6 md:gap-4"
       initial={{ opacity: 0, scale: 0.9 }}
       key={industry.nameEn}
       transition={{ delay: index * 0.1, type: 'spring', bounce: 0.3 }}
@@ -773,12 +773,12 @@ const HomePage = () => {
   const renderProcessStepCard = (step: (typeof processCards)[number], index: number) => (
     <motion.div
       key={step.phase}
-      initial={{ opacity: 0, x: -30 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.12 }}
       whileHover={{ y: -8 }}
-      className={`relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-[1.6rem] border bg-gradient-to-b p-4 glass-card group ${step.color} to-transparent md:min-h-[350px] md:rounded-[2.5rem] md:p-8`}
+      className={`home-card relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-[1.6rem] border bg-gradient-to-b p-4 glass-card group ${step.color} to-transparent md:min-h-[350px] md:rounded-[2.5rem] md:p-8`}
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div>
@@ -1449,20 +1449,21 @@ const HomePage = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/20 bg-[#06090f] p-5 shadow-[0_50px_150px_-50px_rgba(45,212,191,0.5)] backdrop-blur-3xl md:rounded-[4rem] md:p-12 lg:p-20"
+          className="contact-media-panel theme-on-media relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/20 bg-[#06090f] p-5 shadow-[0_50px_150px_-50px_rgba(45,212,191,0.5)] backdrop-blur-3xl md:rounded-[3rem] md:p-12 lg:p-16"
         >
           {/* Detailed Image/Video Content for Contact Section */}
           <div className="absolute inset-0 z-0">
-             <img src={premiumDashboardImg} alt="Premium dashboard" className="h-full w-full scale-105 object-cover opacity-45" />
-             <div className="absolute inset-0 bg-gradient-to-tr from-[#06090f]/88 via-[#06090f]/68 to-cyan-900/32" />
+             <img src={premiumDashboardImg} alt="Premium dashboard" className="scroll-parallax-media h-full w-full scale-105 object-cover opacity-20" />
+             <div className="absolute inset-0 bg-gradient-to-tr from-[#04080d]/[0.98] via-[#07111c]/[0.92] to-[#07111c]/[0.78]" />
+             <div className="absolute inset-0 bg-[#02060b]/20" />
           </div>
 
           <div className="mobile-ornament absolute top-0 right-0 h-[600px] w-[600px] rounded-full bg-cyan-500/30 blur-[150px] -mr-[300px] -mt-[300px] mix-blend-screen pointer-events-none animate-pulse" />
           <div className="mobile-ornament absolute bottom-0 left-0 h-[500px] w-[500px] rounded-full bg-violet-600/30 blur-[120px] -ml-[250px] -mb-[250px] mix-blend-screen pointer-events-none" />
-          
+
           <div className="relative z-10 grid items-center gap-8 md:gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
-            <div className="space-y-6 md:space-y-8">
-              <motion.div 
+            <div className="contact-copy-panel space-y-6 rounded-[1.5rem] border border-white/10 bg-[#06111c]/80 p-5 shadow-2xl backdrop-blur-md md:space-y-8 md:rounded-[2.2rem] md:p-8 lg:p-10">
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
@@ -1470,30 +1471,30 @@ const HomePage = () => {
               >
                 {text('تواصل معنا اليوم', 'Talk to us today')}
               </motion.div>
-              <motion.h2 
+              <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="font-display text-[1.9rem] font-bold leading-tight text-white text-reveal drop-shadow-2xl sm:text-4xl md:text-6xl"
+                className="font-display text-[1.9rem] font-black leading-[1.2] text-white text-reveal drop-shadow-[0_3px_14px_rgba(0,0,0,0.8)] sm:text-4xl md:text-6xl"
               >
-                {text('الانطباعات العظيمة', 'Great first impressions')} <br /> 
+                {text('الانطباعات العظيمة', 'Great first impressions')} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-violet-400">
                   {text('تُصنع، ولا تحدث صدفة.', 'are designed, never accidental.')}
                 </span>
               </motion.h2>
-              <motion.p 
+              <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="max-w-2xl text-base font-medium leading-8 text-slate-300 md:text-xl md:leading-9"
+                className="max-w-2xl text-base font-semibold leading-8 text-slate-100 md:text-xl md:leading-9"
               >
                 {text(
                   'فريق نُطق جاهز لمناقشة احتياج شركتك وتحديد المسار الذي يجعل واجهتها أوضح وأسهل في قرار التواصل.',
                   'Notaq is ready to discuss your company need and define the path that makes its interface clearer and easier to contact.',
                 )}
               </motion.p>
-              
-              <motion.div 
+
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
@@ -1512,20 +1513,19 @@ const HomePage = () => {
               </motion.div>
             </div>
 
-            <motion.div 
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6, type: "spring" }}
-              className="surface-card relative space-y-6 overflow-hidden rounded-[2rem] border-cyan-400/40 bg-[#06090f]/60 p-5 glass-card group shadow-[0_0_80px_rgba(139,92,246,0.2)] backdrop-blur-3xl md:rounded-[3rem] md:p-10 md:space-y-8"
+              className="contact-why-card relative space-y-6 overflow-hidden rounded-[1.75rem] border border-cyan-300/45 bg-[#06111c]/95 p-5 group shadow-[0_0_80px_rgba(45,212,191,0.15)] backdrop-blur-2xl md:rounded-[2.25rem] md:p-9 md:space-y-8"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-[#06090f] via-[#06090f]/92 to-transparent z-0" />
-              
+
               <div
                 className={`absolute top-0 w-32 h-1.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-70 shadow-[0_0_20px_cyan] ${
                   isArabic ? 'right-10' : 'left-10'
                 }`}
               />
-              
+
               <div className="relative z-10">
                  <h3 className="mb-6 flex items-center gap-3 text-2xl font-semibold text-white drop-shadow-lg md:mb-8 md:gap-4 md:text-3xl">
                    <div className="rounded-2xl border border-violet-500/30 bg-violet-500/20 p-2.5 backdrop-blur-md md:p-3">
@@ -1539,12 +1539,19 @@ const HomePage = () => {
                      'Our process does not stop at visuals. It moves directly into a clear build path that speeds delivery and keeps the codebase clean.',
                    )}
                  </p>
-                  <ul className="space-y-4 md:space-y-6">
+                  <ul className="grid gap-3 md:gap-4">
                    {contactReasons.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-3 rounded-2xl border border-white/5 bg-black/20 p-3.5 text-base font-medium leading-relaxed text-slate-100 backdrop-blur-sm transition-colors hover:border-cyan-400/30 md:gap-4 md:p-4 md:text-xl">
-                        <BadgeCheck className="mt-1 h-6 w-6 shrink-0 text-cyan-400 drop-shadow-[0_0_10px_rgba(45,212,191,0.5)] md:h-7 md:w-7" />
+                      <motion.li
+                        key={idx}
+                        initial={{ opacity: 0, y: 18 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.6 }}
+                        transition={{ delay: 0.15 + idx * 0.12, duration: 0.5 }}
+                        className="contact-why-item flex items-center gap-3 rounded-2xl border border-white/15 bg-[#0a1a28]/95 px-4 py-3.5 text-base font-bold leading-relaxed text-white shadow-[0_10px_24px_-20px_rgba(0,0,0,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/70 hover:bg-[#0d2333] md:gap-4 md:px-5 md:py-4 md:text-lg"
+                      >
+                        <BadgeCheck className="h-6 w-6 shrink-0 text-cyan-400 md:h-7 md:w-7" />
                         <span>{text(item.ar, item.en)}</span>
-                      </li>
+                      </motion.li>
                    ))}
                  </ul>
               </div>
