@@ -331,8 +331,8 @@ const ContactPage = () => {
   const copyPair = (value: { ar: string; en: string }) => copy(isArabic ? value.ar : value.en);
   const whatsappUrl = buildWhatsAppUrl(getDefaultWhatsAppMessage(lang));
   const faqDesktopCardClass = isArabic
-    ? 'group relative h-full overflow-hidden rounded-[1.25rem] border border-white/8 bg-[linear-gradient(180deg,rgba(11,18,32,0.9),rgba(8,13,22,0.82))] p-4 text-right shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-400/22 md:p-5'
-    : 'group relative h-full overflow-hidden rounded-[1.25rem] border border-white/8 bg-[linear-gradient(180deg,rgba(11,18,32,0.9),rgba(8,13,22,0.82))] p-4 text-left shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-400/22 md:p-5';
+    ? 'contact-faq-card group relative h-full overflow-hidden rounded-[1.25rem] border border-cyan-300/25 bg-[linear-gradient(180deg,#0b1725_0%,#07111c_100%)] p-4 text-right shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-300/55 md:p-5'
+    : 'contact-faq-card group relative h-full overflow-hidden rounded-[1.25rem] border border-cyan-300/25 bg-[linear-gradient(180deg,#0b1725_0%,#07111c_100%)] p-4 text-left shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors hover:border-cyan-300/55 md:p-5';
 
   const contactCards = [
     {
@@ -1070,7 +1070,7 @@ const ContactPage = () => {
           </div>
         </div>
 
-        <div className="mt-10 overflow-hidden md:mt-12">
+        <div className="contact-faq-section mt-10 overflow-hidden md:mt-12">
           <h2 className="mb-8 text-center font-display text-2xl font-bold text-white md:text-4xl">
             {content.faqTitle}
           </h2>
@@ -1086,14 +1086,14 @@ const ContactPage = () => {
               >
                 <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/35 to-transparent" />
                 <div className="flex items-start gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 font-display text-[0.68rem] font-black text-cyan-100">
+                  <span className="contact-faq-number mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cyan-300/55 bg-cyan-300/14 font-display text-[0.68rem] font-black text-cyan-100">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div className="min-w-0">
-                    <p className="break-words text-[0.96rem] font-semibold leading-6 text-white">
+                    <p className="contact-faq-question break-words text-[0.96rem] font-semibold leading-6 text-white">
                       {copyLegacyPair(faq.qAr, faq.qEn)}
                     </p>
-                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                    <p className="contact-faq-answer mt-2 text-sm leading-6 text-slate-400">
                       {copyLegacyPair(faq.aAr, faq.aEn)}
                     </p>
                   </div>

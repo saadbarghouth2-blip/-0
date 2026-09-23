@@ -2944,6 +2944,38 @@ html[data-theme='light'] main .dark-faq-card .dark-faq-number {
   color: #a5f3fc !important;
 }
 
+/* Contact page FAQ keeps dark cards in the light theme, so its text must not be
+   remapped to navy by broad light-theme utility overrides. */
+.contact-faq-section .contact-faq-card,
+html[data-theme='light'] main .contact-faq-section .contact-faq-card {
+  border-color: rgba(103, 232, 249, 0.34) !important;
+  background: linear-gradient(180deg, #0b1725 0%, #07111c 100%) !important;
+}
+
+.contact-faq-section .contact-faq-card:hover,
+html[data-theme='light'] main .contact-faq-section .contact-faq-card:hover {
+  border-color: rgba(103, 232, 249, 0.62) !important;
+  background: linear-gradient(180deg, #0d1d2d 0%, #081521 100%) !important;
+}
+
+.contact-faq-section .contact-faq-question,
+html[data-theme='light'] main .contact-faq-section .contact-faq-question {
+  color: #f8fafc !important;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+}
+
+.contact-faq-section .contact-faq-answer,
+html[data-theme='light'] main .contact-faq-section .contact-faq-answer {
+  color: #d5e2ea !important;
+}
+
+.contact-faq-section .contact-faq-number,
+html[data-theme='light'] main .contact-faq-section .contact-faq-number {
+  border-color: rgba(103, 232, 249, 0.7) !important;
+  background: rgba(8, 47, 73, 0.76) !important;
+  color: #a5f3fc !important;
+}
+
 /* Calm kinetic guardrails: ambient layers remain decorative and never move a
    layout surface. Continuous motion is intentionally absent on touch screens. */
 @keyframes calm-float {
