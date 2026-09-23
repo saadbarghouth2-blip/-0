@@ -331,8 +331,8 @@ const ContactPage = () => {
   const copyPair = (value: { ar: string; en: string }) => copy(isArabic ? value.ar : value.en);
   const whatsappUrl = buildWhatsAppUrl(getDefaultWhatsAppMessage(lang));
   const faqDesktopCardClass = isArabic
-    ? 'contact-faq-card contact-readable-card group relative h-full overflow-hidden rounded-[1.25rem] border p-4 text-right shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors md:p-5'
-    : 'contact-faq-card contact-readable-card group relative h-full overflow-hidden rounded-[1.25rem] border p-4 text-left shadow-[0_18px_42px_-34px_rgba(0,0,0,0.8)] transition-colors md:p-5';
+    ? 'contact-faq-card contact-readable-card group relative h-full overflow-hidden rounded-[1.1rem] border p-5 text-right shadow-[0_20px_44px_-34px_rgba(15,23,42,0.42)] transition-all duration-300 md:p-6'
+    : 'contact-faq-card contact-readable-card group relative h-full overflow-hidden rounded-[1.1rem] border p-5 text-left shadow-[0_20px_44px_-34px_rgba(15,23,42,0.42)] transition-all duration-300 md:p-6';
 
   const contactCards = [
     {
@@ -1074,26 +1074,27 @@ const ContactPage = () => {
           <h2 className="mb-8 text-center font-display text-2xl font-bold text-white md:text-4xl">
             {content.faqTitle}
           </h2>
-          <div className="mx-auto grid max-w-5xl gap-3 md:grid-cols-2 md:items-start lg:gap-4">
+          <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2 md:items-stretch lg:gap-5">
             {contactFaqs.map((faq, index) => (
               <motion.article
                 key={faq.qEn}
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -4 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ delay: index * 0.04 }}
                 className={faqDesktopCardClass}
               >
-                <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/35 to-transparent" />
-                <div className="flex items-start gap-3">
-                  <span className="contact-faq-number mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cyan-300/55 bg-cyan-300/14 font-display text-[0.68rem] font-black text-cyan-100">
+                <div className="contact-faq-accent absolute inset-x-5 top-0 h-[3px] rounded-full" />
+                <div className="flex items-start gap-4">
+                  <span className="contact-faq-number mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border font-display text-[0.72rem] font-black">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div className="min-w-0">
-                    <p className="contact-faq-question contact-readable-question break-words text-[0.96rem] font-semibold leading-6">
+                    <p className="contact-faq-question contact-readable-question break-words text-[1rem] font-bold leading-7 md:text-[1.05rem]">
                       {copyLegacyPair(faq.qAr, faq.qEn)}
                     </p>
-                    <p className="contact-faq-answer contact-readable-answer mt-2 text-sm leading-6">
+                    <p className="contact-faq-answer contact-readable-answer mt-2.5 text-[0.95rem] leading-7">
                       {copyLegacyPair(faq.aAr, faq.aEn)}
                     </p>
                   </div>
