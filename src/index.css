@@ -3226,3 +3226,99 @@ body #root main :is(.theme-on-media, .hero-media-backdrop ~ .relative) :is(.text
   color: #e7eef4 !important;
   text-shadow: 0 2px 8px rgba(2, 6, 23, 0.56) !important;
 }
+
+html[data-theme='light'] body #root .site-mobile-service-tab:not([data-active='true']),
+body #root .site-mobile-service-tab:not([data-active='true']) {
+  border-color: #d6e0e7 !important;
+  background: #f8fafc !important;
+  color: #172033 !important;
+}
+
+html[data-theme='light'] body #root .site-mobile-service-tab:not([data-active='true']) .site-mobile-service-tab-label,
+body #root .site-mobile-service-tab:not([data-active='true']) .site-mobile-service-tab-label {
+  color: #172033 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] body #root .site-mobile-service-tab:not([data-active='true']) .site-mobile-service-tab-count,
+body #root .site-mobile-service-tab:not([data-active='true']) .site-mobile-service-tab-count {
+  border-color: #cbd5e1 !important;
+  background: #ffffff !important;
+  color: #475569 !important;
+}
+
+html[data-theme='light'] body #root .site-mobile-service-family,
+body #root .site-mobile-service-family {
+  border-color: #cbdde2 !important;
+  background: #ffffff !important;
+  color: #172033 !important;
+}
+
+html[data-theme='light'] body #root .site-mobile-service-family :is(.text-white, .text-slate-100, .text-slate-200),
+body #root .site-mobile-service-family :is(.text-white, .text-slate-100, .text-slate-200) {
+  color: #0f172a !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] body #root .site-mobile-service-family :is(.text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600),
+body #root .site-mobile-service-family :is(.text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600) {
+  color: #475569 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] body #root .site-mobile-service-family .site-mobile-nav-link,
+body #root .site-mobile-service-family .site-mobile-nav-link {
+  border-color: #d7e2e8 !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+}
+
+html[data-theme='light'] body #root main .service-package-note,
+body #root main .service-package-note {
+  border-color: #f3d9a4 !important;
+  background: #fff7ed !important;
+}
+
+html[data-theme='light'] body #root main .service-package-note p,
+body #root main .service-package-note p {
+  color: #7c2d12 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] body #root main .service-package-card,
+body #root main .service-package-card {
+  border-color: #cbdde6 !important;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(45, 212, 191, 0.13), transparent 30%),
+    linear-gradient(135deg, #ffffff 0%, #eef8f8 100%) !important;
+}
+
+html[data-theme='light'] body #root main .service-package-card :is(h1, h2, h3, h4, .text-white, .text-slate-50, .text-slate-100, .text-slate-200),
+body #root main .service-package-card :is(h1, h2, h3, h4, .text-white, .text-slate-50, .text-slate-100, .text-slate-200) {
+  color: #071426 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] body #root main .service-package-card :is(.text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600),
+body #root main .service-package-card :is(.text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600) {
+  color: #405268 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] body #root main .detail-story-panel .font-display[class*="text-2xl"][class*="text-white"],
+body #root main .detail-story-panel .font-display[class*="text-2xl"][class*="text-white"] {
+  color: rgba(15, 118, 110, 0.52) !important;
+}
+
+html[data-theme='light'] body #root main .detail-aside-light,
+body #root main .detail-aside-light {
+  border-color: #cbdde6 !important;
+  background: #ffffff !important;
+}
+
+html[data-theme='light'] body #root main .detail-aside-light :is(.pill, span),
+body #root main .detail-aside-light :is(.pill, span) {
+  border-color: #d7e2e8 !important;
+  background: #f8fafc !important;
+  color: #172033 !important;
+}

@@ -1064,8 +1064,8 @@ const SiteLayout = () => {
                                             className={joinClasses(
                                               'site-mobile-service-tab flex min-h-[2.45rem] items-center justify-between gap-1.5 rounded-[0.72rem] border px-2 py-1.5 text-start transition',
                                               isFamilyOpen
-                                                ? 'border-cyan-300/35 bg-cyan-300/[0.13] text-white'
-                                                : 'border-white/8 bg-[#06090f]/45 text-slate-300 hover:border-cyan-300/25 hover:bg-white/[0.055]',
+                                                ? 'border-teal-600 bg-gradient-to-br from-teal-700 to-slate-800 text-white shadow-[0_10px_24px_-18px_rgba(15,118,110,0.9)]'
+                                                : 'border-slate-200 bg-white text-slate-800 shadow-sm hover:border-teal-300 hover:bg-teal-50',
                                             )}
                                           >
                                             <span className="site-mobile-service-tab-label min-w-0 truncate text-[0.72rem] font-bold">
@@ -1094,7 +1094,7 @@ const SiteLayout = () => {
                                       <section
                                         key={`mobile-${family.id}`}
                                         className={joinClasses(
-                                          'site-mobile-service-family rounded-[0.78rem] border border-cyan-300/14 bg-[#07111c]/72 p-1.5',
+                                          'site-mobile-service-family rounded-[0.78rem] border border-teal-100 bg-white p-1.5 shadow-sm',
                                           mobileOpenServiceFamilyId !== family.id && 'hidden',
                                         )}
                                       >
@@ -1105,12 +1105,12 @@ const SiteLayout = () => {
                                           onClick={() => setMobileOpenServiceFamilyId(family.id)}
                                         >
                                           <div className="min-w-0">
-                                            <p className="line-clamp-1 text-[0.76rem] font-bold leading-tight text-white">{getLocalizedText(family.label)}</p>
-                                            <p className="mt-0.5 line-clamp-1 text-[0.66rem] leading-4 text-slate-400">
+                                            <p className="line-clamp-1 text-[0.76rem] font-bold leading-tight text-slate-950">{getLocalizedText(family.label)}</p>
+                                            <p className="mt-0.5 line-clamp-1 text-[0.66rem] leading-4 text-slate-600">
                                               {getLocalizedText(family.description)}
                                             </p>
                                           </div>
-                                          <span className="inline-flex items-center gap-1 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-1.5 py-0.5 text-[10px] font-bold text-cyan-100">
+                                          <span className="inline-flex items-center gap-1 rounded-full border border-teal-200 bg-teal-50 px-1.5 py-0.5 text-[10px] font-bold text-teal-800">
                                             {family.services.length}
                                             <ChevronDown className={`h-3 w-3 transition-transform ${mobileOpenServiceFamilyId === family.id ? 'rotate-180' : ''}`} />
                                           </span>
@@ -1129,7 +1129,7 @@ const SiteLayout = () => {
                                                   <Link
                                                     key={`mobile-service-${service.slug}`}
                                                     to={service.localizedTo}
-                                                    className="site-mobile-nav-link block rounded-[0.62rem] border border-white/8 bg-[#020713]/55 px-2 py-1.5 text-[0.74rem] text-slate-300 transition hover:border-cyan-400/30 hover:text-white"
+                                                    className="site-mobile-nav-link block rounded-[0.62rem] border border-slate-200 bg-slate-50 px-2 py-1.5 text-[0.74rem] text-slate-700 transition hover:border-teal-300 hover:bg-white"
                                                     onFocus={() => prefetchRoute(service.localizedTo)}
                                                     onMouseEnter={() => prefetchRoute(service.localizedTo)}
                                                     onClick={() => {
@@ -1137,8 +1137,8 @@ const SiteLayout = () => {
                                                       setActiveNavGroupId(null);
                                                     }}
                                                   >
-                                                    <span className="line-clamp-1 block font-semibold leading-tight text-white">{getLocalizedText(service.eyebrow)}</span>
-                                                    <span className="mt-0.5 line-clamp-1 block text-[0.64rem] leading-4 text-slate-400">
+                                                    <span className="line-clamp-1 block font-semibold leading-tight text-slate-950">{getLocalizedText(service.eyebrow)}</span>
+                                                    <span className="mt-0.5 line-clamp-1 block text-[0.64rem] leading-4 text-slate-600">
                                                       {getLocalizedText(service.bestFor)}
                                                     </span>
                                                   </Link>

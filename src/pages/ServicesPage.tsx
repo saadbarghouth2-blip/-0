@@ -658,8 +658,8 @@ const ServicesPage = () => {
                 kicker={isArabic ? 'باقات التنفيذ' : 'Delivery Packages'}
                 title={isArabic ? 'ماذا نبيع فعلاً؟ ليس صفحات، بل نظام حضور' : 'What do we really sell? Not pages, but a presence system'}
               />
-              <div className="mt-6 rounded-[1.6rem] border border-amber-300/15 bg-amber-300/[0.04] p-5 md:rounded-[2rem] md:p-6">
-                <p className="text-sm leading-7 text-amber-100/80">
+              <div className="service-package-note mt-6 rounded-[1.6rem] border border-amber-200 bg-amber-50 p-5 shadow-[0_18px_45px_-34px_rgba(146,64,14,0.45)] md:rounded-[2rem] md:p-6">
+                <p className="text-sm font-semibold leading-7 text-amber-900">
                   {isArabic
                     ? 'التفاصيل هنا تساعدك على تخيل النتيجة قبل التواصل، وتقلل الأسئلة المتكررة أثناء القرار.'
                     : 'These details help you imagine the outcome before contacting us and reduce repeated decision questions.'}
@@ -674,28 +674,28 @@ const ServicesPage = () => {
                   initial={isMobile ? false : { opacity: 0, y: 20 }}
                   {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
                   transition={{ delay: index * 0.08 }}
-                  className={`relative overflow-hidden rounded-[1.55rem] border border-white/10 bg-gradient-to-br ${pack.accent} p-5 md:rounded-[2rem] md:p-7`}
+                  className={`service-package-card relative overflow-hidden rounded-[1.55rem] border border-slate-200 bg-gradient-to-br ${pack.accent} p-5 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.55)] md:rounded-[2rem] md:p-7`}
                 >
                   <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr] md:items-start">
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan-200/70">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-teal-700">
                         {isArabic ? 'مسار خدمة' : 'Service Track'} 0{index + 1}
                       </p>
-                      <h3 className="mt-3 font-display text-2xl font-bold text-white md:text-3xl">
+                      <h3 className="mt-3 font-display text-2xl font-bold text-slate-950 md:text-3xl">
                         {copyPair(pack.name)}
                       </h3>
-                      <p className="mt-3 text-sm leading-7 text-slate-300">
+                      <p className="mt-3 text-sm leading-7 text-slate-700">
                         {copyPair(pack.promise)}
                       </p>
                     </div>
-                    <div className="rounded-[1.25rem] border border-white/8 bg-[#06090f]/45 p-4">
-                      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <div className="rounded-[1.25rem] border border-slate-200 bg-white/90 p-4 shadow-sm">
+                      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
                         {isArabic ? 'المخرجات' : 'Deliverables'}
                       </p>
                       <div className="space-y-2">
                         {pack.deliverables.map((deliverable) => (
-                          <div key={deliverable.en} className="flex items-start gap-2 text-sm leading-6 text-slate-300">
-                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+                          <div key={deliverable.en} className="flex items-start gap-2 text-sm leading-6 text-slate-700">
+                            <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" />
                             <span>{copyPair(deliverable)}</span>
                           </div>
                         ))}

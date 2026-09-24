@@ -859,7 +859,7 @@ const DetailPage = () => {
         <div className="relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[30rem] w-screen items-end overflow-hidden px-3 pb-5 pt-12 sm:min-h-[34rem] sm:px-6 sm:pb-7 sm:pt-20 md:min-h-[42rem] md:px-10 md:pb-10 md:pt-[7.5rem] lg:min-h-[46rem] lg:px-14">
           <HeroMediaBackdrop fallbackMedia={detailHeroFallbackMedia} isArabic={isArabic} media={detailHeroMedia} />
 
-          <div className={heroGridClass}>
+          <div className={`${heroGridClass} theme-on-media`}>
             <div className={heroTextClass}>
               <Link className="section-kicker inline-flex border-cyan-300/35 bg-[#06151c]/62 text-cyan-50 shadow-[0_18px_55px_-36px_rgba(45,212,191,0.8)] backdrop-blur-2xl" to={localizePath(displayPage.parentPath)}>
                 {text(displayPage.parentLabel)}
@@ -1009,7 +1009,7 @@ const DetailPage = () => {
               </div>
             </div>
 
-            <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 md:rounded-[2rem] md:p-7">
+            <div className="detail-aside-light rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 md:rounded-[2rem] md:p-7">
               <p className="section-kicker mb-5">{isArabic ? 'استخدامات مناسبة' : 'Useful for'}</p>
               <div className="flex flex-wrap gap-2">
                 {displayPage.useCases.map((item) => (
