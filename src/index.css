@@ -3117,3 +3117,112 @@ body #root .site-mobile-service-tab[data-active='true'] .site-mobile-service-tab
   background: rgba(8, 47, 73, 0.58) !important;
   color: #ecfeff !important;
 }
+
+/* Site-wide contrast locks for the remaining service/detail examples.
+   These sit last on purpose: older broad light-theme utility remaps are useful,
+   but component surfaces with mixed media need explicit foreground/background
+   pairs so labels never fade into the card behind them. */
+html[data-theme='light'] body #root .site-mobile-service-tab svg,
+body #root .site-mobile-service-tab svg {
+  color: #24364b !important;
+  stroke: currentColor !important;
+}
+
+html[data-theme='light'] body #root .site-mobile-service-tab[data-active='true'] svg,
+body #root .site-mobile-service-tab[data-active='true'] svg {
+  color: #ecfeff !important;
+  filter: drop-shadow(0 1px 1px rgba(2, 6, 23, 0.48));
+}
+
+html[data-theme='light'] body #root main .services-family-panel,
+body #root main .services-family-panel {
+  border-color: #a9c4cf !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f7f8 100%) !important;
+  box-shadow: 0 18px 42px -34px rgba(15, 23, 42, 0.42) !important;
+}
+
+html[data-theme='light'] body #root main .services-family-panel button,
+body #root main .services-family-panel button {
+  border-color: #b6c8d2 !important;
+  background: #ffffff !important;
+  color: #27384c !important;
+}
+
+html[data-theme='light'] body #root main .services-family-panel button:hover,
+body #root main .services-family-panel button:hover {
+  border-color: rgba(20, 184, 166, 0.55) !important;
+  background: #e9f7f5 !important;
+  color: #0b1220 !important;
+}
+
+html[data-theme='light'] body #root main .services-family-panel button[data-active='true'],
+body #root main .services-family-panel button[data-active='true'] {
+  border-color: rgba(20, 184, 166, 0.7) !important;
+  background: linear-gradient(135deg, #0f766e 0%, #155e75 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 26px -20px rgba(15, 118, 110, 0.72) !important;
+}
+
+html[data-theme='light'] body #root main .services-family-panel :is(.text-white, .text-slate-50, .text-slate-100, .text-slate-200),
+body #root main .services-family-panel :is(.text-white, .text-slate-50, .text-slate-100, .text-slate-200) {
+  color: #0b1220 !important;
+}
+
+html[data-theme='light'] body #root main .services-family-panel :is(.text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600),
+body #root main .services-family-panel :is(.text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600) {
+  color: #405268 !important;
+}
+
+html[data-theme='light'] body #root main .detail-story-panel,
+body #root main .detail-story-panel {
+  border-color: rgba(19, 78, 74, 0.24) !important;
+  background:
+    radial-gradient(circle at 90% 12%, rgba(20, 184, 166, 0.16), transparent 28%),
+    linear-gradient(135deg, #ffffff 0%, #e9f3f4 100%) !important;
+  box-shadow: 0 24px 58px -42px rgba(15, 23, 42, 0.38) !important;
+}
+
+html[data-theme='light'] body #root main .detail-story-panel :is(h1, h2, h3, h4),
+body #root main .detail-story-panel :is(h1, h2, h3, h4) {
+  color: #071426 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] body #root main .detail-story-panel p,
+body #root main .detail-story-panel p {
+  color: #334155 !important;
+}
+
+html[data-theme='light'] body #root main .detail-story-panel [class*="text-white/"],
+body #root main .detail-story-panel [class*="text-white/"] {
+  color: rgba(15, 23, 42, 0.32) !important;
+}
+
+html[data-theme='light'] body #root main .detail-story-panel .grid > div,
+body #root main .detail-story-panel .grid > div {
+  border-color: #b8cbd2 !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+}
+
+html[data-theme='light'] body #root main .detail-story-panel .grid > div p,
+body #root main .detail-story-panel .grid > div p {
+  color: #172236 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme='light'] body #root main .detail-world-block :is(.text-white\/5, .text-white\/10, .text-white\/15, .text-white\/20),
+body #root main .detail-world-block :is(.text-white\/5, .text-white\/10, .text-white\/15, .text-white\/20) {
+  color: rgba(15, 23, 42, 0.3) !important;
+}
+
+html[data-theme='light'] body #root main :is(.theme-on-media, .hero-media-backdrop ~ .relative) :is(h1, h2, h3, h4, .text-white, .text-slate-50, .text-slate-100, .text-slate-200),
+body #root main :is(.theme-on-media, .hero-media-backdrop ~ .relative) :is(h1, h2, h3, h4, .text-white, .text-slate-50, .text-slate-100, .text-slate-200) {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(2, 6, 23, 0.62) !important;
+}
+
+html[data-theme='light'] body #root main :is(.theme-on-media, .hero-media-backdrop ~ .relative) :is(.text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600),
+body #root main :is(.theme-on-media, .hero-media-backdrop ~ .relative) :is(.text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600) {
+  color: #e7eef4 !important;
+  text-shadow: 0 2px 8px rgba(2, 6, 23, 0.56) !important;
+}

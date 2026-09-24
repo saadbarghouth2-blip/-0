@@ -574,11 +574,12 @@ const ServicesPage = () => {
               title={isArabic ? '30 خدمة فعلية منظمة في عائلات واضحة' : '30 practical services organized into clear families'}
             />
 
-            <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 md:rounded-[1.7rem] md:p-5">
+            <div className="services-family-panel rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 md:rounded-[1.7rem] md:p-5">
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => setActiveFamily('all')}
+                  data-active={activeFamily === 'all' ? 'true' : 'false'}
                   className={`rounded-full border px-3.5 py-2 text-sm font-semibold transition-colors ${
                     activeFamily === 'all'
                       ? 'border-cyan-300/50 bg-cyan-300/18 text-cyan-50'
@@ -592,6 +593,7 @@ const ServicesPage = () => {
                     key={family.id}
                     type="button"
                     onClick={() => setActiveFamily(family.id)}
+                    data-active={activeFamily === family.id ? 'true' : 'false'}
                     className={`rounded-full border px-3.5 py-2 text-sm font-semibold transition-colors ${
                       activeFamily === family.id
                         ? 'border-cyan-300/50 bg-cyan-300/18 text-cyan-50'
