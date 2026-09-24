@@ -1059,6 +1059,7 @@ const SiteLayout = () => {
                                             key={`mobile-family-tab-${family.id}`}
                                             type="button"
                                             aria-pressed={isFamilyOpen}
+                                            data-active={isFamilyOpen ? 'true' : 'false'}
                                             onClick={() => setMobileOpenServiceFamilyId(family.id)}
                                             className={joinClasses(
                                               'site-mobile-service-tab flex min-h-[2.45rem] items-center justify-between gap-1.5 rounded-[0.72rem] border px-2 py-1.5 text-start transition',
@@ -1067,10 +1068,10 @@ const SiteLayout = () => {
                                                 : 'border-white/8 bg-[#06090f]/45 text-slate-300 hover:border-cyan-300/25 hover:bg-white/[0.055]',
                                             )}
                                           >
-                                            <span className="min-w-0 truncate text-[0.72rem] font-bold">
+                                            <span className="site-mobile-service-tab-label min-w-0 truncate text-[0.72rem] font-bold">
                                               {getLocalizedText(family.label)}
                                             </span>
-                                            <span className="shrink-0 rounded-full border border-white/10 bg-white/[0.055] px-1.5 py-0.5 text-[10px] font-black text-cyan-100">
+                                            <span className="site-mobile-service-tab-count shrink-0 rounded-full border border-white/10 bg-white/[0.055] px-1.5 py-0.5 text-[10px] font-black text-cyan-100">
                                               {family.services.length}
                                             </span>
                                           </button>
