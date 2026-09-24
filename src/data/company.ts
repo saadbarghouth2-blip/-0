@@ -1156,7 +1156,7 @@ export const navGroups: NavGroup[] = [
     fallbackLabel: { ar: 'من نحن', en: 'About' },
     description: { ar: 'تعرف على القصة والمنهجية والقيم وراء نُطق.', en: 'Explore the story, method, and values behind Notaq.' },
     mainTo: '/about',
-    cta: { ar: 'صفحة من نحن', en: 'About page' },
+    cta: { ar: 'من نحن', en: 'About' },
     items: aboutDetailPages.map((page) => ({
       label: page.eyebrow,
       description: page.summary,
