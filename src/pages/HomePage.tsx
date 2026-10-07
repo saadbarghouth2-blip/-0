@@ -806,21 +806,21 @@ const HomePage = () => {
         className="home-hero section-shell relative flex min-h-[calc(100svh-60px)] items-center overflow-hidden pb-10 pt-8 md:min-h-[calc(100svh-88px)] md:pb-16 md:pt-16"
       >
         {/* Cinematic Background */}
-        <div className="absolute inset-0 z-0 overflow-hidden rounded-b-[2.2rem] md:rounded-b-[4rem]">
+        <div className="home-hero-media-frame absolute inset-0 z-0 overflow-hidden rounded-b-[2.2rem] md:rounded-b-[4rem]">
           <motion.div 
             style={{ x: parallaxX, y: parallaxY }}
-            className="w-full h-full scale-[1.15]"
+            className="home-hero-media-motion h-full w-full scale-[1.15]"
           >
             <img
               src="/images/hero-background.webp"
               fetchPriority="high"
               loading="eager"
-              className="h-full w-full object-cover opacity-70"
+              className="home-hero-media h-full w-full object-cover"
               alt="Background Office"
             />
           </motion.div>
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,12,20,0.52),rgba(4,12,20,0.7)_48%,rgba(4,12,20,0.97))] pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#07111c]/20 via-transparent to-[#07111c]/95 pointer-events-none" />
+          <div className="home-hero-copy-gradient absolute inset-0 pointer-events-none" />
+          <div className="home-hero-bottom-gradient absolute inset-x-0 bottom-0 pointer-events-none" />
         </div>
 
         <div className="theme-on-media relative z-10 mx-auto grid w-full max-w-[82rem] items-center gap-6 md:gap-8">
@@ -832,7 +832,7 @@ const HomePage = () => {
           >
             <motion.div
               variants={staggerItem}
-              className="home-hero-copy relative space-y-4 border-s-4 border-cyan-300 py-2 ps-5 sm:ps-7 md:space-y-5 md:py-4"
+              className="home-hero-copy relative isolate space-y-4 border-s-4 border-cyan-300 py-2 ps-5 sm:ps-7 md:space-y-5 md:py-4"
             >
               <div className="relative z-10 space-y-4 md:space-y-5">
               <motion.div 
