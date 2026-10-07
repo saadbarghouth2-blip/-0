@@ -26,7 +26,7 @@ interface ProjectCardProps {
   emphasis?: 'default' | 'latest';
 }
 
-const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis = 'default' }: ProjectCardProps) => {
+const ProjectCard = ({ project, linkMode = 'detail' }: ProjectCardProps) => {
   const { lang, localizePath } = useLanguage();
   const isMobile = useIsMobile();
   const isArabic = lang === 'ar';
@@ -35,10 +35,10 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
   const projectCategory = isArabic ? project.category : project.englishCategory ?? project.category;
   const projectPath = localizePath(`/projects/${project.slug}`);
   const opensLive = linkMode === 'live' || project.showcaseGroup === 'latest';
-  const isLatest = emphasis === 'latest' || project.showcaseGroup === 'latest';
   const primaryHref = opensLive ? project.liveUrl : projectPath;
   const hasLocalCover = project.coverImage.startsWith('/images/');
   const categoryKey = (project.englishCategory ?? '').toLowerCase();
+
   const CoverIcon = categoryKey.includes('gis') || categoryKey.includes('map')
     ? Map
     : categoryKey.includes('learn') || categoryKey.includes('assessment') || categoryKey.includes('education')
@@ -90,7 +90,7 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
   return (
     <motion.article
       initial={isMobile ? false : 'hidden'}
-      {...(!isMobile ? { whileInView: 'visible', viewport: { once: true, amount: 0.18 } } : {})}
+      {...(!isMobile ? { whileInView: 'visible', viewport: { once: true, amount: 0.15 } } : {})}
       variants={revealItem}
       transition={revealTransition}
       whileHover={isMobile ? undefined : cardLift}
@@ -99,67 +99,80 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
       onKeyDown={handleKeyDown}
       onMouseEnter={prefetchProjectPage}
       onPointerDown={prefetchProjectPage}
-      className={`project-card group relative flex cursor-pointer flex-col overflow-hidden rounded-lg border bg-white transition-all duration-300 md:h-full ${
-        isLatest
-          ? 'border-teal-300 shadow-[0_20px_55px_-42px_rgba(13,148,136,0.55)] hover:border-teal-500'
-          : 'border-slate-300 shadow-[0_18px_48px_-38px_rgba(30,41,59,0.45)] hover:border-slate-400'
-      }`}
+      className="project-card group relative flex w-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:border-teal-400 hover:shadow-md h-full"
       role="link"
       tabIndex={0}
     >
-      <div className="theme-on-media relative overflow-hidden border-b border-slate-300 bg-[#07111c]">
-        <div className={`project-card-media relative overflow-hidden ${compact ? 'aspect-[16/11]' : 'aspect-[16/10]'}`}>
-          {hasLocalCover ? (
+      {/* Card Image Header */}
+      <div className="relative aspect-[16/9] shrink-0 overflow-hidden border-b border-slate-100 bg-slate-900 sm:aspect-[16/10]">
+        {hasLocalCover ? (
+          <ProjectImage
+            alt={projectTitle}
+            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            fallbackSrc={project.thumbnailImage}
+            fallbacks={project.screenshots}
+            loading="lazy"
+            src={project.coverImage}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+        ) : (
+          <>
             <ProjectImage
-              alt={projectTitle}
-              className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+              alt=""
+              className="absolute inset-0 h-full w-full scale-105 object-cover object-top opacity-60 saturate-125 transition-transform duration-500 group-hover:scale-110"
               fallbackSrc={project.thumbnailImage}
               fallbacks={project.screenshots}
               loading="lazy"
               src={project.coverImage}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
-          ) : (
-            <>
-              <ProjectImage
-                alt=""
-                className="absolute inset-0 h-full w-full scale-105 object-cover object-top opacity-60 saturate-125 transition-transform duration-500 group-hover:scale-[1.08]"
-                fallbackSrc={project.thumbnailImage}
-                fallbacks={project.screenshots}
-                loading="lazy"
-                src={project.coverImage}
-              />
-              <div className={`absolute inset-0 bg-gradient-to-br ${project.accent}`} />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:30px_30px]" />
-              <div className="absolute inset-0 bg-slate-950/35" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-                <span className="inline-flex h-14 w-14 items-center justify-center rounded-lg border border-white/15 bg-[#07111c]/65 text-cyan-100 shadow-xl backdrop-blur-sm md:h-16 md:w-16">
-                  <CoverIcon className="h-7 w-7 md:h-8 md:w-8" />
-                </span>
-                <strong className="mt-3 line-clamp-2 max-w-[90%] font-display text-lg font-black leading-snug text-white drop-shadow-lg md:text-2xl">
-                  {projectTitle}
-                </strong>
-              </div>
-            </>
-          )}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#07111c]/55 to-transparent" />
+            <div className={`absolute inset-0 bg-gradient-to-br ${project.accent}`} />
+            <div className="absolute inset-0 bg-slate-950/40" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-2 sm:p-4 text-center">
+              <span className="inline-flex h-7 w-7 sm:h-10 sm:w-10 items-center justify-center rounded-lg border border-white/20 bg-slate-900/60 text-cyan-200 shadow-md backdrop-blur-md">
+                <CoverIcon className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
+              </span>
+              <strong className="mt-1 max-w-[95%] font-display text-[10px] font-bold leading-4 text-white drop-shadow-md sm:mt-2 sm:text-base sm:leading-snug">
+                {projectTitle}
+              </strong>
+            </div>
+          </>
+        )}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 sm:h-10 bg-gradient-to-t from-slate-950/40 to-transparent" />
+
+        {/* Category Pill Tag */}
+        <div className="absolute top-1.5 start-1.5 sm:top-2.5 sm:start-2.5 z-10 max-w-[85%]">
+          <span className="inline-block truncate rounded-full bg-white/90 px-2 py-0.5 text-[9px] sm:text-xs font-bold text-teal-800 shadow-sm backdrop-blur-md">
+            {projectCategory}
+          </span>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-4 md:p-5">
-        <span className="text-[11px] font-bold text-teal-700 md:text-xs">
-          {projectCategory}
-        </span>
-        <h3 className="mt-1.5 line-clamp-2 font-display text-lg font-black leading-snug text-slate-950 transition-colors duration-300 group-hover:text-teal-800 md:text-xl">
+      {/* Card Content Body */}
+      <div className="flex min-w-0 flex-1 flex-col p-2 sm:p-4">
+        <h3 className="min-h-8 break-words font-display text-[11px] font-bold leading-4 text-slate-950 transition-colors duration-300 group-hover:text-teal-700 sm:min-h-0 sm:text-base sm:leading-snug">
           {projectTitle}
         </h3>
 
-        <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-slate-600 transition-colors duration-300 group-hover:text-slate-700 md:text-sm">
+        <p className="mt-1 line-clamp-2 text-[9px] leading-4 text-slate-600 sm:text-xs sm:leading-relaxed">
           {projectExcerpt}
         </p>
 
-        <div className="mt-auto pt-4">
+        {/* Tech stack tags - hidden on mobile so 2 cards fit nicely without overflow */}
+        {project.techStack && project.techStack.length > 0 && (
+          <div className="mt-2 hidden sm:flex flex-wrap gap-1">
+            {project.techStack.slice(0, 2).map((tech, idx) => (
+              <span key={idx} className="inline-block truncate max-w-[120px] rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+                {tech}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* CTA Link */}
+        <div className="mt-auto pt-2 sm:pt-4">
           <a
-            className="group/btn inline-flex min-h-10 items-center gap-2 rounded-md border border-teal-200 bg-teal-50 px-3 text-xs font-bold text-teal-800 transition-colors hover:border-teal-300 hover:bg-teal-100 md:text-sm"
+            className="group/btn inline-flex min-h-7 sm:min-h-9 w-full items-center justify-between rounded-lg border border-teal-200/80 bg-teal-50/70 px-2 sm:px-3 text-[10px] sm:text-xs font-bold text-teal-800 transition-all duration-300 hover:border-teal-500 hover:bg-teal-600 hover:text-white"
             href={primaryHref}
             onClick={(event) => {
               event.stopPropagation();
@@ -168,8 +181,8 @@ const ProjectCard = ({ project, compact = false, linkMode = 'detail', emphasis =
             rel={opensLive ? 'noreferrer' : undefined}
             target={opensLive ? '_blank' : undefined}
           >
-            {opensLive ? (isArabic ? 'فتح المشروع' : 'Open project') : isArabic ? 'عرض المشروع' : 'View project'}
-            <ArrowUpLeft className="h-4 w-4 transition-transform duration-300 group-hover/btn:-translate-x-1 group-hover/btn:-translate-y-1" />
+            <span className="truncate">{opensLive ? (isArabic ? 'فتح المشروع' : 'Open project') : (isArabic ? 'عرض التفاصيل' : 'View details')}</span>
+            <ArrowUpLeft className="h-3 w-3 shrink-0 ms-1 transition-transform duration-300 group-hover/btn:-translate-x-0.5 group-hover/btn:-translate-y-0.5" />
           </a>
         </div>
       </div>

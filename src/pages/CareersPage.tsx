@@ -120,14 +120,14 @@ const CareersPage = () => {
             {text('مميزات ومنافع العمل بنطق', 'Work Culture & Perks')}
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="mobile-2-cols grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
             {perksList.map((perk, i) => {
               const Icon = perk.icon;
               return (
                 <motion.div
                   key={i}
                   whileHover={{ y: -6 }}
-                  className="surface-card rounded-2xl p-6 border border-white/5 bg-white/[0.01] flex flex-col items-center text-center space-y-4"
+                  className="surface-card flex flex-col items-center space-y-3 rounded-2xl border border-white/5 bg-white/[0.01] p-3.5 text-center sm:p-5"
                 >
                   <div className="w-12 h-12 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-300">
                     <Icon className="h-6 w-6" />

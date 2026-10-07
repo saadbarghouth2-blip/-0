@@ -586,9 +586,9 @@ const ContactPage = () => {
                 <Sparkles className={`${isArabic ? 'ml-2' : 'mr-2'} inline h-3.5 w-3.5`} />
                 {content.heroKicker}
               </p>
-              <h1 className="mt-5 font-display text-[2rem] font-bold leading-[1.12] tracking-tight text-white md:text-[4.3rem]">
+              <h2 className="mt-5 font-display text-[2rem] font-bold leading-[1.12] tracking-tight text-white md:text-[4.3rem]">
                 {content.heroTitle}
-              </h1>
+              </h2>
               <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300 md:text-xl md:leading-9">
                 {content.heroDescription}
               </p>

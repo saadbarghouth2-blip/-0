@@ -82,7 +82,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="relative overflow-hidden py-20 md:py-32"
+      className="relative overflow-hidden py-12 md:py-20"
     >
       {/* Background */}
       <div className="pointer-events-none absolute inset-0 z-[-1]">
@@ -96,7 +96,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-center mb-16"
+            className="mb-8 text-center md:mb-12"
           >
             {title && <h2 className="text-4xl md:text-5xl font-bold mb-4">{text(title)}</h2>}
             {subtitle && <p className="text-lg text-slate-400 max-w-2xl mx-auto">{text(subtitle)}</p>}
@@ -105,7 +105,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
 
         {/* Grid Mode */}
         {displayMode === 'grid' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mobile-2-cols grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-4">
             {statistics.map((stat, i) => {
               const IconComponent = stat.icon;
               return (
@@ -114,11 +114,11 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  whileHover={{ scale: 1.05, translateY: -10 }}
-                  className="surface-card rounded-xl p-6 hover:shadow-lg transition-all"
+                  whileHover={{ scale: 1.02, translateY: -4 }}
+                  className="surface-card rounded-xl p-3.5 transition-all hover:shadow-lg sm:p-5"
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <IconComponent className="text-cyan-400" size={24} />
+                  <div className="mb-2.5 flex items-start justify-between sm:mb-4">
+                    <IconComponent className="text-cyan-400" size={20} />
                     {stat.trend && (
                       <span
                         className={`text-xs font-bold px-2 py-1 rounded-full ${
@@ -131,16 +131,16 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
                       </span>
                     )}
                   </div>
-                  <div className="mb-3">
-                    <p className="text-slate-400 text-sm mb-1">{text(stat.label)}</p>
-                    <p className="text-3xl font-bold text-foreground">
+                  <div className="mb-2 sm:mb-3">
+                    <p className="mb-1 text-xs text-slate-400 sm:text-sm">{text(stat.label)}</p>
+                    <p className="text-2xl font-bold text-foreground sm:text-3xl">
                       {stat.prefix && <span>{stat.prefix}</span>}
                       {displayValue(i, stat)}
                       {stat.suffix && <span>{stat.suffix}</span>}
                     </p>
                   </div>
                   {stat.description && (
-                    <p className="text-xs text-slate-500 mt-3">{text(stat.description)}</p>
+                    <p className="mt-2 text-[11px] leading-5 text-slate-500 sm:mt-3 sm:text-xs">{text(stat.description)}</p>
                   )}
                 </motion.div>
               );
@@ -150,7 +150,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
 
         {/* Detailed Mode */}
         {displayMode === 'detailed' && (
-          <div className="space-y-8">
+          <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 md:gap-5">
             {statistics.map((stat, i) => {
               const IconComponent = stat.icon;
               return (
@@ -159,20 +159,20 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
                   initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className={`surface-card rounded-xl p-8 flex items-center gap-8 ${i % 2 === 1 ? 'flex-row-reverse' : ''}`}
+                  className="surface-card flex min-w-0 items-start gap-3 rounded-xl p-4 sm:p-5"
                 >
-                  <div className={`w-24 h-24 rounded-xl bg-gradient-to-br ${accent} flex items-center justify-center flex-shrink-0`}>
-                    <IconComponent className="text-white" size={48} />
+                  <div className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${accent} sm:h-14 sm:w-14`}>
+                    <IconComponent className="text-white" size={24} />
                   </div>
                   <div className="flex-1">
-                    <p className="text-slate-400 text-sm mb-2">{text(stat.label)}</p>
-                    <p className="text-4xl font-bold text-foreground mb-3">
+                    <p className="mb-1 text-xs text-slate-400 sm:text-sm">{text(stat.label)}</p>
+                    <p className="mb-2 text-2xl font-bold text-foreground sm:text-3xl">
                       {stat.prefix && <span>{stat.prefix}</span>}
                       {displayValue(i, stat)}
                       {stat.suffix && <span>{stat.suffix}</span>}
                     </p>
                     {stat.description && (
-                      <p className="text-slate-400 leading-relaxed">{text(stat.description)}</p>
+                      <p className="text-xs leading-5 text-slate-400 sm:text-sm">{text(stat.description)}</p>
                     )}
                     {stat.trend && (
                       <div className="mt-4 flex items-center gap-2">
@@ -196,7 +196,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
 
         {/* Comparison Mode */}
         {displayMode === 'comparison' && (
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 md:gap-5">
             {statistics.map((stat, i) => {
               const IconComponent = stat.icon;
               const maxValue = Math.max(...statistics.map((s) => parseInt(s.value) || 0));
@@ -208,7 +208,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className="surface-card rounded-xl p-8"
+                  className="surface-card rounded-xl p-4 sm:p-5"
                 >
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
@@ -283,17 +283,17 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-20 pt-20 border-t border-slate-800"
+            className="mt-12 border-t border-slate-800 pt-12 md:mt-16 md:pt-16"
           >
             <h3 className="text-2xl font-bold mb-12 text-center">{isArabic ? 'التفاصيل حسب القسم' : 'By Category'}</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 lg:grid-cols-3 md:gap-5">
               {categories.map((category, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className="surface-card rounded-xl p-8"
+                  className="surface-card rounded-xl p-4 sm:p-5"
                 >
                   <h4 className="text-lg font-bold mb-6">{text(category.name)}</h4>
                   <div className="space-y-4">

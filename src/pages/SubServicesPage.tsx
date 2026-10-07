@@ -6,6 +6,8 @@ import { SubServicesList } from '../components/SubServiceCard';
 import { SubServiceDetailPage } from '../components/SubServiceDetailPage';
 import { subServicesData } from '../data/subServicesData';
 import { useLanguage } from '../hooks/useLanguage';
+import { usePageMetadata } from '../hooks/usePageMetadata';
+import { getPageSeoByPath } from '../lib/pageSeo';
 import { repairMojibake } from '../lib/repairText';
 
 const SubServicesPage: FC = () => {
@@ -14,6 +16,8 @@ const SubServicesPage: FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const isArabic = lang === 'ar';
   const text = (arabic: string, english: string) => repairMojibake(isArabic ? arabic : english);
+
+  usePageMetadata(getPageSeoByPath('/sub-services', lang));
 
   if (selectedService) {
     const service = subServicesData[selectedService];

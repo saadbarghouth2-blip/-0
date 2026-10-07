@@ -207,7 +207,7 @@ const StatsDashboard = () => {
         </motion.div>
 
         {/* Live Counters Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-10 md:mb-32">
+        <div className="mobile-2-cols mb-10 grid grid-cols-2 gap-3 md:mb-20 md:gap-5 lg:grid-cols-4">
           {mainStats.map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -218,7 +218,7 @@ const StatsDashboard = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -8 }}
-                className="group relative overflow-hidden rounded-[1.15rem] border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-4 backdrop-blur-md transition-all hover:border-cyan-400/50 md:rounded-3xl md:p-8"
+                className="group relative overflow-hidden rounded-[1.15rem] border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-3.5 backdrop-blur-md transition-all hover:border-cyan-400/50 sm:p-5 md:rounded-3xl md:p-6"
               >
                 <div className={`absolute -right-12 -top-12 h-40 w-40 rounded-full bg-gradient-to-br ${stat.color} opacity-10 group-hover:opacity-25 blur-3xl transition-opacity`} />
                 <div className="relative z-10">

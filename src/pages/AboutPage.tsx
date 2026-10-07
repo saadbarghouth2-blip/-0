@@ -159,7 +159,7 @@ const AboutPage = () => {
     gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
   } as const;
   const mobileValuesGridStyle = {
-    gridTemplateColumns: 'repeat(auto-fit, minmax(11.5rem, 1fr))',
+    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
   } as const;
   const rawContent = {
     title: isArabic ? 'من نحن' : 'About us',
@@ -299,14 +299,12 @@ const AboutPage = () => {
       <motion.div
         key={`${item.en}-mobile`}
         initial={false}
-        className={`glass-card relative overflow-hidden rounded-[1.25rem] border border-white/8 p-4 ${
-          isSupportCard ? 'col-span-2' : ''
-        }`}
+        className="glass-card relative overflow-hidden rounded-[1rem] border border-white/8 p-2.5 sm:p-4"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent" />
         <div className={`relative flex h-full items-start justify-between gap-3 ${isArabic ? 'text-right' : 'text-left'}`}>
           <div className="min-w-0">
-            <p className="font-display text-[1.75rem] font-black leading-none text-white drop-shadow-lg">
+            <p className="font-display text-lg font-black leading-none text-white drop-shadow-lg sm:text-[1.75rem]">
               {item.num}
             </p>
             <p className="mt-2 text-[11px] font-medium leading-5 text-slate-400">
@@ -318,8 +316,8 @@ const AboutPage = () => {
               </p>
             ) : null}
           </div>
-          <div className="rounded-xl bg-cyan-400/10 p-2.5 text-cyan-400 shadow-[0_12px_30px_rgba(45,212,191,0.16)]">
-            <item.icon className="h-5 w-5" />
+          <div className="hidden rounded-xl bg-cyan-400/10 p-2 text-cyan-400 shadow-[0_12px_30px_rgba(45,212,191,0.16)] sm:block">
+            <item.icon className="h-4 w-4" />
           </div>
         </div>
       </motion.div>
@@ -375,12 +373,12 @@ const AboutPage = () => {
                 {content.heroKicker}
               </motion.div>
 
-              <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.8 }} className="mb-2 max-w-[12ch] font-display text-[2.15rem] font-bold leading-[1.02] tracking-tight text-white drop-shadow-2xl sm:text-5xl md:mb-4 md:max-w-none md:text-[5.5rem] md:leading-[1.2]">
+              <motion.h2 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.8 }} className="mb-2 max-w-[12ch] font-display text-[2.15rem] font-bold leading-[1.02] tracking-tight text-white drop-shadow-2xl sm:text-5xl md:mb-4 md:max-w-none md:text-[5.5rem] md:leading-[1.2]">
                 {content.heroTitle1} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-violet-300 mix-blend-screen">
                   {content.heroTitle2}
                 </span>
-              </motion.h1>
+              </motion.h2>
 
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className={heroAccentClass}>
                 {content.heroBody}
@@ -475,7 +473,7 @@ const AboutPage = () => {
 
           <div className="mx-auto mt-10 max-w-6xl md:mt-20">
             <h3 className="mb-5 text-center font-display text-xl font-bold text-white md:mb-10 md:text-3xl">{content.motivationsTitle}</h3>
-            <div className="grid gap-3 md:hidden" style={mobileMotivationsGridStyle}>
+            <div className="mobile-2-cols grid gap-3 md:hidden" style={mobileMotivationsGridStyle}>
               {motivations.map((item, index) => renderMotivationCard(item, index))}
             </div>
             <div className="hidden gap-4 md:grid md:grid-cols-4">
@@ -718,14 +716,14 @@ const AboutPage = () => {
             <p className="section-kicker mx-auto mb-4">{content.valuesKicker}</p>
             <h2 className="font-display text-2xl font-bold text-white md:text-5xl">{content.valuesTitle}</h2>
           </div>
-          <div className="mx-auto grid max-w-6xl gap-3 md:hidden" style={mobileValuesGridStyle}>
+          <div className="mobile-2-cols mx-auto grid max-w-6xl gap-3 md:hidden" style={mobileValuesGridStyle}>
             {values.map((item, index) => (
               <motion.div
                 key={`${item.en}-mobile`}
                 initial={false}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -6 }}
-                className="glass-card relative overflow-hidden rounded-[1.2rem] border border-white/8 p-4 group transition-all duration-500 hover:border-cyan-400/30"
+                className="glass-card group relative h-full overflow-hidden rounded-[1.1rem] border border-white/8 p-3 transition-all duration-500 hover:border-cyan-400/30"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-[1rem] bg-white/5 transition-all group-hover:bg-gradient-to-br group-hover:from-cyan-400/20 group-hover:to-violet-400/20">
@@ -765,7 +763,7 @@ const AboutPage = () => {
         <div className="relative overflow-hidden border-y border-white/5 py-8 md:py-16">
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/10 to-violet-900/10 pointer-events-none" />
           <h3 className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 md:mb-12 md:text-sm md:tracking-widest">{content.numbersTitle}</h3>
-          <div className="grid grid-cols-2 gap-3 md:hidden">
+          <div className="mobile-2-cols grid grid-cols-2 gap-1.5 md:hidden">
             {stats.map((item, index) => renderMobileStatCard(item, index))}
           </div>
           <div className="hidden grid-cols-2 divide-x-0 divide-white/5 md:grid md:grid-cols-5 md:divide-x">

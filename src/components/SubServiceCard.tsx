@@ -18,16 +18,16 @@ export const SubServiceCard: FC<SubServiceCardProps> = ({ service, onViewDetails
   );
 
   return (
-    <div className="interactive-card overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 transition-all duration-300 hover:border-cyan-500 hover:shadow-2xl">
-      <div className="border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900 p-6">
-        <div className="mb-4 w-fit rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 p-3">
-          <service.icon className="h-6 w-6 text-white" />
+    <div className="interactive-card flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-700 bg-gradient-to-br from-slate-800 to-slate-900 transition-all duration-300 hover:border-cyan-500 hover:shadow-2xl">
+      <div className="flex-1 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900 p-3.5 sm:p-5">
+        <div className="mb-2.5 w-fit rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 p-2 sm:mb-3">
+          <service.icon className="h-5 w-5 text-white" />
         </div>
-        <h3 className="mb-2 text-xl font-bold text-white">{title}</h3>
-        <p className="text-sm text-slate-300">{description}</p>
+        <h3 className="mb-1.5 text-base font-bold text-white sm:text-lg">{title}</h3>
+        <p className="text-xs leading-5 text-slate-300 sm:text-sm">{description}</p>
       </div>
 
-      <div className="p-6">
+      <div className="p-3.5 sm:p-5">
         <button
           onClick={() => onViewDetails(service.slug)}
           className="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 font-semibold text-white transition-all duration-200 hover:from-cyan-600 hover:to-blue-600"
@@ -50,7 +50,7 @@ export const SubServicesList: FC<{
   onViewDetails: (slug: string) => void;
 }> = ({ services, onViewDetails }) => {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="mobile-2-cols grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
       {services.map((service) => (
         <SubServiceCard key={service.id} service={service} onViewDetails={onViewDetails} />
       ))}

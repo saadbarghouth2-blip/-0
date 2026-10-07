@@ -84,7 +84,7 @@ export const ValueProposition: React.FC<ValuePropositionProps> = ({
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="flex flex-wrap justify-center gap-8 mb-12"
+            className="mb-10 flex flex-wrap justify-center gap-5 sm:gap-8"
           >
             {[
               { label: '99.9%', value: isArabic ? 'وقت التشغيل' : 'Uptime' },
@@ -104,7 +104,7 @@ export const ValueProposition: React.FC<ValuePropositionProps> = ({
         </motion.div>
 
         {/* Value Points Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-20">
+        <div className="mobile-2-cols mb-14 grid grid-cols-2 gap-3 md:gap-5">
           {points.map((point, i) => {
             const IconComponent = point.icon;
             return (
@@ -113,20 +113,20 @@ export const ValueProposition: React.FC<ValuePropositionProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ translateY: -10 }}
+                whileHover={{ translateY: -4 }}
                 className="group"
               >
-                <div className={`relative p-8 rounded-2xl bg-gradient-to-br from-slate-900/50 to-slate-900/20 border border-slate-800 group-hover:border-cyan-500/50 transition-all`}>
+                <div className="relative h-full rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900/50 to-slate-900/20 p-4 transition-all group-hover:border-cyan-500/50 sm:p-5">
                   {/* Icon */}
-                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${accent} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <IconComponent className="text-white" size={28} />
+                  <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${accent} transition-transform group-hover:scale-105 sm:h-12 sm:w-12`}>
+                    <IconComponent className="text-white" size={24} />
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-2xl font-bold mb-3 group-hover:text-cyan-400 transition-colors">
+                  <h3 className="mb-2 text-lg font-bold transition-colors group-hover:text-cyan-400 sm:text-xl">
                     {text(point.title)}
                   </h3>
-                  <p className="text-slate-400 mb-6 leading-relaxed">{text(point.description)}</p>
+                  <p className="mb-4 text-sm leading-6 text-slate-400">{text(point.description)}</p>
 
                   {/* Metrics */}
                   {point.metrics && (

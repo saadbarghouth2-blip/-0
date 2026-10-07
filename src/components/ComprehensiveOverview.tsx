@@ -28,7 +28,7 @@ export const ComprehensiveOverview: React.FC<ComprehensiveOverviewProps> = ({
     <motion.section
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
-      className="py-20 md:py-28"
+      className="py-12 md:py-20"
     >
       <div className="mx-auto max-w-7xl px-4 md:px-8">
         <motion.h2
@@ -42,7 +42,7 @@ export const ComprehensiveOverview: React.FC<ComprehensiveOverviewProps> = ({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-lg text-slate-400 mb-16 max-w-2xl"
+          className="mb-8 max-w-2xl text-base text-slate-400 md:mb-12 md:text-lg"
         >
           {isArabic
             ? 'فهم عميق لكل جوانب الخدمة وما تقدمه'
@@ -50,7 +50,7 @@ export const ComprehensiveOverview: React.FC<ComprehensiveOverviewProps> = ({
         </motion.p>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="mobile-2-cols grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3">
           {sections.map((section, i) => {
             const IconComponent = section.icon;
             return (
@@ -59,21 +59,21 @@ export const ComprehensiveOverview: React.FC<ComprehensiveOverviewProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.05, translateY: -10 }}
-                className="surface-card rounded-2xl p-8 group hover:shadow-2xl transition-all"
+                whileHover={{ scale: 1.02, translateY: -4 }}
+                className="surface-card group rounded-2xl p-4 transition-all hover:shadow-2xl sm:p-5"
               >
                 {/* Icon */}
-                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${accent} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                  <IconComponent className="text-white" size={32} />
+                <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${accent} transition-transform group-hover:scale-105 sm:h-12 sm:w-12`}>
+                  <IconComponent className="text-white" size={24} />
                 </div>
 
                 {/* Title */}
-                <h3 className="text-2xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-400 transition-all">
+                <h3 className="mb-2 text-lg font-bold transition-all group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-400 group-hover:bg-clip-text group-hover:text-transparent sm:text-xl">
                   {text(section.title)}
                 </h3>
 
                 {/* Description */}
-                <p className="text-slate-400 mb-6 leading-relaxed">{text(section.description)}</p>
+                <p className="mb-3 text-sm leading-6 text-slate-400 sm:mb-4">{text(section.description)}</p>
 
                 {/* Points */}
                 <div className="space-y-3">
@@ -92,7 +92,7 @@ export const ComprehensiveOverview: React.FC<ComprehensiveOverviewProps> = ({
                 </div>
 
                 {/* Divider */}
-                <div className="mt-6 pt-6 border-t border-slate-800 flex items-center justify-between">
+                <div className="mt-4 flex items-center justify-between border-t border-slate-800 pt-4">
                   <span className="text-xs text-slate-500 font-semibold">{i + 1} / {sections.length}</span>
                   <ArrowRight className="text-cyan-400 group-hover:translate-x-1 transition-transform" size={16} />
                 </div>

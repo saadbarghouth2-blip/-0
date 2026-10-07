@@ -778,7 +778,7 @@ const HomePage = () => {
       viewport={{ once: true }}
       transition={{ delay: index * 0.12 }}
       whileHover={{ y: -8 }}
-      className={`home-card relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-[1.6rem] border bg-gradient-to-b p-4 glass-card group ${step.color} to-transparent md:min-h-[350px] md:rounded-[2.5rem] md:p-8`}
+      className={`home-card relative flex min-h-[190px] flex-col justify-between overflow-hidden rounded-[1.4rem] border bg-gradient-to-b p-3.5 glass-card group ${step.color} to-transparent md:min-h-[280px] md:rounded-[2rem] md:p-6`}
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div>
@@ -882,16 +882,16 @@ const HomePage = () => {
               </Link>
             </motion.div>
 
-            <motion.div variants={staggerItem} className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/20 bg-white/20 sm:grid-cols-4">
+            <motion.div variants={staggerItem} className="mobile-2-cols grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/20 bg-white/20 sm:grid-cols-4">
               {portfolioProfile.stats.map((stat, index) => (
                 <div
                   key={stat.englishLabel ?? stat.label}
-                  className={`home-hero-stat p-3.5 transition-colors sm:p-4 ${isArabic ? 'text-right' : 'text-left'}`}
+                  className="home-hero-stat p-2 text-center transition-colors sm:p-4"
                 >
-                  <p className="home-hero-stat-value font-display text-[1.9rem] font-bold sm:text-[2.2rem] md:text-4xl">
+                  <p className="home-hero-stat-value font-display text-base font-bold sm:text-[2.2rem] md:text-4xl">
                     <AnimatedCounter value={stat.value} duration={2000 + (index * 500)} />
                   </p>
-                  <p className="home-hero-stat-label mt-1 text-[13px] font-semibold sm:text-sm">{text(stat.label, stat.englishLabel ?? stat.label)}</p>
+                  <p className="home-hero-stat-label mt-0.5 text-[10px] font-semibold sm:text-sm">{text(stat.label, stat.englishLabel ?? stat.label)}</p>
                 </div>
               ))}
             </motion.div>
@@ -997,7 +997,7 @@ const HomePage = () => {
               kicker={text('مسار واضح لاتخاذ القرار', 'Clear Decision Path')}
               title={text('افهم القيمة بسرعة، ثم اختر خطوتك التالية بثقة', 'Understand the value quickly, then choose your next step with confidence')}
             />
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div className="mobile-2-cols grid grid-cols-2 gap-3 md:grid-cols-4">
               {trustSignals.map((signal, index) => (
                 <motion.div
                   key={signal.label.en}
@@ -1019,7 +1019,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="mt-8 grid gap-4 md:mt-12 lg:grid-cols-3">
+          <div className="mobile-2-cols mt-8 grid grid-cols-2 gap-3 md:mt-12 md:gap-4 lg:grid-cols-3">
             {companyCapabilities.map((capability, index) => (
               <motion.article
                 key={capability.title.en}
@@ -1028,16 +1028,16 @@ const HomePage = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
                 whileHover={{ y: -6 }}
-                className={`group relative overflow-hidden rounded-[1.7rem] border border-white/10 bg-gradient-to-br ${capability.tone} p-5 transition-colors hover:border-white/20 md:rounded-[2.2rem] md:p-7`}
+                className={`group relative overflow-hidden rounded-[1.3rem] border border-white/10 bg-gradient-to-br ${capability.tone} p-3.5 transition-colors hover:border-white/20 sm:p-5 md:rounded-[2rem] md:p-6`}
               >
                 <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                <div className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] text-cyan-200">
+                <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] text-cyan-200 sm:h-11 sm:w-11 sm:rounded-2xl">
                   <BadgeCheck className="h-5 w-5" />
                 </div>
-                <h3 className="font-display text-xl font-bold leading-8 text-white md:text-2xl">
+                <h3 className="font-display text-base font-bold leading-6 text-white sm:text-lg md:text-xl">
                   {text(capability.title.ar, capability.title.en)}
                 </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-300">
+                <p className="mt-2 text-[11px] leading-5 text-slate-300 sm:text-sm sm:leading-6">
                   {text(capability.description.ar, capability.description.en)}
                 </p>
                 <p className="mt-5 border-t border-white/10 pt-4 text-xs leading-6 text-slate-500 md:text-sm">
@@ -1050,7 +1050,7 @@ const HomePage = () => {
       </section>
 
       {/* Agency Developers Break Section (Generated Image + Interactive Blob) */}
-      <section className="home-team-section relative flex min-h-[430px] h-[62vh] w-full items-center justify-center overflow-hidden md:h-[68vh]">
+      <section className="home-team-section relative flex min-h-[320px] h-[48vh] w-full items-center justify-center overflow-hidden md:h-[58vh]">
         <div className="absolute inset-0 z-0">
           <motion.img 
             initial={{ scale: 1.04 }}
@@ -1180,7 +1180,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* NOTAQ VS TRADITIONAL — Side-by-Side Comparison         */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-16 md:py-32 relative overflow-hidden">
+      <section className="section-shell relative overflow-hidden py-10 md:py-20">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-900/10 via-transparent to-cyan-900/10 pointer-events-none" />
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
@@ -1370,7 +1370,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* HORIZONTAL PROCESS CARDS — Deep Dive Info               */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-16 md:py-32">
+      <section className="section-shell py-10 md:py-20">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
@@ -1563,7 +1563,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* SUCCESS STORIES — In-Depth Case Studies                */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-16 md:py-32 relative overflow-hidden">
+      <section className="section-shell relative overflow-hidden py-10 md:py-20">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/5 via-transparent to-violet-900/5 pointer-events-none" />
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
@@ -1632,7 +1632,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* CLIENT TESTIMONIALS — Rotating Quote Cards             */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-16 md:py-32 relative overflow-hidden">
+      <section className="section-shell relative overflow-hidden py-10 md:py-20">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-900/5 to-transparent pointer-events-none" />
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
@@ -1694,7 +1694,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* REAL CLIENT RESULTS — Proven Impact with Metrics       */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-16 md:py-32 relative overflow-hidden">
+      <section className="section-shell relative overflow-hidden py-10 md:py-20">
         <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/5 via-transparent to-violet-900/5 pointer-events-none" />
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
@@ -1752,7 +1752,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* TEAM EXPERTISE — Meet The Specialists                 */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-16 md:py-32 relative">
+      <section className="section-shell relative py-10 md:py-20">
         <div className="absolute left-0 top-1/3 w-1/2 h-1/2 bg-violet-700/10 blur-[150px] rounded-full pointer-events-none -z-10" />
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-16">
@@ -1808,7 +1808,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* KEY FEATURES — Interactive Feature Showcase            */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-16 md:py-32 relative overflow-hidden">
+      <section className="section-shell relative overflow-hidden py-10 md:py-20">
         <div className="absolute inset-0 bg-gradient-to-b from-violet-900/5 via-transparent to-cyan-900/5 pointer-events-none" />
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
@@ -2034,7 +2034,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* EXPLORE MORE RESOURCES — Links to New Pages             */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-16 md:py-32 relative overflow-hidden">
+      <section className="section-shell relative overflow-hidden py-10 md:py-20">
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/5 via-transparent to-violet-900/5 pointer-events-none" />
         <div className="mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">

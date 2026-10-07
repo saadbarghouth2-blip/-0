@@ -216,7 +216,7 @@ const PageHero = ({
         {displayMetrics?.length ? (
           <motion.div
             animate="visible"
-            className="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3"
+            className="mobile-2-cols grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-3"
             initial={shouldReduceMotion ? false : 'hidden'}
             variants={revealItem}
             transition={revealTransition}

@@ -218,17 +218,17 @@ const ServicesPage = () => {
   );
   const activeFamilyDetails = serviceFamilies.find((family) => family.id === activeFamily);
   const processCardClass = isArabic
-    ? 'glass-card rounded-[1.6rem] p-5 border-r-4 border-r-cyan-400/50 transition-colors group text-right md:rounded-[2rem] md:p-6 hover:bg-white/5'
-    : 'glass-card rounded-[1.6rem] p-5 border-l-4 border-l-cyan-400/50 transition-colors group text-left md:rounded-[2rem] md:p-6 hover:bg-white/5';
+    ? 'glass-card rounded-[1.15rem] p-3 border-r-2 border-r-cyan-400/50 transition-colors group text-right md:rounded-[1.6rem] md:p-5 hover:bg-white/5'
+    : 'glass-card rounded-[1.15rem] p-3 border-l-2 border-l-cyan-400/50 transition-colors group text-left md:rounded-[1.6rem] md:p-5 hover:bg-white/5';
   const processDescriptionClass = isArabic
-    ? 'text-sm leading-7 text-slate-400 md:text-base md:leading-8 md:pr-10'
-    : 'text-sm leading-7 text-slate-400 md:text-base md:leading-8 md:pl-10';
+    ? 'text-[11px] leading-5 text-slate-400 md:text-sm md:leading-7 md:pr-8'
+    : 'text-[11px] leading-5 text-slate-400 md:text-sm md:leading-7 md:pl-8';
   const scopeSplitClass = isArabic
     ? 'max-w-xl text-right md:border-l border-white/10 md:pl-10'
     : 'max-w-xl text-left md:border-r border-white/10 md:pr-10';
   const scopeStatsClass = isArabic
-    ? 'grid w-full grid-cols-2 gap-5 text-center md:w-auto md:gap-12 md:pr-10 lg:grid-cols-3'
-    : 'grid w-full grid-cols-2 gap-5 text-center md:w-auto md:gap-12 md:pl-10 lg:grid-cols-3';
+    ? 'mobile-2-cols grid w-full grid-cols-2 gap-5 text-center md:w-auto md:gap-12 md:pr-10 lg:grid-cols-3'
+    : 'mobile-2-cols grid w-full grid-cols-2 gap-5 text-center md:w-auto md:gap-12 md:pl-10 lg:grid-cols-3';
   const faqCardClass = isArabic
     ? 'dark-faq-card group relative min-w-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(11,18,32,0.94),rgba(7,11,20,0.9))] p-4 text-right shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-cyan-400/30 hover:bg-[linear-gradient(180deg,rgba(13,23,40,0.96),rgba(8,13,24,0.92))] md:rounded-[1.7rem] md:p-5'
     : 'dark-faq-card group relative min-w-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(11,18,32,0.94),rgba(7,11,20,0.9))] p-4 text-left shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-all duration-300 hover:border-cyan-400/30 hover:bg-[linear-gradient(180deg,rgba(13,23,40,0.96),rgba(8,13,24,0.92))] md:rounded-[1.7rem] md:p-5';
@@ -286,7 +286,7 @@ const ServicesPage = () => {
       transition={{ duration: 0.6 }}
       {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '-10%' } } : {})}
     >
-      <div className={`surface-card-strong relative flex min-h-[280px] flex-col justify-center overflow-hidden rounded-[1.8rem] border border-white/20 p-5 glass-card shadow-[0_-10px_40px_rgba(0,0,0,0.5)] md:min-h-[400px] md:rounded-[3rem] md:p-12 ${index === 0 ? '' : 'md:-mt-5'}`}>
+      <div className={`surface-card-strong relative flex h-full min-h-0 flex-col justify-center overflow-hidden rounded-[1.25rem] border border-white/20 p-3.5 glass-card shadow-[0_-10px_40px_rgba(0,0,0,0.5)] md:min-h-[300px] md:rounded-[2rem] md:p-8 ${index === 0 ? '' : 'md:-mt-3'}`}>
         <div className="absolute right-0 top-0 z-0 hidden h-full w-1/2 overflow-hidden lg:block">
           <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#0b1220] via-[#0b1220]/80 to-transparent" />
           {item.imageMode === 'contain' ? (
@@ -305,18 +305,18 @@ const ServicesPage = () => {
           <p className="pointer-events-none absolute -left-2 -top-4 select-none font-display text-4xl font-bold text-white/5 md:-left-4 md:-top-8 md:text-8xl">
             0{index + 1}
           </p>
-          <div className="mb-5 inline-flex rounded-[1.4rem] bg-cyan-400/20 p-3 text-cyan-300 shadow-[0_0_30px_rgba(45,212,191,0.2)] md:mb-8 md:rounded-3xl md:p-5">
-            <item.icon className="h-7 w-7 md:h-10 md:w-10" />
+          <div className="mb-3 inline-flex rounded-xl bg-cyan-400/20 p-2 text-cyan-300 shadow-[0_0_30px_rgba(45,212,191,0.2)] md:mb-6 md:rounded-2xl md:p-4">
+            <item.icon className="h-5 w-5 md:h-8 md:w-8" />
           </div>
-          <h3 className="mb-4 font-display text-[1.9rem] font-bold tracking-wide text-white drop-shadow-lg md:mb-6 md:text-5xl">
+          <h3 className="mb-2 font-display text-base font-bold leading-6 text-white drop-shadow-lg md:mb-4 md:text-3xl">
             {copyLegacyPair(item.titleAr, item.titleEn)}
           </h3>
-          <p className="text-base font-medium leading-8 text-slate-300 md:text-2xl md:leading-10">
+          <p className="text-[11px] font-medium leading-5 text-slate-300 md:text-base md:leading-8">
             {copyLegacyPair(item.descriptionAr, item.descriptionEn)}
           </p>
           <motion.div
             animate={item.imageMode === 'contain' ? { y: [0, -6, 0] } : undefined}
-            className={`relative mt-6 overflow-hidden rounded-[1.6rem] border p-3 shadow-[0_20px_60px_rgba(8,145,178,0.14)] lg:hidden md:mt-10 md:rounded-[2rem] md:p-4 ${
+            className={`relative mt-3 overflow-hidden rounded-xl border p-1.5 shadow-[0_20px_60px_rgba(8,145,178,0.14)] lg:hidden md:mt-6 md:rounded-[1.5rem] md:p-3 ${
               item.imageMode === 'contain'
                 ? 'border-cyan-400/20 bg-gradient-to-br from-cyan-400/10 via-[#07111d] to-transparent'
                 : 'border-white/10 bg-[#09111c]/80'
@@ -328,8 +328,8 @@ const ServicesPage = () => {
               alt={item.imageAlt ?? item.titleEn}
               className={`relative z-10 w-full ${
                 item.imageMode === 'contain'
-                  ? 'h-[180px] object-contain drop-shadow-[0_20px_40px_rgba(45,212,191,0.18)] md:h-[220px]'
-                  : 'h-[150px] rounded-[1.2rem] object-cover md:h-[190px]'
+                  ? 'h-[82px] object-contain drop-shadow-[0_20px_40px_rgba(45,212,191,0.18)] md:h-[160px]'
+                  : 'h-[82px] rounded-lg object-cover md:h-[150px]'
               }`}
               src={item.image}
             />
@@ -390,7 +390,7 @@ const ServicesPage = () => {
         initial={isMobile ? false : { opacity: 0, y: 18 }}
         {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 } } : {})}
         transition={{ duration: 0.35, delay: Math.min(index * 0.025, 0.25) }}
-        className={`group relative flex min-h-[280px] md:min-h-[320px] min-w-0 flex-col overflow-hidden rounded-xl md:rounded-[1.35rem] border border-white/10 bg-gradient-to-br ${service.accent} p-2.5 md:p-4 shadow-[0_18px_40px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/35 text-xs md:text-sm`}
+        className={`group relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br ${service.accent} p-2.5 text-xs shadow-[0_18px_40px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/35 md:rounded-[1.35rem] md:p-4 md:text-sm`}
       >
         <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent" />
         <div className="flex items-start justify-between gap-3">
@@ -409,23 +409,23 @@ const ServicesPage = () => {
           <h3 className="mt-2 break-words font-display text-[1.08rem] font-bold leading-7 text-white md:text-[1.25rem] md:leading-8">
             {copyPair(service.title)}
           </h3>
-          <p className="mt-2 text-[11px] leading-6 text-slate-300 md:mt-3 md:text-sm">
+          <p className="mt-2 line-clamp-2 text-[10px] leading-5 text-slate-300 md:mt-3 md:text-sm md:leading-6">
             {copyPair(service.summary)}
           </p>
         </div>
 
-        <div className="mt-2 md:mt-4 rounded-lg md:rounded-[1rem] border border-white/10 bg-black/18 p-2.5 md:p-3">
+        <div className="mt-2 rounded-lg border border-white/10 bg-black/18 p-2 md:mt-3 md:rounded-[1rem] md:p-3">
           <p className="text-[10px] md:text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-slate-500">
             {isArabic ? 'أفضل استخدام' : 'Best fit'}
           </p>
-          <p className="mt-1 md:mt-2 text-[10px] md:text-xs leading-5 md:leading-6 text-slate-300">
+          <p className="mt-1 line-clamp-2 text-[9px] leading-4 text-slate-300 md:mt-2 md:text-xs md:leading-6">
             {copyPair(service.bestFor)}
           </p>
         </div>
 
-        <ul className="mt-2 md:mt-4 grid gap-1 md:gap-1.5">
+        <ul className="mt-2 grid gap-1 md:mt-3 md:gap-1.5">
           {service.deliverables.slice(0, 2).map((item) => (
-            <li key={item.en} className="flex items-start gap-1.5 text-[10px] md:text-xs leading-5 md:leading-6 text-slate-300">
+            <li key={item.en} className="flex items-start gap-1.5 text-[9px] leading-4 text-slate-300 md:text-xs md:leading-6">
               <CheckCircle className="mt-0.5 md:mt-1 h-3.5 md:h-4 w-3.5 md:w-4 shrink-0 text-cyan-300" />
               <span className="min-w-0 break-words">{copyPair(item)}</span>
             </li>
@@ -527,7 +527,7 @@ const ServicesPage = () => {
           transition={{ duration: 1.5, ease: 'easeOut' }}
           className="relative z-10 text-center w-full select-none"
         >
-          <h1
+          <h2
             className="w-full px-4 font-display text-[1.95rem] font-bold uppercase leading-none tracking-[-0.05em] sm:text-[4rem] md:text-[10rem] md:leading-[0.8] lg:text-[14rem]"
             style={{
               backgroundImage: `url('/images/ChatGPT%20Image%20Apr%208%2C%202026%2C%2011_26_40%20AM.png')`,
@@ -540,7 +540,7 @@ const ServicesPage = () => {
             }}
           >
             {content.heroWord}
-          </h1>
+          </h2>
           <p className="mt-2.5 px-4 text-[13px] font-medium tracking-wide text-cyan-200 sm:text-base md:mt-6 md:px-0 md:text-3xl">
             {content.heroSubtitle}
           </p>
@@ -548,16 +548,16 @@ const ServicesPage = () => {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 md:px-8 relative z-10">
-        <div className="mb-16 md:mb-32">
+        <div className="mb-10 md:mb-20">
           <SectionTitle
             description={content.coreDescription}
             kicker={content.coreKicker}
             title={content.coreTitle}
           />
-          <div className="mt-6 md:mt-8 grid gap-3 md:gap-4 md:hidden">
+          <div className="mobile-2-cols mt-6 grid grid-cols-2 gap-2.5 md:hidden">
             {services.map((service, index) => renderCoreServiceCard(service, index))}
           </div>
-          <div className="mt-8 hidden auto-rows-auto grid-cols-1 gap-4 md:mt-10 md:grid md:grid-cols-2 md:gap-5">
+          <div className="mt-8 hidden auto-rows-auto gap-4 md:grid md:grid-cols-2 xl:grid-cols-4">
             {services.map((service, index) => renderCoreServiceCard(service, index))}
           </div>
         </div>
@@ -641,7 +641,7 @@ const ServicesPage = () => {
             </div>
           </div>
 
-          <div className="mt-8 grid gap-2 sm:gap-3 grid-cols-2 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mobile-2-cols mt-6 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-2 xl:grid-cols-4">
             {visibleLibraryServices.map((service, index) => renderServiceLibraryCard(service, index))}
           </div>
         </div>
@@ -667,34 +667,34 @@ const ServicesPage = () => {
               </div>
             </div>
 
-            <div className="grid gap-4">
+            <div className="mobile-2-cols grid grid-cols-2 gap-3 lg:grid-cols-1">
               {servicePackages.map((pack, index) => (
                 <motion.article
                   key={pack.name.en}
                   initial={isMobile ? false : { opacity: 0, y: 20 }}
                   {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
                   transition={{ delay: index * 0.08 }}
-                  className={`service-package-card relative overflow-hidden rounded-[1.55rem] border border-slate-200 bg-gradient-to-br ${pack.accent} p-5 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.55)] md:rounded-[2rem] md:p-7`}
+                  className={`service-package-card relative overflow-hidden rounded-[1.2rem] border border-slate-200 bg-gradient-to-br ${pack.accent} p-3 shadow-[0_24px_60px_-45px_rgba(15,23,42,0.55)] sm:p-4 md:rounded-[1.7rem] md:p-5`}
                 >
-                  <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+                  <div className="grid gap-3 md:grid-cols-[0.9fr_1.1fr] md:items-start">
                     <div>
                       <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-teal-700">
                         {isArabic ? 'مسار خدمة' : 'Service Track'} 0{index + 1}
                       </p>
-                      <h3 className="mt-3 font-display text-2xl font-bold text-slate-950 md:text-3xl">
+                      <h3 className="mt-2 font-display text-base font-bold leading-6 text-slate-950 sm:text-xl md:text-2xl">
                         {copyPair(pack.name)}
                       </h3>
-                      <p className="mt-3 text-sm leading-7 text-slate-700">
+                      <p className="mt-2 line-clamp-3 text-[10px] leading-5 text-slate-700 sm:text-sm sm:leading-6">
                         {copyPair(pack.promise)}
                       </p>
                     </div>
-                    <div className="rounded-[1.25rem] border border-slate-200 bg-white/90 p-4 shadow-sm">
+                    <div className="rounded-xl border border-slate-200 bg-white/90 p-2.5 shadow-sm sm:p-3">
                       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
                         {isArabic ? 'المخرجات' : 'Deliverables'}
                       </p>
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         {pack.deliverables.map((deliverable) => (
-                          <div key={deliverable.en} className="flex items-start gap-2 text-sm leading-6 text-slate-700">
+                          <div key={deliverable.en} className="flex items-start gap-1.5 text-[9px] leading-4 text-slate-700 sm:text-xs sm:leading-5">
                             <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" />
                             <span>{copyPair(deliverable)}</span>
                           </div>
@@ -708,13 +708,13 @@ const ServicesPage = () => {
           </div>
         </div>
 
-        <div className="relative mb-20 md:mb-32">
+        <div className="relative mb-12 md:mb-20">
           <SectionTitle
             description={content.depthDescription}
             kicker={content.depthKicker}
             title={content.depthTitle}
           />
-          <div className="mt-8 grid gap-4 md:hidden">
+          <div className="mobile-2-cols mt-6 grid grid-cols-2 gap-2.5 md:hidden">
             {serviceDepth.map((item, index) => renderServiceDepthCard(item, index))}
           </div>
           <div className="mt-16 hidden h-auto space-y-0 md:block">
@@ -722,14 +722,14 @@ const ServicesPage = () => {
           </div>
         </div>
 
-        <div className="relative mb-20 grid items-center gap-10 md:gap-12 lg:mb-32 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <div className="relative mb-12 grid items-center gap-8 md:gap-10 lg:mb-20 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           <div className="relative z-10 space-y-8">
             <SectionTitle
               description={content.processDescription}
               kicker={content.processKicker}
               title={content.processTitle}
             />
-            <div className="mt-8 grid gap-4 md:hidden">
+            <div className="mobile-2-cols mt-6 grid grid-cols-2 gap-2.5 md:hidden">
               {processSteps.map((step, index) => renderServiceProcessCard(step, index))}
             </div>
             <div className="mt-8 hidden gap-4 md:grid">
@@ -774,17 +774,17 @@ const ServicesPage = () => {
               <h2 className="font-display text-2xl font-bold text-white md:text-4xl">
                 {isArabic ? 'لا نستلم التصميم فقط، بل نظامًا يمكن البناء عليه' : 'You do not receive a design only, but a system to build on'}
               </h2>
-              <div className="mt-7 grid gap-3">
+              <div className="mobile-2-cols mt-5 grid grid-cols-2 gap-2.5 lg:grid-cols-1">
                 {deliveryArtifacts.map((artifact, index) => (
                   <motion.div
                     key={artifact.title.en}
                     initial={isMobile ? false : { opacity: 0, x: isArabic ? 24 : -24 }}
                     {...(!isMobile ? { whileInView: { opacity: 1, x: 0 }, viewport: { once: true } } : {})}
                     transition={{ delay: index * 0.07 }}
-                    className="rounded-[1.25rem] border border-white/8 bg-white/[0.035] p-4"
+                    className="rounded-[1rem] border border-white/8 bg-white/[0.035] p-3"
                   >
                     <h3 className="font-display text-lg font-bold text-white">{copyPair(artifact.title)}</h3>
-                    <p className="mt-2 text-sm leading-7 text-slate-400">{copyPair(artifact.description)}</p>
+                    <p className="mt-1.5 text-[11px] leading-5 text-slate-400 sm:text-sm sm:leading-6">{copyPair(artifact.description)}</p>
                   </motion.div>
                 ))}
               </div>
@@ -795,15 +795,15 @@ const ServicesPage = () => {
               <h2 className="font-display text-2xl font-bold text-white md:text-4xl">
                 {isArabic ? 'نختار التفاصيل حسب احتياج شركتك' : 'We tune details to your company need'}
               </h2>
-              <div className="mt-7 grid gap-3">
+              <div className="mobile-2-cols mt-5 grid grid-cols-2 gap-2.5 lg:grid-cols-1">
                 {industryUseCases.map((item) => (
-                  <div key={item.sector.en} className="rounded-[1.25rem] border border-white/8 bg-[#06090f]/45 p-4">
+                  <div key={item.sector.en} className="rounded-[1rem] border border-white/8 bg-[#06090f]/45 p-3">
                     <div className="flex items-start justify-between gap-4">
                       <h3 className="font-display text-base font-bold text-cyan-100">{copyPair(item.sector)}</h3>
                       <span className="rounded-full bg-cyan-400/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-cyan-200">Fit</span>
                     </div>
                     <p className="mt-2 text-xs leading-6 text-slate-500">{copyPair(item.need)}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">{copyPair(item.solution)}</p>
+                    <p className="mt-1.5 text-[11px] leading-5 text-slate-300 sm:text-sm sm:leading-6">{copyPair(item.solution)}</p>
                   </div>
                 ))}
               </div>
@@ -885,23 +885,23 @@ const ServicesPage = () => {
         </div>
 
         <div className="mx-auto mt-16 mb-16 max-w-7xl px-4 md:mt-24">
-          <div className="grid gap-4 md:gap-6 md:grid-cols-3">
+          <div className="mobile-2-cols grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
             {guaranteeCards.map((item, index) => (
               <motion.div
                 key={item.titleEn}
                 initial={isMobile ? false : { opacity: 0, y: 20 }}
                 {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
                 transition={{ delay: index * 0.1 }}
-                className="surface-card flex items-center gap-4 rounded-[1.8rem] border border-white/8 p-5 group transition-all hover:border-cyan-400/30 md:gap-6 md:rounded-[2.5rem] md:p-8"
+                className="surface-card group flex items-start gap-2.5 rounded-[1.2rem] border border-white/8 p-3 transition-all hover:border-cyan-400/30 sm:p-4 md:gap-5 md:rounded-[2rem] md:p-6"
               >
                   <div className="rounded-2xl bg-cyan-400/20 p-3 text-cyan-400 transition-all group-hover:bg-cyan-400 group-hover:text-white md:p-4">
                     <item.icon className="h-6 w-6 md:h-8 md:w-8" />
                   </div>
                 <div>
-                  <h3 className="font-display text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
+                  <h3 className="mb-2 font-display text-base font-bold leading-6 text-white transition-colors group-hover:text-cyan-300 sm:text-lg">
                     {copyLegacyPair(item.titleAr, item.titleEn)}
                   </h3>
-                  <p className="text-slate-400 text-sm leading-7">{copyLegacyPair(item.descAr, item.descEn)}</p>
+                  <p className="text-[11px] leading-5 text-slate-400 sm:text-sm sm:leading-6">{copyLegacyPair(item.descAr, item.descEn)}</p>
                 </div>
               </motion.div>
             ))}

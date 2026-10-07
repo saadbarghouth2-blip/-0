@@ -81,7 +81,7 @@ const TeamMemberCard = ({ member, isArabic }: { member: typeof teamMembers[0]; i
         className="w-full h-full transform-style-3d relative"
       >
         {/* Front Side: General profile info */}
-        <div className="absolute inset-0 backface-hidden w-full h-full rounded-[1.15rem] border border-white/10 bg-[#06090f]/75 p-4 flex flex-col justify-between shadow-xl sm:rounded-3xl sm:p-6">
+        <div className="team-member-card absolute inset-0 backface-hidden flex h-full w-full flex-col justify-between rounded-[1.15rem] border border-white/10 bg-[#06090f]/75 p-4 shadow-xl sm:rounded-3xl sm:p-6">
           <div className="flex justify-between items-start">
             {/* Avatar Circle with initials */}
             <div className={cn(
@@ -126,7 +126,7 @@ const TeamMemberCard = ({ member, isArabic }: { member: typeof teamMembers[0]; i
         </div>
 
         {/* Back Side: Skills Details */}
-        <div className="absolute inset-0 [transform:rotateY(180deg)] backface-hidden w-full h-full rounded-[1.15rem] border border-cyan-400/20 bg-[#080d15] p-4 flex flex-col justify-between shadow-xl sm:rounded-3xl sm:p-6">
+        <div className="team-member-card absolute inset-0 [transform:rotateY(180deg)] backface-hidden flex h-full w-full flex-col justify-between rounded-[1.15rem] border border-cyan-400/20 bg-[#080d15] p-4 shadow-xl sm:rounded-3xl sm:p-6">
           <div>
             <div className="flex justify-between items-center mb-3 sm:mb-5">
               <h4 className="font-display text-xs font-black uppercase tracking-wider text-cyan-300 flex items-center gap-1.5">
@@ -187,7 +187,7 @@ const TeamPage = () => {
   usePageMetadata(getPageSeoByPath('/team', lang));
 
   return (
-    <div className="relative pt-6 pb-10 md:pt-24 md:pb-32">
+    <div className="team-page relative pb-10 pt-6 md:pb-24 md:pt-20">
       {/* Background */}
       <div className="pointer-events-none absolute inset-0 z-[-1] overflow-hidden">
         <div className="absolute top-0 left-0 w-1/3 h-1/2 bg-cyan-600/10 blur-[200px] rounded-full animate-pulse" />
@@ -221,20 +221,20 @@ const TeamPage = () => {
         </motion.div>
 
         {/* Team Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 mb-8 sm:mb-16">
-          <div className="surface-card rounded-2xl p-3.5 sm:p-5 border border-white/10 text-center">
+        <div className="mobile-2-cols mb-8 grid grid-cols-2 gap-2.5 sm:mb-14 sm:grid-cols-3 sm:gap-5">
+          <div className="team-stat-card surface-card rounded-2xl border border-white/10 p-3.5 text-center sm:p-5">
             <Award className="h-8 w-8 text-cyan-400 mx-auto mb-3" />
             <h4 className="text-2xl font-black text-white">+١٥</h4>
             <p className="text-xs text-slate-500 mt-1 font-semibold">{text('شراكة استراتيجية كبرى', 'Enterprise Partnerships')}</p>
           </div>
 
-          <div className="surface-card rounded-2xl p-3.5 sm:p-5 border border-white/10 text-center">
+          <div className="team-stat-card surface-card rounded-2xl border border-white/10 p-3.5 text-center sm:p-5">
             <Calendar className="h-8 w-8 text-cyan-400 mx-auto mb-3" />
             <h4 className="text-2xl font-black text-white">+٨ سنوات</h4>
             <p className="text-xs text-slate-500 mt-1 font-semibold">{text('متوسط خبرة الأعضاء', 'Avg Years of Experience')}</p>
           </div>
 
-          <div className="surface-card rounded-2xl p-3.5 sm:p-5 border border-white/10 text-center">
+          <div className="team-stat-card surface-card rounded-2xl border border-white/10 p-3.5 text-center sm:p-5">
             <Trophy className="h-8 w-8 text-cyan-400 mx-auto mb-3" />
             <h4 className="text-2xl font-black text-white">١٨٠+ مخرجات</h4>
             <p className="text-xs text-slate-500 mt-1 font-semibold">{text('تم تسليمها للشركات', 'Delivered digital assets')}</p>
@@ -242,11 +242,12 @@ const TeamPage = () => {
         </div>
 
         {/* Department Filters */}
-        <div className="flex flex-wrap gap-2 justify-center mb-8 sm:gap-2.5 sm:mb-12">
+        <div className="team-filters mb-8 flex flex-wrap justify-center gap-2 sm:mb-12 sm:gap-2.5">
           {departments.map((dept) => (
             <button
               key={dept}
               onClick={() => setSelectedDept(dept)}
+              data-active={selectedDept === dept ? 'true' : 'false'}
               className={cn(
                 "px-3 py-1.5 rounded-full text-[11px] font-bold transition-all border sm:px-4.5 sm:py-2 sm:text-xs",
                 selectedDept === dept 
@@ -278,7 +279,7 @@ const TeamPage = () => {
         </div>
 
         {/* Join our team CTA */}
-        <div className="rounded-[1.25rem] border border-cyan-400/20 bg-gradient-to-r from-cyan-500/5 via-white/[0.02] to-violet-500/5 p-4 text-center backdrop-blur-md sm:rounded-[2.2rem] sm:p-6 md:p-10">
+        <div className="team-cta rounded-[1.25rem] border border-cyan-400/20 bg-gradient-to-r from-cyan-500/5 via-white/[0.02] to-violet-500/5 p-4 text-center backdrop-blur-md sm:rounded-[2.2rem] sm:p-6 md:p-10">
           <Star className="h-8 w-8 text-cyan-400 mx-auto mb-4 animate-pulse-glow" />
           <h3 className="font-display text-xl md:text-2xl font-bold text-white mb-2">
             {text('تريد الانضمام لفريق نطق؟', 'Want to build with Notaq?')}
