@@ -699,8 +699,8 @@ const SiteLayout = () => {
                   {activeNavGroup.id === 'services' ? (
                     <>
                       <div className="p-1">
-                        <div className="mb-2 flex items-center justify-between gap-2 rounded-[0.85rem] border border-cyan-300/12 bg-cyan-300/[0.045] px-2.5 py-2">
-                          <p className="min-w-0 truncate text-xs font-bold text-white">
+                        <div className="site-services-mega-heading mb-2 flex items-center justify-between gap-2 rounded-[0.85rem] border border-cyan-300/12 bg-cyan-300/[0.045] px-2.5 py-2">
+                          <p className="site-services-mega-heading-label min-w-0 truncate text-xs font-bold text-white">
                             {isArabic ? 'اختار التصنيف ثم الخدمة' : 'Choose a category, then a service'}
                           </p>
                           <Link
@@ -726,37 +726,38 @@ const SiteLayout = () => {
                                   type="button"
                                   onClick={() => setDesktopActiveServiceFamilyId(family.id)}
                                   onMouseEnter={() => setDesktopActiveServiceFamilyId(family.id)}
+                                  data-active={isFamilyActive ? 'true' : 'false'}
                                   className={joinClasses(
-                                    'mb-1 flex w-full items-center justify-between gap-2 rounded-[0.72rem] border px-2.5 py-2 text-start transition',
+                                    'site-services-family-tab mb-1 flex w-full items-center justify-between gap-2 rounded-[0.72rem] border px-2.5 py-2 text-start transition',
                                     isFamilyActive
                                       ? 'border-cyan-300/40 bg-cyan-300/[0.11] text-white'
                                       : 'border-white/6 bg-white/[0.025] text-slate-300 hover:border-cyan-300/20 hover:bg-white/[0.045]',
                                   )}
                                 >
                                   <span className="min-w-0">
-                                    <span className="block truncate text-[0.76rem] font-bold">
+                                    <span className="site-services-family-tab-label block truncate text-[0.76rem] font-bold">
                                       {getLocalizedText(family.label)}
                                     </span>
-                                    <span className="mt-0.5 block truncate text-[10px] text-slate-500">
+                                    <span className="site-services-family-tab-count mt-0.5 block truncate text-[10px] text-slate-500">
                                       {family.services.length} {isArabic ? 'خدمات' : 'services'}
                                     </span>
                                   </span>
-                                  <ChevronDown className={`h-3.5 w-3.5 shrink-0 -rotate-90 ${isArabic ? 'rotate-90' : ''}`} />
+                                  <ChevronDown className={`site-services-family-tab-icon h-3.5 w-3.5 shrink-0 -rotate-90 ${isArabic ? 'rotate-90' : ''}`} />
                                 </button>
                               );
                             })}
                           </div>
 
-                          <div className="relative flex min-h-0 flex-col overflow-hidden rounded-[0.95rem] border border-white/9 bg-[#07111c]/78 p-2.5">
+                          <div className="site-services-family-detail relative flex min-h-0 flex-col overflow-hidden rounded-[0.95rem] border border-white/9 bg-[#07111c]/78 p-2.5">
                             {desktopActiveServiceFamily ? (
                               <>
                                 <div className={`pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-br ${desktopActiveServiceFamily.accent}`} />
                                 <div className="relative flex min-h-0 flex-1 flex-col">
                                   <div className="mb-2">
-                                    <h3 className="truncate text-sm font-bold text-white">
+                                    <h3 className="site-services-family-detail-title truncate text-sm font-bold text-white">
                                       {getLocalizedText(desktopActiveServiceFamily.label)}
                                     </h3>
-                                    <p className="mt-0.5 line-clamp-1 text-[11px] leading-4 text-slate-400">
+                                    <p className="site-services-family-detail-description mt-0.5 line-clamp-1 text-[11px] leading-4 text-slate-400">
                                       {getLocalizedText(desktopActiveServiceFamily.description)}
                                     </p>
                                   </div>
@@ -767,20 +768,20 @@ const SiteLayout = () => {
                                         key={service.slug}
                                         to={service.localizedTo}
                                         title={getLocalizedText(service.bestFor)}
-                                        className="group flex items-center justify-between gap-2 rounded-[0.75rem] border border-white/8 bg-[#030914]/58 px-2.5 py-2 text-start transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"
+                                        className="site-services-family-link group flex items-center justify-between gap-2 rounded-[0.75rem] border border-white/8 bg-[#030914]/58 px-2.5 py-2 text-start transition hover:border-cyan-300/35 hover:bg-cyan-300/[0.07]"
                                         onClick={() => setActiveNavGroupId(null)}
                                         onFocus={() => prefetchRoute(service.localizedTo)}
                                         onMouseEnter={() => prefetchRoute(service.localizedTo)}
                                       >
                                         <span className="min-w-0">
-                                          <span className="block truncate text-[0.78rem] font-bold text-slate-100 group-hover:text-cyan-100">
+                                          <span className="site-services-family-link-title block truncate text-[0.78rem] font-bold text-slate-100 group-hover:text-cyan-100">
                                             {getLocalizedText(service.eyebrow)}
                                           </span>
-                                          <span className="mt-0.5 block truncate text-[10px] text-slate-500">
+                                          <span className="site-services-family-link-description mt-0.5 block truncate text-[10px] text-slate-500">
                                             {getLocalizedText(service.bestFor)}
                                           </span>
                                         </span>
-                                        <ArrowUpLeft className="h-3.5 w-3.5 shrink-0 text-slate-500 transition group-hover:text-cyan-200" />
+                                        <ArrowUpLeft className="site-services-family-link-icon h-3.5 w-3.5 shrink-0 text-slate-500 transition group-hover:text-cyan-200" />
                                       </Link>
                                     ))}
                                   </div>
@@ -1064,14 +1065,19 @@ const SiteLayout = () => {
                                             className={joinClasses(
                                               'site-mobile-service-tab flex min-h-[2.45rem] items-center justify-between gap-1.5 rounded-[0.72rem] border px-2 py-1.5 text-start transition',
                                               isFamilyOpen
-                                                ? 'border-teal-600 bg-gradient-to-br from-teal-700 to-slate-800 text-white shadow-[0_10px_24px_-18px_rgba(15,118,110,0.9)]'
+                                                ? 'border-teal-600 bg-teal-700 text-white shadow-md'
                                                 : 'border-slate-200 bg-white text-slate-800 shadow-sm hover:border-teal-300 hover:bg-teal-50',
                                             )}
                                           >
                                             <span className="site-mobile-service-tab-label min-w-0 truncate text-[0.72rem] font-bold">
                                               {getLocalizedText(family.label)}
                                             </span>
-                                            <span className="site-mobile-service-tab-count shrink-0 rounded-full border border-white/10 bg-white/[0.055] px-1.5 py-0.5 text-[10px] font-black text-cyan-100">
+                                            <span className={joinClasses(
+                                              'site-mobile-service-tab-count shrink-0 rounded-full border px-1.5 py-0.5 text-[10px] font-black',
+                                              isFamilyOpen
+                                                ? 'border-white/30 bg-white/20 text-white'
+                                                : 'border-slate-200 bg-slate-100 text-slate-600',
+                                            )}>
                                               {family.services.length}
                                             </span>
                                           </button>

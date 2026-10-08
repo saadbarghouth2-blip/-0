@@ -99,7 +99,7 @@ const ProjectCard = ({ project, linkMode = 'detail' }: ProjectCardProps) => {
       onKeyDown={handleKeyDown}
       onMouseEnter={prefetchProjectPage}
       onPointerDown={prefetchProjectPage}
-      className="project-card group relative flex w-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-sm transition-all duration-300 hover:border-teal-400 hover:shadow-md h-full"
+      className="project-card group relative flex w-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:border-teal-500 hover:shadow-lg h-full"
       role="link"
       tabIndex={0}
     >
@@ -140,29 +140,29 @@ const ProjectCard = ({ project, linkMode = 'detail' }: ProjectCardProps) => {
         )}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 sm:h-10 bg-gradient-to-t from-slate-950/40 to-transparent" />
 
-        {/* Category Pill Tag */}
-        <div className="absolute top-1.5 start-1.5 sm:top-2.5 sm:start-2.5 z-10 max-w-[85%]">
-          <span className="inline-block truncate rounded-full bg-white/90 px-2 py-0.5 text-[9px] sm:text-xs font-bold text-teal-800 shadow-sm backdrop-blur-md">
+        {/* High Contrast Category Pill Tag */}
+        <div className="absolute top-2 start-2 sm:top-3 sm:start-3 z-10 max-w-[85%]">
+          <span className="inline-block truncate rounded-full bg-teal-800 px-2.5 py-0.5 text-[9px] sm:text-xs font-black text-white shadow-md">
             {projectCategory}
           </span>
         </div>
       </div>
 
       {/* Card Content Body */}
-      <div className="flex min-w-0 flex-1 flex-col p-2 sm:p-4">
-        <h3 className="min-h-8 break-words font-display text-[11px] font-bold leading-4 text-slate-950 transition-colors duration-300 group-hover:text-teal-700 sm:min-h-0 sm:text-base sm:leading-snug">
+      <div className="flex min-w-0 flex-1 flex-col p-3 sm:p-4 md:p-5">
+        <h3 className="min-h-7 break-words font-display text-xs sm:text-base md:text-lg font-bold text-slate-900 transition-colors duration-300 group-hover:text-teal-700 sm:min-h-0 sm:leading-snug">
           {projectTitle}
         </h3>
 
-        <p className="mt-1 line-clamp-2 text-[9px] leading-4 text-slate-600 sm:text-xs sm:leading-relaxed">
+        <p className="mt-1 line-clamp-2 text-[10px] sm:text-xs md:text-sm leading-normal sm:leading-relaxed text-slate-600">
           {projectExcerpt}
         </p>
 
-        {/* Tech stack tags - hidden on mobile so 2 cards fit nicely without overflow */}
+        {/* Tech stack tags */}
         {project.techStack && project.techStack.length > 0 && (
-          <div className="mt-2 hidden sm:flex flex-wrap gap-1">
+          <div className="mt-2.5 hidden sm:flex flex-wrap gap-1">
             {project.techStack.slice(0, 2).map((tech, idx) => (
-              <span key={idx} className="inline-block truncate max-w-[120px] rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+              <span key={idx} className="inline-block truncate max-w-[120px] rounded-md bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700">
                 {tech}
               </span>
             ))}
@@ -170,9 +170,9 @@ const ProjectCard = ({ project, linkMode = 'detail' }: ProjectCardProps) => {
         )}
 
         {/* CTA Link */}
-        <div className="mt-auto pt-2 sm:pt-4">
+        <div className="mt-auto pt-3 sm:pt-4">
           <a
-            className="group/btn inline-flex min-h-7 sm:min-h-9 w-full items-center justify-between rounded-lg border border-teal-200/80 bg-teal-50/70 px-2 sm:px-3 text-[10px] sm:text-xs font-bold text-teal-800 transition-all duration-300 hover:border-teal-500 hover:bg-teal-600 hover:text-white"
+            className="group/btn inline-flex min-h-8 sm:min-h-10 w-full items-center justify-between rounded-xl border border-teal-200 bg-teal-50 px-2.5 sm:px-4 text-[10px] sm:text-xs md:text-sm font-bold text-teal-800 transition-all duration-300 hover:border-teal-600 hover:bg-teal-600 hover:text-white shadow-sm"
             href={primaryHref}
             onClick={(event) => {
               event.stopPropagation();
@@ -182,7 +182,7 @@ const ProjectCard = ({ project, linkMode = 'detail' }: ProjectCardProps) => {
             target={opensLive ? '_blank' : undefined}
           >
             <span className="truncate">{opensLive ? (isArabic ? 'فتح المشروع' : 'Open project') : (isArabic ? 'عرض التفاصيل' : 'View details')}</span>
-            <ArrowUpLeft className="h-3 w-3 shrink-0 ms-1 transition-transform duration-300 group-hover/btn:-translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+            <ArrowUpLeft className="h-3.5 w-3.5 shrink-0 ms-1 transition-transform duration-300 group-hover/btn:-translate-x-0.5 group-hover/btn:-translate-y-0.5" />
           </a>
         </div>
       </div>

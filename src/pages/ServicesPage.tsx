@@ -30,6 +30,7 @@ import {
 } from '../data/company';
 import { serviceFamilies, serviceLibrary } from '../data/serviceLibrary';
 import { pageImageShowcases } from '../data/pageImageShowcases';
+import { localImages } from '../data/localImageInventory';
 import { illustrationAssets } from '../lib/illustrationAssets';
 import { getPageSeoByPath } from '../lib/pageSeo';
 import { clientFacingText } from '../lib/repairText';
@@ -43,9 +44,97 @@ interface ServiceDepthItem {
   descriptionAr: string;
   descriptionEn: string;
   image: string;
-  imageAlt?: string;
+  imageAltAr: string;
+  imageAltEn: string;
   imageMode?: 'cover' | 'contain';
 }
+
+const visualServiceGroups = [
+  {
+    slug: 'company-websites',
+    titleAr: 'مواقع الشركات وصفحات الخدمات',
+    titleEn: 'Company websites and service pages',
+    descriptionAr: 'مواقع واضحة وسريعة تعرّف بالشركة وخدماتها وتحوّل الزيارة إلى خطوة تواصل مفهومة.',
+    descriptionEn: 'Clear, fast websites that present the company and turn visits into meaningful enquiries.',
+    image: {
+      ...localImages.geoinformatics,
+      altAr: 'واجهة موقع شركة متكاملة تعرض الهوية والتنقل والخدمات ودعوات التواصل',
+      altEn: 'Polished company website showing brand, navigation, services, and contact actions',
+    },
+  },
+  {
+    slug: 'ecommerce',
+    titleAr: 'المتاجر وتجارب المنتجات',
+    titleEn: 'E-commerce and product experiences',
+    descriptionAr: 'متاجر وكتالوجات وصفحات منتجات مرتبة لتسهيل الاكتشاف والمقارنة والشراء.',
+    descriptionEn: 'Stores, catalogs, and product pages designed for discovery, comparison, and purchase.',
+    image: {
+      ...localImages.reeqStore,
+      altAr: 'واجهة متجر إلكتروني تعرض المنتجات ومسار الشراء',
+      altEn: 'E-commerce storefront presenting products and the purchase journey',
+    },
+  },
+  {
+    slug: 'web-apps',
+    titleAr: 'المنصات والأنظمة الداخلية',
+    titleEn: 'Platforms and internal systems',
+    descriptionAr: 'لوحات تحكم وCRM وأدوات تشغيل تحول الإجراءات المعقدة إلى مسارات يومية أبسط.',
+    descriptionEn: 'Dashboards, CRM, and operational tools that simplify complex daily workflows.',
+    image: {
+      ...localImages.kidsGeoDashboard,
+      altAr: 'لوحة تحكم رقمية لتنظيم البيانات والمهام داخل منصة ويب',
+      altEn: 'Web platform dashboard for organizing data and operational tasks',
+    },
+  },
+  {
+    slug: 'ui-ux',
+    titleAr: 'UI/UX والهوية الرقمية',
+    titleEn: 'UI/UX and digital identity',
+    descriptionAr: 'تجربة استخدام وهوية بصرية ونظام تصميم يحافظ على الوضوح والاتساق عبر كل شاشة.',
+    descriptionEn: 'User experience, visual identity, and design systems that stay clear and consistent.',
+    image: {
+      ...localImages.smartQuran,
+      altAr: 'واجهة تطبيق متكاملة تعرض البطاقات والتنقل والحالات ونظام المكونات',
+      altEn: 'Complete application UI showing cards, navigation, states, and component system',
+    },
+  },
+  {
+    slug: 'seo',
+    titleAr: 'SEO والمحتوى والتحويل',
+    titleEn: 'SEO, content, and conversion',
+    descriptionAr: 'بنية بحث ومحتوى وصفحات تحويل تساعد الجمهور المناسب على الوصول واتخاذ القرار.',
+    descriptionEn: 'Search architecture, content, and conversion pages that help the right audience act.',
+    image: {
+      ...localImages.articleVisual,
+      altAr: 'مشهد رقمي يعبر عن تخطيط المحتوى وتحسين ظهوره في البحث',
+      altEn: 'Digital scene representing content planning and search visibility',
+    },
+  },
+  {
+    slug: 'ai-products',
+    titleAr: 'الذكاء الاصطناعي والأتمتة',
+    titleEn: 'AI products and automation',
+    descriptionAr: 'واجهات محادثة وتدفقات أتمتة ومنتجات ذكاء اصطناعي مرتبطة باحتياج العمل الحقيقي.',
+    descriptionEn: 'Chat interfaces, automation flows, and AI products tied to real business needs.',
+    image: {
+      ...localImages.askSaad,
+      altAr: 'واجهة مساعد ذكي للمحادثة وتنظيم الإجابات',
+      altEn: 'AI assistant interface for conversations and organized answers',
+    },
+  },
+  {
+    slug: 'maintenance',
+    titleAr: 'الصيانة والأداء والأمان',
+    titleEn: 'Maintenance, performance, and security',
+    descriptionAr: 'دعم ما بعد الإطلاق وتحسين السرعة والمراجعات التقنية للحفاظ على تجربة موثوقة.',
+    descriptionEn: 'Post-launch support, speed improvements, and technical reviews for lasting reliability.',
+    image: {
+      ...localImages.reviewMeeting,
+      altAr: 'جلسة مراجعة تقنية لمتابعة الأداء والصيانة بعد الإطلاق',
+      altEn: 'Technical review session for post-launch performance and maintenance',
+    },
+  },
+] as const;
 
 const faqItems = [
   {
@@ -129,7 +218,9 @@ const serviceDepth: ServiceDepthItem[] = [
     titleEn: 'Structure and messaging',
     descriptionAr: 'نبني هيكل الصفحة ونرتب الرسالة بحيث تكون واضحة ومقنعة من أول نظرة.',
     descriptionEn: 'We shape the page structure and the message so the offer feels clear and convincing from the first glance.',
-    image: '/images/kk.gif',
+    image: localImages.serviceStructure.src,
+    imageAltAr: localImages.serviceStructure.altAr,
+    imageAltEn: localImages.serviceStructure.altEn,
   },
   {
     icon: Cog,
@@ -137,7 +228,9 @@ const serviceDepth: ServiceDepthItem[] = [
     titleEn: 'Execution and polish',
     descriptionAr: 'نهتم بالتفاصيل الدقيقة، الحركة، التباعد، والأداء السريع جدًا للواجهة.',
     descriptionEn: 'We care about motion, spacing, micro-details, and a very fast interface that feels polished throughout.',
-    image: '/images/Cloud%20sync-bro.png',
+    image: localImages.designerPoster.src,
+    imageAltAr: localImages.designerPoster.altAr,
+    imageAltEn: localImages.designerPoster.altEn,
   },
   {
     icon: ShieldCheck,
@@ -145,7 +238,9 @@ const serviceDepth: ServiceDepthItem[] = [
     titleEn: 'Trust and presentation',
     descriptionAr: 'نضيف عناصر الثقة والمحتوى المنظم والشهادات وطرق العرض الأكثر احترافية.',
     descriptionEn: 'We layer in trust signals, structured content, testimonials, and a more professional presentation system.',
-    image: '/images/IMG-20251112-WA0012.jpg',
+    image: localImages.realPresentation.src,
+    imageAltAr: localImages.realPresentation.altAr,
+    imageAltEn: localImages.realPresentation.altEn,
   },
   {
     icon: Cpu,
@@ -154,7 +249,8 @@ const serviceDepth: ServiceDepthItem[] = [
     descriptionAr: 'نجهز البنية لتستوعب صفحات وخدمات وأنظمة إضافية مستقبلًا بدون تعقيد.',
     descriptionEn: 'We prepare the foundation to absorb more pages, services, and systems later without unnecessary complexity.',
     image: illustrationAssets.cloudSync.src,
-    imageAlt: illustrationAssets.cloudSync.alt,
+    imageAltAr: 'رسم يوضح بنية سحابية قابلة للتوسع وتنظيم البيانات',
+    imageAltEn: illustrationAssets.cloudSync.alt,
     imageMode: 'contain',
   },
 ];
@@ -241,7 +337,7 @@ const ServicesPage = () => {
     description: isArabic
       ? 'اختر خدمة رقمية تساعد شركتك على عرض قيمتها بوضوح، وبناء ثقة أسرع مع الزائر، وتحويل الاهتمام إلى طلب تواصل أو شراء.'
       : 'Choose a digital service that helps your company present its value clearly, build visitor trust faster, and turn interest into contact or purchase.',
-    heroWord: isArabic ? 'الخدمات' : 'SERVICES',
+    heroWord: isArabic ? 'الخدمات' : 'Web, Software & AI Services for Gulf Companies',
     heroSubtitle: isArabic ? 'تصميم واضح، تنفيذ متين، وقرارات رقمية قابلة للقياس.' : 'Clear design, solid execution, and measurable digital decisions.',
     coreDescription: isArabic
       ? 'كل مسار مصمم ليجعل عرض شركتك أوضح، وانطباعها أقوى، وتجربة زائرها أسهل في الفهم واتخاذ القرار.'
@@ -286,21 +382,7 @@ const ServicesPage = () => {
       transition={{ duration: 0.6 }}
       {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '-10%' } } : {})}
     >
-      <div className={`surface-card-strong relative flex h-full min-h-0 flex-col justify-center overflow-hidden rounded-[1.25rem] border border-white/20 p-3.5 glass-card shadow-[0_-10px_40px_rgba(0,0,0,0.5)] md:min-h-[300px] md:rounded-[2rem] md:p-8 ${index === 0 ? '' : 'md:-mt-3'}`}>
-        <div className="absolute right-0 top-0 z-0 hidden h-full w-1/2 overflow-hidden lg:block">
-          <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#0b1220] via-[#0b1220]/80 to-transparent" />
-          {item.imageMode === 'contain' ? (
-            <div className="absolute inset-6 rounded-[2.5rem] border border-cyan-400/20 bg-gradient-to-br from-cyan-400/12 via-[#07111d] to-transparent shadow-[0_25px_60px_rgba(8,145,178,0.18)]" />
-          ) : null}
-          <motion.img
-            alt={item.imageAlt ?? item.titleEn}
-            animate={item.imageMode === 'contain' ? { y: [0, -8, 0], scale: [1, 1.03, 1] } : undefined}
-            className={`h-full w-full ${item.imageMode === 'contain' ? 'object-contain p-10 opacity-95 drop-shadow-[0_25px_45px_rgba(45,212,191,0.18)]' : 'scale-105 object-cover opacity-80 saturate-105'}`}
-            src={item.image}
-            transition={item.imageMode === 'contain' ? { duration: 6.8, repeat: Infinity, ease: 'easeInOut' } : undefined}
-          />
-        </div>
-
+      <div className={`surface-card-strong relative grid h-full min-h-0 overflow-hidden rounded-[1.25rem] border border-white/20 p-3.5 glass-card shadow-[0_-10px_40px_rgba(0,0,0,0.5)] md:min-h-[300px] md:grid-cols-[minmax(0,1.25fr)_minmax(250px,0.75fr)] md:items-center md:gap-6 md:rounded-[2rem] md:p-8 ${index === 0 ? '' : 'md:-mt-3'}`}>
         <div className="relative z-10 max-w-2xl">
           <p className="pointer-events-none absolute -left-2 -top-4 select-none font-display text-4xl font-bold text-white/5 md:-left-4 md:-top-8 md:text-8xl">
             0{index + 1}
@@ -314,27 +396,18 @@ const ServicesPage = () => {
           <p className="text-[11px] font-medium leading-5 text-slate-300 md:text-base md:leading-8">
             {copyLegacyPair(item.descriptionAr, item.descriptionEn)}
           </p>
-          <motion.div
-            animate={item.imageMode === 'contain' ? { y: [0, -6, 0] } : undefined}
-            className={`relative mt-3 overflow-hidden rounded-xl border p-1.5 shadow-[0_20px_60px_rgba(8,145,178,0.14)] lg:hidden md:mt-6 md:rounded-[1.5rem] md:p-3 ${
-              item.imageMode === 'contain'
-                ? 'border-cyan-400/20 bg-gradient-to-br from-cyan-400/10 via-[#07111d] to-transparent'
-                : 'border-white/10 bg-[#09111c]/80'
-            }`}
-            transition={item.imageMode === 'contain' ? { duration: 6.2, repeat: Infinity, ease: 'easeInOut' } : undefined}
-          >
-            <div className="absolute inset-3 rounded-[1.5rem] bg-gradient-to-br from-white/5 to-transparent" />
-            <img
-              alt={item.imageAlt ?? item.titleEn}
-              className={`relative z-10 w-full ${
-                item.imageMode === 'contain'
-                  ? 'h-[82px] object-contain drop-shadow-[0_20px_40px_rgba(45,212,191,0.18)] md:h-[160px]'
-                  : 'h-[82px] rounded-lg object-cover md:h-[150px]'
-              }`}
-              src={item.image}
-            />
-          </motion.div>
         </div>
+        <figure className={`relative mt-3 overflow-hidden rounded-xl border p-1.5 shadow-[0_20px_60px_rgba(8,145,178,0.14)] md:mt-0 md:rounded-[1.5rem] md:p-3 ${item.imageMode === 'contain' ? 'border-cyan-400/20 bg-gradient-to-br from-cyan-400/10 via-[#07111d] to-transparent' : 'border-white/10 bg-[#09111c]/80'}`}>
+          <img
+            alt={copyLegacyPair(item.imageAltAr, item.imageAltEn)}
+            className={`relative z-10 w-full ${item.imageMode === 'contain' ? 'h-[96px] object-contain drop-shadow-[0_20px_40px_rgba(45,212,191,0.18)] md:h-[190px]' : 'h-[96px] rounded-lg object-cover md:h-[190px]'}`}
+            decoding="async"
+            height="760"
+            loading="lazy"
+            src={item.image}
+            width="1200"
+          />
+        </figure>
       </div>
     </motion.div>
   );
@@ -435,8 +508,9 @@ const ServicesPage = () => {
         <Link
           className="mt-auto inline-flex items-center gap-1.5 md:gap-2 pt-3 md:pt-4 text-[10px] md:text-xs font-semibold text-cyan-100 transition-colors hover:text-white"
           to={localizePath(`/services/${service.slug}`)}
+          aria-label={isArabic ? `استكشف خدمة ${copyPair(service.title)}` : `Explore ${copyPair(service.title)}`}
         >
-          {isArabic ? 'مزيد' : 'More'}
+          {isArabic ? `تفاصيل ${copyPair(service.title)}` : `Explore ${copyPair(service.title)}`}
           <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4" />
         </Link>
       </motion.article>
@@ -499,6 +573,7 @@ const ServicesPage = () => {
       <div className="mobile-ornament absolute top-[60%] left-[-10%] h-[600px] w-[600px] rounded-full bg-violet-700/20 blur-[150px] pointer-events-none -z-10" />
 
       <PageHero
+        className="services-page-hero theme-on-media"
         description={content.description}
         kicker={content.coreKicker}
         metrics={[
@@ -511,41 +586,6 @@ const ServicesPage = () => {
         secondaryAction={{ label: isArabic ? 'شاهد الأعمال' : 'View projects', to: localizePath('/projects') }}
         title={content.heroWord}
       />
-
-        <div className="hidden">
-        <div className="absolute inset-0 z-0 select-none pointer-events-none opacity-20 mix-blend-screen mix-blend-overlay">
-          <img
-            src="/images/WhatsApp%20Image%202026-02-15%20at%2005.05.18%20(3).jpeg"
-            className="w-full h-full object-cover"
-            alt="Office Background"
-          />
-        </div>
-
-        <motion.div
-          initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
-          className="relative z-10 text-center w-full select-none"
-        >
-          <h2
-            className="w-full px-4 font-display text-[1.95rem] font-bold uppercase leading-none tracking-[-0.05em] sm:text-[4rem] md:text-[10rem] md:leading-[0.8] lg:text-[14rem]"
-            style={{
-              backgroundImage: `url('/images/ChatGPT%20Image%20Apr%208%2C%202026%2C%2011_26_40%20AM.png')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              WebkitBackgroundClip: 'text',
-              filter: 'drop-shadow(0px 20px 30px rgba(0,0,0,0.5))',
-            }}
-          >
-            {content.heroWord}
-          </h2>
-          <p className="mt-2.5 px-4 text-[13px] font-medium tracking-wide text-cyan-200 sm:text-base md:mt-6 md:px-0 md:text-3xl">
-            {content.heroSubtitle}
-          </p>
-        </motion.div>
-      </div>
 
       <div className="mx-auto max-w-7xl px-4 md:px-8 relative z-10">
         <div className="mb-10 md:mb-20">
@@ -561,6 +601,61 @@ const ServicesPage = () => {
             {services.map((service, index) => renderCoreServiceCard(service, index))}
           </div>
         </div>
+
+        <section aria-labelledby="visual-service-hub-title" className="mb-12 md:mb-20">
+          <div className="max-w-3xl">
+            <p className="section-kicker mb-3 inline-flex">
+              {isArabic ? 'حلول متكاملة للشركات' : 'Integrated business solutions'}
+            </p>
+            <h2 id="visual-service-hub-title" className="font-display text-2xl font-black leading-tight text-white md:text-4xl">
+              {isArabic ? 'كل ما تحتاجه شركتك لبناء حضور رقمي أقوى' : 'Everything your company needs for a stronger digital presence'}
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300 md:text-base md:leading-8">
+              {isArabic
+                ? 'من تصميم المواقع والمتاجر إلى الأنظمة والذكاء الاصطناعي وSEO، نرتب الخدمات في مسارات واضحة تناسب الشركات في السعودية والإمارات ودول الخليج.'
+                : 'From websites and e-commerce to software systems, AI, and SEO, we organize services into clear paths for companies across Saudi Arabia, the UAE, and the Gulf.'}
+            </p>
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {visualServiceGroups.map((group) => (
+              <article
+                key={group.slug}
+                className="group overflow-hidden rounded-[1.15rem] border border-white/10 bg-[#0b1725] shadow-[0_18px_42px_-30px_rgba(34,211,238,0.48)] transition-colors hover:border-cyan-300/35"
+              >
+                <Link
+                  className="flex h-full flex-col focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
+                  to={localizePath(`/services/${group.slug}`)}
+                  aria-label={`${isArabic ? group.titleAr : group.titleEn} — ${isArabic ? 'اعرف تفاصيل الخدمة' : 'View service details'}`}
+                >
+                  <div className="aspect-[16/10] overflow-hidden bg-slate-900">
+                    <img
+                      src={group.image.src}
+                      alt={isArabic ? group.image.altAr : group.image.altEn}
+                      width="640"
+                      height="400"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.035]"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col p-3.5 md:p-4">
+                    <h3 className="font-display text-[0.98rem] font-bold leading-6 text-white md:text-lg">
+                      {isArabic ? group.titleAr : group.titleEn}
+                    </h3>
+                    <p className="mt-1.5 line-clamp-3 text-[0.72rem] leading-5 text-slate-300 md:text-sm md:leading-6">
+                      {isArabic ? group.descriptionAr : group.descriptionEn}
+                    </p>
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-3 text-xs font-bold text-cyan-200">
+                      {isArabic ? 'تفاصيل الخدمة' : 'Service details'}
+                      <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    </span>
+                  </div>
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <div className="mb-12 md:mb-20 lg:mb-32">
           <div className="grid gap-4 md:gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
@@ -714,10 +809,7 @@ const ServicesPage = () => {
             kicker={content.depthKicker}
             title={content.depthTitle}
           />
-          <div className="mobile-2-cols mt-6 grid grid-cols-2 gap-2.5 md:hidden">
-            {serviceDepth.map((item, index) => renderServiceDepthCard(item, index))}
-          </div>
-          <div className="mt-16 hidden h-auto space-y-0 md:block">
+          <div className="mobile-2-cols mt-6 grid grid-cols-2 gap-2.5 md:mt-16 md:block md:h-auto md:space-y-0">
             {serviceDepth.map((item, index) => renderServiceDepthCard(item, index))}
           </div>
         </div>
@@ -745,9 +837,13 @@ const ServicesPage = () => {
             className="relative hidden h-[800px] overflow-hidden rounded-[3rem] border border-white/20 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.16),transparent_42%),linear-gradient(145deg,rgba(8,17,30,0.96),rgba(6,9,15,0.98))] p-8 shadow-2xl lg:block"
           >
             <img
-              src="/images/UI%20UX%20Design%20Website%20Development%20Pop%20up-loop.gif"
+              src={localImages.interfaceScene.src}
               className="relative z-10 h-full w-full rounded-[2.2rem] object-contain p-5 drop-shadow-[0_30px_70px_rgba(45,212,191,0.22)]"
-              alt="Service structure illustration"
+              alt={isArabic ? localImages.interfaceScene.altAr : localImages.interfaceScene.altEn}
+              width="1024"
+              height="1024"
+              loading="lazy"
+              decoding="async"
             />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#06090f]/86 via-transparent to-[#06090f]/24" />
             <div className="pointer-events-none absolute inset-6 rounded-[2.4rem] border border-cyan-300/12 bg-white/[0.025]" />
@@ -846,37 +942,6 @@ const ServicesPage = () => {
               {content.faqCta}
               <ArrowUpRight className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
             </Link>
-            <motion.div
-              initial={isMobile ? false : { opacity: 0, y: 24 }}
-              {...(!isMobile ? { whileInView: { opacity: 1, y: 0 }, viewport: { once: true } } : {})}
-              transition={{ delay: 0.2 }}
-              className="hidden"
-            >
-              <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative w-full max-w-[280px] overflow-hidden rounded-[1.8rem] border border-cyan-400/20 bg-[#09111c]/90 p-3 shadow-[0_30px_70px_rgba(0,0,0,0.42)] backdrop-blur-2xl md:max-w-[300px] md:rounded-[2.4rem] md:p-4"
-              >
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(45,212,191,0.12),transparent_55%)]" />
-                  <div className="relative rounded-[1.5rem] border border-white/8 bg-gradient-to-br from-cyan-400/8 via-transparent to-violet-400/10 p-3 md:rounded-[2rem] md:p-4">
-                  <img
-                    src={illustrationAssets.coding.src}
-                    alt={illustrationAssets.coding.alt}
-                      className="h-[150px] w-full object-contain [filter:saturate(0.88)_brightness(0.93)_contrast(1.05)] md:h-[180px]"
-                  />
-                </div>
-                <div className={`relative mt-4 ${isArabic ? 'text-right' : 'text-left'}`}>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-200/85">
-                    {isArabic ? 'مشهد تنفيذي' : 'Execution View'}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">
-                    {isArabic
-                      ? 'لقطة سريعة من بيئة التنفيذ داخل فريق التطوير.'
-                      : 'A quick glimpse into the execution layer inside our build workflow.'}
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
           </div>
 
           <div className="min-w-0 grid gap-3 md:grid-cols-2 md:gap-4">

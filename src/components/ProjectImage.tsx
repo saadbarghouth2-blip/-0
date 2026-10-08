@@ -9,6 +9,8 @@ interface ProjectImageProps {
   loading?: 'eager' | 'lazy';
   sizes?: string;
   fetchPriority?: 'high' | 'low' | 'auto';
+  width?: number;
+  height?: number;
 }
 
 const ProjectImage = ({
@@ -20,6 +22,8 @@ const ProjectImage = ({
   loading = 'lazy',
   sizes,
   fetchPriority,
+  width,
+  height,
 }: ProjectImageProps) => {
   const [hasFailed, setHasFailed] = useState(false);
 
@@ -61,6 +65,8 @@ const ProjectImage = ({
       loading={loading}
       onError={handleError}
       src={sources[0]}
+      {...(width ? { width } : {})}
+      {...(height ? { height } : {})}
       {...(sizes ? { sizes } : {})}
       {...(fetchPriority ? { fetchPriority } : {})}
     />

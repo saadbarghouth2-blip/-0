@@ -50,6 +50,8 @@ const PageImageShowcaseSection = ({ showcase }: PageImageShowcaseProps) => {
           className={`${className} transition-transform duration-700 group-hover:scale-[1.015]`}
           loading="lazy"
           src={image.src}
+          width={1200}
+          height={800}
         />
       </motion.figure>
     );

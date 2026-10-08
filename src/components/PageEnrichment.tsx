@@ -84,6 +84,8 @@ export const RichPageSection = ({
           alt={getCopy(media.alt, lang)}
           className="h-[220px] w-full rounded-[1.25rem] object-cover sm:h-[260px] md:h-[340px] md:rounded-[2rem]"
           src={media.src}
+          width={media.id === 'services-hero-product' ? 1400 : undefined}
+          height={media.id === 'services-hero-product' ? 934 : undefined}
         />
       </motion.div>
     </div>
@@ -112,6 +114,8 @@ const MediaStoryBlock = ({
           alt={getCopy(media.alt, lang)}
           className="h-[220px] min-h-0 w-full rounded-[1.25rem] object-cover sm:h-[260px] md:h-full md:min-h-[260px] md:rounded-[1.6rem]"
           src={media.src}
+          width={media.id === 'services-story-code' ? 1400 : undefined}
+          height={media.id === 'services-story-code' ? 935 : undefined}
         />
       </motion.div>
       <motion.div variants={itemVariants} whileHover={interactiveHover} className="surface-card-strong interactive-card motion-sheen flex flex-col justify-center rounded-[1.35rem] p-4 md:rounded-[2.2rem] md:p-8">

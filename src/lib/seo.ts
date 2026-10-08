@@ -16,6 +16,8 @@ import {
   SITE_DESCRIPTION_EN,
   SITE_NAME,
   SITE_NAME_AR,
+  SITE_SLOGAN_AR,
+  SITE_SLOGAN_EN,
   SITE_TITLE_SUFFIX,
   SITE_URL,
 } from './siteConfig';
@@ -264,12 +266,13 @@ export const renderSeoBlock = (input: PageSeoInput) => {
 
 export const buildOrganizationSchema = (lang: Language): JsonLdObject => ({
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': 'Organization',
   '@id': `${SITE_URL}#organization`,
   name: SITE_NAME_AR,
   alternateName: [SITE_ALTERNATE_NAME, 'نطق.site', 'xn--2gbwk.site'],
   url: SITE_URL,
   description: getSiteDescription(lang),
+  slogan: lang === 'ar' ? SITE_SLOGAN_AR : SITE_SLOGAN_EN,
   email: ORGANIZATION_INFO.email,
   telephone: ORGANIZATION_INFO.phone,
   logo: toAbsoluteUrl(DEFAULT_BRAND_IMAGE),
@@ -283,7 +286,15 @@ export const buildOrganizationSchema = (lang: Language): JsonLdObject => ({
     addressLocality: ORGANIZATION_INFO.city,
     addressCountry: ORGANIZATION_INFO.country,
   },
-  areaServed: ['Egypt', 'Saudi Arabia', 'United Arab Emirates', 'Middle East', 'North Africa'],
+  areaServed: [
+    'Egypt',
+    'Saudi Arabia',
+    'United Arab Emirates',
+    'Kuwait',
+    'Qatar',
+    'Bahrain',
+    'Oman',
+  ],
   knowsAbout: [
     'Web design',
     'Web development',
@@ -291,6 +302,13 @@ export const buildOrganizationSchema = (lang: Language): JsonLdObject => ({
     'Landing pages',
     'Corporate websites',
     'E-commerce',
+    'Software development',
+    'Web applications',
+    'CRM systems',
+    'UI/UX design',
+    'Artificial intelligence products',
+    'Business automation',
+    'Website performance and maintenance',
   ],
   sameAs: [...ORGANIZATION_INFO.sameAs],
 });
@@ -301,6 +319,7 @@ export const buildWebsiteSchema = (lang: Language): JsonLdObject => ({
   '@id': `${SITE_URL}#website`,
   name: SITE_NAME,
   alternateName: [SITE_ALTERNATE_NAME, 'نطق.site', 'xn--2gbwk.site'],
+  description: getSiteDescription(lang),
   url: SITE_URL,
   inLanguage: lang,
   publisher: {

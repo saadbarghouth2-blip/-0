@@ -850,14 +850,14 @@ const HomePage = () => {
                   <span className="text-gradient animate-float inline-block pb-2">{text('نُطق', 'Notaq')}</span>
                 </h1>
                 <p className="font-display text-lg font-bold leading-relaxed text-cyan-100 sm:text-2xl md:text-3xl">
-                  {text('نصمم حضورًا رقميًا يليق بشركتك', 'Digital experiences worthy of your business')}
+                  {text('نُطق — نطلق طريقًا قويًا', 'Notaq — Launching a stronger digital path')}
                 </p>
               </div>
 
               <p className="max-w-2xl text-base font-medium leading-8 text-slate-100 md:text-xl md:leading-9">
                 {text(
-                  'احصل على موقع أو صفحة خدمة أو تجربة رقمية تخدم شركتك في مصر والخليج برسالة أوضح وثقة أعلى.',
-                  'Get a website, service page, or digital experience for your business across Egypt and the Gulf with clearer positioning and stronger trust.',
+                  'شركة برمجة وحلول رقمية نصمم المواقع والمتاجر ونطور المنصات والأنظمة والذكاء الاصطناعي للشركات في مصر والخليج.',
+                  'A software and digital solutions company building websites, e-commerce, platforms, systems, and AI products for businesses across Egypt and the Gulf.',
                 )}
               </p>
               </div>

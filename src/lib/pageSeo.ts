@@ -86,11 +86,11 @@ const createListSchema = (
 const createHomeSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
   const title = isArabic
-    ? 'نُطق | مواقع شركات وصفحات خدمات ومتاجر إلكترونية في مصر والخليج'
-    : 'Notaq | Websites, service pages, and e-commerce for Egypt and the Gulf';
+    ? 'شركة برمجة وتصميم مواقع في الخليج | نُطق'
+    : 'Gulf Web Design & Software Company | Notaq';
   const description = isArabic
-    ? 'نُطق وكالة رقمية في القاهرة تبني مواقع شركات وصفحات خدمات ومتاجر إلكترونية سريعة وواضحة ومهيأة للظهور وخدمة شركات في مصر والخليج.'
-    : 'Notaq builds fast, clear, SEO-ready company websites, service pages, and e-commerce experiences for businesses across Egypt and the Gulf.';
+    ? 'نُطق — نطلق طريقًا قويًا. نصمم مواقع ومتاجر إلكترونية ونطور منصات وأنظمة وحلول ذكاء اصطناعي وأتمتة وSEO للشركات في السعودية والإمارات ودول الخليج.'
+    : 'Notaq — launching a stronger digital path with websites, e-commerce, software platforms, AI automation, UX, and SEO for companies across the Gulf.';
 
   return {
     title,
@@ -102,6 +102,10 @@ const createHomeSeo = (lang: Language): PageSeoInput => {
           'نُطق',
           'نطق',
           'تصميم مواقع',
+          'شركة برمجة في الخليج',
+          'شركة تصميم مواقع في الخليج',
+          'شركة برمجة في السعودية',
+          'شركة تصميم مواقع في الإمارات',
           'تطوير مواقع شركات',
           'صفحات خدمات',
           'متاجر إلكترونية',
@@ -168,18 +172,31 @@ const createAboutSeo = (lang: Language): PageSeoInput => {
 
 const createServicesSeo = (lang: Language): PageSeoInput => {
   const isArabic = lang === 'ar';
+  const serviceDestinations = [
+    { slug: 'company-websites', ar: 'مواقع الشركات وصفحات الخدمات', en: 'Company websites and service pages' },
+    { slug: 'ecommerce', ar: 'المتاجر وتجارب المنتجات', en: 'E-commerce and product experiences' },
+    { slug: 'web-apps', ar: 'المنصات والأنظمة الداخلية', en: 'Platforms and internal systems' },
+    { slug: 'ui-ux', ar: 'تصميم UI/UX والهوية الرقمية', en: 'UI/UX and digital identity' },
+    { slug: 'seo', ar: 'SEO والمحتوى والتحويل', en: 'SEO, content, and conversion' },
+    { slug: 'ai-products', ar: 'الذكاء الاصطناعي والأتمتة', en: 'AI products and automation' },
+    { slug: 'maintenance', ar: 'الصيانة والأداء والأمان', en: 'Maintenance, performance, and security' },
+  ];
   const title = isArabic
-    ? 'خدمات نُطق | مواقع شركات وصفحات خدمات وتجارب رقمية'
-    : 'Notaq Services | Company websites, service pages, and digital experiences';
+    ? 'خدمات البرمجة وتصميم المواقع للشركات في الخليج | نُطق'
+    : 'Web, Software & AI Services for Gulf Companies | Notaq';
   const description = isArabic
-    ? 'اكتشف خدمات نُطق في مواقع الشركات، صفحات الخدمات، المتاجر الإلكترونية، والواجهات السريعة المهيأة للظهور والمناسبة لشركات في مصر والخليج.'
-    : 'Explore Notaq services for company websites, service pages, e-commerce, and fast SEO-ready interfaces built for Egypt and Gulf markets.';
+    ? 'خدمات نُطق للشركات في الخليج: تصميم المواقع والمتاجر، تطوير المنصات والأنظمة، UI/UX، SEO والمحتوى، الذكاء الاصطناعي والأتمتة، الصيانة والأداء.'
+    : 'Explore Notaq services for Gulf companies: websites, e-commerce, platforms, internal systems, UI/UX, SEO, content, AI automation, maintenance, and performance.';
 
   return {
     title,
     description,
     path: '/services',
     lang,
+    image: '/images/UI%20UX%20Design%20Website%20Development%20Pop%20up-poster.png',
+    imageAlt: isArabic
+      ? 'تصميم وتطوير واجهات ومواقع وخدمات رقمية من نُطق'
+      : 'Notaq website, interface, and digital service design',
     keywords: isArabic
       ? ['خدمات تصميم مواقع', 'صفحات خدمات', 'متاجر إلكترونية', 'واجهات رقمية', 'SEO']
       : ['web design services', 'service pages', 'e-commerce services', 'SEO-ready development'],
@@ -187,12 +204,9 @@ const createServicesSeo = (lang: Language): PageSeoInput => {
       createWebPageSchema('/services', lang, title, description, 'CollectionPage'),
       createListSchema(
         isArabic ? 'خدمات نُطق الرقمية' : 'Notaq digital services',
-        services.map((service) => ({
-          name: isArabic ? service.title : service.englishTitle ?? service.title,
-          url: getLocalizedAbsoluteUrl('/services', lang),
-          description: isArabic
-            ? service.description
-            : service.englishDescription ?? service.description,
+        serviceDestinations.map((service) => ({
+          name: isArabic ? service.ar : service.en,
+          url: getLocalizedAbsoluteUrl(`/services/${service.slug}`, lang),
         })),
       ),
       buildBreadcrumbSchema(
@@ -360,7 +374,16 @@ const createContactSeo = (lang: Language): PageSeoInput => {
           email: portfolioProfile.email,
           telephone: portfolioProfile.phone,
           availableLanguage: ['Arabic', 'English'],
-          areaServed: ['Egypt', 'Saudi Arabia', 'United Arab Emirates', 'Middle East'],
+          areaServed: [
+            'Egypt',
+            'Saudi Arabia',
+            'United Arab Emirates',
+            'Kuwait',
+            'Qatar',
+            'Bahrain',
+            'Oman',
+            'Middle East',
+          ],
         },
       },
       buildBreadcrumbSchema(

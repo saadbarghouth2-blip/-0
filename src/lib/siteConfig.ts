@@ -35,11 +35,13 @@ export const SITE_NAME = SITE_NAME_AR;
 export const SITE_ALTERNATE_NAME = SITE_NAME_EN;
 export const SITE_NAME_COMBINED = `${SITE_NAME_AR} | ${SITE_NAME_EN}`;
 export const SITE_TITLE_SUFFIX = SITE_NAME_COMBINED;
+export const SITE_SLOGAN_AR = 'نُطق — نطلق طريقًا قويًا';
+export const SITE_SLOGAN_EN = 'Notaq — Launching a stronger digital path';
 
 export const SITE_DESCRIPTION_AR =
-  'نُطق وكالة رقمية في القاهرة تخدم شركات في مصر والخليج عبر مواقع شركات، صفحات خدمات، ومتاجر إلكترونية سريعة وواضحة ومهيأة للظهور وبناء الثقة.';
+  'نُطق — نطلق طريقًا قويًا. شركة برمجة وحلول رقمية تخدم شركات مصر والخليج عبر تصميم المواقع والمتاجر الإلكترونية وتطوير المنصات والأنظمة والذكاء الاصطناعي وSEO.';
 export const SITE_DESCRIPTION_EN =
-  'Notaq is a Cairo-based digital agency serving businesses across Egypt and the Gulf with fast, clear, SEO-ready company websites, service pages, and e-commerce experiences.';
+  'Notaq — launching a stronger digital path through websites, e-commerce, software platforms, AI automation, UX, and SEO for businesses across Egypt and the Gulf.';
 
 export const DEFAULT_SEO_IMAGE = BRAND_OG_IMAGE_SRC;
 export const DEFAULT_SEO_IMAGE_ALT = BRAND_OG_IMAGE_ALT;

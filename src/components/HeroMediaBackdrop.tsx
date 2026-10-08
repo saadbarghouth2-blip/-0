@@ -24,6 +24,7 @@ const HeroMediaBackdrop = ({ media, fallbackMedia, isArabic }: HeroMediaBackdrop
         initial={{ scale: 1.12 }}
         loading="eager"
         src={fallbackMedia.src}
+        {...(fallbackMedia.id === 'services-hero-product' ? { width: 1400, height: 934 } : {})}
         transition={{ duration: 1.5, ease: 'easeOut' }}
       />
 
