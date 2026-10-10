@@ -96,7 +96,7 @@ export const EnhancedStatsDashboard: React.FC<EnhancedStatsDashboardProps> = ({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="mb-8 text-center md:mb-12"
+            className="section-heading-rail mb-8 text-center md:mb-12"
           >
             {title && <h2 className="text-4xl md:text-5xl font-bold mb-4">{text(title)}</h2>}
             {subtitle && <p className="text-lg text-slate-400 max-w-2xl mx-auto">{text(subtitle)}</p>}

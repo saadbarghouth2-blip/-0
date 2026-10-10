@@ -104,11 +104,11 @@ const ProjectCard = ({ project, linkMode = 'detail' }: ProjectCardProps) => {
       tabIndex={0}
     >
       {/* Card Image Header */}
-      <div className="relative aspect-[16/9] shrink-0 overflow-hidden border-b border-slate-100 bg-slate-900 sm:aspect-[16/10]">
+      <div className="project-card-media relative aspect-[16/9] shrink-0 overflow-hidden border-b border-slate-100 bg-slate-900 sm:aspect-[16/10]">
         {hasLocalCover ? (
           <ProjectImage
             alt={projectTitle}
-            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            className="project-card-cover h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
             fallbackSrc={project.thumbnailImage}
             fallbacks={project.screenshots}
             loading="lazy"
@@ -138,7 +138,8 @@ const ProjectCard = ({ project, linkMode = 'detail' }: ProjectCardProps) => {
             </div>
           </>
         )}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 sm:h-10 bg-gradient-to-t from-slate-950/40 to-transparent" />
+        {hasLocalCover ? <div className="project-card-image-tone pointer-events-none absolute inset-0" /> : null}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-6 bg-gradient-to-t from-slate-950/55 to-transparent sm:h-10" />
 
         {/* High Contrast Category Pill Tag */}
         <div className="absolute top-2 start-2 sm:top-3 sm:start-3 z-10 max-w-[85%]">

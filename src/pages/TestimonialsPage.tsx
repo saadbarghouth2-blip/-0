@@ -399,7 +399,7 @@ const TestimonialsPage = () => {
         </AnimatePresence>
 
         {/* Corporate Trust Cards */}
-        <div className="my-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="decision-path-grid my-10 grid grid-cols-2 gap-3 md:my-14 md:grid-cols-2 md:gap-5 lg:grid-cols-4">
           {proofLayers.map((layer, index) => (
             <motion.div
               key={index}
@@ -407,7 +407,7 @@ const TestimonialsPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="surface-card rounded-[1.6rem] p-5 border border-white/10 flex flex-col justify-between bg-white/[0.01]"
+              className="decision-path-step surface-card flex flex-col justify-between rounded-[1.35rem] border border-white/10 bg-white/[0.01] p-4 md:rounded-[1.6rem] md:p-5"
             >
               <div>
                 <div className="inline-flex rounded-xl bg-cyan-400/10 p-2 text-cyan-300 mb-4">

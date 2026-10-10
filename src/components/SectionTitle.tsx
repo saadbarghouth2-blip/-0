@@ -14,7 +14,7 @@ const SectionTitle = ({
   const alignment = align === 'center' ? 'text-center mx-auto' : '';
 
   return (
-    <div className={`max-w-3xl space-y-4 md:space-y-5 ${alignment}`}>
+    <div className={`section-heading-rail max-w-3xl space-y-4 md:space-y-5 ${alignment}`}>
       <p className={`section-kicker ${align === 'center' ? 'mx-auto' : ''}`}>{kicker}</p>
       <h2 className="font-display text-[1.7rem] font-semibold leading-[1.12] tracking-tight text-foreground sm:text-[2.05rem] md:text-5xl md:leading-tight">
         {title}

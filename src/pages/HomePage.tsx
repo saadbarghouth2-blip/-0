@@ -778,7 +778,7 @@ const HomePage = () => {
       viewport={{ once: true }}
       transition={{ delay: index * 0.12 }}
       whileHover={{ y: -8 }}
-      className={`home-card relative flex min-h-[190px] flex-col justify-between overflow-hidden rounded-[1.4rem] border bg-gradient-to-b p-3.5 glass-card group ${step.color} to-transparent md:min-h-[280px] md:rounded-[2rem] md:p-6`}
+      className={`decision-path-step home-card relative flex min-h-[190px] flex-col justify-between overflow-hidden rounded-[1.4rem] border bg-gradient-to-b p-3.5 glass-card group ${step.color} to-transparent md:min-h-[280px] md:rounded-[2rem] md:p-6`}
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div>
@@ -1295,11 +1295,11 @@ const HomePage = () => {
               kicker={text('مسارات تنفيذ واضحة', 'Clear Delivery Tracks')}
               title={text('اختر شكل الحضور الذي تحتاجه شركتك', 'Choose the presence your company needs')}
             />
-            <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.035] p-5 md:rounded-[2.2rem] md:p-7">
+            <div className="decision-path-panel rounded-[1.6rem] border border-white/10 bg-white/[0.035] p-5 md:rounded-[2.2rem] md:p-7">
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-amber-200/80">Visitor Journey</p>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="decision-path-grid mt-5 grid gap-3 sm:grid-cols-2">
                 {clientJourney.map((step) => (
-                  <div key={step.phase} className="rounded-[1.1rem] border border-white/8 bg-[#06090f]/55 p-4">
+                  <div key={step.phase} className="decision-path-step rounded-[1.1rem] border border-white/8 bg-[#06090f]/55 p-4">
                     <div className="flex items-center gap-3">
                       <span className="font-display text-lg font-black text-cyan-300">{step.phase}</span>
                       <h3 className="text-sm font-bold text-white">{text(step.title.ar, step.title.en)}</h3>
@@ -1370,7 +1370,7 @@ const HomePage = () => {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* HORIZONTAL PROCESS CARDS — Deep Dive Info               */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <section className="section-shell py-10 md:py-20">
+      <section className="section-shell process-sequence py-10 md:py-20">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
@@ -1387,20 +1387,20 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="grid gap-4 md:hidden">
+          <div className="decision-path-grid grid grid-cols-2 gap-3 md:hidden">
             {processCards.map((step, index) => renderProcessStepCard(step, index))}
           </div>
-          <div className="hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-4">
+          <div className="decision-path-grid hidden gap-6 md:grid md:grid-cols-2 xl:grid-cols-4">
             {processCards.map((step, index) => renderProcessStepCard(step, index))}
           </div>
         </div>
       </section>
 
       {/* PROJECTS SECTION */}
-      <section id="projects" className="section-shell py-14 md:py-32 relative">
+      <section id="projects" className="section-shell selected-work-section py-14 md:py-24 relative">
         <div className="absolute right-0 top-1/4 w-1/3 h-1/2 bg-cyan-700/10 blur-[150px] rounded-full pointer-events-none -z-10" />
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between mb-16">
+          <div className="section-intro-bar mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
             <div className="md:max-w-xl">
               <SectionTitle
                 description={text(

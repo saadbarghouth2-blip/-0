@@ -3580,7 +3580,8 @@ body #root main .service-package-card :is(.text-slate-300, .text-slate-400, .tex
 
 html[data-theme='light'] body #root main .detail-story-panel .font-display[class*="text-2xl"][class*="text-white"],
 body #root main .detail-story-panel .font-display[class*="text-2xl"][class*="text-white"] {
-  color: rgba(15, 118, 110, 0.52) !important;
+  color: #0f5f59 !important;
+  text-shadow: none !important;
 }
 
 html[data-theme='light'] body #root main .detail-aside-light,
@@ -3627,5 +3628,236 @@ body #root main .detail-aside-light :is(.pill, span) {
     border-color: rgba(255, 255, 255, 0.72) !important;
     background: rgba(3, 15, 24, 0.9) !important;
     color: #fff !important;
+  }
+}
+
+/* Editorial rhythm system --------------------------------------------------
+   A quiet, reusable hierarchy for the complete site. It separates sections
+   and guides sequential content without changing the underlying brand. */
+:root {
+  --notaq-ink: #0b172a;
+  --notaq-copy: #41536a;
+  --notaq-teal: #0f766e;
+  --notaq-cyan: #22d3ee;
+  --notaq-line: rgba(91, 124, 142, 0.28);
+  --notaq-ice: rgba(241, 248, 250, 0.76);
+}
+
+main > section + section,
+main > div > section.section-shell + section.section-shell {
+  border-top: 1px solid rgba(103, 232, 249, 0.1);
+}
+
+html[data-theme='light'] main > section + section,
+html[data-theme='light'] main > div > section.section-shell + section.section-shell {
+  border-top-color: var(--notaq-line);
+}
+
+.section-heading-rail {
+  position: relative;
+  padding-inline-start: 1.15rem;
+}
+
+.section-heading-rail::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.15rem;
+  bottom: 0.1rem;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--notaq-teal), rgba(34, 211, 238, 0.22));
+}
+
+.section-heading-rail.text-center {
+  padding-inline-start: 0;
+}
+
+.section-heading-rail.text-center::before {
+  inset-inline: 50% auto;
+  top: auto;
+  bottom: -0.75rem;
+  width: 3.25rem;
+  height: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--notaq-teal), transparent);
+}
+
+.section-intro-bar {
+  position: relative;
+  padding-block-end: 1.25rem;
+  border-bottom: 1px solid rgba(103, 232, 249, 0.14);
+}
+
+html[data-theme='light'] .section-intro-bar {
+  border-bottom-color: var(--notaq-line);
+}
+
+.decision-path-panel {
+  position: relative;
+  isolation: isolate;
+}
+
+.decision-path-grid {
+  --path-line: rgba(45, 212, 191, 0.3);
+  position: relative;
+}
+
+.decision-path-step {
+  position: relative;
+  isolation: isolate;
+}
+
+.decision-path-step::before {
+  content: '';
+  position: absolute;
+  inset-block: 0.8rem;
+  inset-inline-start: -1px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #14b8a6, rgba(34, 211, 238, 0.22));
+  opacity: 0.8;
+}
+
+.decision-path-grid > .decision-path-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-inline-end: -0.85rem;
+  top: 1.75rem;
+  width: 0.85rem;
+  height: 1px;
+  background: var(--path-line);
+}
+
+html[data-theme='light'] .decision-path-panel,
+html[data-theme='light'] .decision-path-step {
+  border-color: rgba(91, 124, 142, 0.3) !important;
+}
+
+html[data-theme='light'] .decision-path-panel {
+  background: linear-gradient(145deg, #ffffff 0%, #f1f8f9 100%) !important;
+  box-shadow: 0 22px 52px -44px rgba(15, 23, 42, 0.52);
+}
+
+html[data-theme='light'] .decision-path-step {
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 12px 28px -26px rgba(15, 23, 42, 0.55);
+}
+
+html[data-theme='light'] .decision-path-step :is(h2, h3, h4, .text-white, .text-slate-50, .text-slate-100, .text-slate-200) {
+  color: var(--notaq-ink) !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] .decision-path-step :is(p, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600) {
+  color: var(--notaq-copy) !important;
+  text-shadow: none !important;
+}
+
+html[data-theme='light'] .decision-path-step :is(.text-cyan-200, .text-cyan-300, .text-cyan-400) {
+  color: var(--notaq-teal) !important;
+}
+
+.selected-work-section {
+  background: linear-gradient(180deg, transparent, rgba(15, 118, 110, 0.025) 38%, transparent);
+}
+
+/* Project imagery stays recognizable while pale screenshots gain enough
+   structure for labels embedded in the artwork to remain legible. */
+.project-card-media {
+  background: #0b172a;
+}
+
+.project-card-cover {
+  filter: saturate(0.92) contrast(1.1) brightness(0.9);
+}
+
+.project-card-image-tone {
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(11, 23, 42, 0.3) 0%, rgba(11, 23, 42, 0.42) 56%, rgba(11, 23, 42, 0.64) 100%),
+    linear-gradient(90deg, rgba(15, 118, 110, 0.14), transparent 48%);
+}
+
+.project-card:hover .project-card-cover,
+.project-card:focus-within .project-card-cover {
+  filter: saturate(1) contrast(1.12) brightness(0.94);
+}
+
+html[data-theme='light'] .selected-work-section {
+  background: linear-gradient(180deg, #f8fbfc 0%, #ffffff 38%, #f4faf9 100%);
+}
+
+@media (max-width: 767px) {
+  main > section + section,
+  main > div > section.section-shell + section.section-shell {
+    border-top-color: rgba(91, 124, 142, 0.2);
+  }
+
+  .section-shell {
+    padding-inline: 0.85rem;
+  }
+
+  .section-heading-rail {
+    padding-inline-start: 0.85rem;
+  }
+
+  .section-heading-rail::before {
+    width: 2px;
+  }
+
+  .section-intro-bar {
+    padding-block-end: 1rem;
+  }
+
+  .decision-path-grid {
+    gap: 0.65rem !important;
+  }
+
+  .decision-path-grid > .decision-path-step:not(:last-child)::after {
+    display: none;
+  }
+
+  .decision-path-step::before {
+    inset-block: 0.65rem;
+  }
+
+  .detail-phase-grid .decision-path-step {
+    min-width: 0;
+  }
+
+  .detail-phase-grid .decision-path-step > span {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.75rem;
+  }
+
+  .detail-phase-grid .decision-path-step h2 {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .detail-phase-grid .decision-path-step p {
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+
+  .selected-work-section {
+    padding-block: 2.75rem !important;
+  }
+}
+
+@media (max-width: 359px) {
+  .detail-phase-grid,
+  .process-sequence .decision-path-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decision-path-step,
+  .section-heading-rail::before {
+    transition: none !important;
   }
 }

@@ -34,7 +34,7 @@ export const ComprehensiveOverview: React.FC<ComprehensiveOverviewProps> = ({
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-5xl font-bold mb-4"
+          className="section-heading-rail mb-4 text-4xl font-bold md:text-5xl"
         >
           {isArabic ? 'نظرة عامة شاملة' : 'Comprehensive Overview'}
         </motion.h2>

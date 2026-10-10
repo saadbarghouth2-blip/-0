@@ -903,13 +903,13 @@ const DetailPage = () => {
           initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.18 }}
-          className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+          className="decision-path-grid detail-phase-grid mt-10 grid grid-cols-2 gap-3 md:gap-4 xl:grid-cols-4"
         >
           {phases.map((phase, index) => (
             <motion.article
               key={phase.label}
               whileHover={shouldReduceMotion ? undefined : { y: -6, scale: 1.01 }}
-              className="surface-card interactive-card rounded-[1.35rem] p-5 md:rounded-[1.7rem]"
+              className="decision-path-step surface-card interactive-card rounded-[1.35rem] p-4 md:rounded-[1.7rem] md:p-5"
             >
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-cyan-300 font-display text-sm font-black text-slate-950">
                 {index + 1}

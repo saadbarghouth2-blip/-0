@@ -42,7 +42,7 @@ export const CustomerJourney: React.FC<CustomerJourneyProps> = ({
       </div>
 
       <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <motion.div className="text-center mb-16">
+        <motion.div className="section-heading-rail mb-10 text-center md:mb-14">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             {isArabic ? 'رحلة العميل المتكاملة' : 'Complete Customer Journey'}
           </h2>

@@ -180,7 +180,7 @@ const PageHero = ({
     <motion.section
       animate="visible"
       className={cn(
-        'relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[auto] sm:min-h-[85vh] lg:min-h-[calc(100svh-4.35rem)] w-screen items-end overflow-hidden px-3 pb-4 pt-5 sm:px-4 sm:pb-7 sm:pt-20 md:px-10 md:pb-10 md:pt-[7.5rem] lg:px-14',
+        'relative left-1/2 right-1/2 -mx-[50vw] flex min-h-[auto] w-screen items-end overflow-hidden px-3 pb-4 pt-5 sm:min-h-[36rem] sm:px-4 sm:pb-7 sm:pt-20 md:min-h-[40rem] md:px-10 md:pb-10 md:pt-24 lg:min-h-[42rem] lg:px-14',
         className,
       )}
       initial={shouldReduceMotion ? false : 'hidden'}

@@ -33,7 +33,7 @@ const DetailedGallery: React.FC<DetailedGalleryProps> = ({
   return (
     <section className="py-16">
       {title && (
-        <h2 className="font-display text-3xl font-bold text-white mb-8">
+        <h2 className="section-heading-rail mb-8 font-display text-3xl font-bold text-white">
           {title}
         </h2>
       )}

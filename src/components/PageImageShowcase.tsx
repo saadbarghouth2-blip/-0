@@ -58,7 +58,7 @@ const PageImageShowcaseSection = ({ showcase }: PageImageShowcaseProps) => {
   };
 
   const textBlock = (
-    <div className="space-y-4 md:space-y-5">
+    <div className="section-heading-rail space-y-4 md:space-y-5">
       <p className="section-kicker">{copy.kicker}</p>
       <h2 className="font-display text-[1.65rem] font-semibold leading-[1.16] text-white sm:text-[1.85rem] md:text-4xl md:leading-tight">
         {copy.title}
