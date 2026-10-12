@@ -565,7 +565,7 @@ const projectEntries: PortfolioProject[] = [
     audience: 'شركات، جهات تنفيذية، ومهتمون بخدمات GIS',
     projectType: 'موقع شركة تقنية متخصصة',
     role: 'بناء الرسالة البصرية وتغليف الخدمات في واجهة مقنعة',
-    liveUrl: 'https://geo-informatics-for-information-sys-eight.vercel.app/',
+    liveUrl: 'https://www.geoinformatics-for-information-systems.com/',
     accent: 'from-[#0077b6]/28 via-[#caf0f8]/10 to-[#023047]/15',
     techStack: ['Service architecture', 'Corporate web UI', 'GIS-oriented content', 'Showcase structure'],
     focus: ['Technical clarity', 'Service packaging', 'Professional trust'],
