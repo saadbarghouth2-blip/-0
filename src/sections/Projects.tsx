@@ -89,7 +89,7 @@ const Projects = () => {
       fullDescription: 'موقع شركة متخصصة في نظم المعلومات الجغرافية والاستشعار عن بعد. يعرض الخدمات المتنوعة مثل Enterprise GIS، Remote Sensing، Drone Mapping، و3D Digital Twins مع واجهة احترافية وتفاعلية.',
       image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
       technologies: ['React', 'Three.js', 'ArcGIS', 'Tailwind CSS'],
-      link: 'https://geo-informatics-for-information-sys-eight.vercel.app/',
+      link: 'https://www.geoinformatics-for-information-systems.com/',
       features: [
         'تصميم احترافي متعدد الأقسام',
         'عرض خدمات GIS متنوعة',
