@@ -888,12 +888,10 @@ const HomePage = () => {
                   <div className="home-banner-mini-wave home-banner-mini-wave-one" />
                   <div className="home-banner-mini-wave home-banner-mini-wave-two" />
                   <div className="home-banner-mini-copy">
-                    <p>{text('حلول رقمية متكاملة لشركتك', 'Integrated digital solutions for your business')}</p>
-                    <span>{text('تصميم وتطوير مواقع ومنصات وأنظمة ذكية تساعدك على النمو.', 'Websites, platforms, and smart systems designed to help you grow.')}</span>
-                    <div className="home-banner-mini-actions">
-                      <b>{text('ابدأ مشروعك', 'Start your project')}</b>
-                      <b>{text('تعرّف على خدماتنا', 'Explore services')}</b>
-                    </div>
+                    <small>{text('خدمة تطوير الويب', 'Web development service')}</small>
+                    <p>{text('تصميم وتطوير صفحات ويب احترافية', 'Professional website design and development')}</p>
+                    <span>{text('واجهات عصرية، سريعة، ومتجاوبة مع جميع الأجهزة', 'Modern, fast, responsive interfaces for every device')}</span>
+                    <em>{text('نُطق — نطلق طريقًا قويًا لشركتك في مصر والخليج.', 'Notaq — building a stronger path for your business in Egypt and the Gulf.')}</em>
                   </div>
                 </div>
               </div>

@@ -56,9 +56,9 @@ export const usePageMetadata = (input: PageSeoInput) => {
     setMetaTag('meta[property="og:description"]', 'property', 'og:description', state.description);
     setMetaTag('meta[property="og:type"]', 'property', 'og:type', state.type ?? 'website');
     setMetaTag('meta[property="og:image"]', 'property', 'og:image', state.imageUrl);
-    setMetaTag('meta[property="og:image:type"]', 'property', 'og:image:type', 'image/jpeg');
-    setMetaTag('meta[property="og:image:width"]', 'property', 'og:image:width', '1200');
-    setMetaTag('meta[property="og:image:height"]', 'property', 'og:image:height', '630');
+    setMetaTag('meta[property="og:image:type"]', 'property', 'og:image:type', state.imageType ?? 'image/jpeg');
+    setMetaTag('meta[property="og:image:width"]', 'property', 'og:image:width', String(state.imageWidth ?? 1200));
+    setMetaTag('meta[property="og:image:height"]', 'property', 'og:image:height', String(state.imageHeight ?? 630));
     setMetaTag('meta[property="og:image:alt"]', 'property', 'og:image:alt', state.imageAlt);
     setMetaTag('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
     setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', state.title);

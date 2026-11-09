@@ -37,6 +37,9 @@ export interface PageSeoInput {
   lang?: Language;
   image?: string;
   imageAlt?: string;
+  imageType?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   keywords?: string[];
   noindex?: boolean;
   type?: 'website' | 'article' | 'profile';
@@ -218,9 +221,9 @@ export const renderSeoBlock = (input: PageSeoInput) => {
     renderMetaTag('property', 'og:description', state.description),
     renderMetaTag('property', 'og:type', state.type ?? 'website'),
     renderMetaTag('property', 'og:image', state.imageUrl),
-    renderMetaTag('property', 'og:image:type', 'image/jpeg'),
-    renderMetaTag('property', 'og:image:width', '1200'),
-    renderMetaTag('property', 'og:image:height', '630'),
+    renderMetaTag('property', 'og:image:type', state.imageType ?? 'image/jpeg'),
+    renderMetaTag('property', 'og:image:width', String(state.imageWidth ?? 1200)),
+    renderMetaTag('property', 'og:image:height', String(state.imageHeight ?? 630)),
     renderMetaTag('property', 'og:image:alt', state.imageAlt),
     renderMetaTag('name', 'twitter:card', 'summary_large_image'),
     renderMetaTag('name', 'twitter:title', state.title),

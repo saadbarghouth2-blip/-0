@@ -97,6 +97,13 @@ const createHomeSeo = (lang: Language): PageSeoInput => {
     description,
     path: '/',
     lang,
+    image: '/Notaq%20Web%20Design%20Solutions%20Banner.png',
+    imageAlt: isArabic
+      ? 'نُطق: تصميم وتطوير صفحات ويب احترافية'
+      : 'Notaq professional web design and development solutions',
+    imageType: 'image/png',
+    imageWidth: 1660,
+    imageHeight: 948,
     keywords: isArabic
       ? [
           'نُطق',
