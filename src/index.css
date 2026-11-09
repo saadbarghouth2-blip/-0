@@ -4944,7 +4944,8 @@ body #root main .home-banner-content {
 
   .home-banner-laptop {
     width: min(10.75rem, 45%);
-    right: 0.7rem;
+    right: auto;
+    left: 0.7rem;
     bottom: 0.35rem;
   }
 
