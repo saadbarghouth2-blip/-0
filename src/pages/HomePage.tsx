@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { usePageMetadata } from '../hooks/usePageMetadata';
@@ -32,6 +32,9 @@ import {
   SearchCheck,
   ShieldCheck,
   Store,
+  Code2,
+  Smartphone,
+  PenTool,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -590,11 +593,14 @@ const staggerItem = {
 const HomePage = () => {
   const { lang, localizePath } = useLanguage();
   const isArabic = lang === 'ar';
+  const shouldReduceMotion = useReducedMotion();
   const text = (arabic: string, english: string) => clientFacingText(isArabic ? arabic : english, lang);
   const mouseX = useSpring(0, { stiffness: 40, damping: 20 });
   const mouseY = useSpring(0, { stiffness: 40, damping: 20 });
   const [mobileTestimonialIndex, setMobileTestimonialIndex] = useState(0);
+  const [showMobileWorkShortcut, setShowMobileWorkShortcut] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -638,6 +644,21 @@ const HomePage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const updateMobileWorkShortcut = () => {
+      const heroBottom = heroRef.current?.getBoundingClientRect().bottom ?? window.innerHeight;
+      setShowMobileWorkShortcut(heroBottom <= 0 && window.scrollY > window.innerHeight * 1.05);
+    };
+
+    updateMobileWorkShortcut();
+    window.addEventListener('scroll', updateMobileWorkShortcut, { passive: true });
+    window.addEventListener('resize', updateMobileWorkShortcut);
+    return () => {
+      window.removeEventListener('scroll', updateMobileWorkShortcut);
+      window.removeEventListener('resize', updateMobileWorkShortcut);
+    };
+  }, []);
+
   const showcaseProjects = featuredVisibleProjects.slice(0, 6);
   const mobileShowcaseProjects = featuredVisibleProjects.slice(0, 4);
   const mobileTestimonial = homeTestimonials[mobileTestimonialIndex] ?? homeTestimonials[0];
@@ -645,6 +666,29 @@ const HomePage = () => {
   const TestimonialNextIcon = isArabic ? ArrowLeft : ArrowRight;
 
   const premiumDashboardImg = encodeURI('/images/Gemini_Generated_Image_uigh61uigh61uigh.png');
+
+  const heroFeatures = [
+    {
+      icon: Code2,
+      ar: 'تطوير بجودة عالية',
+      en: 'High-quality development',
+    },
+    {
+      icon: PenTool,
+      ar: 'تصميم احترافي',
+      en: 'Professional design',
+    },
+    {
+      icon: Smartphone,
+      ar: 'متجاوبة مع كل الأجهزة',
+      en: 'Responsive on every device',
+    },
+    {
+      icon: BarChart3,
+      ar: 'أداء وسرعة عالية',
+      en: 'Fast, high performance',
+    },
+  ];
 
   const parallaxX = useTransform(mouseX, (x) => x * -1.5);
   const parallaxY = useTransform(mouseY, (y) => y * -1.5);
@@ -800,104 +844,136 @@ const HomePage = () => {
   return (
     <div ref={containerRef} className="relative pb-16 md:pb-0">
       
-      <motion.section 
-        style={{ y: heroY, opacity: heroOpacity }}
-        id="hero" 
-        className="home-hero section-shell relative flex min-h-[calc(100svh-60px)] items-center overflow-hidden pb-10 pt-8 md:min-h-[calc(100svh-88px)] md:pb-16 md:pt-16"
+      <motion.section
+        ref={heroRef}
+        style={{ y: shouldReduceMotion ? 0 : heroY, opacity: shouldReduceMotion ? 1 : heroOpacity }}
+        id="hero"
+        className="home-hero home-banner-hero relative overflow-hidden"
       >
-        {/* Cinematic Background */}
-        <div className="home-hero-media-frame absolute inset-0 z-0 overflow-hidden rounded-b-[2.2rem] md:rounded-b-[4rem]">
-          <motion.div 
-            style={{ x: parallaxX, y: parallaxY }}
-            className="home-hero-media-motion h-full w-full scale-[1.15]"
-          >
-            <img
-              src="/images/hero-background.webp"
-              fetchPriority="high"
-              loading="eager"
-              className="home-hero-media h-full w-full object-cover"
-              alt="Background Office"
-            />
-          </motion.div>
-          <div className="home-hero-copy-gradient absolute inset-0 pointer-events-none" />
-          <div className="home-hero-bottom-gradient absolute inset-x-0 bottom-0 pointer-events-none" />
-        </div>
+        <div className="home-banner-shell">
+          <div className="home-banner-visual" aria-hidden="true">
+            <div className="home-banner-photo-clip">
+              <motion.img
+                alt=""
+                className="home-banner-office"
+                fetchPriority="high"
+                loading="eager"
+                src="/images/hero-background.webp"
+                style={{ x: shouldReduceMotion ? 0 : parallaxX, y: shouldReduceMotion ? 0 : parallaxY }}
+              />
+            </div>
 
-        <div className="theme-on-media relative z-10 mx-auto grid w-full max-w-[82rem] items-center gap-6 md:gap-8">
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            animate="show"
-            className="relative max-w-[48rem] space-y-5 md:space-y-7"
-          >
+            <div className="home-banner-brand-panel">
+              <img alt="" className="home-banner-brand-logo" src="/images/notaq-logo-lockup.webp" />
+              <span className="home-banner-brand-divider" />
+              <p>{text('حلول رقمية لأعمالك', 'Digital solutions for your business')}</p>
+            </div>
+
             <motion.div
-              variants={staggerItem}
-              className="home-hero-copy relative isolate space-y-4 border-s-4 border-cyan-300 py-2 ps-5 sm:ps-7 md:space-y-5 md:py-4"
+              className="home-banner-laptop"
+              initial={false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.25 }}
             >
-              <div className="relative z-10 space-y-4 md:space-y-5">
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                className="section-kicker inline-flex max-w-max items-center border-cyan-300/40 bg-[#082a32]/90 px-3 py-2 text-[0.68rem] font-bold text-cyan-50 sm:px-4 sm:text-xs"
-              >
-                <Sparkles className={`${isArabic ? 'ml-2' : 'mr-2'} inline h-3.5 w-3.5 text-cyan-300`} />
-                {text('تصميم تجارب رقمية مميزة', 'Crafting Premium Digital Experiences')}
-              </motion.div>
-
-              <div className="space-y-3 md:space-y-4">
-                <h1 className="font-display text-[2.35rem] font-black leading-[1.08] text-white sm:text-[3.2rem] md:text-6xl lg:text-7xl">
-                  <span className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">Notaq</span>
-                  <span className="mx-1.5 text-white/20 sm:mx-2 md:mx-3">|</span>
-                  <span className="text-gradient animate-float inline-block pb-2">{text('نُطق', 'Notaq')}</span>
-                </h1>
-                <p className="font-display text-lg font-bold leading-relaxed text-cyan-100 sm:text-2xl md:text-3xl">
-                  {text('نُطق — نطلق طريقًا قويًا', 'Notaq — Launching a stronger digital path')}
-                </p>
+              <div className="home-banner-laptop-screen">
+                <div className="home-banner-mini-site">
+                  <div className="home-banner-mini-nav">
+                    <span className="home-banner-mini-brand">Notaq</span>
+                    <span>{text('الرئيسية', 'Home')}</span>
+                    <span>{text('خدماتنا', 'Services')}</span>
+                    <span>{text('أعمالنا', 'Work')}</span>
+                    <span>{text('من نحن', 'About')}</span>
+                    <span>{text('تواصل معنا', 'Contact')}</span>
+                  </div>
+                  <div className="home-banner-mini-wave home-banner-mini-wave-one" />
+                  <div className="home-banner-mini-wave home-banner-mini-wave-two" />
+                  <div className="home-banner-mini-copy">
+                    <p>{text('حلول رقمية متكاملة لشركتك', 'Integrated digital solutions for your business')}</p>
+                    <span>{text('تصميم وتطوير مواقع ومنصات وأنظمة ذكية تساعدك على النمو.', 'Websites, platforms, and smart systems designed to help you grow.')}</span>
+                    <div className="home-banner-mini-actions">
+                      <b>{text('ابدأ مشروعك', 'Start your project')}</b>
+                      <b>{text('تعرّف على خدماتنا', 'Explore services')}</b>
+                    </div>
+                  </div>
+                </div>
               </div>
+              <div className="home-banner-laptop-base" />
+            </motion.div>
+          </div>
 
-              <p className="max-w-2xl text-base font-medium leading-8 text-slate-100 md:text-xl md:leading-9">
-                {text(
-                  'شركة برمجة وحلول رقمية نصمم المواقع والمتاجر ونطور المنصات والأنظمة والذكاء الاصطناعي للشركات في مصر والخليج.',
-                  'A software and digital solutions company building websites, e-commerce, platforms, systems, and AI products for businesses across Egypt and the Gulf.',
-                )}
-              </p>
-              </div>
+          <motion.div
+            className="home-banner-content"
+            variants={staggerContainer}
+            initial={false}
+            animate="show"
+          >
+            <div className="home-banner-contours" aria-hidden="true" />
+
+            <motion.div variants={staggerItem} className="home-banner-service-pill">
+              <Code2 className="h-5 w-5" />
+              <span>{text('خدمة تطوير الويب', 'Web development service')}</span>
             </motion.div>
 
-            <motion.div variants={staggerItem} className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:gap-4">
+            <motion.div variants={staggerItem} className="home-banner-copy">
+              <h1>
+                <span>{text('تصميم وتطوير', 'Design and develop')}</span>
+                <strong>{text('صفحات ويب احترافية', 'professional web experiences')}</strong>
+              </h1>
+              <p className="home-banner-subtitle">
+                {text(
+                  'واجهات عصرية، سريعة، ومتجاوبة مع جميع الأجهزة',
+                  'Modern, fast interfaces that respond beautifully on every device',
+                )}
+              </p>
+              <p className="home-banner-promise">
+                {text(
+                  'نُطق — نطلق طريقًا قويًا لشركتك في مصر والخليج.',
+                  'Notaq - launching a stronger digital path for your business across Egypt and the Gulf.',
+                )}
+              </p>
+            </motion.div>
+
+            <motion.div variants={staggerItem} className="home-banner-feature-grid">
+              {heroFeatures.map((feature) => {
+                const FeatureIcon = feature.icon;
+                return (
+                  <div className="home-banner-feature" key={feature.en}>
+                    <FeatureIcon aria-hidden="true" />
+                    <span>{text(feature.ar, feature.en)}</span>
+                  </div>
+                );
+              })}
+            </motion.div>
+
+            <motion.div variants={staggerItem} className="home-banner-actions">
               <Link
-                className="btn-primary group w-full shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_40px_rgba(45,212,191,0.5)] sm:w-auto"
+                className="home-banner-primary-cta"
+                to={localizePath('/contact')}
+              >
+                <span>{text('اطلب خدمتك الآن', 'Request your service now')}</span>
+                <ArrowLeft className={isArabic ? '' : 'rotate-180'} aria-hidden="true" />
+              </Link>
+              <Link
+                className="home-banner-secondary-link"
                 onPointerDown={() => void preloadPath(localizePath('/projects'))}
                 to={localizePath('/projects')}
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  {text('استكشف مشاريعنا', 'Explore Projects')}
-                  <motion.span animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
-                    <ArrowUpLeft className="h-5 w-5 -rotate-90 group-hover:rotate-0 transition-transform duration-300" />
-                  </motion.span>
-                </span>
-              </Link>
-              <Link className="btn-secondary group w-full sm:w-auto" to={localizePath('/contact')}>
-                {text('ناقش احتياج شركتك', 'Discuss your company need')}
-                <Mail className="h-4 w-4 transition-transform group-hover:scale-125 group-hover:text-cyan-400" />
+                {text('شاهد أعمالنا', 'Explore our work')}
+                <ArrowUpLeft aria-hidden="true" />
               </Link>
             </motion.div>
 
-            <motion.div variants={staggerItem} className="mobile-2-cols grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/20 bg-white/20 sm:grid-cols-4">
+            <motion.div variants={staggerItem} className="home-banner-stats" aria-label={text('أرقام نُطق', 'Notaq in numbers')}>
               {portfolioProfile.stats.map((stat, index) => (
-                <div
-                  key={stat.englishLabel ?? stat.label}
-                  className="home-hero-stat p-2 text-center transition-colors sm:p-4"
-                >
-                  <p className="home-hero-stat-value font-display text-base font-bold sm:text-[2.2rem] md:text-4xl">
-                    <AnimatedCounter value={stat.value} duration={2000 + (index * 500)} />
-                  </p>
-                  <p className="home-hero-stat-label mt-0.5 text-[10px] font-semibold sm:text-sm">{text(stat.label, stat.englishLabel ?? stat.label)}</p>
+                <div className="home-banner-stat" key={stat.englishLabel ?? stat.label}>
+                  <p><AnimatedCounter value={stat.value} duration={1600 + (index * 300)} /></p>
+                  <span>{text(stat.label, stat.englishLabel ?? stat.label)}</span>
                 </div>
               ))}
             </motion.div>
           </motion.div>
-
         </div>
+        <div className="home-banner-ribbon" aria-hidden="true" />
       </motion.section>
 
       <section aria-label={text('وصول سريع إلى الأعمال السابقة', 'Quick access to previous work')} className="section-shell relative z-20 -mt-2 pb-3 md:-mt-8 md:pb-6">
@@ -939,16 +1015,27 @@ const HomePage = () => {
         </div>
       </section>
 
-      <Link
-        aria-label={text('افتح صفحة الأعمال السابقة', 'Open previous work page')}
-        className="fixed inset-x-3 bottom-3 z-40 flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-cyan-100/25 bg-cyan-300 px-4 text-sm font-black text-[#031014] shadow-[0_18px_55px_-18px_rgba(45,212,191,0.95)] md:hidden"
-        onPointerDown={() => void preloadPath(localizePath('/projects'))}
-        to={localizePath('/projects')}
-      >
-        <Layers3 className="h-4 w-4" />
-        {text('شاهد سابقة أعمالنا', 'View previous work')}
-        <ArrowUpLeft className="h-4 w-4" />
-      </Link>
+      <AnimatePresence>
+        {showMobileWorkShortcut ? (
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="fixed inset-x-3 bottom-3 z-40 md:hidden"
+            exit={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 18 }}
+          >
+            <Link
+              aria-label={text('افتح صفحة الأعمال السابقة', 'Open previous work page')}
+              className="flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-cyan-100/25 bg-cyan-300 px-4 text-sm font-black text-[#031014] shadow-[0_18px_55px_-18px_rgba(45,212,191,0.95)]"
+              onPointerDown={() => void preloadPath(localizePath('/projects'))}
+              to={localizePath('/projects')}
+            >
+              <Layers3 className="h-4 w-4" />
+              {text('شاهد سابقة أعمالنا', 'View previous work')}
+              <ArrowUpLeft className="h-4 w-4" />
+            </Link>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       {/* NEW Infinite Marquee Visual Break */}
       <section className="home-marquee relative overflow-hidden border-y border-white/5 bg-[#06090f] py-8 md:py-10">
